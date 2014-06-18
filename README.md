@@ -90,3 +90,13 @@ if let userName = JSONValue(jsonObject)[999999]["wrong_key"]["wrong_name"].strin
 }
 
 ```
+```swift
+switch JSONValue(jsonObject)[0]["user"]["id"]{
+case .STRING(let stringValue):
+    let id = stringValue.toInt()
+case .NUMBER(let doubleValue):
+    let id = Int(doubleValue)
+default:
+    println("ooops!!! JSON Data is Unexpected or Broken")
+
+```

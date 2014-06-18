@@ -91,7 +91,8 @@ if let userName = JSONValue(jsonObject)[999999]["wrong_key"]["wrong_name"].strin
 
 ```
 ```swift
-switch JSONValue(jsonObject)[0]["user"]["id"]{
+let json = JSONValue(jsonObject)
+switch json["user_id"]{
 case .STRING(let stringValue):
     let id = stringValue.toInt()
 case .NUMBER(let doubleValue):

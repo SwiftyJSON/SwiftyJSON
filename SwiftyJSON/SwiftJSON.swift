@@ -134,7 +134,11 @@ enum JSONValue:LogicValue,Equatable,Printable{
     init (_ rawObject:AnyObject){
         switch rawObject{
         case let value as NSData:
-            self = JSONValue(NSJSONSerialization.JSONObjectWithData(value, options: NSJSONReadingOptions.MutableContainers, error: nil))
+            if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: NSJSONReadingOptions.MutableContainers, error: nil){
+                self = JSONValue(jsonObject)
+            }else{
+                self = JSONValue.INVALID
+            }
         case let value as NSNumber:
             if String.fromCString(value.objCType) == "c"{
                 self = .BOOL(value.boolValue)

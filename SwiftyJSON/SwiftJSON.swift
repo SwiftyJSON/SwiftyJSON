@@ -10,44 +10,44 @@ import Foundation
 
 func ==(lhs: JSONValue, rhs: JSONValue) -> Bool{
     switch lhs{
-    case .NUMBER(let lvalue):
+    case .JNumber(let lvalue):
         switch rhs{
-        case .NUMBER(let rvalue):
+        case .JNumber(let rvalue):
             return (rvalue == lvalue) ? true:false
         default:
             return false
         }
-    case .STRING(let lvalue):
+    case .JString(let lvalue):
         switch rhs{
-        case .STRING(let rvalue):
+        case .JString(let rvalue):
             return (rvalue == lvalue) ? true:false
         default:
             return false
         }
-    case .BOOL(let lvalue):
+    case .JBool(let lvalue):
         switch rhs{
-        case .BOOL(let rvalue):
+        case .JBool(let rvalue):
             return (rvalue == lvalue) ? true:false
         default:
             return false
         }
-    case .NULL:
+    case .JNull:
         switch rhs{
-        case .NULL:
+        case .JNull:
             return true
         default:
             return false
         }
-    case .ARRAY(let lvalue):
+    case .JArray(let lvalue):
         switch rhs{
-        case .ARRAY(let rvalue):
+        case .JArray(let rvalue):
             return (rvalue == lvalue) ? true:false
         default:
             return false
         }
-    case .OBJECT(let lvalue):
+    case .JObject(let lvalue):
         switch rhs{
-        case .OBJECT(let rvalue):
+        case .JObject(let rvalue):
             return (rvalue == lvalue) ? true:false
         default:
             return false
@@ -60,17 +60,17 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool{
 
 enum JSONValue:LogicValue,Equatable,Printable{
 
-    case NUMBER(Double)
-    case STRING(String)
-    case BOOL(Bool)
-    case NULL
-    case ARRAY(Array<JSONValue>)
-    case OBJECT(Dictionary<String,JSONValue>)
-    case INVALID
+    case JNumber(Double)
+    case JString(String)
+    case JBool(Bool)
+    case JNull
+    case JArray(Array<JSONValue>)
+    case JObject(Dictionary<String,JSONValue>)
+    case JInvalid
     
     var string:String?{
         switch self{
-        case .STRING(let value):
+        case .JString(let value):
             return value
         default:
             return nil
@@ -78,7 +78,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
     }
     var number:Double?{
         switch self{
-        case .NUMBER(let value):
+        case .JNumber(let value):
             return value
         default:
             return nil
@@ -86,7 +86,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
     }
     var bool:Bool?{
         switch self{
-        case .BOOL(let value):
+        case .JBool(let value):
             return value
         default:
             return nil
@@ -94,7 +94,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
     }
     var array:Array<JSONValue>?{
         switch self{
-        case .ARRAY(let value):
+        case .JArray(let value):
             return value
         default:
             return nil
@@ -102,7 +102,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
     }
     var object:Dictionary<String,JSONValue>?{
         switch self{
-        case .OBJECT(let value):
+        case .JObject(let value):
             return value
         default:
             return nil
@@ -113,21 +113,21 @@ enum JSONValue:LogicValue,Equatable,Printable{
         
         switch rawValue{
         case let value as Int:
-            self = .NUMBER(Double(value))
+            self = .JNumber(Double(value))
         case let value as Double:
-            self = .NUMBER(value)
+            self = .JNumber(value)
         case let value as Bool:
-            self = .BOOL(value)
+            self = .JBool(value)
         case let value as String:
-            self = .STRING(value)
+            self = .JString(value)
         case let value as Array<JSONValue>:
-            self = .ARRAY(value)
+            self = .JArray(value)
         case let value as Dictionary<String,JSONValue>:
-            self = .OBJECT(value)
+            self = .JObject(value)
         case let value as JSONValue:
             self = value
         default:
-            self = .INVALID
+            self = .JInvalid
         }
     }
     
@@ -137,17 +137,16 @@ enum JSONValue:LogicValue,Equatable,Printable{
             if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: NSJSONReadingOptions.MutableContainers, error: nil){
                 self = JSONValue(jsonObject)
             }else{
-                self = JSONValue.INVALID
-            }
-        case let value as NSNumber:
+                self = JSONValue.JInvalid
+            }        case let value as NSNumber:
             if String.fromCString(value.objCType) == "c"{
-                self = .BOOL(value.boolValue)
+                self = .JBool(value.boolValue)
             }
-            self = .NUMBER(value.doubleValue)
+            self = .JNumber(value.doubleValue)
         case let value as NSString:
-            self = .STRING(value)
+            self = .JString(value)
         case let value as NSNull:
-            self = .NULL
+            self = .JNull
         case let value as NSArray:
             var jsonValues = JSONValue[]()
             for possibleJsonValue : AnyObject in value{
@@ -156,7 +155,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
                     jsonValues.append(jsonValue)
                 }
             }
-            self = .ARRAY(jsonValues)
+            self = .JArray(jsonValues)
         case let value as NSDictionary:
             var jsonObject = Dictionary<String,JSONValue>()
             for (possibleJsonKey : AnyObject,possibleJsonValue : AnyObject) in value{
@@ -167,19 +166,19 @@ enum JSONValue:LogicValue,Equatable,Printable{
                     }
                 }
             }
-            self = .OBJECT(jsonObject)
+            self = .JObject(jsonObject)
         default:
-            self = .INVALID
+            self = .JInvalid
         }
     }
 
     subscript(index: Int) -> JSONValue {
         get {
             switch self{
-            case .ARRAY(let jsonArray) where jsonArray.count > index:
+            case .JArray(let jsonArray) where jsonArray.count > index:
                 return jsonArray[index]
             default:
-                return JSONValue.INVALID
+                return JSONValue.JInvalid
             }
         }
     }
@@ -187,21 +186,21 @@ enum JSONValue:LogicValue,Equatable,Printable{
     subscript(key: String) -> JSONValue {
         get {
             switch self{
-            case .OBJECT(let jsonDictionary):
+            case .JObject(let jsonDictionary):
                 if let value = jsonDictionary[key]{
                     return value
                 }else{
-                    return JSONValue.INVALID
+                    return JSONValue.JInvalid
                 }
             default:
-                return JSONValue.INVALID
+                return JSONValue.JInvalid
             }
         }
     }
     
     func getLogicValue() -> Bool{
         switch self{
-        case .INVALID:
+        case .JInvalid:
             return false
         default:
             return true
@@ -210,17 +209,17 @@ enum JSONValue:LogicValue,Equatable,Printable{
     
     var rawJSONString: String{
         switch self{
-        case .NUMBER(let value):
+        case .JNumber(let value):
             return "\(value)"
-        case BOOL(let value):
+        case .JBool(let value):
             return "\(value)"
-        case STRING(let value):
+        case .JString(let value):
             
             let jsonAbleString = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
             return "\"\(jsonAbleString)\""
-        case NULL:
+        case .JNull:
             return "null"
-        case ARRAY(let array):
+        case .JArray(let array):
             var arrayString = "["
             for (index, value) in enumerate(array) {
                 if index != array.count - 1{
@@ -231,7 +230,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
             }
             arrayString += "]"
             return arrayString
-        case OBJECT(let object):
+        case .JObject(let object):
             var objectString = "{"
             var (index, count) = (0, object.count)
             for (key, value) in object{
@@ -244,14 +243,14 @@ enum JSONValue:LogicValue,Equatable,Printable{
             }
             objectString += "}"
             return objectString
-        case INVALID:
+        case .JInvalid:
             return "INVALID_JSON_VALUE"
         }
     }
     
     func printableString(indent:String)->String{
         switch self{
-        case .OBJECT(let object):
+        case .JObject(let object):
             var objectString = "{\n"
             var (index, count) = (0, object.count)
             for (key, value) in object{
@@ -265,7 +264,7 @@ enum JSONValue:LogicValue,Equatable,Printable{
             }
             objectString += "\(indent)}"
             return objectString
-        case .ARRAY(let array):
+        case .JArray(let array):
             var arrayString = "[\n"
             for (index, value) in enumerate(array) {
                 let valueString = value.printableString(indent + "  ")

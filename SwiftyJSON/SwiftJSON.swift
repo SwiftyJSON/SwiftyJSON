@@ -138,9 +138,11 @@ enum JSONValue:LogicValue,Equatable,Printable{
                 self = JSONValue(jsonObject)
             }else{
                 self = JSONValue.JInvalid
-            }        case let value as NSNumber:
+            }
+        case let value as NSNumber:
             if String.fromCString(value.objCType) == "c"{
                 self = .JBool(value.boolValue)
+                return
             }
             self = .JNumber(value.doubleValue)
         case let value as NSString:

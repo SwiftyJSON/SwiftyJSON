@@ -72,7 +72,8 @@ An unreadable mess for something should be really simple!
 With SwiftyJSON all you have to do is:
 
 ```swift
-if let userName = JSONValue(jsonObject)[0]["user"]["name"].string{
+let json = JSONValue(dataFromNetworking)
+if let userName = json[0]["user"]["name"].string{
   //Now you got your value
 }
 ```
@@ -80,7 +81,8 @@ if let userName = JSONValue(jsonObject)[0]["user"]["name"].string{
 And don't worry about the Optional Wrapping Thing, it's done for you automaticly
 
 ```swift
-if let userName = JSONValue(jsonObject)[999999]["wrong_key"]["wrong_name"].string{
+let json = JSONValue(dataFromNetworking)
+if let userName = json[999999]["wrong_key"]["wrong_name"].string{
   //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 }
 

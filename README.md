@@ -1,23 +1,19 @@
 #SwiftyJSON
 SwiftyJSON makes it easy to deal with JSON data in Swift.
-##The Typical JSON Handling in Swift
-What's the problem with the way JSON handling in Swift?
-
-Let's take the [Twitter API](https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline) for example:
+##Why The Typical JSON Handling in Swift is NOT Good?
+Swift is very strict about types, It's good while explicit typing left us little chance to make mistakes. 
+But while dealing with things that naturally implicit about types such as JSON, It's painful.
+Take the Twitter API for example:
+Say we want to retrive a user's "name" value of some tweet in Swift,according to twitter's api:https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
 
 ```JSON
 [
   {
-  
     ......
-    
     "text": "just another test",
-    
     ......
-    
     "user": {
       "name": "OAuth Dancer",
-      "follow_request_sent": false,
       "favourites_count": 7,
       "entities": {
         "url": {
@@ -34,14 +30,13 @@ Let's take the [Twitter API](https://dev.twitter.com/docs/api/1.1/get/statuses/h
           ]
         }
       ......
-      
     },
     "in_reply_to_screen_name": null,
   },
   ......]
 ```
 
-What if we want to retrive the user's "name" value of the first tweet in Swift?
+The code would look like this:
 
 ```swift
 
@@ -58,7 +53,7 @@ if let statusesArray = jsonObject as? NSArray{
 }
 
 ```
-What A Pain!!!
+It's Not Good
 
 Even if we use Optional Chainning would also cause a mess:
 
@@ -70,7 +65,7 @@ if let userName = (((jsonObject as? NSArray)?[0] as? NSDictionary)?["user"] as? 
 }
 
 ```
-What an unreadable mess for something should be really simple!
+An unreadable mess for something should be really simple!
 
 ##SwiftyJSON
 
@@ -93,9 +88,9 @@ if let userName = JSONValue(jsonObject)[999999]["wrong_key"]["wrong_name"].strin
 ```swift
 let json = JSONValue(jsonObject)
 switch json["user_id"]{
-case .STRING(let stringValue):
+case .JString(let stringValue):
     let id = stringValue.toInt()
-case .NUMBER(let doubleValue):
+case .JNumber(let doubleValue):
     let id = Int(doubleValue)
 default:
     println("ooops!!! JSON Data is Unexpected or Broken")

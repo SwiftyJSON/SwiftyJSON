@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		173ECFEA1955368300AC70A3 /* iOS_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173ECFE91955368300AC70A3 /* iOS_Test.swift */; };
-		173ECFF7195536B300AC70A3 /* Mac_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173ECFF6195536B300AC70A3 /* Mac_Test.swift */; };
 		173ECFFC195536F400AC70A3 /* SwiftyJSON in Resources */ = {isa = PBXBuildFile; fileRef = 173ECFFB195536F400AC70A3 /* SwiftyJSON */; };
 		173ECFFD195536F400AC70A3 /* SwiftyJSON in Resources */ = {isa = PBXBuildFile; fileRef = 173ECFFB195536F400AC70A3 /* SwiftyJSON */; };
 /* End PBXBuildFile section */
@@ -16,10 +14,8 @@
 /* Begin PBXFileReference section */
 		173ECFE41955368300AC70A3 /* iOS Test.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS Test.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		173ECFE81955368300AC70A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		173ECFE91955368300AC70A3 /* iOS_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Test.swift; sourceTree = "<group>"; };
 		173ECFF2195536B300AC70A3 /* Mac Test.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mac Test.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		173ECFF5195536B300AC70A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		173ECFF6195536B300AC70A3 /* Mac_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mac_Test.swift; sourceTree = "<group>"; };
 		173ECFFB195536F400AC70A3 /* SwiftyJSON */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftyJSON; path = ../SwiftyJSON; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,7 +59,6 @@
 		173ECFE61955368300AC70A3 /* iOS Test */ = {
 			isa = PBXGroup;
 			children = (
-				173ECFE91955368300AC70A3 /* iOS_Test.swift */,
 				173ECFE71955368300AC70A3 /* Supporting Files */,
 			);
 			path = "iOS Test";
@@ -80,7 +75,6 @@
 		173ECFF3195536B300AC70A3 /* Mac Test */ = {
 			isa = PBXGroup;
 			children = (
-				173ECFF6195536B300AC70A3 /* Mac_Test.swift */,
 				173ECFF4195536B300AC70A3 /* Supporting Files */,
 			);
 			path = "Mac Test";
@@ -189,7 +183,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				173ECFEA1955368300AC70A3 /* iOS_Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +190,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				173ECFF7195536B300AC70A3 /* Mac_Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

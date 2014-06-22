@@ -8,26 +8,26 @@
 
 import Foundation
 
-func ==(lhs: JSONValue, rhs: JSONValue) -> Bool{
+func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     switch lhs{
     case .JNumber(let lvalue):
         switch rhs{
         case .JNumber(let rvalue):
-            return (rvalue == lvalue) ? true:false
+            return rvalue == lvalue
         default:
             return false
         }
     case .JString(let lvalue):
         switch rhs{
         case .JString(let rvalue):
-            return (rvalue == lvalue) ? true:false
+            return rvalue == lvalue
         default:
             return false
         }
     case .JBool(let lvalue):
         switch rhs{
         case .JBool(let rvalue):
-            return (rvalue == lvalue) ? true:false
+            return rvalue == lvalue
         default:
             return false
         }
@@ -41,14 +41,14 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool{
     case .JArray(let lvalue):
         switch rhs{
         case .JArray(let rvalue):
-            return (rvalue == lvalue) ? true:false
+            return rvalue == lvalue
         default:
             return false
         }
     case .JObject(let lvalue):
         switch rhs{
         case .JObject(let rvalue):
-            return (rvalue == lvalue) ? true:false
+            return rvalue == lvalue
         default:
             return false
         }
@@ -58,7 +58,7 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool{
     }
 }
 
-enum JSONValue:LogicValue,Equatable,Printable{
+enum JSONValue:LogicValue, Equatable, Printable {
 
     case JNumber(Double)
     case JString(String)

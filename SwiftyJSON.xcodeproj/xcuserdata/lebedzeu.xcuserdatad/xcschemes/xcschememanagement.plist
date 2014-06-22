@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Example.xcscheme</key>
+		<key>SwiftyJSON-OSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +17,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>174D29D11951DD4800B80F1A</key>
+		<key>2E4FEFDA19575BE100351305</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>174D29E31951DD4800B80F1A</key>
+		<key>2E4FEFE519575BE100351305</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2E4FF00119575CE600351305</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2E4FF00B19575CE600351305</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -109,27 +109,27 @@ enum JSONValue:LogicValue,Equatable,Printable{
         }
     }
     
-    init(_ rawValue:Any){
-        
-        switch rawValue{
-        case let value as Int:
-            self = .JNumber(Double(value))
-        case let value as Double:
-            self = .JNumber(value)
-        case let value as Bool:
-            self = .JBool(value)
-        case let value as String:
-            self = .JString(value)
-        case let value as Array<JSONValue>:
-            self = .JArray(value)
-        case let value as Dictionary<String,JSONValue>:
-            self = .JObject(value)
-        case let value as JSONValue:
-            self = value
-        default:
-            self = .JInvalid
-        }
-    }
+//    init(_ rawValue:Any){
+//        
+//        switch rawValue{
+//        case let value as Int:
+//            self = .JNumber(Double(value))
+//        case let value as Double:
+//            self = .JNumber(value)
+//        case let value as Bool:
+//            self = .JBool(value)
+//        case let value as String:
+//            self = .JString(value)
+//        case let value as Array<JSONValue>:
+//            self = .JArray(value)
+//        case let value as Dictionary<String,JSONValue>:
+//            self = .JObject(value)
+//        case let value as JSONValue:
+//            self = value
+//        default:
+//            self = .JInvalid
+//        }
+//    }
     
     init (_ rawObject:AnyObject){
         switch rawObject{

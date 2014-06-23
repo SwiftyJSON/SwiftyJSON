@@ -7,12 +7,14 @@
 //
 
 import XCTest
+import SwiftyJSON
 
-class TestJSONValue: XCTestCase {
+class SwiftyJSONTests: XCTestCase {
     
-    var validJSONData:NSData = NSData(contentsOfFile : NSBundle(forClass:TestJSONValue.self).pathForResource("Valid", ofType: "JSON", inDirectory: "Resource"))
+    var validJSONData:NSData!
     
     override func setUp() {
+        validJSONData = NSData(contentsOfFile : NSBundle(forClass:SwiftyJSONTests.self).pathForResource("Valid", ofType: "JSON"))
         super.setUp()
     }
     

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2E4FF00119575CE600351305"
-               BuildableName = "SwiftyJSON-OSX.framework"
+               BuildableName = "SwiftyJSON.framework"
                BlueprintName = "SwiftyJSON-OSX"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>

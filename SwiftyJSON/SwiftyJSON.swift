@@ -11,7 +11,7 @@ import Foundation
 func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     switch lhs{
     case .JNumber(let lvalue):
-        switch rhs{
+        switch rhs {
         case .JNumber(let rvalue):
             return rvalue == lvalue
         default:
@@ -58,7 +58,7 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     }
 }
 
-enum JSONValue:LogicValue, Equatable, Printable {
+enum JSONValue: LogicValue, Equatable, Printable {
 
     case JNumber(Double)
     case JString(String)
@@ -68,16 +68,16 @@ enum JSONValue:LogicValue, Equatable, Printable {
     case JObject(Dictionary<String,JSONValue>)
     case JInvalid
     
-    var string:String?{
-        switch self{
+    var string: String? {
+        switch self {
         case .JString(let value):
             return value
         default:
             return nil
         }
     }
-    var number:Double?{
-        switch self{
+    var number: Double? {
+        switch self {
         case .JNumber(let value):
             return value
         default:
@@ -131,8 +131,8 @@ enum JSONValue:LogicValue, Equatable, Printable {
 //        }
 //    }
     
-    init (_ rawObject:AnyObject){
-        switch rawObject{
+    init (_ rawObject:AnyObject) {
+        switch rawObject {
         case let value as NSData:
             if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: NSJSONReadingOptions.MutableContainers, error: nil){
                 self = JSONValue(jsonObject)
@@ -209,8 +209,8 @@ enum JSONValue:LogicValue, Equatable, Printable {
         }
     }
     
-    var rawJSONString: String{
-        switch self{
+    var rawJSONString: String {
+        switch self {
         case .JNumber(let value):
             return "\(value)"
         case .JBool(let value):
@@ -250,8 +250,8 @@ enum JSONValue:LogicValue, Equatable, Printable {
         }
     }
     
-    func printableString(indent:String)->String{
-        switch self{
+    func printableString(indent: String) -> String {
+        switch self {
         case .JObject(let object):
             var objectString = "{\n"
             var (index, count) = (0, object.count)

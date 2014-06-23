@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>485B50D0-253F-4C8E-82BA-848F815FC6D6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SwiftyJSON</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E0A160A5-C602-42DC-8A38-C2994D32AAAE</key>
+		<string>ssh://github.com/garnett/SwiftyJSON.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SwiftyJSON.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E0A160A5-C602-42DC-8A38-C2994D32AAAE</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/garnett/SwiftyJSON.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E0A160A5-C602-42DC-8A38-C2994D32AAAE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E0A160A5-C602-42DC-8A38-C2994D32AAAE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SwiftyJSON</string>
+		</dict>
+	</array>
+</dict>
+</plist>

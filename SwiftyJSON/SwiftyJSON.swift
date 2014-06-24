@@ -8,56 +8,7 @@
 
 import Foundation
 
-func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
-    switch lhs {
-    case .JNumber(let lvalue):
-        switch rhs {
-        case .JNumber(let rvalue):
-            return rvalue == lvalue
-        default:
-            return false
-        }
-    case .JString(let lvalue):
-        switch rhs {
-        case .JString(let rvalue):
-            return rvalue == lvalue
-        default:
-            return false
-        }
-    case .JBool(let lvalue):
-        switch rhs {
-        case .JBool(let rvalue):
-            return rvalue == lvalue
-        default:
-            return false
-        }
-    case .JNull:
-        switch rhs {
-        case .JNull:
-            return true
-        default:
-            return false
-        }
-    case .JArray(let lvalue):
-        switch rhs {
-        case .JArray(let rvalue):
-            return rvalue == lvalue
-        default:
-            return false
-        }
-    case .JObject(let lvalue):
-        switch rhs {
-        case .JObject(let rvalue):
-            return rvalue == lvalue
-        default:
-            return false
-        }
-    default:
-        return false
-    }
-}
-
-enum JSONValue: LogicValue, Equatable, Printable {
+enum JSONValue: Printable {
 
     case JNumber(Double)
     case JString(String)
@@ -198,63 +149,58 @@ enum JSONValue: LogicValue, Equatable, Printable {
             }
         }
     }
+}
+
+extension JSONValue: Printable {
+    var description: String {
+        return _printableString("")
+    }
     
-    func getLogicValue() -> Bool {
-        switch self {
-        case .JInvalid:
-            return false
-        default:
-            return true
+    var _rawJSONString: String {
+    switch self {
+    case .JNumber(let value):
+        return "\(value)"
+    case .JBool(let value):
+        return "\(value)"
+    case .JString(let value):
+        let jsonAbleString = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
+        return "\"\(jsonAbleString)\""
+    case .JNull:
+        return "null"
+    case .JArray(let array):
+        var arrayString = ""
+        for (index, value) in enumerate(array) {
+            if index != array.count - 1 {
+                arrayString += "\(value.description),"
+            }else{
+                arrayString += "\(value.description)"
+            }
+        }
+        return "[\(arrayString)]"
+    case .JObject(let object):
+        var objectString = ""
+        var (index, count) = (0, object.count)
+        for (key, value) in object {
+            if index != count - 1 {
+                objectString += "\"\(key)\":\(value.description),"
+            } else {
+                objectString += "\"\(key)\":\(value.description)"
+            }
+            index += 1
+        }
+        return "[\(objectString)]"
+    case .JInvalid:
+        return "INVALID_JSON_VALUE"
         }
     }
     
-    var rawJSONString: String {
-        switch self {
-        case .JNumber(let value):
-            return "\(value)"
-        case .JBool(let value):
-            return "\(value)"
-        case .JString(let value):
-            let jsonAbleString = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
-            return "\"\(jsonAbleString)\""
-        case .JNull:
-            return "null"
-        case .JArray(let array):
-            var arrayString = "["
-            for (index, value) in enumerate(array) {
-                if index != array.endIndex {
-                    arrayString += "\(value.description),"
-                }else{
-                    arrayString += "\(value.description)"
-                }
-            }
-            arrayString += "]"
-            return arrayString
-        case .JObject(let object):
-            var objectString = "{"
-            var (index, count) = (0, object.count)
-            for (key, value) in object{
-                if index != count - 1 {
-                    objectString += "\"\(key)\":\(value.description),"
-                } else {
-                    objectString += "\"\(key)\":\(value.description)"
-                }
-                index += 1
-            }
-            objectString += "}"
-            return objectString
-        case .JInvalid:
-            return "INVALID_JSON_VALUE"
-        }
-    }
-    
-    func printableString(indent: String) -> String {
+    func _printableString(indent: String) -> String {
         switch self {
         case .JObject(let object):
             var objectString = "{\n"
             var (index, count) = (0, object.count)
             for (key, value) in object {
-                let valueString = value.printableString(indent + "  ")
+                let valueString = value._printableString(indent + "  ")
                 if index != count - 1{
                     objectString += "\(indent)  \"\(key)\":\(valueString),\n"
                 } else {
@@ -267,8 +213,8 @@ enum JSONValue: LogicValue, Equatable, Printable {
         case .JArray(let array):
             var arrayString = "[\n"
             for (index, value) in enumerate(array) {
-                let valueString = value.printableString(indent + "  ")
-                if index != array.count - 1{
+                let valueString = value._printableString(indent + "  ")
+                if index != array.count - 1 {
                     arrayString += "\(indent)  \(valueString),\n"
                 }else{
                     arrayString += "\(indent)  \(valueString)\n"
@@ -277,11 +223,72 @@ enum JSONValue: LogicValue, Equatable, Printable {
             arrayString += "\(indent)]"
             return arrayString
         default:
-            return self.rawJSONString
+            return _rawJSONString
         }
     }
+
+}
+
+extension JSONValue: LogicValue {
+    func getLogicValue() -> Bool {
+        switch self {
+        case .JInvalid:
+            return false
+        default:
+            return true
+        }
+    }
+}
+
+extension JSONValue : Equatable {
     
-    var description: String {
-        return self.printableString("")
+}
+
+func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+    switch lhs {
+    case .JNumber(let lvalue):
+        switch rhs {
+        case .JNumber(let rvalue):
+            return rvalue == lvalue
+        default:
+            return false
+        }
+    case .JString(let lvalue):
+        switch rhs {
+        case .JString(let rvalue):
+            return rvalue == lvalue
+        default:
+            return false
+        }
+    case .JBool(let lvalue):
+        switch rhs {
+        case .JBool(let rvalue):
+            return rvalue == lvalue
+        default:
+            return false
+        }
+    case .JNull:
+        switch rhs {
+        case .JNull:
+            return true
+        default:
+            return false
+        }
+    case .JArray(let lvalue):
+        switch rhs {
+        case .JArray(let rvalue):
+            return rvalue == lvalue
+        default:
+            return false
+        }
+    case .JObject(let lvalue):
+        switch rhs {
+        case .JObject(let rvalue):
+            return rvalue == lvalue
+        default:
+            return false
+        }
+    default:
+        return false
     }
 }

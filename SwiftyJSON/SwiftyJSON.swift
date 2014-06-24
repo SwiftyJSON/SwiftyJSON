@@ -171,9 +171,9 @@ extension JSONValue: Printable {
         var arrayString = ""
         for (index, value) in enumerate(array) {
             if index != array.count - 1 {
-                arrayString += "\(value.description),"
+                arrayString += "\(value),"
             }else{
-                arrayString += "\(value.description)"
+                arrayString += "\(value)"
             }
         }
         return "[\(arrayString)]"
@@ -182,9 +182,9 @@ extension JSONValue: Printable {
         var (index, count) = (0, object.count)
         for (key, value) in object {
             if index != count - 1 {
-                objectString += "\"\(key)\":\(value.description),"
+                objectString += "\"\(key)\":\(value),"
             } else {
-                objectString += "\"\(key)\":\(value.description)"
+                objectString += "\"\(key)\":\(value)"
             }
             index += 1
         }

@@ -34,7 +34,7 @@ enum JSONValue: Printable {
             return nil
         }
     }
-    var bool:Bool? {
+    var bool: Bool? {
         switch self {
         case .JBool(let value):
             return value
@@ -42,7 +42,7 @@ enum JSONValue: Printable {
             return nil
         }
     }
-    var array:Array<JSONValue>? {
+    var array: Array<JSONValue>? {
         switch self {
         case .JArray(let value):
             return value
@@ -50,7 +50,7 @@ enum JSONValue: Printable {
             return nil
         }
     }
-    var object:Dictionary<String, JSONValue>? {
+    var object: Dictionary<String, JSONValue>? {
         switch self {
         case .JObject(let value):
             return value
@@ -198,10 +198,10 @@ extension JSONValue: Printable {
         switch self {
         case .JObject(let object):
             var objectString = "{\n"
-            var (index, count) = (0, object.count)
+            var index = 0
             for (key, value) in object {
                 let valueString = value._printableString(indent + "  ")
-                if index != count - 1{
+                if index != object.count - 1 {
                     objectString += "\(indent)  \"\(key)\":\(valueString),\n"
                 } else {
                     objectString += "\(indent)  \"\(key)\":\(valueString)\n"

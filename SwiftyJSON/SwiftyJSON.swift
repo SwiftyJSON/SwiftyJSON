@@ -81,10 +81,10 @@ enum JSONValue: Printable {
 //        }
 //    }
     
-    init (_ rawObject:AnyObject) {
+    init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSData:
-            if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: NSJSONReadingOptions.MutableContainers, error: nil){
+            if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: nil, error: nil) {
                 self = JSONValue(jsonObject)
             } else {
                 self = JSONValue.JInvalid

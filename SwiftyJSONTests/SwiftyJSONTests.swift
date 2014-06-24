@@ -56,7 +56,7 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual(falseJSON.bool!, false, "Wrong unpacked value")
         
         let trueJSON = JSONValue(NSNumber(bool: true))
-        XCTAssertEqual(falseJSON.bool!, true, "Wrong unpacked value")
+        XCTAssertEqual(trueJSON.bool!, true, "Wrong unpacked value")
     }
     
     func testJSONArray() {

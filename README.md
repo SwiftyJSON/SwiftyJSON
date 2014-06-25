@@ -92,8 +92,8 @@ let json = JSONValue(jsonObject)
 switch json["user_id"]{
 case .JString(let stringValue):
     let id = stringValue.toInt()
-case .JNumber(let doubleValue):
-    let id = Int(doubleValue)
+case .JNumber(let numberValue):
+    let id = numberValue.integerValue
 default:
     println("ooops!!! JSON Data is Unexpected or Broken")
 

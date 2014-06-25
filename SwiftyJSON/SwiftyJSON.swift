@@ -1,16 +1,30 @@
+//  SwiftyJSON.swift
 //
-//  SwiftJSON.swift
-//  SwiftJSON
+//  Copyright (c) 2014年 Ruoyu Fu, Denis Lebedev.
 //
-//  Created by Ruoyu Fu on 14-6-16.
-//  Copyright (c) 2014年 Ruoyu Fu. All rights reserved.
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
 //
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 
 enum JSONValue: Printable {
 
-    case JNumber(Double)
+    case JNumber(NSNumber)
     case JString(String)
     case JBool(Bool)
     case JNull
@@ -26,7 +40,8 @@ enum JSONValue: Printable {
             return nil
         }
     }
-    var number: Double? {
+    
+    var number: NSNumber? {
         switch self {
         case .JNumber(let value):
             return value
@@ -34,6 +49,25 @@ enum JSONValue: Printable {
             return nil
         }
     }
+    
+    var double: Double? {
+        switch self {
+        case .JNumber(let value):
+            return value.doubleValue
+        default:
+            return nil
+        }
+    }
+    
+    var integer: Int? {
+        switch self {
+        case .JNumber(let value):
+            return value.integerValue
+        default:
+            return nil
+        }
+    }
+    
     var bool: Bool? {
         switch self {
         case .JBool(let value):
@@ -59,28 +93,6 @@ enum JSONValue: Printable {
         }
     }
     
-//    init(_ rawValue:Any){
-//        
-//        switch rawValue{
-//        case let value as Int:
-//            self = .JNumber(Double(value))
-//        case let value as Double:
-//            self = .JNumber(value)
-//        case let value as Bool:
-//            self = .JBool(value)
-//        case let value as String:
-//            self = .JString(value)
-//        case let value as Array<JSONValue>:
-//            self = .JArray(value)
-//        case let value as Dictionary<String,JSONValue>:
-//            self = .JObject(value)
-//        case let value as JSONValue:
-//            self = value
-//        default:
-//            self = .JInvalid
-//        }
-//    }
-    
     init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSData:
@@ -94,7 +106,7 @@ enum JSONValue: Printable {
                 self = .JBool(value.boolValue)
                 return
             }
-            self = .JNumber(value.doubleValue)
+            self = .JNumber(value)
         case let value as NSString:
             self = .JString(value)
         case let value as NSNull:

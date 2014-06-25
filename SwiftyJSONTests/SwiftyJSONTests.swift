@@ -77,9 +77,14 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual(JSON["name"].string!, "Foo", "Wrong unpacked value")
     }
     
-    func testPrettyPrintNumber() {
-        let JSON = JSONValue(5)
-        XCTAssertEqual("5.0", JSON.description, "Wrong pretty value")
+    func testPrettyPrintIntegerNumber() {
+        let JSON = JSONValue(5.0)
+        XCTAssertEqual("5", JSON.description, "Wrong pretty value")
+    }
+    
+    func testPrettyPrintFloatNumber() {
+        let JSON = JSONValue(5.1)
+        XCTAssertEqual("5.1", JSON.description, "Wrong pretty value")
     }
     
     func testPrettyPrintBool() {

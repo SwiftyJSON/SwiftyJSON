@@ -19,3 +19,4 @@ DerivedData
 
 #CocoaPods
 Pods
+*.xcscheme

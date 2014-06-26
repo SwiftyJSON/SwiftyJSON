@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		177C1FC4195C45FB0082AF3B /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4FEFF719575C2600351305 /* SwiftyJSON.swift */; };
+		177C1FC5195C45FC0082AF3B /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4FEFF719575C2600351305 /* SwiftyJSON.swift */; };
 		2E4FEFE119575BE100351305 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2E4FEFE719575BE100351305 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */; };
 		2E4FEFF819575C2600351305 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4FEFF719575C2600351305 /* SwiftyJSON.swift */; };
@@ -324,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E4FEFFB19575C3200351305 /* SwiftyJSONTests.swift in Sources */,
+				177C1FC4195C45FB0082AF3B /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E4FF01D19575D2D00351305 /* SwiftyJSONTests.swift in Sources */,
+				177C1FC5195C45FC0082AF3B /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +635,7 @@
 				2E4FF01719575CE600351305 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2E4FF01819575CE600351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON-OSXTests" */ = {
 			isa = XCConfigurationList;
@@ -639,6 +644,7 @@
 				2E4FF01A19575CE600351305 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

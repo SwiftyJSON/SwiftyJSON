@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import SwiftyJSON
 
 class SwiftyJSONTests: XCTestCase {
     
@@ -18,9 +17,19 @@ class SwiftyJSONTests: XCTestCase {
         super.setUp()
     }
     
+    func testJSONValueDoesInitWithDictionaryLiteral() {
+        let json = JSONValue(["Key": ["SubKey":"Value"]])
+        XCTAssertEqual(json["Key"]["SubKey"].string!, "Value", "Wrong unpacked value")
+    }
+    
     func testJSONValueDoesInitWithValidData() {
         let json = JSONValue(validJSONData)
-        XCTAssert(json != JSONValue.JInvalid, "Pass")
+        switch json{
+        case .JInvalid:
+            XCTFail()
+        default:
+            "Pass"
+        }
     }
 
     func testJSONValueDoesProduceValidValueWithCorrectKeyPath() {

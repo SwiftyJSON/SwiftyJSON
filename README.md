@@ -103,8 +103,7 @@ default:
 ```swift
 let json = JSONValue(dataFromNetworking)["some_key"]["some_wrong_key"]["wrong_name"]
 if json{
-  //JSONValue it self confirm to Protocol "Logic"
-  //Calm down, take it easy
+  //JSONValue it self confirm to Protocol "LogicValue", with JSONValue.JInvalid produce false and others produce true
 }else{
   println(json)
   //> JSON Keypath Error: Incorrect Keypath "some_wrong_key/wrong_name"

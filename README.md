@@ -98,3 +98,20 @@ default:
     println("ooops!!! JSON Data is Unexpected or Broken")
 
 ```
+
+##Error Handling
+```swift
+let json = JSONValue(dataFromNetworking)["some_key"]["some_wrong_key"]["wrong_name"]
+if json{
+  //JSONValue it self confirm to Protocol "Logic"
+  //Calm down, take it easy
+}else{
+  println(json)
+  //> JSON Keypath Error: Incorrect Keypath "some_wrong_key/wrong_name"
+  //It always tells you where your key starts went wrong
+  switch json{
+  case .JInvalid(let error):
+    //An NSError containing detailed error information 
+  }
+}
+```

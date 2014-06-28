@@ -114,3 +114,7 @@ if json{
   }
 }
 ```
+##Integration
+Since CocoaPods is not fully supported for Swift yet. To use this library in your project you should:
+1. for Projects just drag SwiftyJSON.swift to the project tree
+2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett

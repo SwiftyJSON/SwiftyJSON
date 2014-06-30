@@ -1,10 +1,10 @@
 #SwiftyJSON
 SwiftyJSON makes it easy to deal with JSON data in Swift.
-##Why The Typical JSON Handling in Swift is NOT Good?
-Swift is very strict about types, It's good while explicit typing left us little chance to make mistakes. 
-But while dealing with things that naturally implicit about types such as JSON, It's painful.
+##Why is the typical JSON handling in Swift NOT good?
+Swift is very strict about types, it's good while explicit typing left us little chance to make mistakes. 
+But while dealing with things that naturally implicit about types such as JSON, it's painful.
 Take the Twitter API for example:
-Say we want to retrive a user's "name" value of some tweet in Swift,according to twitter's api:https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
+Say we want to retrive a user's "name" value of some tweet in Swift, according to Twitter's API: https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
 
 ```JSON
 [
@@ -53,9 +53,9 @@ if let statusesArray = jsonObject as? NSArray{
 }
 
 ```
-It's Not Good
+It's not good.
 
-Even if we use Optional Chainning would also cause a mess:
+Even if we use optional chaining, it would also cause a mess:
 
 ```swift
 
@@ -65,7 +65,7 @@ if let userName = (((jsonObject as? NSArray)?[0] as? NSDictionary)?["user"] as? 
 }
 
 ```
-An unreadable mess for something should be really simple!
+An unreadable mess for something like this should really be simple!
 
 ##SwiftyJSON
 
@@ -78,7 +78,7 @@ if let userName = json[0]["user"]["name"].string{
 }
 ```
 
-And don't worry about the Optional Wrapping Thing, it's done for you automaticly
+And don't worry about the Optional Wrapping thing, it's done for you automatically
 
 ```swift
 let json = JSONValue(dataFromNetworking)
@@ -115,6 +115,7 @@ if json{
 }
 ```
 ##Integration
-Since CocoaPods is not fully supported for Swift yet. To use this library in your project you should:
+CocoaPods is not fully supported for Swift yet, to use this library in your project you should:  
+
 1. for Projects just drag SwiftyJSON.swift to the project tree
 2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett

@@ -3,8 +3,8 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 ##Why is the typical JSON handling in Swift NOT good?
 Swift is very strict about types, it's good while explicit typing left us little chance to make mistakes. 
 But while dealing with things that naturally implicit about types such as JSON, it's painful.
-Take the Twitter API for example:
-Say we want to retrive a user's "name" value of some tweet in Swift, according to Twitter's API: https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
+
+Take the Twitter API for example: say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline)
 
 ```JSON
 [

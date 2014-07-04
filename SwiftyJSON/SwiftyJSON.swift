@@ -43,7 +43,15 @@ enum JSONValue {
             return nil
         }
     }
-    
+  
+    var url: NSURL? {
+        switch self {
+        case .JString(let value):
+            return NSURL(string: value)
+        default:
+            return nil
+        }
+    }
     var number: NSNumber? {
         switch self {
         case .JNumber(let value):

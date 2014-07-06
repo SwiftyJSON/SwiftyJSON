@@ -213,7 +213,7 @@ extension JSONValue: Printable {
         }
     }
     
-    var _rawJSONString: String {
+    var rawJSONString: String {
         switch self {
         case .JNumber(let value):
             return "\(value)"
@@ -228,9 +228,9 @@ extension JSONValue: Printable {
             var arrayString = ""
             for (index, value) in enumerate(array) {
                 if index != array.count - 1 {
-                    arrayString += "\(value),"
+                    arrayString += "\(value.rawJSONString),"
                 }else{
-                    arrayString += "\(value)"
+                    arrayString += "\(value.rawJSONString)"
                 }
             }
             return "[\(arrayString)]"
@@ -239,9 +239,9 @@ extension JSONValue: Printable {
             var (index, count) = (0, object.count)
             for (key, value) in object {
                 if index != count - 1 {
-                    objectString += "\"\(key)\":\(value),"
+                    objectString += "\"\(key)\":\(value.rawJSONString),"
                 } else {
-                    objectString += "\"\(key)\":\(value)"
+                    objectString += "\"\(key)\":\(value.rawJSONString)"
                 }
                 index += 1
             }
@@ -280,7 +280,7 @@ extension JSONValue: Printable {
             arrayString += "\(indent)]"
             return arrayString
         default:
-            return _rawJSONString
+            return rawJSONString
         }
     }
 }

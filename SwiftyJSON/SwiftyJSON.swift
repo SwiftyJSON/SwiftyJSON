@@ -34,7 +34,6 @@ enum JSONValue {
     case JObject(Dictionary<String,JSONValue>)
     case JInvalid(NSError)
 
-
     var string: String? {
         switch self {
         case .JString(let value):
@@ -57,6 +56,8 @@ enum JSONValue {
         switch self {
         case .JNumber(let value):
             return value.doubleValue
+        case .JString(let value):
+            return (value as NSString).doubleValue
         default:
             return nil
         }
@@ -64,8 +65,12 @@ enum JSONValue {
     
     var integer: Int? {
         switch self {
+        case .JBool(let value):
+            return Int(value)
         case .JNumber(let value):
             return value.integerValue
+        case .JString(let value):
+            return (value as NSString).integerValue
         default:
             return nil
         }
@@ -75,10 +80,15 @@ enum JSONValue {
         switch self {
         case .JBool(let value):
             return value
+        case .JNumber(let value):
+            return value.boolValue
+        case .JString(let value):
+            return (value as NSString).boolValue
         default:
             return nil
         }
     }
+    
     var array: Array<JSONValue>? {
         switch self {
         case .JArray(let value):
@@ -87,9 +97,34 @@ enum JSONValue {
             return nil
         }
     }
+    
     var object: Dictionary<String, JSONValue>? {
         switch self {
         case .JObject(let value):
+            return value
+        default:
+            return nil
+        }
+    }
+    
+    var first: JSONValue? {
+        switch self {
+        case .JArray(let jsonArray) where jsonArray.count > 0:
+            return jsonArray[0]
+        case .JObject(let jsonDictionary) where jsonDictionary.count > 0 :
+            let (_, value) = jsonDictionary[jsonDictionary.startIndex]
+            return value
+        default:
+            return nil
+        }
+    }
+    
+    var last: JSONValue? {
+        switch self {
+        case .JArray(let jsonArray) where jsonArray.count > 0:
+            return jsonArray[jsonArray.count-1]
+        case .JObject(let jsonDictionary) where jsonDictionary.count > 0 :
+            let (_, value) = jsonDictionary[jsonDictionary.endIndex]
             return value
         default:
             return nil

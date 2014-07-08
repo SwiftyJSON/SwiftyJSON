@@ -36,13 +36,15 @@ class SwiftyJSONTests: XCTestCase {
         let json = JSONValue(validJSONData)
         
         let stringValue = json["title"].string
+        let urlValue = json["url"].url
         let numberValue = json["id"].number
         let boolValue = json["user"]["site_admin"].bool
         let nullValue = json["closed_by"]
         let arrayValue = json["labels"].array
         let objectValue = json["user"].object
-        
+      
         XCTAssert(stringValue == "How do I verify SwiftyJSON workS?")
+        XCTAssert(urlValue == NSURL(string: "https://api.github.com/repos/lingoer/SwiftyJSON/issues/2"))
         XCTAssert(numberValue == 36170434)
         XCTAssert(boolValue == false)
         XCTAssert(nullValue == JSONValue.JNull)
@@ -54,7 +56,12 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("string")
         XCTAssertEqual(JSON.string!, "string", "Wrong unpacked value")
     }
-    
+  
+    func testJSONURL() {
+        let JSON = JSONValue("http://example.com/")
+        XCTAssertEqual(JSON.url!, NSURL(string: "http://example.com/"), "Wrong unpacked value")
+    }
+  
     func testJSONNumber() {
         let JSON = JSONValue(5)
         XCTAssertEqual(JSON.number!, 5, "Wrong unpacked value")
@@ -125,6 +132,9 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual("\"Hi\"", JSON.description, "Wrong pretty value")
     }
     
-    
-    
+    func testPrettyPrintURL() {
+        let JSON = JSONValue("http://example.com/")
+        XCTAssertEqual("\"http://example.com/\"", JSON.description, "Wrong pretty value")
+    }
+  
 }

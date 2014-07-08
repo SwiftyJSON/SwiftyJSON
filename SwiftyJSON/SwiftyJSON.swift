@@ -166,7 +166,7 @@ enum JSONValue {
         case let value as NSNull:
             self = .JNull
         case let value as NSArray:
-            var jsonValues = JSONValue[]()
+            var jsonValues = [JSONValue]()
             for possibleJsonValue : AnyObject in value {
                 let jsonValue = JSONValue(possibleJsonValue)
                 if  jsonValue {
@@ -197,8 +197,8 @@ enum JSONValue {
                 return jsonArray[index]
             case .JInvalid(let error):
                 if let userInfo = error.userInfo{
-                    if let breadcrumb = userInfo["JSONErrorBreadCrumbKey"] as? String{
-                        let newBreadCrumb = breadcrumb + "/\(index)"
+                    if let breadcrumb = userInfo["JSONErrorBreadCrumbKey"] as? NSString{
+                        let newBreadCrumb = (breadcrumb as String) + "/\(index)"
                         let newUserInfo = [NSLocalizedDescriptionKey: "JSON Keypath Error: Incorrect Keypath \"\(newBreadCrumb)\"",
                                            "JSONErrorBreadCrumbKey": newBreadCrumb]
                         return JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1002, userInfo: newUserInfo))
@@ -228,8 +228,8 @@ enum JSONValue {
                 }
             case .JInvalid(let error):
                 if let userInfo = error.userInfo{
-                    if let breadcrumb = userInfo["JSONErrorBreadCrumbKey"] as? String{
-                        let newBreadCrumb = breadcrumb + "/\(key)"
+                    if let breadcrumb = userInfo["JSONErrorBreadCrumbKey"] as? NSString{
+                        let newBreadCrumb = (breadcrumb as String) + "/\(key)"
                         let newUserInfo = [NSLocalizedDescriptionKey: "JSON Keypath Error: Incorrect Keypath \"\(newBreadCrumb)\"",
                             "JSONErrorBreadCrumbKey": newBreadCrumb]
                         return JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1002, userInfo: newUserInfo))

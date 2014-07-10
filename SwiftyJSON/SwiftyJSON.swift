@@ -288,11 +288,11 @@ extension JSONValue: Printable {
                 }
                 index += 1
             }
-            return "[\(objectString)]"
+            return "{\(objectString)}"
         case .JInvalid:
             return "INVALID_JSON_VALUE"
             }
-    }
+  }
     
     func _printableString(indent: String) -> String {
         switch self {

@@ -16,12 +16,17 @@ class SwiftyJSONTests: XCTestCase {
         validJSONData = NSData(contentsOfFile : NSBundle(forClass:SwiftyJSONTests.self).pathForResource("Valid", ofType: "JSON"))
         super.setUp()
     }
+
+    func testJSONValueDoesInitWithStringLiteral() {
+        let json = JSONValue("{\"Key\": {\"SubKey\":\"Value\"}}")
+        XCTAssertEqual(json["Key"]["SubKey"].string!, "Value", "Wrong unpacked value")
+    }
     
     func testJSONValueDoesInitWithDictionaryLiteral() {
         let json = JSONValue(["Key": ["SubKey":"Value"]])
         XCTAssertEqual(json["Key"]["SubKey"].string!, "Value", "Wrong unpacked value")
     }
-    
+
     func testJSONValueDoesInitWithValidData() {
         let json = JSONValue(validJSONData)
         switch json{
@@ -136,5 +141,4 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("http://example.com/")
         XCTAssertEqual("\"http://example.com/\"", JSON.description, "Wrong pretty value")
     }
-  
 }

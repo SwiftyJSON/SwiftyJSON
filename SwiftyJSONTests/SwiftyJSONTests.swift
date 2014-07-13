@@ -61,6 +61,15 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("http://example.com/")
         XCTAssertEqual(JSON.url!, NSURL(string: "http://example.com/"), "Wrong unpacked value")
     }
+    
+    func testJSONURLPercentEscapes() {
+        let emDash = "\u2014"
+        let urlString = "http://examble.com/unencoded" + emDash + "string"
+        let encodedUrlString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        
+        let JSON = JSONValue(urlString)
+        XCTAssertEqual(JSON.url!, NSURL(string: encodedUrlString), "Wrong unpacked value")
+    }
   
     func testJSONNumber() {
         let JSON = JSONValue(5)

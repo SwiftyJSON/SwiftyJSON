@@ -166,7 +166,7 @@ enum JSONValue {
         case let value as NSNull:
             self = .JNull
         case let value as NSArray:
-            var jsonValues = [JSONValue]()
+            var jsonValues = JSONValue[]()
             for possibleJsonValue : AnyObject in value {
                 let jsonValue = JSONValue(possibleJsonValue)
                 if  jsonValue {

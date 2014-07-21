@@ -23,7 +23,7 @@
 import Foundation
 
 
-enum JSONValue {
+public enum JSONValue {
 
     
     case JNumber(NSNumber)
@@ -34,7 +34,7 @@ enum JSONValue {
     case JObject(Dictionary<String,JSONValue>)
     case JInvalid(NSError)
 
-    var string: String? {
+    public var string: String? {
         switch self {
         case .JString(let value):
             return value
@@ -43,7 +43,7 @@ enum JSONValue {
         }
     }
   
-    var url: NSURL? {
+    public var url: NSURL? {
         switch self {
         case .JString(let value):
             return NSURL(string: value)
@@ -51,7 +51,8 @@ enum JSONValue {
             return nil
         }
     }
-    var number: NSNumber? {
+    
+    public var number: NSNumber? {
         switch self {
         case .JNumber(let value):
             return value
@@ -60,7 +61,7 @@ enum JSONValue {
         }
     }
     
-    var double: Double? {
+    public var double: Double? {
         switch self {
         case .JNumber(let value):
             return value.doubleValue
@@ -71,7 +72,7 @@ enum JSONValue {
         }
     }
     
-    var integer: Int? {
+    public var integer: Int? {
         switch self {
         case .JBool(let value):
             return Int(value)
@@ -84,7 +85,7 @@ enum JSONValue {
         }
     }
     
-    var bool: Bool? {
+    public var bool: Bool? {
         switch self {
         case .JBool(let value):
             return value
@@ -97,7 +98,7 @@ enum JSONValue {
         }
     }
     
-    var array: Array<JSONValue>? {
+    public var array: Array<JSONValue>? {
         switch self {
         case .JArray(let value):
             return value
@@ -106,7 +107,7 @@ enum JSONValue {
         }
     }
     
-    var object: Dictionary<String, JSONValue>? {
+    public var object: Dictionary<String, JSONValue>? {
         switch self {
         case .JObject(let value):
             return value
@@ -115,7 +116,7 @@ enum JSONValue {
         }
     }
     
-    var first: JSONValue? {
+    public var first: JSONValue? {
         switch self {
         case .JArray(let jsonArray) where jsonArray.count > 0:
             return jsonArray[0]
@@ -127,7 +128,7 @@ enum JSONValue {
         }
     }
     
-    var last: JSONValue? {
+    public var last: JSONValue? {
         switch self {
         case .JArray(let jsonArray) where jsonArray.count > 0:
             return jsonArray[jsonArray.count-1]
@@ -139,7 +140,7 @@ enum JSONValue {
         }
     }
     
-    init (_ data: NSData!){
+    public init (_ data: NSData!){
         if let value = data{
             var error:NSError? = nil
             if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
@@ -153,7 +154,7 @@ enum JSONValue {
 
     }
     
-    init (_ rawObject: AnyObject) {
+    public init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSNumber:
             if String.fromCString(value.objCType) == "c" {
@@ -190,7 +191,7 @@ enum JSONValue {
         }
     }
 
-    subscript(index: Int) -> JSONValue {
+    public subscript(index: Int) -> JSONValue {
         get {
             switch self {
             case .JArray(let jsonArray) where jsonArray.count > index:
@@ -214,7 +215,7 @@ enum JSONValue {
         }
     }
     
-    subscript(key: String) -> JSONValue {
+    public subscript(key: String) -> JSONValue {
         get {
             switch self {
             case .JObject(let jsonDictionary):
@@ -247,7 +248,7 @@ enum JSONValue {
 }
 
 extension JSONValue: Printable {
-    var description: String {
+    public var description: String {
         switch self {
         case .JInvalid(let error):
             return error.localizedDescription
@@ -329,7 +330,7 @@ extension JSONValue: Printable {
 }
 
 extension JSONValue: LogicValue {
-    func getLogicValue() -> Bool {
+    public func getLogicValue() -> Bool {
         switch self {
         case .JInvalid:
             return false
@@ -343,7 +344,7 @@ extension JSONValue : Equatable {
     
 }
 
-func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     switch lhs {
     case .JNumber(let lvalue):
         switch rhs {

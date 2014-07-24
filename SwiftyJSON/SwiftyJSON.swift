@@ -22,8 +22,8 @@
 
 import Foundation
 
-enum JSONValue: Printable {
-
+public enum JSONValue: Printable {
+    
     case JNumber(NSNumber)
     case JString(String)
     case JBool(Bool)
@@ -32,68 +32,68 @@ enum JSONValue: Printable {
     case JObject(Dictionary<String,JSONValue>)
     case JInvalid
     
-    var string: String? {
-        switch self {
-        case .JString(let value):
-            return value
-        default:
-            return nil
+    public var string: String? {
+    switch self {
+    case .JString(let value):
+        return value
+    default:
+        return nil
         }
     }
     
-    var number: NSNumber? {
-        switch self {
-        case .JNumber(let value):
-            return value
-        default:
-            return nil
+    public var number: NSNumber? {
+    switch self {
+    case .JNumber(let value):
+        return value
+    default:
+        return nil
         }
     }
     
-    var double: Double? {
-        switch self {
-        case .JNumber(let value):
-            return value.doubleValue
-        default:
-            return nil
+    public var double: Double? {
+    switch self {
+    case .JNumber(let value):
+        return value.doubleValue
+    default:
+        return nil
         }
     }
     
-    var integer: Int? {
-        switch self {
-        case .JNumber(let value):
-            return value.integerValue
-        default:
-            return nil
+    public var integer: Int? {
+    switch self {
+    case .JNumber(let value):
+        return value.integerValue
+    default:
+        return nil
         }
     }
     
-    var bool: Bool? {
-        switch self {
-        case .JBool(let value):
-            return value
-        default:
-            return nil
+    public var bool: Bool? {
+    switch self {
+    case .JBool(let value):
+        return value
+    default:
+        return nil
         }
     }
-    var array: Array<JSONValue>? {
-        switch self {
-        case .JArray(let value):
-            return value
-        default:
-            return nil
+    public var array: Array<JSONValue>? {
+    switch self {
+    case .JArray(let value):
+        return value
+    default:
+        return nil
         }
     }
-    var object: Dictionary<String, JSONValue>? {
-        switch self {
-        case .JObject(let value):
-            return value
-        default:
-            return nil
+    public var object: Dictionary<String, JSONValue>? {
+    switch self {
+    case .JObject(let value):
+        return value
+    default:
+        return nil
         }
     }
     
-    init (_ rawObject: AnyObject) {
+    public init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSData:
             if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(value, options: nil, error: nil) {
@@ -112,7 +112,7 @@ enum JSONValue: Printable {
         case let value as NSNull:
             self = .JNull
         case let value as NSArray:
-            var jsonValues = JSONValue[]()
+            var jsonValues = [JSONValue]()
             for possibleJsonValue : AnyObject in value {
                 let jsonValue = JSONValue(possibleJsonValue)
                 if  jsonValue {
@@ -135,8 +135,8 @@ enum JSONValue: Printable {
             self = .JInvalid
         }
     }
-
-    subscript(index: Int) -> JSONValue {
+    
+    public subscript(index: Int) -> JSONValue {
         get {
             switch self {
             case .JArray(let jsonArray) where jsonArray.count > index:
@@ -147,7 +147,7 @@ enum JSONValue: Printable {
         }
     }
     
-    subscript(key: String) -> JSONValue {
+    public subscript(key: String) -> JSONValue {
         get {
             switch self {
             case .JObject(let jsonDictionary):
@@ -164,8 +164,9 @@ enum JSONValue: Printable {
 }
 
 extension JSONValue: Printable {
-    var description: String {
-        return _printableString("")
+    
+    public var description: String {
+    return _printableString("")
     }
     
     var _rawJSONString: String {
@@ -238,11 +239,11 @@ extension JSONValue: Printable {
             return _rawJSONString
         }
     }
-
+    
 }
 
 extension JSONValue: LogicValue {
-    func getLogicValue() -> Bool {
+    public func getLogicValue() -> Bool {
         switch self {
         case .JInvalid:
             return false
@@ -252,11 +253,9 @@ extension JSONValue: LogicValue {
     }
 }
 
-extension JSONValue : Equatable {
-    
-}
+extension JSONValue : Equatable {}
 
-func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     switch lhs {
     case .JNumber(let lvalue):
         switch rhs {

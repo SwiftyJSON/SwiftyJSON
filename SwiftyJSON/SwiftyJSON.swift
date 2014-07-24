@@ -145,7 +145,7 @@ enum JSONValue {
             if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
                 self = JSONValue(jsonObject)
             }else{
-                self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey:"JSON Parser Error: Invalid Raw JSON Data"]))
+                self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey:"JSON Parser Error: Invalid Raw JSON Data", "JSONParserError":error ? error!.localizedDescription : "N/A"]))
             }
         }else{
             self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey:"JSON Init Error: Invalid Value Passed In init()"]))
@@ -190,6 +190,30 @@ enum JSONValue {
         }
     }
 
+    init (_ value: String) {
+        self = .JString(value)
+    }
+
+    init (_ value: Double) {
+        self = .JNumber(value)
+    }
+
+    init (_ value: Int) {
+        self = .JNumber(value)
+    }
+
+    init (_ value: Bool) {
+        self = .JBool(value)
+    }
+
+    init (_ value: [JSONValue] ) {
+        self = .JArray(value)
+    }
+
+    init () {
+        self = .JObject([String : JSONValue]())
+    }
+
     subscript(index: Int) -> JSONValue {
         get {
             switch self {
@@ -210,6 +234,15 @@ enum JSONValue {
                 let newUserInfo = [NSLocalizedDescriptionKey: "JSON Keypath Error: Incorrect Keypath \"\(breadcrumb)\"",
                                     "JSONErrorBreadCrumbKey": breadcrumb]
                 return JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1002, userInfo: newUserInfo))
+            }
+        }
+        set {
+            switch self {
+            case .JArray(var jsonArray):
+                jsonArray[index] = newValue
+                self = .JArray(jsonArray)
+            default:
+                return
             }
         }
     }
@@ -241,6 +274,15 @@ enum JSONValue {
                 let newUserInfo = [NSLocalizedDescriptionKey: "JSON Keypath Error: Incorrect Keypath \"\(breadcrumb)\"",
                     "JSONErrorBreadCrumbKey": breadcrumb]
                 return JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1002, userInfo: newUserInfo))
+            }
+        }
+        set {
+            switch self {
+            case .JObject(var jsonDictionary):
+                jsonDictionary[key] = newValue
+                self = .JObject(jsonDictionary)
+            default:
+                return
             }
         }
     }
@@ -391,3 +433,14 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
         return false
     }
 }
+
+@assignment func += (inout left: JSONValue, right: JSONValue) {
+    switch left {
+    case .JArray(var jsonArray):
+        jsonArray += right
+        left = .JArray(jsonArray)
+    default:
+        return
+    }
+}
+

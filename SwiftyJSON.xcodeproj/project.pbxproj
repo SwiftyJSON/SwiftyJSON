@@ -19,6 +19,7 @@
 		2E4FF01C19575D1100351305 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2E4FF01D19575D2D00351305 /* SwiftyJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4FEFF919575C3200351305 /* SwiftyJSONTests.swift */; };
 		2E4FF01E19575D9400351305 /* Valid.JSON in Resources */ = {isa = PBXBuildFile; fileRef = 2E4FEFFA19575C3200351305 /* Valid.JSON */; };
+		BBD29DF419812D2300F40401 /* Build.JSON in Resources */ = {isa = PBXBuildFile; fileRef = BBD29DF319812D2300F40401 /* Build.JSON */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2E4FEFFA19575C3200351305 /* Valid.JSON */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Valid.JSON; sourceTree = "<group>"; };
 		2E4FF00219575CE600351305 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E4FF00C19575CE600351305 /* SwiftyJSON-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBD29DF319812D2300F40401 /* Build.JSON */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Build.JSON; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				2E4FEFF919575C3200351305 /* SwiftyJSONTests.swift */,
 				2E4FEFFA19575C3200351305 /* Valid.JSON */,
+				BBD29DF319812D2300F40401 /* Build.JSON */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
 			path = SwiftyJSONTests;
@@ -291,6 +294,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD29DF419812D2300F40401 /* Build.JSON in Resources */,
 				2E4FEFFC19575C3200351305 /* Valid.JSON in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

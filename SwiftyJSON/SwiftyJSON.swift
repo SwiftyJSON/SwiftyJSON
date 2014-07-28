@@ -138,21 +138,48 @@ enum JSONValue {
             return nil
         }
     }
-    
-    init (_ data: NSData!){
+
+    private static func initFromNSData(data: NSData?) -> JSONValue {
+
         if let value = data{
             var error:NSError? = nil
-            if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
-                self = JSONValue(jsonObject)
-            }else{
-                self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey:"JSON Parser Error: Invalid Raw JSON Data"]))
+            if let jsonObject : AnyObject = NSJSONSerialization.JSONObjectWithData(
+                data,
+                options: nil,
+                error: &error) {
+                return JSONValue(jsonObject)
+            } else {
+                return JSONValue.JInvalid(
+                    NSError(
+                        domain: "JSONErrorDomain",
+                        code: 1001,
+                        userInfo: [NSLocalizedDescriptionKey
+                                   :"JSON Parser Error: Invalid Raw JSON Data"]))
             }
-        }else{
-            self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey:"JSON Init Error: Invalid Value Passed In init()"]))
+        } else {
+            return JSONValue.JInvalid(NSError(
+                domain: "JSONErrorDomain",
+                code: 1000,
+                userInfo: [NSLocalizedDescriptionKey
+                           :"JSON Init Error: Invalid Value Passed In init()"]))
         }
 
     }
-    
+
+    init (_ data: NSData!) {
+
+        self = JSONValue.initFromNSData(data)
+
+    }
+
+    init (jsonString: String) {
+
+        self = JSONValue.initFromNSData(
+            jsonString.dataUsingEncoding(NSUTF8StringEncoding,
+            allowLossyConversion: false))
+
+    }
+
     init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSNumber:

@@ -394,8 +394,6 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
 
 // MARK: Sequence Protocol
 
-var indexInSequence = 0
-
 extension JSONValue: Sequence {
     
     func generate() -> JSONArrayGenerator {
@@ -406,6 +404,7 @@ extension JSONValue: Sequence {
 struct JSONArrayGenerator: Generator {
     
     let value: JSONValue
+    var indexInSequence = 0
     
     init(value: JSONValue) {
         self.value = value

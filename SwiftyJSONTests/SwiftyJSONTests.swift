@@ -48,8 +48,8 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssert(numberValue == 36170434)
         XCTAssert(boolValue == false)
         XCTAssert(nullValue == JSONValue.JNull)
-        XCTAssert(arrayValue)
-        XCTAssert(objectValue)
+        XCTAssert(arrayValue != nil)
+        XCTAssert(objectValue != nil)
     }
     
     func testJSONString() {

@@ -136,5 +136,24 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("http://example.com/")
         XCTAssertEqual("\"http://example.com/\"", JSON.description, "Wrong pretty value")
     }
-  
+
+    func testJSONBuild() {
+        let path = NSBundle(forClass:SwiftyJSONTests.self).pathForResource("Build", ofType: "JSON")
+        let reference = JSONValue(NSData(contentsOfFile : path))
+        var built = JSONValue()
+        built["article"] = JSONValue("the")
+        if !built["adjectives"] {
+            built["adjectives"] = JSONValue([])
+        }
+        built["adjectives"] += JSONValue("quick")
+        built["adjectives"] += JSONValue("brown")
+        if !built["adjectives"] {
+            XCTAssert(false, "Wrong built logic")
+        }
+        built["noun"] = JSONValue("fox")
+        XCTAssertEqual(reference, built, "NotEqual built JSON")
+        built["adjectives"][1] = JSONValue("orange")
+        XCTAssertNotEqual(reference, built, "Equal built JSON")
+    }
+
 }

@@ -150,9 +150,12 @@ enum JSONValue {
         }else{
             self = JSONValue.JInvalid(NSError(domain: "JSONErrorDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey:"JSON Init Error: Invalid Value Passed In init()"]))
         }
-
     }
-    
+
+    init (_ str: String) {
+      self.init(str.dataUsingEncoding(NSUTF8StringEncoding))
+    }
+
     init (_ rawObject: AnyObject) {
         switch rawObject {
         case let value as NSNumber:

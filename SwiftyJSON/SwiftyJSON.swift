@@ -30,8 +30,8 @@ enum JSONValue {
     case JString(String)
     case JBool(Bool)
     case JNull
-    case JArray(Array<JSONValue>)
-    case JObject(Dictionary<String,JSONValue>)
+    case JArray([JSONValue])
+    case JObject([String :JSONValue])
     case JInvalid(NSError)
 
     var string: String? {
@@ -97,7 +97,7 @@ enum JSONValue {
         }
     }
     
-    var array: Array<JSONValue>? {
+    var array: [JSONValue]? {
         switch self {
         case .JArray(let value):
             return value
@@ -106,7 +106,7 @@ enum JSONValue {
         }
     }
     
-    var object: Dictionary<String, JSONValue>? {
+    var object: [String : JSONValue]? {
         switch self {
         case .JObject(let value):
             return value
@@ -117,9 +117,9 @@ enum JSONValue {
     
     var first: JSONValue? {
         switch self {
-        case .JArray(let jsonArray) where jsonArray.count > 0:
+        case .JArray(let jsonArray) where !jsonArray.isEmpty:
             return jsonArray[0]
-        case .JObject(let jsonDictionary) where jsonDictionary.count > 0 :
+        case .JObject(let jsonDictionary) where !jsonDictionary.isEmpty:
             let (_, value) = jsonDictionary[jsonDictionary.startIndex]
             return value
         default:
@@ -129,9 +129,9 @@ enum JSONValue {
     
     var last: JSONValue? {
         switch self {
-        case .JArray(let jsonArray) where jsonArray.count > 0:
+        case .JArray(let jsonArray) where !jsonArray.isEmpty:
             return jsonArray[jsonArray.count-1]
-        case .JObject(let jsonDictionary) where jsonDictionary.count > 0 :
+        case .JObject(let jsonDictionary) where !jsonDictionary.isEmpty:
             let (_, value) = jsonDictionary[jsonDictionary.endIndex]
             return value
         default:
@@ -175,7 +175,7 @@ enum JSONValue {
             }
             self = .JArray(jsonValues)
         case let value as NSDictionary:
-            var jsonObject = Dictionary<String, JSONValue>()
+            var jsonObject = [String : JSONValue]()
             for (possibleJsonKey : AnyObject, possibleJsonValue : AnyObject) in value {
                 if let key = possibleJsonKey as? NSString {
                     let jsonValue = JSONValue(possibleJsonValue)

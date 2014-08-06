@@ -391,3 +391,40 @@ func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
         return false
     }
 }
+
+// MARK: Sequence Protocol
+
+extension JSONValue: Sequence {
+    
+    func generate() -> JSONArrayGenerator {
+        return JSONArrayGenerator(value: self)
+    }
+}
+
+struct JSONArrayGenerator: Generator {
+    
+    let value: JSONValue
+    var indexInSequence = 0
+    
+    init(value: JSONValue) {
+        self.value = value
+    }
+    
+    mutating func next() -> JSONValue? {
+        switch value {
+        case .JArray(let jsonArray) where !jsonArray.isEmpty:
+            if indexInSequence < jsonArray.count {
+                let element = jsonArray[indexInSequence]
+                indexInSequence++
+                return element
+            } else {
+                indexInSequence = 0
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
+    
+}
+

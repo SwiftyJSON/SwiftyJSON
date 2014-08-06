@@ -136,5 +136,12 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("http://example.com/")
         XCTAssertEqual("\"http://example.com/\"", JSON.description, "Wrong pretty value")
     }
+    
+    func testSequenceForArrayValue() {
+        let JSON = JSONValue([["key1" : "value1"], ["key2" : "value2"], ["key3" : "value3"]])
+        for (index, item) in enumerate(JSON) {
+            XCTAssertEqual(item, JSONValue(["key\(index + 1)" : "value\(index + 1)"]))
+        }
+    }
   
 }

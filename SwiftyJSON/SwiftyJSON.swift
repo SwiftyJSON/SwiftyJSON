@@ -46,7 +46,8 @@ enum JSONValue {
     var url: NSURL? {
         switch self {
         case .JString(let value):
-            return NSURL(string: value)
+            let encoded = value.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            return NSURL(string: encoded)
         default:
             return nil
         }

@@ -99,6 +99,16 @@ default:
 
 ```
 
+You also have the option of initializing a JSONValue object directly
+from a JSON string:
+
+```swift
+let json = JSONValue(jsonString: "[{\"x\": [2,7]}, 0]")
+if let aNumber = json[0]["x"][1].number {
+    println("The number is \(aNumber)")
+}
+```
+
 ##Error Handling
 ```swift
 let json = JSONValue(dataFromNetworking)["some_key"]["some_wrong_key"]["wrong_name"]

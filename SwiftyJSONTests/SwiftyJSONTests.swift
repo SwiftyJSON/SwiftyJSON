@@ -136,5 +136,11 @@ class SwiftyJSONTests: XCTestCase {
         let JSON = JSONValue("http://example.com/")
         XCTAssertEqual("\"http://example.com/\"", JSON.description, "Wrong pretty value")
     }
-  
+
+    func testInitFromJSONString() {
+        let json = JSONValue(jsonString: "[{\"x\": {\"y\": [1, 2, 3]}}, {\"z\": 4}]")
+        let shouldBeTwo = json[0]["x"]["y"][1].number
+        XCTAssertEqual(2, shouldBeTwo!, "Incorrect value from JSON string")
+    }
+
 }

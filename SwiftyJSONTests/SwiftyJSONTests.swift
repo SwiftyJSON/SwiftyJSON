@@ -13,7 +13,7 @@ class SwiftyJSONTests: XCTestCase {
     var validJSONData:NSData!
     
     override func setUp() {
-        validJSONData = NSData(contentsOfFile : NSBundle(forClass:SwiftyJSONTests.self).pathForResource("Valid", ofType: "JSON"))
+        validJSONData = NSData(contentsOfFile : NSBundle(forClass:SwiftyJSONTests.self).pathForResource("Valid", ofType: "JSON")!)
         super.setUp()
     }
     

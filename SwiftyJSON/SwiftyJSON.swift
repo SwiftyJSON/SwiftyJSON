@@ -23,7 +23,7 @@
 import Foundation
 
 
-enum JSONValue {
+public enum JSONValue {
 
     
     case JNumber(NSNumber)
@@ -247,7 +247,7 @@ enum JSONValue {
 }
 
 extension JSONValue: Printable {
-    var description: String {
+    public var description: String {
         switch self {
         case .JInvalid(let error):
             return error.localizedDescription
@@ -329,7 +329,7 @@ extension JSONValue: Printable {
 }
 
 extension JSONValue: BooleanType {
-    var boolValue: Bool {
+    public var boolValue: Bool {
         switch self {
         case .JInvalid:
             return false
@@ -343,7 +343,7 @@ extension JSONValue : Equatable {
     
 }
 
-func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
     switch lhs {
     case .JNumber(let lvalue):
         switch rhs {

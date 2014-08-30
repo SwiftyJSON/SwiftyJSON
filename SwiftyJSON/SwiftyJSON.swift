@@ -114,6 +114,38 @@ enum JSONValue {
             return nil
         }
     }
+
+    var rawObject: AnyObject? {
+        switch self {
+        case .JNumber(let value):
+            return value
+        case .JString(let value):
+            return value
+        case .JBool(let value):
+            return value
+        case .JNull:
+            return nil
+        case .JArray(let value):
+            var jsonValues = [AnyObject]()
+            for possibleJsonValue in value {
+                if  let jsonValue: AnyObject? = possibleJsonValue.rawObject {
+                    jsonValues.append(jsonValue!)
+                }
+            }
+            return jsonValues
+        case .JObject(let value):
+            var jsonObject = Dictionary<String, AnyObject>()
+            for (possibleJsonKey : String, possibleJsonValue : JSONValue) in value {
+                if let jsonValue: AnyObject? = possibleJsonValue.rawObject {
+                    jsonObject[possibleJsonKey] = jsonValue!
+                }
+            }
+            return jsonObject
+        default:
+            return nil
+        }
+    }
+
     
     var first: JSONValue? {
         switch self {

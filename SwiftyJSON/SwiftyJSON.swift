@@ -124,7 +124,7 @@ enum JSONValue {
         case .JBool(let value):
             return value
         case .JNull:
-            return nil
+            return NSNull()
         case .JArray(let value):
             var jsonValues = [AnyObject]()
             for alreadyJsonValue in value {

@@ -127,17 +127,17 @@ enum JSONValue {
             return nil
         case .JArray(let value):
             var jsonValues = [AnyObject]()
-            for possibleJsonValue in value {
-                if  let jsonValue: AnyObject? = possibleJsonValue.rawObject {
+            for alreadyJsonValue in value {
+                if  let jsonValue: AnyObject? = alreadyJsonValue.rawObject {
                     jsonValues.append(jsonValue!)
                 }
             }
             return jsonValues
         case .JObject(let value):
             var jsonObject = Dictionary<String, AnyObject>()
-            for (possibleJsonKey : String, possibleJsonValue : JSONValue) in value {
-                if let jsonValue: AnyObject? = possibleJsonValue.rawObject {
-                    jsonObject[possibleJsonKey] = jsonValue!
+            for (alreadyJsonKey : String, alreadyJsonValue : JSONValue) in value {
+                if let jsonValue: AnyObject? = alreadyJsonValue.rawObject {
+                    jsonObject[alreadyJsonKey] = jsonValue!
                 }
             }
             return jsonObject

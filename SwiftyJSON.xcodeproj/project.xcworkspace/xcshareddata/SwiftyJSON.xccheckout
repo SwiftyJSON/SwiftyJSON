@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>485B50D0-253F-4C8E-82BA-848F815FC6D6</string>
+	<string>3A573BC4-D26F-4B75-AEB7-A02DA780E705</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SwiftyJSON</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E0A160A5-C602-42DC-8A38-C2994D32AAAE</key>
-		<string>ssh://github.com/garnett/SwiftyJSON.git</string>
+		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
+		<string>https://github.com/lingoer/SwiftyJSON.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SwiftyJSON.xcodeproj/project.xcworkspace</string>
+	<string>SwiftyJSON.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E0A160A5-C602-42DC-8A38-C2994D32AAAE</key>
+		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/garnett/SwiftyJSON.git</string>
+	<string>https://github.com/lingoer/SwiftyJSON.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E0A160A5-C602-42DC-8A38-C2994D32AAAE</string>
+	<string>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E0A160A5-C602-42DC-8A38-C2994D32AAAE</string>
+			<string>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SwiftyJSON</string>
 		</dict>

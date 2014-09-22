@@ -7,6 +7,7 @@ But while dealing with things that naturally implicit about types such as JSON, 
 Take the Twitter API for example: say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline)
 
 ```JSON
+
 [
   {
     ......
@@ -34,6 +35,7 @@ Take the Twitter API for example: say we want to retrieve a user's "name" value 
     "in_reply_to_screen_name": null,
   },
   ......]
+  
 ```
 
 The code would look like this:
@@ -53,6 +55,7 @@ if let statusesArray = jsonObject as? NSArray{
 }
 
 ```
+
 It's not good.
 
 Even if we use optional chaining, it would also cause a mess:
@@ -65,6 +68,7 @@ if let userName = (((jsonObject as? NSArray)?[0] as? NSDictionary)?["user"] as? 
 }
 
 ```
+
 An unreadable mess for something like this should really be simple!
 
 ##SwiftyJSON
@@ -72,49 +76,40 @@ An unreadable mess for something like this should really be simple!
 With SwiftyJSON all you have to do is:
 
 ```swift
-let json = JSONValue(dataFromNetworking)
+
+let json = JSON(data: dataFromNetworking)
 if let userName = json[0]["user"]["name"].string{
   //Now you got your value
 }
+
 ```
 
 And don't worry about the Optional Wrapping thing, it's done for you automatically
 
 ```swift
-let json = JSONValue(dataFromNetworking)
+
+let json = JSON(data: dataFromNetworking)
 if let userName = json[999999]["wrong_key"]["wrong_name"].string{
   //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 }
 
 ```
+
 ```swift
-let json = JSONValue(jsonObject)
+
+let json = JSON(object: jsonObject)
 switch json["user_id"]{
-case .JString(let stringValue):
+case .ScalarString(let stringValue):
     let id = stringValue.toInt()
-case .JNumber(let numberValue):
+case .ScalarNumber(let numberValue):
     let id = numberValue.integerValue
 default:
     println("ooops!!! JSON Data is Unexpected or Broken")
-
+    
 ```
 
-##Error Handling
-```swift
-let json = JSONValue(dataFromNetworking)["some_key"]["some_wrong_key"]["wrong_name"]
-if json{
-  //JSONValue it self confirm to Protocol "LogicValue", with JSONValue.JInvalid produce false and others produce true
-}else{
-  println(json)
-  //> JSON Keypath Error: Incorrect Keypath "some_wrong_key/wrong_name"
-  //It always tells you where your key starts went wrong
-  switch json{
-  case .JInvalid(let error):
-    //An NSError containing detailed error information 
-  }
-}
-```
 ##Integration
+
 CocoaPods is not fully supported for Swift yet, to use this library in your project you should:  
 
 1. for Projects just drag SwiftyJSON.swift to the project tree

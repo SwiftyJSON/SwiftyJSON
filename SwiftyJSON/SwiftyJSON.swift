@@ -70,12 +70,12 @@ public enum JSON {
 }
 
 //MARK: - Error
-let ErrorDomain: String! = "SwiftyJSONErrorDomain"
+public let ErrorDomain: String! = "SwiftyJSONErrorDomain"
 
-var ErrorUnsupportedType: Int { get { return 999 }}
-var ErrorIndexOutOfBounds: Int { get { return 900 }}
-var ErrorWrongType: Int { get { return 901 }}
-var ErrorNotExist: Int { get { return 500 }}
+public var ErrorUnsupportedType: Int { get { return 999 }}
+public var ErrorIndexOutOfBounds: Int { get { return 900 }}
+public var ErrorWrongType: Int { get { return 901 }}
+public var ErrorNotExist: Int { get { return 500 }}
 
 // MARK: - Subscript
 extension JSON {
@@ -117,7 +117,12 @@ extension JSON: Printable, DebugPrintable {
     public var description: String {
         switch self {
         case .ScalarNumber(let number):
-            return number.description
+            switch String.fromCString(number.objCType)! {
+            case "c", "C":
+                return number.boolValue.description
+            default:
+                return number.description
+            }
         case .ScalarString(let string):
             return string
         case .Sequence(let array):
@@ -135,7 +140,12 @@ extension JSON: Printable, DebugPrintable {
         get {
             switch self {
             case .ScalarNumber(let number):
-                return number.debugDescription
+                switch String.fromCString(number.objCType)! {
+                case "c", "C":
+                    return number.boolValue.description
+                default:
+                    return number.debugDescription
+                }
             case .ScalarString(let string):
                 return string.debugDescription
             case .Sequence(let array):

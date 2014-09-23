@@ -119,6 +119,47 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssert(user_dictionary_name_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
     }
 
+    func testNumberPrint(){
+        XCTAssertEqual(JSON(object: false).description,"false")
+        XCTAssertEqual(JSON(object: true).description,"true")
+
+        XCTAssertEqual(JSON(object: 1).description,"1")
+        XCTAssertEqual(JSON(object: 22).description,"22")
+        XCTAssertEqual(JSON(object: 2147483647).description,"2147483647")
+        XCTAssertEqual(JSON(object: 2147483648).description,"2147483648")
+        
+        XCTAssertEqual(JSON(object: -1).description,"-1")
+        XCTAssertEqual(JSON(object: -934834834).description,"-934834834")
+        XCTAssertEqual(JSON(object: -2147483648).description,"-2147483648")
+
+        XCTAssertEqual(JSON(object: 1.5555).description,"1.5555")
+        XCTAssertEqual(JSON(object: -9.123456789).description,"-9.123456789")
+        XCTAssertEqual(JSON(object: -0.00000000000000001).description,"-1e-17")
+        XCTAssertEqual(JSON(object: -999999999999999999999999.000000000000000000000001).description,"-1e+24")
+        XCTAssertEqual(JSON(object: -9999999991999999999999999.88888883433343439438493483483943948341).stringValue!,"-9.999999991999999e+24")
+
+        XCTAssertEqual(JSON(object: Int(Int.max)).description,"\(Int.max)")
+        XCTAssertEqual(JSON(object: NSNumber(long: Int.min)).description,"\(Int.min)")
+        XCTAssertEqual(JSON(object: NSNumber(unsignedLong: ULONG_MAX)).description,"\(ULONG_MAX)")
+        XCTAssertEqual(JSON(object: NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")
+        XCTAssertEqual(JSON(object: NSNumber(longLong: Int64.max)).description,"\(Int64.max)")
+        XCTAssertEqual(JSON(object: NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")
+
+        XCTAssertEqual(JSON(object: Double.infinity).description,"inf")
+        XCTAssertEqual(JSON(object: -Double.infinity).description,"-inf")
+        XCTAssertEqual(JSON(object: Double.NaN).description,"nan")
+        
+        XCTAssertEqual(JSON(object: 1.0/0.0).description,"inf")
+        XCTAssertEqual(JSON(object: -1.0/0.0).description,"-inf")
+        XCTAssertEqual(JSON(object: 0.0/0.0).description,"nan")
+    }
+    
+    func testNullPrint(){
+        XCTAssertEqual(JSON.Null(nil).debugDescription,"null")
+        let error = NSError(domain: SwiftyJSON.ErrorDomain, code: SwiftyJSON.ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "hello world"])
+        XCTAssertEqual(JSON.Null(error).description,"\(error)")
+    }
+    
     func testInitPerformance() {
         // This is an example of a performance test case.
         self.measureBlock() {

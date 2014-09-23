@@ -71,7 +71,7 @@ public enum JSON {
 // MARK: - Subscript
 extension JSON {
     
-    subscript(index: Int) -> JSON {
+    public subscript(index: Int) -> JSON {
         get {
             switch self {
             case .Sequence(let array) where array.count > index:
@@ -82,7 +82,7 @@ extension JSON {
         }
     }
     
-    subscript(key: String) -> JSON {
+    public subscript(key: String) -> JSON {
         get {
             switch self {
             case .Mapping(let dictionary) where dictionary[key] != nil:
@@ -133,7 +133,7 @@ extension JSON: Printable, DebugPrintable {
 // MARK: - Sequence: Array<JSON>
 extension JSON {
     
-    var arrayValue: Array<JSON>? {
+    public var arrayValue: Array<JSON>? {
         get {
             switch self {
             case .Sequence(let array):
@@ -148,7 +148,7 @@ extension JSON {
 // MARK: - Mapping: Dictionary<String, JSON>
 extension JSON {
     
-    var dictionaryValue: Dictionary<String, JSON>? {
+    public var dictionaryValue: Dictionary<String, JSON>? {
         get {
             switch self {
             case .Mapping(let dictionary):
@@ -184,7 +184,7 @@ extension JSON: BooleanType {
 //MARK: - Scalar: String, NSNumber, NSURL, Int, ...
 extension JSON {
 
-    var stringValue: String? {
+    public var stringValue: String? {
         get {
             switch self {
             case .ScalarString(let string):
@@ -197,7 +197,7 @@ extension JSON {
         }
     }
 
-    var numberValue: NSNumber? {
+    public var numberValue: NSNumber? {
         get {
             switch self {
             case .ScalarString(let string):
@@ -217,7 +217,7 @@ extension JSON {
         }
     }
 
-    var URLValue: NSURL? {
+    public var URLValue: NSURL? {
         get {
             switch self {
             case .ScalarString(let string):
@@ -228,7 +228,7 @@ extension JSON {
         }
     }
 
-    var charValue: Int8? {
+    public var charValue: Int8? {
         get {
             if let number = self.numberValue {
                 return number.charValue
@@ -238,7 +238,7 @@ extension JSON {
         }
     }
     
-    var unsignedCharValue: UInt8? {
+    public var unsignedCharValue: UInt8? {
         get{
             if let number = self.numberValue {
                 return number.unsignedCharValue
@@ -248,7 +248,7 @@ extension JSON {
         }
     }
     
-    var shortValue: Int16? {
+    public var shortValue: Int16? {
         get{
             if let number = self.numberValue {
                 return number.shortValue
@@ -258,7 +258,7 @@ extension JSON {
         }
     }
     
-    var unsignedShortValue: UInt16? {
+    public var unsignedShortValue: UInt16? {
         get{
             if let number = self.numberValue {
                 return number.unsignedShortValue
@@ -268,7 +268,7 @@ extension JSON {
         }
     }
     
-    var longValue: Int? {
+    public var longValue: Int? {
         get{
             if let number = self.numberValue {
                 return number.longValue
@@ -278,7 +278,7 @@ extension JSON {
         }
     }
     
-    var unsignedLongValue: UInt? {
+    public var unsignedLongValue: UInt? {
         get{
             if let number = self.numberValue {
                 return number.unsignedLongValue
@@ -288,7 +288,7 @@ extension JSON {
         }
     }
     
-    var longLongValue: Int64? {
+    public var longLongValue: Int64? {
         get{
             if let number = self.numberValue {
                 return number.longLongValue
@@ -298,7 +298,7 @@ extension JSON {
         }
     }
     
-    var unsignedLongLongValue: UInt64? {
+    public var unsignedLongLongValue: UInt64? {
         get{
             if let number = self.numberValue {
                 return number.unsignedLongLongValue
@@ -308,7 +308,7 @@ extension JSON {
         }
     }
     
-    var floatValue: Float? {
+    public var floatValue: Float? {
         get {
             if let number = self.numberValue {
                 return number.floatValue
@@ -318,7 +318,7 @@ extension JSON {
         }
     }
     
-    var doubleValue: Double? {
+    public var doubleValue: Double? {
         get {
             if let number = self.numberValue {
                 return number.doubleValue
@@ -328,7 +328,7 @@ extension JSON {
         }
     }
 
-    var integerValue: Int? {
+    public var integerValue: Int? {
         get {
             if let number = self.numberValue {
                 return number.integerValue
@@ -338,7 +338,7 @@ extension JSON {
         }
     }
     
-    var unsignedIntegerValue: Int? {
+    public var unsignedIntegerValue: Int? {
         get {
             if let number = self.numberValue {
                 return number.unsignedIntegerValue

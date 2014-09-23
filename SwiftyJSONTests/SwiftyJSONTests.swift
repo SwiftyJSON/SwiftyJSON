@@ -22,7 +22,7 @@
 
 import UIKit
 import XCTest
-
+import SwiftyJSON
 class SwiftyJSONTests: XCTestCase {
 
     var testData: NSData!

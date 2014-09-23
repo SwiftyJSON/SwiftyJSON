@@ -14,9 +14,7 @@
 		A8491E1E19CD6DAE00CCFAE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */; };
 		A885D1D319CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */; };
-		A885D1D419CF223F002FD4C3 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		A885D1D519CF223F002FD4C3 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
-		A885D1D619CF2240002FD4C3 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		A885D1DC19CFCFF0002FD4C3 /* SwiftyJSONTests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */; };
 		A885D1DD19CFCFF0002FD4C3 /* SwiftyJSONTests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */; };
 /* End PBXBuildFile section */
@@ -326,7 +324,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */,
-				A885D1D419CF223F002FD4C3 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A885D1D319CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */,
-				A885D1D619CF2240002FD4C3 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

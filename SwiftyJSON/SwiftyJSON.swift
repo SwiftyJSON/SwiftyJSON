@@ -32,7 +32,7 @@ public enum JSON {
     case Mapping(Dictionary<String, JSON>)
     case Null(NSError?)
     
-    init(data:NSData, options opt: NSJSONReadingOptions = nil, error: NSErrorPointer = nil) {
+    init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
             self = JSON(object: object)
         } else {

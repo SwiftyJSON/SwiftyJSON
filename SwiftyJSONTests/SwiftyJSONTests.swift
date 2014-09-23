@@ -31,7 +31,7 @@ class SwiftyJSONTests: XCTestCase {
         
         super.setUp()
         
-        if let file = NSBundle(forClass:SwiftyJSONTests.self).pathForResource("JSONTests", ofType: "json") {
+        if let file = NSBundle(forClass:SwiftyJSONTests.self).pathForResource("SwiftyJSONTests", ofType: "json") {
             self.testData = NSData(contentsOfFile: file)
         } else {
             XCTFail("Can't find the test JSON file")
@@ -72,9 +72,9 @@ class SwiftyJSONTests: XCTestCase {
         let tweets_array_1 = tweets_1[1]
         let tweets_1_user_name = tweets_1["user"]["name"]
         let tweets_1_user_name_string = tweets_1["user"]["name"].stringValue
-        XCTAssertNotEqual(tweets, JSON.Null)
+        XCTAssertNotEqual(tweets, JSON.Null(nil))
         XCTAssert(tweets_array != nil)
-        XCTAssertNotEqual(tweets_1, JSON.Null)
+        XCTAssertNotEqual(tweets_1, JSON.Null(nil))
         XCTAssertEqual(tweets_1_user_name, JSON(object:"Raffi Krikorian"))
         XCTAssertEqual(tweets_1_user_name_string!, "Raffi Krikorian")
         
@@ -104,7 +104,7 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual(id_str!,"240558470661799936")
         XCTAssertFalse(favorited)
         XCTAssertEqual(id!,240558470661799936)
-        XCTAssertEqual(in_reply_to_user_id_str,JSON.Null)
+        XCTAssertEqual(in_reply_to_user_id_str,JSON.Null(nil))
 
         let user = json[0]["user"]
         let user_name = user["name"].stringValue

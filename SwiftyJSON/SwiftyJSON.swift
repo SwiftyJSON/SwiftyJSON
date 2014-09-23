@@ -22,6 +22,7 @@
 
 import Foundation
 
+let SwiftyJSONErrorDomain = "SwiftyJSONErrorDomain"
 //MARK:- Base
 public enum JSON {
     
@@ -29,13 +30,13 @@ public enum JSON {
     case ScalarString(String)
     case Sequence(Array<JSON>)
     case Mapping(Dictionary<String, JSON>)
-    case Null
+    case Null(NSError?)
     
     init(data:NSData, options opt: NSJSONReadingOptions = nil, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
             self = JSON(object: object)
         } else {
-            self = .Null
+            self = .Null(nil)
         }
     }
     
@@ -46,7 +47,7 @@ public enum JSON {
         case let string as NSString:
             self = .ScalarString(string)
         case let null as NSNull:
-            self = .Null
+            self = .Null(nil)
         case let array as NSArray:
             var aJSONArray = Array<JSON>()
             for object : AnyObject in array {
@@ -62,7 +63,7 @@ public enum JSON {
             }
             self = .Mapping(aJSONDictionary)
         default:
-            self = .Null
+            self = .Null(nil)
         }
     }
 }
@@ -76,7 +77,7 @@ extension JSON {
             case .Sequence(let array) where array.count > index:
                 return array[index]
             default:
-                return .Null
+                return .Null(NSError(domain: SwiftyJSONErrorDomain, code: 0, userInfo: nil))
             }
         }
     }
@@ -87,7 +88,7 @@ extension JSON {
             case .Mapping(let dictionary) where dictionary[key] != nil:
                 return dictionary[key]!
             default:
-                return .Null
+                return .Null(NSError(domain: SwiftyJSONErrorDomain, code: 0, userInfo: nil))
             }
         }
     }

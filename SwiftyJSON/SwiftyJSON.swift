@@ -32,7 +32,7 @@ public enum JSON {
     case Mapping(Dictionary<String, JSON>)
     case Null(NSError?)
     
-    init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
+    public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
             self = JSON(object: object)
         } else {
@@ -40,7 +40,7 @@ public enum JSON {
         }
     }
     
-    init(object: AnyObject) {
+    public init(object: AnyObject) {
         switch object {
         case let number as NSNumber:
             self = .ScalarNumber(number)

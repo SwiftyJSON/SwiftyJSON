@@ -22,7 +22,6 @@
 
 import Foundation
 
-let SwiftyJSONErrorDomain = "SwiftyJSONErrorDomain"
 //MARK:- Base
 public enum JSON {
     
@@ -62,11 +61,21 @@ public enum JSON {
                 }
             }
             self = .Mapping(aJSONDictionary)
-        default:
+        case let null as NSNull:
             self = .Null(nil)
+        default:
+            self = .Null(NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"]))
         }
     }
 }
+
+//MARK: - Error
+let ErrorDomain: String! = "SwiftyJSONErrorDomain"
+
+var ErrorUnsupportedType: Int { get { return 999 }}
+var ErrorIndexOutOfBounds: Int { get { return 900 }}
+var ErrorWrongType: Int { get { return 901 }}
+var ErrorNotExist: Int { get { return 500 }}
 
 // MARK: - Subscript
 extension JSON {
@@ -74,10 +83,14 @@ extension JSON {
     public subscript(index: Int) -> JSON {
         get {
             switch self {
-            case .Sequence(let array) where array.count > index:
-                return array[index]
+            case .Sequence(let array):
+                if array.count > index {
+                    return array[index]
+                } else {
+                    return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
+                }
             default:
-                return .Null(NSError(domain: SwiftyJSONErrorDomain, code: 0, userInfo: nil))
+                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, it is not an array"]))
             }
         }
     }
@@ -85,10 +98,14 @@ extension JSON {
     public subscript(key: String) -> JSON {
         get {
             switch self {
-            case .Mapping(let dictionary) where dictionary[key] != nil:
-                return dictionary[key]!
+            case .Mapping(let dictionary):
+                if let value = dictionary[key] {
+                    return dictionary[key]!
+                } else {
+                    return .Null(NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"]))
+                }
             default:
-                return .Null(NSError(domain: SwiftyJSONErrorDomain, code: 0, userInfo: nil))
+                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, it is not an dictionary"]))
             }
         }
     }
@@ -107,6 +124,8 @@ extension JSON: Printable, DebugPrintable {
             return array.description
         case .Mapping(let dictionary):
             return dictionary.description
+        case .Null(let error) where error != nil :
+            return error!.description
         default:
             return "null"
         }
@@ -123,6 +142,8 @@ extension JSON: Printable, DebugPrintable {
                 return array.debugDescription
             case .Mapping(let dictionary):
                 return dictionary.debugDescription
+            case .Null(let error) where error != nil :
+                return error!.debugDescription
             default:
                 return "null"
             }

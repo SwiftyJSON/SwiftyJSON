@@ -69,7 +69,7 @@ public enum JSON {
     }
 }
 
-//MARK: - Error
+//MARK: - Return Error
 public let ErrorDomain: String! = "SwiftyJSONErrorDomain"
 
 public var ErrorUnsupportedType: Int { get { return 999 }}
@@ -91,6 +91,40 @@ extension JSON {
     }
     
 }
+
+//MARK:- Return the Raw object
+extension JSON {
+    
+    public var object: AnyObject? {
+        switch self {
+        case .ScalarNumber(let number):
+            return number
+        case .ScalarString(let string):
+            return string
+        case .Null(let error) where error == nil:
+            return NSNull()
+        case .Sequence(let array):
+            var retArray = [AnyObject]()
+            for json in array {
+                if let object: AnyObject = json.object {
+                    retArray.append(object)
+                }
+            }
+            return retArray
+        case .Mapping(let dictionary):
+            var retDicitonary = Dictionary<String, AnyObject>()
+            for (key : String, value : JSON) in dictionary {
+                if let object: AnyObject = value.object{
+                    retDicitonary[key] = object
+                }
+            }
+            return retDicitonary
+        default:
+            return nil
+        }
+    }
+}
+
 // MARK: - Subscript
 extension JSON {
     

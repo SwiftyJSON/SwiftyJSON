@@ -300,7 +300,11 @@ extension JSON {
         get {
             switch self {
             case .ScalarString(let string):
-                return NSURL(string: string)
+                if let encodedString = string.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+                    return NSURL(string: encodedString)
+                } else {
+                    return nil
+                }
             default:
                 return nil
             }

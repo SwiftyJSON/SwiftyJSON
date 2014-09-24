@@ -186,6 +186,15 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertNotNil(json.object)
     }
     
+    func testJSONURLPercentEscapes() {
+        let emDash = "\\u2014"
+        let urlString = "http://examble.com/unencoded" + emDash + "string"
+        let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        
+        let json = JSON(object: urlString)
+        XCTAssertEqual(json.URLValue!, NSURL(string: encodedURLString!), "Wrong unpacked value")
+    }
+    
     func testInitPerformance() {
         // This is an example of a performance test case.
         self.measureBlock() {

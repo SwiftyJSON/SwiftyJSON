@@ -22,7 +22,11 @@
 
 import Foundation
 
+@availability(*, unavailable, renamed="JSON")
+public typealias JSONValue = JSON
+
 //MARK:- Base
+
 public enum JSON {
     
     case ScalarNumber(NSNumber)

@@ -154,10 +154,30 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual(JSON(object: 0.0/0.0).description,"nan")
     }
     
-    func testNullPrint(){
+    func testNullPrint() {
         XCTAssertEqual(JSON.Null(nil).debugDescription,"null")
         let error = NSError(domain: SwiftyJSON.ErrorDomain, code: SwiftyJSON.ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "hello world"])
         XCTAssertEqual(JSON.Null(error).description,"\(error)")
+    }
+    
+    func testErrorHandle() {
+        let json = JSON(data:self.testData)
+        if let wrongType = json["wrong-type"].stringValue {
+            XCTFail("Should not run into here")
+        } else {
+            XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
+        }
+
+        if let notExist = json[0]["not-exist"].stringValue {
+            XCTFail("Should not run into here")
+        } else {
+            XCTAssertEqual(json[0]["not-exist"].error!.code, SwiftyJSON.ErrorNotExist)
+        }
+        
+        let wrongJSON = JSON(object: NSObject())
+        if let error = wrongJSON.error {
+            XCTAssertEqual(error.code, SwiftyJSON.ErrorUnsupportedType)
+        }
     }
     
     func testInitPerformance() {

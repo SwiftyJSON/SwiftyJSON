@@ -77,6 +77,20 @@ public var ErrorIndexOutOfBounds: Int { get { return 900 }}
 public var ErrorWrongType: Int { get { return 901 }}
 public var ErrorNotExist: Int { get { return 500 }}
 
+extension JSON {
+    
+    public var error: NSError? {
+        get {
+            switch self {
+            case .Null(let error) where error != nil:
+                return error
+            default:
+                return nil;
+            }
+        }
+    }
+    
+}
 // MARK: - Subscript
 extension JSON {
     

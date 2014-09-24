@@ -183,6 +183,38 @@ extension JSON: Printable, DebugPrintable {
             return "null"
         }
     }
+
+    var any: AnyObject? {
+        switch self {
+        case .JNumber(let value):
+            return value
+        case .JString(let value):
+            return value
+        case .JBool(let value):
+            return value
+        case .JNull:
+            return NSNull()
+        case .JArray(let value):
+            var jsonValues = [AnyObject]()
+            for alreadyJsonValue in value {
+                if  let jsonValue: AnyObject? = alreadyJsonValue.any {
+                    jsonValues.append(jsonValue!)
+                }
+            }
+            return jsonValues
+        case .JObject(let value):
+            var jsonObject = Dictionary<String, AnyObject>()
+            for (alreadyJsonKey : String, alreadyJsonValue : JSONValue) in value {
+                if let jsonValue: AnyObject? = alreadyJsonValue.any {
+                    jsonObject[alreadyJsonKey] = jsonValue!
+                }
+            }
+            return jsonObject
+        default:
+            return nil
+        }
+    }
+
     
     public var debugDescription: String {
         get {

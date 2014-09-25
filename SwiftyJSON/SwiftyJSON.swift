@@ -108,7 +108,7 @@ extension JSON {
         case .Null(let error) where error == nil:
             return NSNull()
         case .Sequence(let array):
-            var retArray = [AnyObject]()
+            var retArray = Array<AnyObject>()
             for json in array {
                 if let object: AnyObject = json.object {
                     retArray.append(object)
@@ -142,7 +142,7 @@ extension JSON {
                     return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
                 }
             default:
-                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, it is not an array"]))
+                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an array"]))
             }
         }
     }
@@ -152,12 +152,12 @@ extension JSON {
             switch self {
             case .Mapping(let dictionary):
                 if let value = dictionary[key] {
-                    return dictionary[key]!
+                    return value
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"]))
                 }
             default:
-                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, it is not an dictionary"]))
+                return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
             }
         }
     }
@@ -216,7 +216,7 @@ extension JSON: Printable, DebugPrintable {
 // MARK: - Sequence: Array<JSON>
 extension JSON {
     
-    public var arrayValue: Array<JSON>? {
+    public var array: Array<JSON>? {
         get {
             switch self {
             case .Sequence(let array):
@@ -226,12 +226,18 @@ extension JSON {
             }
         }
     }
+    
+    public var arrayValue: Array<JSON> {
+        get {
+            return self.array ?? []
+        }
+    }
 }
 
 // MARK: - Mapping: Dictionary<String, JSON>
 extension JSON {
     
-    public var dictionaryValue: Dictionary<String, JSON>? {
+    public var dictionary: Dictionary<String, JSON>? {
         get {
             switch self {
             case .Mapping(let dictionary):
@@ -241,11 +247,23 @@ extension JSON {
             }
         }
     }
+    
+    public var dictionaryValue: Dictionary<String, JSON> {
+        get {
+            return self.dictionary ?? [:]
+        }
+    }
 }
 
 //MARK: - Scalar: Bool
 extension JSON: BooleanType {
     
+    public var bool: Bool? {
+        get {
+            return self.number?.boolValue
+        }
+    }
+
     public var boolValue: Bool {
         switch self {
         case .ScalarNumber(let number):
@@ -267,20 +285,36 @@ extension JSON: BooleanType {
 //MARK: - Scalar: String, NSNumber, NSURL, Int, ...
 extension JSON {
 
-    public var stringValue: String? {
+    public var string: String? {
         get {
             switch self {
             case .ScalarString(let string):
                 return string
-            case .ScalarNumber(let number):
-                return number.stringValue
             default:
                 return nil
             }
         }
     }
-
-    public var numberValue: NSNumber? {
+    
+    public var stringValue: String! {
+        get {
+            switch self {
+            case .ScalarString(let string):
+                return string
+            case .ScalarNumber(let number):
+                switch String.fromCString(number.objCType)! {
+                case "c", "C":
+                    return number.boolValue.description
+                default:
+                    return number.stringValue
+                }
+            default:
+                return ""
+            }
+        }
+    }
+    
+    public var number: NSNumber? {
         get {
             switch self {
             case .ScalarString(let string):
@@ -299,8 +333,27 @@ extension JSON {
             }
         }
     }
-
-    public var URLValue: NSURL? {
+    
+    public var numberValue: NSNumber! {
+        get {
+            switch self {
+            case .ScalarString(let string):
+                let scanner = NSScanner(string: string)
+                if scanner.scanDouble(nil){
+                    if (scanner.atEnd) {
+                        return NSNumber(double:(string as NSString).doubleValue)
+                    }
+                }
+                return NSNumber(double: 0.0)
+            case .ScalarNumber(let number):
+                return number
+            default:
+                return NSNumber(double: 0.0)
+            }
+        }
+    }
+    
+    public var URL: NSURL? {
         get {
             switch self {
             case .ScalarString(let string):
@@ -314,124 +367,160 @@ extension JSON {
             }
         }
     }
-
-    public var charValue: Int8? {
+    
+    public var char: Int8? {
         get {
-            if let number = self.numberValue {
-                return number.charValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var unsignedCharValue: UInt8? {
-        get{
-            if let number = self.numberValue {
-                return number.unsignedCharValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var shortValue: Int16? {
-        get{
-            if let number = self.numberValue {
-                return number.shortValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var unsignedShortValue: UInt16? {
-        get{
-            if let number = self.numberValue {
-                return number.unsignedShortValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var longValue: Int? {
-        get{
-            if let number = self.numberValue {
-                return number.longValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var unsignedLongValue: UInt? {
-        get{
-            if let number = self.numberValue {
-                return number.unsignedLongValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var longLongValue: Int64? {
-        get{
-            if let number = self.numberValue {
-                return number.longLongValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var unsignedLongLongValue: UInt64? {
-        get{
-            if let number = self.numberValue {
-                return number.unsignedLongLongValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var floatValue: Float? {
-        get {
-            if let number = self.numberValue {
-                return number.floatValue
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    public var doubleValue: Double? {
-        get {
-            if let number = self.numberValue {
-                return number.doubleValue
-            } else {
-                return nil
-            }
+            return self.number?.charValue
         }
     }
 
-    public var integerValue: Int? {
+    public var charValue: Int8! {
         get {
-            if let number = self.numberValue {
-                return number.integerValue
-            } else {
-                return nil
-            }
+            return self.numberValue.charValue
         }
     }
     
-    public var unsignedIntegerValue: Int? {
+    public var unsignedChar: UInt8? {
+        get{
+            return self.number?.unsignedCharValue
+        }
+    }
+    
+    public var unsignedCharValue: UInt8! {
+        get{
+            return self.numberValue.unsignedCharValue
+        }
+    }
+    
+    public var short: Int16? {
+        get{
+            return self.number?.shortValue
+        }
+    }
+    
+    public var shortValue: Int16! {
+        get{
+            return self.numberValue.shortValue
+        }
+    }
+    
+    public var unsignedShort: UInt16? {
+        get{
+            return self.number?.unsignedShortValue
+        }
+    }
+    
+    public var unsignedShortValue: UInt16! {
+        get{
+            return self.numberValue.unsignedShortValue
+        }
+    }
+    
+    public var long: Int? {
+        get{
+            return self.number?.longValue
+        }
+    }
+    
+    public var longValue: Int! {
+        get{
+            return self.numberValue.longValue
+        }
+    }
+    
+    public var unsignedLong: UInt? {
+        get{
+            return self.number?.unsignedLongValue
+        }
+    }
+    
+    public var unsignedLongValue: UInt! {
+        get{
+            return self.numberValue.unsignedLongValue
+        }
+    }
+    
+    public var longLong: Int64? {
+        get{
+            return self.number?.longLongValue
+        }
+    }
+
+    public var longLongValue: Int64! {
+        get{
+            return self.numberValue.longLongValue
+        }
+    }
+    
+    public var unsignedLongLong: UInt64? {
+        get{
+            return self.number?.unsignedLongLongValue
+        }
+    }
+
+    public var unsignedLongLongValue: UInt64! {
+        get{
+            return self.numberValue.unsignedLongLongValue
+        }
+    }
+    
+    public var float: Float? {
         get {
-            if let number = self.numberValue {
-                return number.unsignedIntegerValue
-            } else {
-                return nil
-            }
+            return self.number?.floatValue
+        }
+    }
+    
+    public var floatValue: Float! {
+        get {
+            return self.numberValue.floatValue
+        }
+    }
+    
+    public var double: Double? {
+        get {
+            return self.number?.doubleValue
+        }
+    }
+
+    public var doubleValue: Double! {
+        get {
+            return self.numberValue.doubleValue
+        }
+    }
+
+    public var integer: Int? {
+        get {
+            return self.number?.integerValue
+        }
+    }
+
+    public var integerValue: Int! {
+        get {
+            return self.numberValue.integerValue
+        }
+    }
+    
+    public var unsignedInteger: Int? {
+        get {
+            return self.number?.unsignedIntegerValue
+        }
+    }
+    
+    public var unsignedIntegerValue: Int! {
+        get {
+            return self.numberValue.unsignedIntegerValue
+        }
+    }
+    
+    public var int: Int32? {
+        get {
+            return self.number?.intValue
+        }
+    }
+    
+    public var intValue: Int32! {
+        get {
+            return self.numberValue.intValue
         }
     }
 }
@@ -450,8 +539,12 @@ extension JSON: Comparable {
                 return 3
             case .Mapping(let dictionary):
                 return 4
-            case .Null:
-                return 0
+            case .Null(let error):
+                if error == nil {
+                    return 0
+                } else {
+                    return error!.code
+                }
             default:
                 return -1
             }
@@ -461,8 +554,8 @@ extension JSON: Comparable {
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.numberValue != nil && rhs.numberValue != nil {
-        return lhs.numberValue == rhs.numberValue
+    if lhs.number != nil && rhs.number != nil {
+        return lhs.number == rhs.number
     }
     
     if lhs.type != rhs.type {
@@ -471,13 +564,13 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     
     switch lhs {
     case JSON.ScalarNumber:
-        return lhs.numberValue! == rhs.numberValue!
+        return lhs.numberValue == rhs.numberValue
     case JSON.ScalarString:
-        return lhs.stringValue! == rhs.stringValue!
+        return lhs.stringValue == rhs.stringValue
     case .Sequence:
-        return lhs.arrayValue! == rhs.arrayValue!
+        return lhs.arrayValue == rhs.arrayValue
     case .Mapping:
-        return lhs.dictionaryValue! == rhs.dictionaryValue!
+        return lhs.dictionaryValue == rhs.dictionaryValue
     case .Null:
         return true
     default:
@@ -487,8 +580,8 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
 
 public func <=(lhs: JSON, rhs: JSON) -> Bool {
 
-    if lhs.numberValue != nil && rhs.numberValue != nil {
-        return lhs.numberValue <= rhs.numberValue
+    if lhs.number != nil && rhs.number != nil {
+        return lhs.number <= rhs.number
     }
     
     if lhs.type != rhs.type {
@@ -497,13 +590,13 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
 
     switch lhs {
     case JSON.ScalarNumber:
-        return lhs.numberValue! <= rhs.numberValue!
+        return lhs.numberValue <= rhs.numberValue
     case JSON.ScalarString:
-        return lhs.stringValue! <= rhs.stringValue!
+        return lhs.stringValue <= rhs.stringValue
     case .Sequence:
-        return lhs.arrayValue! == rhs.arrayValue!
+        return lhs.arrayValue == rhs.arrayValue
     case .Mapping:
-        return lhs.dictionaryValue! == rhs.dictionaryValue!
+        return lhs.dictionaryValue == rhs.dictionaryValue
     case .Null:
         return true
     default:
@@ -513,8 +606,8 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
 
 public func >=(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.numberValue != nil && rhs.numberValue != nil {
-        return lhs.numberValue >= rhs.numberValue
+    if lhs.number != nil && rhs.number != nil {
+        return lhs.number >= rhs.number
     }
     
     if lhs.type != rhs.type {
@@ -523,13 +616,13 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     
     switch lhs {
     case JSON.ScalarNumber:
-        return lhs.numberValue! >= rhs.numberValue!
+        return lhs.numberValue >= rhs.numberValue
     case JSON.ScalarString:
-        return lhs.stringValue! >= rhs.stringValue!
+        return lhs.stringValue >= rhs.stringValue
     case .Sequence:
-        return lhs.arrayValue! == rhs.arrayValue!
+        return lhs.arrayValue == rhs.arrayValue
     case .Mapping:
-        return lhs.dictionaryValue! == rhs.dictionaryValue!
+        return lhs.dictionaryValue == rhs.dictionaryValue
     case .Null:
         return true
     default:
@@ -539,8 +632,8 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
 
 public func >(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.numberValue != nil && rhs.numberValue != nil {
-        return lhs.numberValue > rhs.numberValue
+    if lhs.number != nil && rhs.number != nil {
+        return lhs.number > rhs.number
     }
     
     if lhs.type != rhs.type {
@@ -549,9 +642,9 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
     
     switch lhs {
     case JSON.ScalarNumber:
-        return lhs.numberValue! > rhs.numberValue!
+        return lhs.numberValue > rhs.numberValue
     case JSON.ScalarString:
-        return lhs.stringValue! > rhs.stringValue!
+        return lhs.stringValue > rhs.stringValue
     case .Sequence:
         return false
     case .Mapping:
@@ -565,8 +658,8 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
 
 public func <(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.numberValue != nil && rhs.numberValue != nil {
-        return lhs.numberValue < rhs.numberValue
+    if lhs.number != nil && rhs.number != nil {
+        return lhs.number < rhs.number
     }
     
     if lhs.type != rhs.type {
@@ -575,9 +668,9 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
     
     switch lhs {
     case JSON.ScalarNumber:
-        return lhs.numberValue! < rhs.numberValue!
+        return lhs.numberValue < rhs.numberValue
     case JSON.ScalarString:
-        return lhs.stringValue! < rhs.stringValue!
+        return lhs.stringValue < rhs.stringValue
     case .Sequence:
         return false
     case .Mapping:

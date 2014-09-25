@@ -90,22 +90,67 @@ And don't worry about the Optional Wrapping thing, it's done for you automatical
 
 let json = JSON(data: dataFromNetworking)
 if let userName = json[999999]["wrong_key"]["wrong_name"].string{
-  //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
+    //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
+} else {
+    //Print the error
+    println(json[999999]["wrong_key"]["wrong_name"])
 }
 
 ```
 
+###Use the optional getter
+
+```swift
+let json = JSON(object: jsonObject)
+if let id = json["user_id"].integer {
+   //Do something you want
+} else {
+   //Print the error
+   println(json["user_id"])
+}
+```
+
+###Use the switch
 ```swift
 
 let json = JSON(object: jsonObject)
-switch json["user_id"]{
-case .ScalarString(let stringValue):
-    let id = stringValue.toInt()
-case .ScalarNumber(let numberValue):
-    let id = numberValue.integerValue
+switch json["user_id"] {
+case .ScalarString(let string):
+    let id = string.integerValue
+case .ScalarNumber(let number):
+    let id = number.integerValue
 default:
     println("ooops!!! JSON Data is Unexpected or Broken")
-    
+}
+```
+
+###Use the non optional getter (xxxValue)
+
+```swift
+//If not a Number or nil, return 0
+let id: Int = json["id"].integerValue
+```
+```swift
+//If a not a String or nil, return ""
+let name: String = json["name"].stringValue
+```
+```swift
+//If not a Array or nil, return []
+let list: Array<JSON> = json["list"].arrayValue
+```
+```swift
+//If not a Dictionary or nil, return [:]
+let user: Dictionary<String, JSON> = json["user"].dictionaryValue
+```
+
+###Get the raw object from JSON
+```swift
+if let object: AnyObject = json.object {
+   // do something
+} else {
+    // print the error
+    println(json) 
+}
 ```
 
 ##Integration

@@ -23,6 +23,7 @@
 import UIKit
 import XCTest
 import SwiftyJSON
+
 class SwiftyJSONTests: XCTestCase {
 
     var testData: NSData!
@@ -44,7 +45,7 @@ class SwiftyJSONTests: XCTestCase {
     
     func testInit() {
         let aJSON = JSON(data:self.testData)
-        XCTAssertEqual(aJSON.arrayValue!.count, 3)
+        XCTAssertEqual(aJSON.array!.count, 3)
         XCTAssertEqual(JSON(object: "123"), JSON(object: 123))
     }
     
@@ -59,19 +60,19 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertNotEqual(JSON(object: [123,321,456]), JSON(object: "string"))
         XCTAssertNotEqual(JSON(object: ["1":123,"2":321,"3":456]), JSON(object: "string"))
         XCTAssertEqual(JSON(object: ["1":123,"2":321,"3":456]), JSON(object: ["2":321,"1":123,"3":456]))
-        XCTAssertEqual(JSON(object: NSNull()), JSON(object: NSObject()))
+        XCTAssertEqual(JSON(object: NSNull()),JSON(object: NSNull()))
         XCTAssertNotEqual(JSON(object: NSNull()), JSON(object: 123))
     }
     
-    func testJSONDoesProduceValidValueWithCorrectKeyPath() {
+    func testJSONDoesProduceValidWithCorrectKeyPath() {
         let json = JSON(data:self.testData)
         
         let tweets = json
-        let tweets_array = json.arrayValue
+        let tweets_array = json.array
         let tweets_1 = json[1]
         let tweets_array_1 = tweets_1[1]
         let tweets_1_user_name = tweets_1["user"]["name"]
-        let tweets_1_user_name_string = tweets_1["user"]["name"].stringValue
+        let tweets_1_user_name_string = tweets_1["user"]["name"].string
         XCTAssertNotEqual(tweets, JSON.Null(nil))
         XCTAssert(tweets_array != nil)
         XCTAssertNotEqual(tweets_1, JSON.Null(nil))
@@ -80,46 +81,77 @@ class SwiftyJSONTests: XCTestCase {
         
         let tweets_1_coordinates = tweets_1["coordinates"]
         let tweets_1_coordinates_coordinates = tweets_1_coordinates["coordinates"]
-        let tweets_1_coordinates_coordinates_point_0_double = tweets_1_coordinates_coordinates[0].doubleValue
-        let tweets_1_coordinates_coordinates_point_1_float = tweets_1_coordinates_coordinates[1].floatValue
+        let tweets_1_coordinates_coordinates_point_0_double = tweets_1_coordinates_coordinates[0].double
+        let tweets_1_coordinates_coordinates_point_1_float = tweets_1_coordinates_coordinates[1].float
         let new_tweets_1_coordinates_coordinates = JSON(object:[-122.25831,37.871609])
         XCTAssertEqual(tweets_1_coordinates_coordinates, new_tweets_1_coordinates_coordinates)
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_double!, -122.25831)
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_1_float!, 37.871609)
         let tweets_1_coordinates_coordinates_point_0_string = tweets_1_coordinates_coordinates[0].stringValue
         let tweets_1_coordinates_coordinates_point_1_string = tweets_1_coordinates_coordinates[1].stringValue
-        XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_string!, "-122.25831")
-        XCTAssertEqual(tweets_1_coordinates_coordinates_point_1_string!, "37.871609")
+        XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_string, "-122.25831")
+        XCTAssertEqual(tweets_1_coordinates_coordinates_point_1_string, "37.871609")
         let tweets_1_coordinates_coordinates_point_0 = tweets_1_coordinates_coordinates[0]
         let tweets_1_coordinates_coordinates_point_1 = tweets_1_coordinates_coordinates[1]
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0, JSON(object:-122.25831))
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_1, JSON(object:"37.871609"))
         
-        let created_at = json[0]["created_at"].stringValue
-        let id_str = json[0]["id_str"].stringValue
-        let favorited = json[0]["favorited"].boolValue
-        let id = json[0]["id"].longLongValue
+        let created_at = json[0]["created_at"].string
+        let id_str = json[0]["id_str"].string
+        let favorited = json[0]["favorited"].bool
+        let id = json[0]["id"].longLong
         let in_reply_to_user_id_str = json[0]["in_reply_to_user_id_str"]
         XCTAssertEqual(created_at!, "Tue Aug 28 21:16:23 +0000 2012")
         XCTAssertEqual(id_str!,"240558470661799936")
-        XCTAssertFalse(favorited)
+        XCTAssertFalse(favorited!)
         XCTAssertEqual(id!,240558470661799936)
         XCTAssertEqual(in_reply_to_user_id_str,JSON.Null(nil))
 
         let user = json[0]["user"]
-        let user_name = user["name"].stringValue
-        let user_profile_image_url = user["profile_image_url"].URLValue
+        let user_name = user["name"].string
+        let user_profile_image_url = user["profile_image_url"].URL
         XCTAssert(user_name == "OAuth Dancer")
         XCTAssert(user_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
 
-        let user_dictionary = json[0]["user"].dictionaryValue
-        let user_dictionary_name = user_dictionary?["name"]?.stringValue
-        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.URLValue
+        let user_dictionary = json[0]["user"].dictionary
+        let user_dictionary_name = user_dictionary?["name"]?.string
+        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.URL
         XCTAssert(user_dictionary_name == "OAuth Dancer")
         XCTAssert(user_dictionary_name_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
     }
+    
+    func testNumberCompare() {
+        XCTAssertEqual(JSON(object: 12376352.123321), JSON(object: 12376352.123321))
+        XCTAssertGreaterThan(JSON(object: 20.211), JSON(object: 20.112))
+        XCTAssertGreaterThanOrEqual(JSON(object: 30.211), JSON(object: 20.112))
+        XCTAssertGreaterThanOrEqual(JSON(object: 65232), JSON(object: 65232))
+        XCTAssertLessThan(JSON(object: -82320.211), JSON(object: 20.112))
+        XCTAssertLessThanOrEqual(JSON(object: -320.211), JSON(object: 123.1))
+        XCTAssertLessThanOrEqual(JSON(object: -8763), JSON(object: -8763))
+        
+        XCTAssertEqual(JSON(object: "12376352.123321"), JSON(object: 12376352.123321))
+        XCTAssertGreaterThan(JSON(object: 20.211), JSON(object: "20.112"))
+        XCTAssertGreaterThanOrEqual(JSON(object: "30.211"), JSON(object: 20.112))
+        XCTAssertGreaterThanOrEqual(JSON(object: 65232), JSON(object: "65232"))
+        XCTAssertLessThan(JSON(object: "-82320.211"), JSON(object: 20.112))
+        XCTAssertLessThanOrEqual(JSON(object: -320.211), JSON(object: "123.1"))
+        XCTAssertLessThanOrEqual(JSON(object: "-8763"), JSON(object: -8763))
+    }
 
+    func testNumberConverToString(){
+        XCTAssertEqual(JSON(object: true).stringValue, "true")
+        XCTAssertEqual(JSON(object: 999.9823).stringValue, "999.9823")
+
+        XCTAssertEqual(JSON(object: true).number!.stringValue, "1")
+        XCTAssertEqual(JSON(object: false).number!.stringValue, "0")
+        XCTAssertEqual(JSON(object: "hello").numberValue.stringValue, "0")
+        XCTAssertEqual(JSON(object: NSNull()).numberValue.stringValue, "0")
+        XCTAssertEqual(JSON(object: ["a","b","c","d"]).numberValue.stringValue, "0")
+        XCTAssertEqual(JSON(object: ["a":"b","c":"d"]).numberValue.stringValue, "0")
+    }
+    
     func testNumberPrint(){
+
         XCTAssertEqual(JSON(object: false).description,"false")
         XCTAssertEqual(JSON(object: true).description,"true")
 
@@ -162,13 +194,13 @@ class SwiftyJSONTests: XCTestCase {
     
     func testErrorHandle() {
         let json = JSON(data:self.testData)
-        if let wrongType = json["wrong-type"].stringValue {
+        if let wrongType = json["wrong-type"].string {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
         }
 
-        if let notExist = json[0]["not-exist"].stringValue {
+        if let notExist = json[0]["not-exist"].string {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json[0]["not-exist"].error!.code, SwiftyJSON.ErrorNotExist)
@@ -192,11 +224,11 @@ class SwiftyJSONTests: XCTestCase {
         let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
         let json = JSON(object: urlString)
-        XCTAssertEqual(json.URLValue!, NSURL(string: encodedURLString!), "Wrong unpacked value")
+        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!), "Wrong unpacked ")
     }
     
     func testInitPerformance() {
-        // This is an example of a performance test case.
+
         self.measureBlock() {
             var t:Int = 0
             while (true) {
@@ -208,4 +240,19 @@ class SwiftyJSONTests: XCTestCase {
             }
         }
     }
+    
+    func testObjectMethodPerformance() {
+        var json = JSON(data:self.testData)
+        self.measureBlock() {
+            var t:Int = 0
+            while (true) {
+                if t == 100 {
+                    break
+                }
+                json.object
+                t++
+            }
+        }
+    }
+
 }

@@ -131,7 +131,7 @@ default:
 let id: Int = json["id"].integerValue
 ```
 ```swift
-//If a not a String or nil, return ""
+//If not a String or nil, return ""
 let name: String = json["name"].stringValue
 ```
 ```swift

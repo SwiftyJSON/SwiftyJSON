@@ -26,15 +26,25 @@ import Foundation
 public typealias JSONValue = JSON
 
 //MARK:- Base
-
+//http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
 public enum JSON {
     
+    //private type number
     case ScalarNumber(NSNumber)
+    //private type string
     case ScalarString(String)
+    //private type sequence
     case Sequence(Array<JSON>)
+    //private type mapping
     case Mapping(Dictionary<String, JSON>)
+    //private type null
     case Null(NSError?)
     
+    /**
+       :param: data The NSData used to convert to json.
+       :param: options The JSON serialization reading options. `.AllowFragments` by default.
+       :param: error The NSErrorPointer used to return the error.
+     */
     public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
             self = JSON(object: object)
@@ -43,6 +53,9 @@ public enum JSON {
         }
     }
     
+    /**
+       :param: object The JSON object following the JSON's definition
+    */
     public init(object: AnyObject) {
         switch object {
         case let number as NSNumber:
@@ -52,19 +65,19 @@ public enum JSON {
         case let null as NSNull:
             self = .Null(nil)
         case let array as NSArray:
-            var aJSONArray = Array<JSON>()
+            var jsonArray = Array<JSON>()
             for object : AnyObject in array {
-                aJSONArray.append(JSON(object: object))
+                jsonArray.append(JSON(object: object))
             }
-            self = .Sequence(aJSONArray)
+            self = .Sequence(jsonArray)
         case let dictionary as NSDictionary:
-            var aJSONDictionary = Dictionary<String, JSON>()
+            var jsonDictionary = Dictionary<String, JSON>()
             for (key : AnyObject, value : AnyObject) in dictionary {
                 if let key = key as? NSString {
-                    aJSONDictionary[key] = JSON(object: value)
+                    jsonDictionary[key] = JSON(object: value)
                 }
             }
-            self = .Mapping(aJSONDictionary)
+            self = .Mapping(jsonDictionary)
         case let null as NSNull:
             self = .Null(nil)
         default:
@@ -74,15 +87,17 @@ public enum JSON {
 }
 
 //MARK: - Return Error
+//The SwiftyJSON's error domain
 public let ErrorDomain: String! = "SwiftyJSONErrorDomain"
-
+//The error code
 public var ErrorUnsupportedType: Int { get { return 999 }}
 public var ErrorIndexOutOfBounds: Int { get { return 900 }}
 public var ErrorWrongType: Int { get { return 901 }}
 public var ErrorNotExist: Int { get { return 500 }}
 
 extension JSON {
-    
+
+    // The error in the .Null enmu
     public var error: NSError? {
         get {
             switch self {
@@ -96,9 +111,10 @@ extension JSON {
     
 }
 
-//MARK:- Return the Raw object
+//MARK:- Object
 extension JSON {
     
+    // The json object which is init(object:)'s parameter
     public var object: AnyObject? {
         switch self {
         case .ScalarNumber(let number):
@@ -132,6 +148,7 @@ extension JSON {
 // MARK: - Subscript
 extension JSON {
     
+    //if an array return the array[index]'s JSON else return .Null with error
     public subscript(index: Int) -> JSON {
         get {
             switch self {
@@ -147,6 +164,7 @@ extension JSON {
         }
     }
     
+    //if an array return the dictionary[key]'s JSON else return .Null with error
     public subscript(key: String) -> JSON {
         get {
             switch self {
@@ -216,6 +234,7 @@ extension JSON: Printable, DebugPrintable {
 // MARK: - Sequence: Array<JSON>
 extension JSON {
     
+    //Optional array
     public var array: Array<JSON>? {
         get {
             switch self {
@@ -227,6 +246,7 @@ extension JSON {
         }
     }
     
+    //Non-optional array
     public var arrayValue: Array<JSON> {
         get {
             return self.array ?? []
@@ -237,6 +257,7 @@ extension JSON {
 // MARK: - Mapping: Dictionary<String, JSON>
 extension JSON {
     
+    //Optional dictionary
     public var dictionary: Dictionary<String, JSON>? {
         get {
             switch self {
@@ -248,6 +269,7 @@ extension JSON {
         }
     }
     
+    //Non-optional dictionary
     public var dictionaryValue: Dictionary<String, JSON> {
         get {
             return self.dictionary ?? [:]
@@ -258,12 +280,14 @@ extension JSON {
 //MARK: - Scalar: Bool
 extension JSON: BooleanType {
     
+    //Optional bool
     public var bool: Bool? {
         get {
             return self.number?.boolValue
         }
     }
 
+    //Non-optional bool
     public var boolValue: Bool {
         switch self {
         case .ScalarNumber(let number):
@@ -285,6 +309,7 @@ extension JSON: BooleanType {
 //MARK: - Scalar: String, NSNumber, NSURL, Int, ...
 extension JSON {
 
+    //Optional string
     public var string: String? {
         get {
             switch self {
@@ -296,7 +321,8 @@ extension JSON {
         }
     }
     
-    public var stringValue: String! {
+    //Non-optional string
+    public var stringValue: String {
         get {
             switch self {
             case .ScalarString(let string):
@@ -314,6 +340,7 @@ extension JSON {
         }
     }
     
+    //Optional number
     public var number: NSNumber? {
         get {
             switch self {
@@ -334,7 +361,8 @@ extension JSON {
         }
     }
     
-    public var numberValue: NSNumber! {
+    //Non-optional number
+    public var numberValue: NSNumber {
         get {
             switch self {
             case .ScalarString(let string):
@@ -353,6 +381,7 @@ extension JSON {
         }
     }
     
+    //Optional URL
     public var URL: NSURL? {
         get {
             switch self {
@@ -368,157 +397,183 @@ extension JSON {
         }
     }
     
+    //Optional Int8
     public var char: Int8? {
         get {
             return self.number?.charValue
         }
     }
 
-    public var charValue: Int8! {
+    //Optional Int8
+    public var charValue: Int8 {
         get {
             return self.numberValue.charValue
         }
     }
     
+    //Optional UInt8
     public var unsignedChar: UInt8? {
         get{
             return self.number?.unsignedCharValue
         }
     }
     
-    public var unsignedCharValue: UInt8! {
+    //Non-optional UInt8
+    public var unsignedCharValue: UInt8 {
         get{
             return self.numberValue.unsignedCharValue
         }
     }
     
+    //Optional Int16
     public var short: Int16? {
         get{
             return self.number?.shortValue
         }
     }
     
-    public var shortValue: Int16! {
+    //Non-optional UInt8
+    public var shortValue: Int16 {
         get{
             return self.numberValue.shortValue
         }
     }
     
+    //Optional UInt16
     public var unsignedShort: UInt16? {
         get{
             return self.number?.unsignedShortValue
         }
     }
     
-    public var unsignedShortValue: UInt16! {
+    //Non-optional UInt16
+    public var unsignedShortValue: UInt16 {
         get{
             return self.numberValue.unsignedShortValue
         }
     }
     
+    //Optional Int
     public var long: Int? {
         get{
             return self.number?.longValue
         }
     }
     
-    public var longValue: Int! {
+    //Non-optional Int
+    public var longValue: Int {
         get{
             return self.numberValue.longValue
         }
     }
     
+    //Optional UInt
     public var unsignedLong: UInt? {
         get{
             return self.number?.unsignedLongValue
         }
     }
     
-    public var unsignedLongValue: UInt! {
+    //Non-optional UInt
+    public var unsignedLongValue: UInt {
         get{
             return self.numberValue.unsignedLongValue
         }
     }
     
+    //Optional Int64
     public var longLong: Int64? {
         get{
             return self.number?.longLongValue
         }
     }
 
-    public var longLongValue: Int64! {
+    //Non-optional Int64
+    public var longLongValue: Int64 {
         get{
             return self.numberValue.longLongValue
         }
     }
     
+    //Optional UInt64
     public var unsignedLongLong: UInt64? {
         get{
             return self.number?.unsignedLongLongValue
         }
     }
 
-    public var unsignedLongLongValue: UInt64! {
+    //Non-optional UInt64
+    public var unsignedLongLongValue: UInt64 {
         get{
             return self.numberValue.unsignedLongLongValue
         }
     }
     
+    //Optional Float
     public var float: Float? {
         get {
             return self.number?.floatValue
         }
     }
     
-    public var floatValue: Float! {
+    //Non-optional Float
+    public var floatValue: Float {
         get {
             return self.numberValue.floatValue
         }
     }
     
+    //Optional Double
     public var double: Double? {
         get {
             return self.number?.doubleValue
         }
     }
 
-    public var doubleValue: Double! {
+    //Non-optional Double
+    public var doubleValue: Double {
         get {
             return self.numberValue.doubleValue
         }
     }
 
+    //Optional Int
     public var integer: Int? {
         get {
             return self.number?.integerValue
         }
     }
 
-    public var integerValue: Int! {
+    //Non-optional Int
+    public var integerValue: Int {
         get {
             return self.numberValue.integerValue
         }
     }
     
+    //Optional Int
     public var unsignedInteger: Int? {
         get {
             return self.number?.unsignedIntegerValue
         }
     }
     
-    public var unsignedIntegerValue: Int! {
+    //Non-optional Int
+    public var unsignedIntegerValue: Int {
         get {
             return self.numberValue.unsignedIntegerValue
         }
     }
     
+    //Optional Int32
     public var int: Int32? {
         get {
             return self.number?.intValue
         }
     }
     
-    public var intValue: Int32! {
+    //non-optional Int32
+    public var intValue: Int32 {
         get {
             return self.numberValue.intValue
         }

@@ -168,7 +168,7 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssertEqual(JSON(object: -9.123456789).description,"-9.123456789")
         XCTAssertEqual(JSON(object: -0.00000000000000001).description,"-1e-17")
         XCTAssertEqual(JSON(object: -999999999999999999999999.000000000000000000000001).description,"-1e+24")
-        XCTAssertEqual(JSON(object: -9999999991999999999999999.88888883433343439438493483483943948341).stringValue!,"-9.999999991999999e+24")
+        XCTAssertEqual(JSON(object: -9999999991999999999999999.88888883433343439438493483483943948341).stringValue,"-9.999999991999999e+24")
 
         XCTAssertEqual(JSON(object: Int(Int.max)).description,"\(Int.max)")
         XCTAssertEqual(JSON(object: NSNumber(long: Int.min)).description,"\(Int.min)")

@@ -98,33 +98,60 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 
 ```
 
-###Use the optional getter
+## Requirements
 
+- iOS 7.0+ / Mac OS X 10.9+
+- Xcode 6.0
+
+## Usage
+
+####Initialization
+```swift
+let json = JSON(data: dataFromNetworking)
+```
 ```swift
 let json = JSON(object: jsonObject)
-if let id = json["user_id"].integer {
+```
+
+####Use the optional getter
+```swift
+//NSNumber
+if let id = json["user"]["favourites_count"].number {
    //Do something you want
 } else {
    //Print the error
-   println(json["user_id"])
+   println(json["user"]["favourites_count"])
 }
 ```
-
-###Use the switch
 ```swift
-
-let json = JSON(object: jsonObject)
-switch json["user_id"] {
-case .ScalarString(let string):
-    let id = string.integerValue
-case .ScalarNumber(let number):
-    let id = number.integerValue
-default:
-    println("ooops!!! JSON Data is Unexpected or Broken")
+//String
+if let id = json["user"]["name"].string {
+   //Do something you want
+} else {
+   //Print the error
+   println(json["user"]["name"])
 }
 ```
-
-###Use the non optional getter (xxxValue)
+```swift
+//Bool
+if let id = json["user"]["is_translator"].bool {
+   //Do something you want
+} else {
+   //Print the error
+   println(json["user"]["is_translator"])
+}
+```
+```swift
+//Int
+if let id = json["user"]["id"].integer {
+   //Do something you want
+} else {
+   //Print the error
+   println(json["user"]["id"])
+}
+...
+```
+####Use the non-optional getter (xxxValue)
 
 ```swift
 //If not a Number or nil, return 0
@@ -145,7 +172,8 @@ let user: Dictionary<String, JSON> = json["user"].dictionaryValue
 
 ###Get the raw object from JSON
 ```swift
-if let object: AnyObject = json.object {
+let json = JSON(data: dataFromNetworking)
+if let jsonObject: AnyObject = json.object {
    // do something
 } else {
     // print the error

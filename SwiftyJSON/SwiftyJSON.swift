@@ -64,17 +64,27 @@ public enum JSON {
             self = .ScalarString(string)
         case let null as NSNull:
             self = .Null(nil)
-        case let array as NSArray:
+        case let array as Array<AnyObject>:
             var jsonArray = Array<JSON>()
             for object : AnyObject in array {
-                jsonArray.append(JSON(object: object))
+                let json = JSON(object: object)
+                if let error = json.error {
+                    self = json
+                    return
+                } else {
+                    jsonArray.append(json)
+                }
             }
             self = .Sequence(jsonArray)
-        case let dictionary as NSDictionary:
+        case let dictionary as Dictionary<String, AnyObject>:
             var jsonDictionary = Dictionary<String, JSON>()
-            for (key : AnyObject, value : AnyObject) in dictionary {
-                if let key = key as? NSString {
-                    jsonDictionary[key] = JSON(object: value)
+            for (key : String, value : AnyObject) in dictionary {
+                let json = JSON(object: value)
+                if let error = json.error {
+                    self = json
+                    return
+                } else {
+                    jsonDictionary[key] = json
                 }
             }
             self = .Mapping(jsonDictionary)
@@ -187,10 +197,9 @@ extension JSON: Printable, DebugPrintable {
     public var description: String {
         switch self {
         case .ScalarNumber(let number):
-            switch String.fromCString(number.objCType)! {
-            case "c", "C":
+            if number.isBool {
                 return number.boolValue.description
-            default:
+            } else {
                 return number.description
             }
         case .ScalarString(let string):
@@ -210,10 +219,9 @@ extension JSON: Printable, DebugPrintable {
         get {
             switch self {
             case .ScalarNumber(let number):
-                switch String.fromCString(number.objCType)! {
-                case "c", "C":
+                if number.isBool {
                     return number.boolValue.description
-                default:
+                } else {
                     return number.debugDescription
                 }
             case .ScalarString(let string):
@@ -283,7 +291,12 @@ extension JSON: BooleanType {
     //Optional bool
     public var bool: Bool? {
         get {
-            return self.number?.boolValue
+            switch self {
+            case .ScalarNumber(let number) where number.isBool:
+                return number.boolValue
+            default:
+                return nil
+            }
         }
     }
 
@@ -306,7 +319,7 @@ extension JSON: BooleanType {
     }
 }
 
-//MARK: - Scalar: String, NSNumber, NSURL, Int, ...
+//MARK: - Scalar: String
 extension JSON {
 
     //Optional string
@@ -328,10 +341,9 @@ extension JSON {
             case .ScalarString(let string):
                 return string
             case .ScalarNumber(let number):
-                switch String.fromCString(number.objCType)! {
-                case "c", "C":
+                if number.isBool {
                     return number.boolValue.description
-                default:
+                } else {
                     return number.stringValue
                 }
             default:
@@ -339,20 +351,15 @@ extension JSON {
             }
         }
     }
+}
+
+//MARK: - Scalar: Number
+extension JSON {
     
     //Optional number
     public var number: NSNumber? {
         get {
             switch self {
-            case .ScalarString(let string):
-                var ret: NSNumber? = nil
-                let scanner = NSScanner(string: string)
-                if scanner.scanDouble(nil){
-                    if (scanner.atEnd) {
-                        ret = NSNumber(double:(string as NSString).doubleValue)
-                    }
-                }
-                return ret
             case .ScalarNumber(let number):
                 return number
             default:
@@ -380,6 +387,25 @@ extension JSON {
             }
         }
     }
+}
+
+//MARK: - Null
+extension JSON {
+ 
+    public var null: NSNull? {
+        get {
+            switch self {
+            case .Null(let error) where error == nil:
+                return NSNull()
+            default:
+                return nil
+            }
+        }
+    }
+}
+
+//MARK: - URL
+extension JSON {
     
     //Optional URL
     public var URL: NSURL? {
@@ -396,6 +422,10 @@ extension JSON {
             }
         }
     }
+}
+
+//MARK: - Int, Double, Float, Int8, Int16, Int32, Int64
+extension JSON {
     
     //Optional Int8
     public var char: Int8? {
@@ -581,79 +611,49 @@ extension JSON {
 }
 
 //MARK: - Comparable
-extension JSON: Comparable {
-    
-   private var type: Int {
-        get {
-            switch self {
-            case .ScalarNumber(let number):
-                return 1
-            case .ScalarString(let string):
-                return 2
-            case .Sequence(let array):
-                return 3
-            case .Mapping(let dictionary):
-                return 4
-            case .Null(let error):
-                if error == nil {
-                    return 0
-                } else {
-                    return error!.code
-                }
-            default:
-                return -1
-            }
-        }
-    }
-}
+extension JSON: Comparable {}
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.number != nil && rhs.number != nil {
-        return lhs.number == rhs.number
-    }
-    
-    if lhs.type != rhs.type {
-        return false
-    }
-    
-    switch lhs {
-    case JSON.ScalarNumber:
-        return lhs.numberValue == rhs.numberValue
-    case JSON.ScalarString:
-        return lhs.stringValue == rhs.stringValue
-    case .Sequence:
-        return lhs.arrayValue == rhs.arrayValue
-    case .Mapping:
-        return lhs.dictionaryValue == rhs.dictionaryValue
-    case .Null:
-        return true
+    switch (lhs, rhs) {
+    case (.ScalarNumber(let l), .ScalarNumber(let r)):
+        return l == r
+    case (.ScalarString(let l), .ScalarString(let r)):
+        return l == r
+    case (.Sequence(let l), .Sequence(let r)):
+        return l == r
+    case (.Mapping(let l), .Mapping(let r)):
+        return l == r
+    case (.Mapping(let l), .Mapping(let r)):
+        return l == r
+    case (.Null(let l), .Null(let r)):
+        let lcode = l?.code ?? 0
+        let rcode = l?.code ?? 0
+        return lcode == rcode
     default:
         return false
     }
 }
 
+public func !=(lhs: JSON, rhs: JSON) -> Bool {
+    return !(lhs == rhs)
+}
+
 public func <=(lhs: JSON, rhs: JSON) -> Bool {
-
-    if lhs.number != nil && rhs.number != nil {
-        return lhs.number <= rhs.number
-    }
     
-    if lhs.type != rhs.type {
-        return false
-    }
-
-    switch lhs {
-    case JSON.ScalarNumber:
-        return lhs.numberValue <= rhs.numberValue
-    case JSON.ScalarString:
-        return lhs.stringValue <= rhs.stringValue
-    case .Sequence:
-        return lhs.arrayValue == rhs.arrayValue
-    case .Mapping:
-        return lhs.dictionaryValue == rhs.dictionaryValue
-    case .Null:
-        return true
+    switch (lhs, rhs) {
+    case (.ScalarNumber(let l), .ScalarNumber(let r)):
+        return l <= r
+    case (.ScalarString(let l), .ScalarString(let r)):
+        return l <= r
+    case (.Sequence(let l), .Sequence(let r)):
+        return l == r
+    case (.Mapping(let l), .Mapping(let r)):
+        return l == r
+    case (.Null(let l), .Null(let r)):
+        let lcode = l?.code ?? 0
+        let rcode = l?.code ?? 0
+        return lcode == rcode
     default:
         return false
     }
@@ -661,25 +661,19 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
 
 public func >=(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.number != nil && rhs.number != nil {
-        return lhs.number >= rhs.number
-    }
-    
-    if lhs.type != rhs.type {
-        return false
-    }
-    
-    switch lhs {
-    case JSON.ScalarNumber:
-        return lhs.numberValue >= rhs.numberValue
-    case JSON.ScalarString:
-        return lhs.stringValue >= rhs.stringValue
-    case .Sequence:
-        return lhs.arrayValue == rhs.arrayValue
-    case .Mapping:
-        return lhs.dictionaryValue == rhs.dictionaryValue
-    case .Null:
-        return true
+    switch (lhs, rhs) {
+    case (.ScalarNumber(let l), .ScalarNumber(let r)):
+        return l >= r
+    case (.ScalarString(let l), .ScalarString(let r)):
+        return l >= r
+    case (.Sequence(let l), .Sequence(let r)):
+        return l == r
+    case (.Mapping(let l), .Mapping(let r)):
+        return l == r
+    case (.Null(let l), .Null(let r)):
+        let lcode = l?.code ?? 0
+        let rcode = l?.code ?? 0
+        return lcode == rcode
     default:
         return false
     }
@@ -687,25 +681,11 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
 
 public func >(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.number != nil && rhs.number != nil {
-        return lhs.number > rhs.number
-    }
-    
-    if lhs.type != rhs.type {
-        return false
-    }
-    
-    switch lhs {
-    case JSON.ScalarNumber:
-        return lhs.numberValue > rhs.numberValue
-    case JSON.ScalarString:
-        return lhs.stringValue > rhs.stringValue
-    case .Sequence:
-        return false
-    case .Mapping:
-        return false
-    case .Null:
-        return false
+    switch (lhs, rhs) {
+    case (.ScalarNumber(let l), .ScalarNumber(let r)):
+        return l > r
+    case (.ScalarString(let l), .ScalarString(let r)):
+        return l > r
     default:
         return false
     }
@@ -713,25 +693,11 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
 
 public func <(lhs: JSON, rhs: JSON) -> Bool {
     
-    if lhs.number != nil && rhs.number != nil {
-        return lhs.number < rhs.number
-    }
-    
-    if lhs.type != rhs.type {
-        return false
-    }
-    
-    switch lhs {
-    case JSON.ScalarNumber:
-        return lhs.numberValue < rhs.numberValue
-    case JSON.ScalarString:
-        return lhs.stringValue < rhs.stringValue
-    case .Sequence:
-        return false
-    case .Mapping:
-        return false
-    case .Null:
-        return false
+    switch (lhs, rhs) {
+    case (.ScalarNumber(let l), .ScalarNumber(let r)):
+        return l < r
+    case (.ScalarString(let l), .ScalarString(let r)):
+        return l < r
     default:
         return false
     }
@@ -739,24 +705,77 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
 
 // MARK: - NSNumber: Comparable
 extension NSNumber: Comparable {
+    var isBool:Bool {
+        get {
+            switch String.fromCString(self.objCType)! {
+            case "c", "C":
+                return true
+            default:
+                return false
+            }
+        }
+    }
 }
 
 public func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return lhs.compare(rhs) == NSComparisonResult.OrderedSame
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedSame
+    }
+}
+
+public func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    return !(rhs == rhs)
 }
 
 public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
+    }
 }
 
 public func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return lhs.compare(rhs) == NSComparisonResult.OrderedDescending
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedDescending
+    }
 }
 
 public func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return !(lhs > rhs)
+
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != NSComparisonResult.OrderedDescending
+    }
 }
 
 public func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return !(lhs < rhs)
+
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != NSComparisonResult.OrderedAscending
+    }
 }

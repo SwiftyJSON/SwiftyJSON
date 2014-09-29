@@ -158,13 +158,15 @@ extension JSON {
 // MARK: - Subscript
 extension JSON {
     
-    //if an array return the array[index]'s JSON else return .Null with error
-    public subscript(index: Int) -> JSON {
+    /**
+       If self is .Sequence return the array[index]'s json else return .Null with error
+     */
+    public subscript(idx: Int) -> JSON {
         get {
             switch self {
             case .Sequence(let array):
-                if array.count > index {
-                    return array[index]
+                if array.count > idx {
+                    return array[idx]
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
                 }
@@ -174,7 +176,23 @@ extension JSON {
         }
     }
     
-    //if an array return the dictionary[key]'s JSON else return .Null with error
+    /**
+        If self is .Mapping return the dictionary[i]'s (string, json) else return ("" , .Null(error))
+     */
+    public subscript(i: DictionaryIndex<String, JSON>) -> (String, JSON) {
+        get {
+            switch self {
+            case .Mapping(let dictionary):
+                return dictionary[i]
+            default:
+                return ("", .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"])))
+            }
+        }
+    }
+
+    /**
+       If self is .Sequence return the dictionary[key]'s JSON else return .Null with error
+     */
     public subscript(key: String) -> JSON {
         get {
             switch self {
@@ -281,6 +299,18 @@ extension JSON {
     public var dictionaryValue: Dictionary<String, JSON> {
         get {
             return self.dictionary ?? [:]
+        }
+    }
+    
+    /**
+       If self is .Mapping return the dictionary.indexForKey(key) else return nil
+    */
+    public func indexForKey(key: String) -> DictionaryIndex<String, JSON>? {
+        switch self {
+        case .Mapping(let dictionary):
+            return dictionary.indexForKey(key)
+        default:
+            return nil
         }
     }
 }

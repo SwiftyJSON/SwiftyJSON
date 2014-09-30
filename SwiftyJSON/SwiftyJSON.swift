@@ -39,6 +39,8 @@ public enum JSON {
     case Mapping(Dictionary<String, JSON>)
     //private type null
     case Null(NSError?)
+    //super private type for raw object and lazy wrapping into other cases
+    case PrivateRaw(AnyObject)
     
     /**
        :param: data The NSData used to convert to json.
@@ -67,25 +69,13 @@ public enum JSON {
         case let array as Array<AnyObject>:
             var jsonArray = Array<JSON>()
             for object : AnyObject in array {
-                let json = JSON(object: object)
-                if let error = json.error {
-                    self = json
-                    return
-                } else {
-                    jsonArray.append(json)
-                }
+                jsonArray.append(.PrivateRaw(object))
             }
             self = .Sequence(jsonArray)
         case let dictionary as Dictionary<String, AnyObject>:
             var jsonDictionary = Dictionary<String, JSON>()
             for (key : String, value : AnyObject) in dictionary {
-                let json = JSON(object: value)
-                if let error = json.error {
-                    self = json
-                    return
-                } else {
-                    jsonDictionary[key] = json
-                }
+                jsonDictionary[key] = .PrivateRaw(value)
             }
             self = .Mapping(jsonDictionary)
         case let null as NSNull:
@@ -119,6 +109,18 @@ extension JSON {
         }
     }
     
+    // The rawObject in the .PrivateRaw enmu
+    private var rawObject: AnyObject? {
+        get {
+            switch self {
+            case .PrivateRaw(let object):
+                return object
+            default:
+                return nil;
+            }
+        }
+    }
+    
 }
 
 //MARK:- Object
@@ -136,17 +138,13 @@ extension JSON {
         case .Sequence(let array):
             var retArray = Array<AnyObject>()
             for json in array {
-                if let object: AnyObject = json.object {
-                    retArray.append(object)
-                }
+                retArray.append(json.rawObject!)
             }
             return retArray
         case .Mapping(let dictionary):
             var retDicitonary = Dictionary<String, AnyObject>()
             for (key : String, value : JSON) in dictionary {
-                if let object: AnyObject = value.object{
-                    retDicitonary[key] = object
-                }
+                retDicitonary[key] = value.rawObject
             }
             return retDicitonary
         default:
@@ -164,7 +162,7 @@ extension JSON {
             switch self {
             case .Sequence(let array):
                 if array.count > index {
-                    return array[index]
+                    return JSON(object: array[index].rawObject!)
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
                 }
@@ -180,7 +178,7 @@ extension JSON {
             switch self {
             case .Mapping(let dictionary):
                 if let value = dictionary[key] {
-                    return value
+                    return JSON(object: value.rawObject!)
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"]))
                 }
@@ -210,6 +208,8 @@ extension JSON: Printable, DebugPrintable {
             return dictionary.description
         case .Null(let error) where error != nil :
             return error!.description
+        case .PrivateRaw(let object):
+            return JSON(object: object).description
         default:
             return "null"
         }
@@ -232,6 +232,8 @@ extension JSON: Printable, DebugPrintable {
                 return dictionary.debugDescription
             case .Null(let error) where error != nil :
                 return error!.debugDescription
+            case .PrivateRaw(let object):
+                return JSON(object: object).debugDescription
             default:
                 return "null"
             }
@@ -247,7 +249,11 @@ extension JSON {
         get {
             switch self {
             case .Sequence(let array):
-                return array
+                var retArray = Array<JSON>()
+                for json in array {
+                    retArray.append(JSON(object: json.rawObject!))
+                }
+                return retArray
             default:
                 return nil
             }
@@ -270,7 +276,11 @@ extension JSON {
         get {
             switch self {
             case .Mapping(let dictionary):
-                return dictionary
+                var retDicitonary = Dictionary<String, JSON>()
+                for (key : String, value : JSON) in dictionary {
+                    retDicitonary[key] = JSON(object: value.rawObject!)
+                }
+                return retDicitonary
             default:
                 return nil
             }
@@ -630,6 +640,8 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0
         return lcode == rcode
+    case (.PrivateRaw(let l), .PrivateRaw(let r)):
+        return JSON(object: l) == JSON(object: r)
     default:
         return false
     }
@@ -654,6 +666,8 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0
         return lcode == rcode
+    case (.PrivateRaw(let l), .PrivateRaw(let r)):
+        return JSON(object: l) <= JSON(object: r)
     default:
         return false
     }
@@ -674,6 +688,8 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0
         return lcode == rcode
+    case (.PrivateRaw(let l), .PrivateRaw(let r)):
+        return JSON(object: l) >= JSON(object: r)
     default:
         return false
     }

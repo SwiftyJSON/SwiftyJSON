@@ -147,6 +147,8 @@ extension JSON {
                 retDicitonary[key] = value.rawObject
             }
             return retDicitonary
+        case .PrivateRaw(let object):
+            return object
         default:
             return nil
         }

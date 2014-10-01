@@ -43,7 +43,7 @@ public enum JSON {
     /**
        :param: data The NSData used to convert to json.
        :param: options The JSON serialization reading options. `.AllowFragments` by default.
-       :param: error The NSErrorPointer used to return the error.
+       :param: error The NSErrorPointer used to return the error. `nil` by default.
      */
     public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
@@ -88,8 +88,6 @@ public enum JSON {
                 }
             }
             self = .Mapping(jsonDictionary)
-        case let null as NSNull:
-            self = .Null(nil)
         default:
             self = .Null(NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"]))
         }

@@ -52,12 +52,12 @@ class ViewController: UITableViewController {
         switch self.json {
         case .Sequence(let array):
             cell.textLabel?.text = "\(row)"
-            cell.detailTextLabel?.text = array[row].description
+            cell.detailTextLabel?.text = JSON(object:array[row]).description
         case .Mapping(let dictionary):
-            let key = dictionary.keys.array[row]
-            let value = dictionary[key]
+            let key: AnyObject = (dictionary as NSDictionary).allKeys[row]
+            let value = self.json[key as String]
             cell.textLabel?.text = "\(key)"
-            cell.detailTextLabel?.text = value?.stringValue
+            cell.detailTextLabel?.text = value.stringValue
         default:
             cell.detailTextLabel?.text = self.json.description
         }

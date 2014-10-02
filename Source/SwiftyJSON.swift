@@ -99,6 +99,7 @@ public var ErrorUnsupportedType: Int { get { return 999 }}
 public var ErrorIndexOutOfBounds: Int { get { return 900 }}
 public var ErrorWrongType: Int { get { return 901 }}
 public var ErrorNotExist: Int { get { return 500 }}
+public var ErrorNilInsert: Int { get { return 300 }}
 
 extension JSON {
 
@@ -222,6 +223,41 @@ extension JSON {
             default:
                 return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
             }
+        }
+    }
+    
+    /**
+       Update for .Sequence: json = json.updated(0) { j in ... }
+    */
+    public func updated(idx: Int, lambda: JSON->JSON) -> JSON {
+        switch self {
+        case .Sequence(var array):
+            if let object: AnyObject = lambda(self[idx]).object {
+                if array.count > idx {
+                    array[idx] = object
+                    return .Sequence(array)
+                }
+                return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
+            }
+            return .Null(NSError(domain: ErrorDomain, code:ErrorNilInsert , userInfo: [NSLocalizedDescriptionKey: "Attempt to insert nil object to Array"]))
+        default:
+            return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
+        }
+    }
+    
+    /**
+       Update for .Mapping: json = json.updated("key") { j in ... }
+    */
+    public func updated(key: String, lambda: JSON->JSON) -> JSON {
+        switch self {
+        case .Mapping(var dictionary):
+            if let object: AnyObject = lambda(self[key]).object {
+                dictionary[key] = object
+                return .Mapping(dictionary)
+            }
+            return .Null(NSError(domain: ErrorDomain, code:ErrorNilInsert , userInfo: [NSLocalizedDescriptionKey: "Attempt to insert nil value to Dictionary"]))
+        default:
+            return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
         }
     }
 }

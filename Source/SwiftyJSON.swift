@@ -34,16 +34,16 @@ public enum JSON {
     //private type string
     case ScalarString(String)
     //private type sequence
-    case Sequence(Array<JSON>)
+    case Sequence(Array<AnyObject>)
     //private type mapping
-    case Mapping(Dictionary<String, JSON>)
+    case Mapping(Dictionary<String, AnyObject>)
     //private type null
     case Null(NSError?)
     
     /**
        :param: data The NSData used to convert to json.
        :param: options The JSON serialization reading options. `.AllowFragments` by default.
-       :param: error The NSErrorPointer used to return the error.
+       :param: error The NSErrorPointer used to return the error. `nil` by default.
      */
     public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error){
@@ -54,7 +54,16 @@ public enum JSON {
     }
     
     /**
-       :param: object The JSON object following the JSON's definition
+       :param: object The object must have the following properties:
+        - Top level object is an NSArray or NSDictionary
+        - All objects are NSString, NSNumber, NSArray, NSDictionary, or NSNull
+        - All dictionary keys are NSStrings
+        - NSNumbers are not NaN or infinity
+        in swift
+        - String as NSString
+        - Bool, Int, Float, Double... as NSNumber
+        - Array<AnyObject> as NSArray
+        - Dictionary<String, AnyObject> as NSDictionary with NSString keys
     */
     public init(object: AnyObject) {
         switch object {
@@ -65,34 +74,20 @@ public enum JSON {
         case let null as NSNull:
             self = .Null(nil)
         case let array as Array<AnyObject>:
-            var jsonArray = Array<JSON>()
-            for object : AnyObject in array {
-                let json = JSON(object: object)
-                if let error = json.error {
-                    self = json
-                    return
-                } else {
-                    jsonArray.append(json)
-                }
-            }
-            self = .Sequence(jsonArray)
+            self = .Sequence(array)
         case let dictionary as Dictionary<String, AnyObject>:
-            var jsonDictionary = Dictionary<String, JSON>()
-            for (key : String, value : AnyObject) in dictionary {
-                let json = JSON(object: value)
-                if let error = json.error {
-                    self = json
-                    return
-                } else {
-                    jsonDictionary[key] = json
-                }
-            }
-            self = .Mapping(jsonDictionary)
-        case let null as NSNull:
-            self = .Null(nil)
+            self = .Mapping(dictionary)
         default:
             self = .Null(NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"]))
         }
+    }
+    
+    private init(topObject:AnyObject) {
+        if !NSJSONSerialization.isValidJSONObject(topObject) {
+            self = .Null(NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"]))
+            return
+        }
+        self = JSON(object: topObject)
     }
 }
 
@@ -134,23 +129,59 @@ extension JSON {
         case .Null(let error) where error == nil:
             return NSNull()
         case .Sequence(let array):
-            var retArray = Array<AnyObject>()
-            for json in array {
-                if let object: AnyObject = json.object {
-                    retArray.append(object)
-                }
-            }
-            return retArray
+            return array
         case .Mapping(let dictionary):
-            var retDicitonary = Dictionary<String, AnyObject>()
-            for (key : String, value : JSON) in dictionary {
-                if let object: AnyObject = value.object{
-                    retDicitonary[key] = object
-                }
-            }
-            return retDicitonary
+            return dictionary
         default:
             return nil
+        }
+    }
+}
+
+// MARK: - SequenceType
+extension JSON: SequenceType{
+    
+    public var count: Int {
+        get {
+            switch self {
+            case .Sequence(let array):
+                return array.count
+            case .Mapping(let dictionary):
+                return dictionary.count
+            default:
+                return 0
+            }
+        }
+    }
+    /**
+       When .Sequence return GeneratorOf<(index, JSON(object:element))>
+       When .Mapping return GeneratorOf<(key, JSON(value))>
+     */
+    public func generate() -> GeneratorOf <(String, JSON)> {
+        switch self {
+        case .Sequence(let array):
+            var generate = array.generate()
+            var index: Int = -1
+            return GeneratorOf<(String, JSON)> {
+                if let element: AnyObject = generate.next() {
+                    return ("\(index++)", JSON(object: element))
+                } else {
+                    return nil
+                }
+            }
+        case .Mapping(let dictionary):
+            var generate = dictionary.generate()
+            return GeneratorOf<(String, JSON)> {
+                if let (key: String, value: AnyObject) = generate.next() {
+                    return (key, JSON(object: value))
+                } else {
+                    return nil
+                }
+            }
+        default:
+            return GeneratorOf<(String, JSON)> {
+                return nil
+            }
         }
     }
 }
@@ -158,13 +189,15 @@ extension JSON {
 // MARK: - Subscript
 extension JSON {
     
-    //if an array return the array[index]'s JSON else return .Null with error
-    public subscript(index: Int) -> JSON {
+    /**
+       If self is .Sequence return the array[index]'s json else return .Null with error
+     */
+    public subscript(idx: Int) -> JSON {
         get {
             switch self {
             case .Sequence(let array):
-                if array.count > index {
-                    return array[index]
+                if array.count > idx {
+                    return JSON(object:array[idx])
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
                 }
@@ -174,13 +207,15 @@ extension JSON {
         }
     }
     
-    //if an array return the dictionary[key]'s JSON else return .Null with error
+    /**
+       If self is .Sequence return the dictionary[key]'s JSON else return .Null with error
+     */
     public subscript(key: String) -> JSON {
         get {
             switch self {
             case .Mapping(let dictionary):
-                if let value = dictionary[key] {
-                    return value
+                if let value: AnyObject = dictionary[key] {
+                    return JSON(object:value)
                 } else {
                     return .Null(NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"]))
                 }
@@ -242,8 +277,31 @@ extension JSON: Printable, DebugPrintable {
 // MARK: - Sequence: Array<JSON>
 extension JSON {
     
-    //Optional array
+    //Optional Array<JSON>
     public var array: Array<JSON>? {
+        get {
+            switch self {
+            case .Sequence(let array):
+                var jsonArray = Array<JSON>()
+                for object in array {
+                    jsonArray.append(JSON(object: object))
+                }
+                return jsonArray
+            default:
+                return nil
+            }
+        }
+    }
+    
+    //Non-optional Array<JSON>
+    public var arrayValue: Array<JSON> {
+        get {
+            return self.array ?? []
+        }
+    }
+    
+    //Optional Array<AnyObject>
+    public var arrayObjects: Array<AnyObject>? {
         get {
             switch self {
             case .Sequence(let array):
@@ -253,20 +311,36 @@ extension JSON {
             }
         }
     }
-    
-    //Non-optional array
-    public var arrayValue: Array<JSON> {
-        get {
-            return self.array ?? []
-        }
-    }
 }
 
 // MARK: - Mapping: Dictionary<String, JSON>
 extension JSON {
     
-    //Optional dictionary
+    //Optional Dictionary<String, JSON>
     public var dictionary: Dictionary<String, JSON>? {
+        get {
+            switch self {
+            case .Mapping(let dictionary):
+                var jsonDictionary = Dictionary<String, JSON>()
+                for (key, value) in dictionary {
+                    jsonDictionary[key] = JSON(object: value)
+                }
+                return jsonDictionary
+            default:
+                return nil
+            }
+        }
+    }
+    
+    //Non-optional Dictionary<String, JSON>
+    public var dictionaryValue: Dictionary<String, JSON> {
+        get {
+            return self.dictionary ?? [:]
+        }
+    }
+    
+    //Optional Dictionary<String, AnyObject>
+    public var dictionaryObjects: Dictionary<String, AnyObject>? {
         get {
             switch self {
             case .Mapping(let dictionary):
@@ -274,13 +348,6 @@ extension JSON {
             default:
                 return nil
             }
-        }
-    }
-    
-    //Non-optional dictionary
-    public var dictionaryValue: Dictionary<String, JSON> {
-        get {
-            return self.dictionary ?? [:]
         }
     }
 }
@@ -621,11 +688,9 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     case (.ScalarString(let l), .ScalarString(let r)):
         return l == r
     case (.Sequence(let l), .Sequence(let r)):
-        return l == r
+        return (l as NSArray) == (r as NSArray)
     case (.Mapping(let l), .Mapping(let r)):
-        return l == r
-    case (.Mapping(let l), .Mapping(let r)):
-        return l == r
+        return (l as NSDictionary) == (r as NSDictionary)
     case (.Null(let l), .Null(let r)):
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0
@@ -647,9 +712,9 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
     case (.ScalarString(let l), .ScalarString(let r)):
         return l <= r
     case (.Sequence(let l), .Sequence(let r)):
-        return l == r
+        return (l as NSArray) == (r as NSArray)
     case (.Mapping(let l), .Mapping(let r)):
-        return l == r
+        return (l as NSDictionary) == (r as NSDictionary)
     case (.Null(let l), .Null(let r)):
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0
@@ -667,9 +732,9 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     case (.ScalarString(let l), .ScalarString(let r)):
         return l >= r
     case (.Sequence(let l), .Sequence(let r)):
-        return l == r
+        return (l as NSArray) == (r as NSArray)
     case (.Mapping(let l), .Mapping(let r)):
-        return l == r
+        return (l as NSDictionary) == (r as NSDictionary)
     case (.Null(let l), .Null(let r)):
         let lcode = l?.code ?? 0
         let rcode = l?.code ?? 0

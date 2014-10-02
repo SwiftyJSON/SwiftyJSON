@@ -129,6 +129,23 @@ class SwiftyJSONTests: XCTestCase {
         XCTAssert(user_dictionary_name_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
     }
     
+    func testSequenceType() {
+        let json = JSON(data:self.testData)
+        XCTAssertEqual(json.count, 3)
+        for (_, aJson) in json {
+            XCTAssertEqual(aJson, json[0])
+            break
+        }
+        
+        var index = 0
+        let keys = (json[1].dictionaryObjects! as NSDictionary).allKeys as Array<String>
+        for (aKey, aJson) in json[1] {
+            XCTAssertEqual(aKey, keys[index])
+            XCTAssertEqual(aJson, json[1][keys[index]])
+            break
+        }
+    }
+    
     func testJSONNumberCompare() {
         XCTAssertEqual(JSON(object: 12376352.123321), JSON(object: 12376352.123321))
         XCTAssertGreaterThan(JSON(object: 20.211), JSON(object: 20.112))

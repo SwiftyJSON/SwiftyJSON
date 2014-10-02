@@ -138,6 +138,54 @@ extension JSON {
     }
 }
 
+// MARK: - SequenceType
+extension JSON: SequenceType{
+    
+    public var count: Int {
+        get {
+            switch self {
+            case .Sequence(let array):
+                return array.count
+            case .Mapping(let dictionary):
+                return dictionary.count
+            default:
+                return 0
+            }
+        }
+    }
+    /**
+       When .Sequence return GeneratorOf<(index, JSON(object:element))>
+       When .Mapping return GeneratorOf<(key, JSON(value))>
+     */
+    public func generate() -> GeneratorOf <(String, JSON)> {
+        switch self {
+        case .Sequence(let array):
+            var generate = array.generate()
+            var index: Int = -1
+            return GeneratorOf<(String, JSON)> {
+                if let element: AnyObject = generate.next() {
+                    return ("\(index++)", JSON(object: element))
+                } else {
+                    return nil
+                }
+            }
+        case .Mapping(let dictionary):
+            var generate = dictionary.generate()
+            return GeneratorOf<(String, JSON)> {
+                if let (key: String, value: AnyObject) = generate.next() {
+                    return (key, JSON(object: value))
+                } else {
+                    return nil
+                }
+            }
+        default:
+            return GeneratorOf<(String, JSON)> {
+                return nil
+            }
+        }
+    }
+}
+
 // MARK: - Subscript
 extension JSON {
     
@@ -229,8 +277,7 @@ extension JSON: Printable, DebugPrintable {
 // MARK: - Sequence: Array<JSON>
 extension JSON {
     
-    //Optional array
-    //It's slow
+    //Optional Array<JSON>
     public var array: Array<JSON>? {
         get {
             switch self {
@@ -246,11 +293,22 @@ extension JSON {
         }
     }
     
-    //Non-optional array
-    //It's slow
+    //Non-optional Array<JSON>
     public var arrayValue: Array<JSON> {
         get {
             return self.array ?? []
+        }
+    }
+    
+    //Optional Array<AnyObject>
+    public var arrayObjects: Array<AnyObject>? {
+        get {
+            switch self {
+            case .Sequence(let array):
+                return array
+            default:
+                return nil
+            }
         }
     }
 }
@@ -258,8 +316,7 @@ extension JSON {
 // MARK: - Mapping: Dictionary<String, JSON>
 extension JSON {
     
-    //Optional dictionary
-    //It's slow
+    //Optional Dictionary<String, JSON>
     public var dictionary: Dictionary<String, JSON>? {
         get {
             switch self {
@@ -275,11 +332,22 @@ extension JSON {
         }
     }
     
-    //Non-optional dictionary
-    //It's slow
+    //Non-optional Dictionary<String, JSON>
     public var dictionaryValue: Dictionary<String, JSON> {
         get {
             return self.dictionary ?? [:]
+        }
+    }
+    
+    //Optional Dictionary<String, AnyObject>
+    public var dictionaryObjects: Dictionary<String, AnyObject>? {
+        get {
+            switch self {
+            case .Mapping(let dictionary):
+                return dictionary
+            default:
+                return nil
+            }
         }
     }
 }

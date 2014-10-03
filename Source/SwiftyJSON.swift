@@ -99,6 +99,7 @@ public var ErrorUnsupportedType: Int { get { return 999 }}
 public var ErrorIndexOutOfBounds: Int { get { return 900 }}
 public var ErrorWrongType: Int { get { return 901 }}
 public var ErrorNotExist: Int { get { return 500 }}
+public var ErrorNilInsert: Int { get { return 300 }}
 
 extension JSON {
 
@@ -222,6 +223,99 @@ extension JSON {
             default:
                 return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
             }
+        }
+    }
+    
+    /**
+       Update for .Sequence: json = json.updated(0) { j in ... }
+    */
+    public func updated(idx: Int, lambda: JSON->JSON) -> JSON {
+        switch self {
+        case .Sequence(var array):
+            if let object: AnyObject = lambda(self[idx]).object {
+                if array.count > idx {
+                    array[idx] = object
+                    return .Sequence(array)
+                }
+                return .Null(NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"]))
+            }
+            return .Null(NSError(domain: ErrorDomain, code:ErrorNilInsert , userInfo: [NSLocalizedDescriptionKey: "Attempt to insert nil object to Array"]))
+        default:
+            return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
+        }
+    }
+    
+    /**
+       Update for .Mapping: json = json.updated("key") { j in ... }
+    */
+    public func updated(key: String, lambda: JSON->JSON) -> JSON {
+        switch self {
+        case .Mapping(var dictionary):
+            if let object: AnyObject = lambda(self[key]).object {
+                dictionary[key] = object
+                return .Mapping(dictionary)
+            }
+            return .Null(NSError(domain: ErrorDomain, code:ErrorNilInsert , userInfo: [NSLocalizedDescriptionKey: "Attempt to insert nil value to Dictionary"]))
+        default:
+            return .Null(NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"]))
+        }
+    }
+    
+    /**
+       Update for JSON by index and keys array:
+           json = json.updated([0,"key1","key2"], json2)
+    */
+    public func updated<T>(arr: Array<T>, newValue: JSON) -> JSON {
+        var value = self
+        for i in 0..<arr.count-1 {
+            value = {
+                switch (arr[i]) {
+                case let idx as Int:
+                    return value[idx]
+                case let key as String:
+                    return value[key]
+                default:
+                    return .Null(nil)
+                }
+                }()
+        }
+        
+        switch (arr.last!) {
+        case let idx as Int:
+            value = value.updated(idx, lambda: { a in newValue })
+        case let key as String:
+            value = value.updated(key, lambda: { a in newValue })
+        default:
+            value = .Null(nil)
+        }
+        
+        if arr.count == 1 {
+            return value
+        }
+        
+        var arr2 = arr
+        arr2.removeLast()
+        
+        return self.updated(arr2, newValue: value)
+    }
+    
+    /**
+       Update for JSON by index and keys tuple:
+           json = json.updated((0,"key1","key2"), json2)
+    */
+    public func updated<T>(tuple: T, newValue: JSON) -> JSON {
+        var arr = [Any]()
+        iterate_tuple(tuple) { t in
+            arr.append(t)
+        }
+        
+        return self.updated(arr, newValue: newValue)
+    }
+    
+    private func iterate_tuple<T>(tuple: T, block: Any->()) {
+        let mirror = reflect(tuple)
+        for i in 0..<mirror.count {
+            block(mirror[i].1.value)
         }
     }
 }

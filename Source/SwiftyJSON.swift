@@ -1,4 +1,4 @@
-//  JSON.swift
+//  SwiftyJSON.swift
 //
 //  Copyright (c) 2014 Ruoyu Fu, Pinglin Tang
 //

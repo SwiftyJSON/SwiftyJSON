@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let json = JSON(data:data)
             viewController.json = json
         } else {
-            viewController.json = JSON.Null(nil)
+            viewController.json = JSON.nullJSON
         }
         
         return true

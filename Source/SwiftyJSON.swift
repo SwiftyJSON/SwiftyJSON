@@ -126,6 +126,21 @@ public struct JSON {
 // MARK: - SequenceType
 extension JSON: SequenceType{
     
+    /// `true` if and only if self's type is `.Array` or `.Dictionary` and it is empty
+    var isEmpty: Bool {
+        get {
+            switch self.type {
+            case .Array:
+                return (self.object as Array<AnyObject>).isEmpty
+            case .Dictionary:
+                return (self.object as Dictionary<String, AnyObject>).isEmpty
+            default:
+                return false
+            }
+        }
+    }
+    
+    /// `count` value if self's type is `.Array` or `.Dictionary` otherwise is `0`
     public var count: Int {
         get {
             switch self.type {
@@ -136,10 +151,9 @@ extension JSON: SequenceType{
             }
         }
     }
-    /**
-       When .Sequence return GeneratorOf<(index, JSON(element))>
-       When .Mapping return GeneratorOf<(key, JSON(value))>
-     */
+
+    /// - If self's type is .Array return GeneratorOf<(index, JSON(element))> otherwise return `nil`
+    /// - If self's type is .Dictionary return GeneratorOf<(index, JSON(element))> otherwise return `nil`
     public func generate() -> GeneratorOf <(String, JSON)> {
         switch self.type {
         case .Array:
@@ -350,7 +364,7 @@ extension JSON: Printable, DebugPrintable {
     }
 }
 
-// MARK: - Sequence: Array<JSON>
+// MARK: - Array
 extension JSON {
     
     //Optional Array<JSON>
@@ -385,10 +399,13 @@ extension JSON {
                 return nil
             }
         }
+        set {
+            self.object = newValue ?? NSNull()
+        }
     }
 }
 
-// MARK: - Mapping: Dictionary<String, JSON>
+// MARK: - Dictionary
 extension JSON {
     
     //Optional Dictionary<String, JSON>
@@ -424,10 +441,13 @@ extension JSON {
                 return nil
             }
         }
+        set {
+            self.object = newValue ?? NSNull()
+        }
     }
 }
 
-//MARK: - Scalar: Bool
+//MARK: - Bool
 extension JSON: BooleanType {
     
     //Optional bool
@@ -440,24 +460,29 @@ extension JSON: BooleanType {
                 return nil
             }
         }
+        set {
+            self.object = newValue ?? NSNull()
+        }
     }
 
     //Non-optional bool
     public var boolValue: Bool {
-        switch self.type {
-        case .Bool, .Number, .String:
-            return self.object.boolValue
-        case .Array, .Dictionary:
-            return self.object.count > 0
-        case .Null:
-            return false
-        default:
-            return false
+        get {
+            switch self.type {
+            case .Bool, .Number, .String:
+                return self.object.boolValue
+            case .Array, .Dictionary:
+                return self.object.count > 0
+            case .Null:
+                return false
+            default:
+                return false
+            }
         }
     }
 }
 
-//MARK: - Scalar: String
+//MARK: - String
 extension JSON {
 
     //Optional string
@@ -469,6 +494,9 @@ extension JSON {
             default:
                 return nil
             }
+        }
+        set {
+            self.object = newValue ?? NSNull()
         }
     }
     
@@ -489,7 +517,7 @@ extension JSON {
     }
 }
 
-//MARK: - Scalar: Number
+//MARK: - Number
 extension JSON {
     
     //Optional number
@@ -501,6 +529,9 @@ extension JSON {
             default:
                 return nil
             }
+        }
+        set {
+            self.object = newValue ?? NSNull()
         }
     }
     
@@ -537,6 +568,9 @@ extension JSON {
                 return nil
             }
         }
+        set {
+            self.object = NSNull()
+        }
     }
 }
 
@@ -570,6 +604,9 @@ extension JSON {
             }
             return nil
         }
+        set {
+            self.object = newValue ?? NSNull()
+        }
     }
     
     public var doubleValue: Double {
@@ -584,6 +621,9 @@ extension JSON {
                 return self.object.floatValue
             }
             return nil
+        }
+        set {
+            self.object = newValue ?? NSNull()
         }
     }
     
@@ -600,6 +640,9 @@ extension JSON {
             }
             return nil
         }
+        set {
+            self.object = newValue ?? NSNull()
+        }
     }
     
     public var intValue: Int {
@@ -614,6 +657,9 @@ extension JSON {
                 return self.object.unsignedLongValue
             }
             return nil
+        }
+        set {
+            self.object = newValue ?? NSNull()
         }
     }
     

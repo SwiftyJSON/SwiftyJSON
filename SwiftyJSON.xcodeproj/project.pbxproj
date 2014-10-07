@@ -12,6 +12,7 @@
 		A819C49719E1A7DD00ADCC3D /* LiteralConvertibleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49619E1A7DD00ADCC3D /* LiteralConvertibleTests.swift */; };
 		A819C49919E1B10300ADCC3D /* RawRepresentableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49819E1B10300ADCC3D /* RawRepresentableTests.swift */; };
 		A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */; };
+		A819C4A119E37FC600ADCC3D /* PrintableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C4A019E37FC600ADCC3D /* PrintableTests.swift */; };
 		A8491E1E19CD6DAE00CCFAE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */; };
 		A885D1DC19CFCFF0002FD4C3 /* SwiftyJSONTests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */; };
@@ -35,6 +36,7 @@
 		A819C49619E1A7DD00ADCC3D /* LiteralConvertibleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiteralConvertibleTests.swift; sourceTree = "<group>"; };
 		A819C49819E1B10300ADCC3D /* RawRepresentableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawRepresentableTests.swift; sourceTree = "<group>"; };
 		A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptTests.swift; sourceTree = "<group>"; };
+		A819C4A019E37FC600ADCC3D /* PrintableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintableTests.swift; sourceTree = "<group>"; };
 		A82A1C0D19D922DC009A653D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSONTests.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */,
 				A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */,
+				A819C4A019E37FC600ADCC3D /* PrintableTests.swift */,
 				A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */,
 				A819C49619E1A7DD00ADCC3D /* LiteralConvertibleTests.swift */,
 				A819C49819E1B10300ADCC3D /* RawRepresentableTests.swift */,
@@ -236,6 +239,7 @@
 				A819C49919E1B10300ADCC3D /* RawRepresentableTests.swift in Sources */,
 				A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */,
 				A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */,
+				A819C4A119E37FC600ADCC3D /* PrintableTests.swift in Sources */,
 				A819C49719E1A7DD00ADCC3D /* LiteralConvertibleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

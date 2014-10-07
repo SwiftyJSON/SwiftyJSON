@@ -159,7 +159,7 @@ extension JSON: SequenceType{
         case .Array:
             let array_ = object as Array<AnyObject>
             var generate_ = array_.generate()
-            var index_: Int = -1
+            var index_: Int = 0
             return GeneratorOf<(String, JSON)> {
                 if let element_: AnyObject = generate_.next() {
                     return ("\(index_++)", JSON(element_))

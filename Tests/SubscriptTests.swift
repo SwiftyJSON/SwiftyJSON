@@ -160,7 +160,6 @@ class SubscriptTests: XCTestCase {
     func testDictionaryAllArray() {
         //Swift bug: [1, 2.01,3.09] is convert to [1, 2, 3] (Array<Int>)
         var json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
-        let array = NSArray(objects: NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789))
         XCTAssertEqual(json[0], [1,2.123456,123456789])
         XCTAssertEqual(json[0][1].double!, 2.123456)
         XCTAssertEqual(json[0][2], 123456789)

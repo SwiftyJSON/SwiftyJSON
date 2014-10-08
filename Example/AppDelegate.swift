@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let viewController = navigationController.topViewController as ViewController
         
         if let file = NSBundle(forClass:AppDelegate.self).pathForResource("SwiftyJSONTests", ofType: "json") {
-            let data = NSData(contentsOfFile: file)
+            let data = NSData(contentsOfFile: file)!
             let json = JSON(data:data)
             viewController.json = json
         } else {

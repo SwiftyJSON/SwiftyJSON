@@ -246,71 +246,80 @@ extension JSON {
 
 //MARK:- LiteralConvertible
 extension JSON: StringLiteralConvertible {
-    
-    public static func convertFromStringLiteral(value: StringLiteralType) -> JSON {
-        return JSON(value)
-    }
-    
-    public static func convertFromExtendedGraphemeClusterLiteral(value: StringLiteralType) -> JSON {
-        return JSON(value)
-    }
+	
+	public init(stringLiteral value: StringLiteralType) {
+		self.init(value)
+	}
+	
+	public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+		self.init(value)
+	}
+	
+	public init(unicodeScalarLiteral value: StringLiteralType) {
+		self.init(value)
+	}
 }
 
 extension JSON: IntegerLiteralConvertible {
-    public static func convertFromIntegerLiteral(value: IntegerLiteralType) -> JSON {
-        return JSON(value)
-    }
+
+	public init(integerLiteral value: IntegerLiteralType) {
+		self.init(value)
+	}
 }
 
 extension JSON: BooleanLiteralConvertible {
-    public static func convertFromBooleanLiteral(value: BooleanLiteralType) -> JSON {
-        return JSON(value)
-    }
+	
+	public init(booleanLiteral value: BooleanLiteralType) {
+		self.init(value)
+	}
 }
 
 extension JSON: FloatLiteralConvertible {
-    public static func convertFromFloatLiteral(value: FloatLiteralType) -> JSON {
-        return JSON(value)
-    }
+	
+	public init(floatLiteral value: FloatLiteralType) {
+		self.init(value)
+	}
 }
 
 extension JSON: DictionaryLiteralConvertible {
-    public static func convertFromDictionaryLiteral(elements: (String, AnyObject)...) -> JSON {
-        var dictionary_ = [String : AnyObject]()
-        for (key_, value) in elements {
-            dictionary_[key_] = value
-        }
-        return JSON(dictionary_)
-    }
+	
+	public init(dictionaryLiteral elements: (String, AnyObject)...) {
+		var dictionary_ = [String : AnyObject]()
+		for (key_, value) in elements {
+			dictionary_[key_] = value
+		}
+		self.init(dictionary_)
+	}
 }
 
 extension JSON: ArrayLiteralConvertible {
-    public static func convertFromArrayLiteral(elements: AnyObject...) -> JSON {
-        return JSON(elements)
-    }
+	
+	public init(arrayLiteral elements: AnyObject...) {
+		self.init(elements)
+	}
 }
 
 extension JSON: NilLiteralConvertible {
-    public static func convertFromNilLiteral() -> JSON {
-        return JSON(NSNull())
-    }
+	
+	public init(nilLiteral: ()) {
+		self.init(NSNull())
+	}
 }
 
 //MARK:- RawRepresentable
 extension JSON: RawRepresentable {
-    
-    public static func fromRaw(raw: AnyObject) -> JSON? {
-        let json = JSON(raw)
-        if json.type == .Unknow {
-            return nil
-        } else {
-            return json
-        }
-    }
-    
-    public func toRaw() -> AnyObject {
-        return self.object
-    }
+	
+	public init?(rawValue: AnyObject) {
+		if JSON(rawValue).type == .Unknow {
+			return nil
+		} else {
+			self.init(rawValue)
+		}
+	}
+	
+	public var rawValue: AnyObject {
+		return self.object
+	}
 }
 
 //MARK: - Printable, DebugPrintable

@@ -1,4 +1,4 @@
-//  SwiftyJSON.h
+//  ArrayTests.swift
 //
 //  Copyright (c) 2014 Pinglin Tang
 //
@@ -21,27 +21,26 @@
 //  THE SOFTWARE.
 
 import UIKit
+import XCTest
 import SwiftyJSON
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class ArrayTests: XCTestCase {
 
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        let navigationController = self.window?.rootViewController as UINavigationController
-        let viewController = navigationController.topViewController as ViewController
-        
-        if let file = NSBundle(forClass:AppDelegate.self).pathForResource("SwiftyJSONTests", ofType: "json") {
-            let data = NSData(contentsOfFile: file)
-            let json = JSON(data:data)
-            viewController.json = json
-        } else {
-            viewController.json = JSON.nullJSON
-        }
-        
-        return true
+    func testSingleDimensionalArraysGetter() {
+        let array = ["1","2", "a", "B", "D"]
+        let json = JSON(array)
+        XCTAssertEqual((json.array![0] as JSON).string!, "1")
+        XCTAssertEqual((json.array![1] as JSON).string!, "2")
+        XCTAssertEqual((json.array![2] as JSON).string!, "a")
+        XCTAssertEqual((json.array![3] as JSON).string!, "B")
+        XCTAssertEqual((json.array![4] as JSON).string!, "D")
+    }
+    
+    func testSingleDimensionalArraysSetter() {
+        let array = ["1","2", "a", "B", "D"]
+        var json = JSON(array)
+        json.arrayObject = ["111", "222"]
+        XCTAssertEqual((json.array![0] as JSON).string!, "111")
+        XCTAssertEqual((json.array![1] as JSON).string!, "222")
     }
 }
-

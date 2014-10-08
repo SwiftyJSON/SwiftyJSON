@@ -1,4 +1,4 @@
-//  SwiftyJSON.h
+//  StringTests.swift
 //
 //  Copyright (c) 2014 Pinglin Tang
 //
@@ -21,27 +21,32 @@
 //  THE SOFTWARE.
 
 import UIKit
+import XCTest
 import SwiftyJSON
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class StringTests: XCTestCase {
 
-    var window: UIWindow?
+    func testString() {
+        //getter
+        var json = JSON("abcdefg hijklmn;opqrst.?+_()")
+        XCTAssertEqual(json.string!, "abcdefg hijklmn;opqrst.?+_()")
+        XCTAssertEqual(json.stringValue, "abcdefg hijklmn;opqrst.?+_()")
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        let navigationController = self.window?.rootViewController as UINavigationController
-        let viewController = navigationController.topViewController as ViewController
-        
-        if let file = NSBundle(forClass:AppDelegate.self).pathForResource("SwiftyJSONTests", ofType: "json") {
-            let data = NSData(contentsOfFile: file)
-            let json = JSON(data:data)
-            viewController.json = json
-        } else {
-            viewController.json = JSON.nullJSON
-        }
-        
-        return true
+        json.string = "12345?67890.@#"
+        XCTAssertEqual(json.string!, "12345?67890.@#")
+        XCTAssertEqual(json.stringValue, "12345?67890.@#")
+    }
+    
+    func testURL() {
+        let json = JSON("http://github.com")
+        XCTAssertEqual(json.URL!, NSURL(string:"http://github.com"))
+    }
+
+    func testURLPercentEscapes() {
+        let emDash = "\\u2014"
+        let urlString = "http://examble.com/unencoded" + emDash + "string"
+        let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        let json = JSON(urlString)
+        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!), "Wrong unpacked ")
     }
 }
-

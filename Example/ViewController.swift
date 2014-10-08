@@ -25,7 +25,7 @@ import SwiftyJSON
 
 class ViewController: UITableViewController {
 
-    var json: JSON = JSON.Null(nil)
+    var json: JSON = JSON.nullJSON
     
     // MARK: - Table view data source
 
@@ -34,11 +34,9 @@ class ViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch self.json {
-        case .Sequence(let array):
-            return array.count
-        case .Mapping(let dictionary):
-            return dictionary.count
+        switch self.json.type {
+        case Type.Array, Type.Dictionary:
+            return self.json.count
         default:
             return 1
         }
@@ -49,12 +47,12 @@ class ViewController: UITableViewController {
             
         var row = indexPath.row
         
-        switch self.json {
-        case .Sequence(let array):
+        switch self.json.type {
+        case .Array:
             cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
-        case .Mapping(let dictionary):
-            let key: AnyObject = (dictionary as NSDictionary).allKeys[row]
+        case .Dictionary:
+            let key: AnyObject = (self.json.object as NSDictionary).allKeys[row]
             let value = self.json[key as String]
             cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
@@ -73,12 +71,12 @@ class ViewController: UITableViewController {
             
             if let indexPath = self.tableView.indexPathForSelectedRow() {
                 var row = indexPath.row
-                var nextJson: JSON = JSON.Null(nil)
+                var nextJson: JSON = JSON.nullJSON
                 
-                switch self.json {
-                case .Sequence:
+                switch self.json.type {
+                case .Array:
                     nextJson = self.json[row]
-                case .Mapping where row < self.json.dictionaryValue.count:
+                case .Dictionary where row < self.json.dictionaryValue.count:
                     let key = self.json.dictionaryValue.keys.array[row]
                     if let value = self.json.dictionary?[key] {
                         nextJson = value

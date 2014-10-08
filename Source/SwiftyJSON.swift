@@ -65,10 +65,9 @@ public struct JSON {
             _object = newValue
             switch newValue {
             case let number as NSNumber:
-                switch String.fromCString(number.objCType)! {
-                case "c", "C":
+                if number.isBool {
                     _type = .Bool
-                default:
+                } else {
                     _type = .Number
                 }
             case let string as NSString:
@@ -81,6 +80,7 @@ public struct JSON {
                 _type = .Dictionary
             default:
                 _type = .Unknow
+                _object = NSNull()
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
             }
         }
@@ -461,7 +461,11 @@ extension JSON: BooleanType {
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSNumber(bool: newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
 
@@ -478,6 +482,9 @@ extension JSON: BooleanType {
             default:
                 return false
             }
+        }
+        set {
+            self.object = NSNumber(bool: newValue)
         }
     }
 }
@@ -496,7 +503,11 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSString(string:newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
@@ -513,6 +524,9 @@ extension JSON {
             default:
                 return ""
             }
+        }
+        set {
+            self.object = NSString(string:newValue)
         }
     }
 }
@@ -531,7 +545,11 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = newValue!.copy()
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
@@ -552,6 +570,9 @@ extension JSON {
             default:
                 return NSNumber(double: 0.0)
             }
+        }
+        set {
+            self.object = newValue.copy()
         }
     }
 }
@@ -591,6 +612,9 @@ extension JSON {
                 return nil
             }
         }
+        set {
+            self.object = newValue?.absoluteString ?? NSNull()
+        }
     }
 }
 
@@ -599,193 +623,265 @@ extension JSON {
     
     public var double: Double? {
         get {
-            if self.type == .Number {
-                return self.object.doubleValue
-            }
-            return nil
+            return self.number?.doubleValue
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSNumber(double: newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
     public var doubleValue: Double {
         get {
-            return self.double ?? 0.0
+            return self.numberValue.doubleValue
+        }
+        set {
+            self.object = NSNumber(double: newValue)
         }
     }
     
     public var float: Float? {
         get {
-            if self.type == .Number {
-                return self.object.floatValue
-            }
-            return nil
+            return self.number?.floatValue
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSNumber(float: newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
     public var floatValue: Float {
         get {
-            return self.float ?? 0.0
+            return self.numberValue.floatValue
+        }
+        set {
+            self.object = NSNumber(float: newValue)
         }
     }
     
     public var int: Int? {
         get {
-            if self.type == .Number {
-                return self.object.longValue
-            }
-            return nil
+            return self.number?.longValue
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSNumber(integer: newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
     public var intValue: Int {
         get {
-            return self.int ?? 0
+            return self.numberValue.integerValue
+        }
+        set {
+            self.object = NSNumber(integer: newValue)
         }
     }
     
     public var uInt: UInt? {
         get {
-            if self.type == .Number {
-                return self.object.unsignedLongValue
-            }
-            return nil
+            return self.number?.unsignedLongValue
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSNumber(unsignedLong: newValue!)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
     
     public var uIntValue: UInt {
         get {
-            return self.uInt ?? 0
+            return self.numberValue.unsignedLongValue
+        }
+        set {
+            self.object = NSNumber(unsignedLong: newValue)
         }
     }
 
     public var int8: Int8? {
         get {
-            if self.type == .Number {
-                return self.object.charValue
+            return self.number?.charValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(char: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var int8Value: Int8 {
         get {
-            return self.int8 ?? 0
+            return self.numberValue.charValue
+        }
+        set {
+            self.object = NSNumber(char: newValue)
         }
     }
     
     public var uInt8: UInt8? {
         get {
-            if self.type == .Number {
-                return self.object.unsignedCharValue
+            return self.number?.unsignedCharValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(unsignedChar: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var uInt8Value: UInt8 {
         get {
-            return self.uInt8 ?? 0
+            return self.numberValue.unsignedCharValue
+        }
+        set {
+            self.object = NSNumber(unsignedChar: newValue)
         }
     }
     
     public var int16: Int16? {
         get {
-            if self.type == .Number {
-                return self.object.shortValue
+            return self.number?.shortValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(short: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var int16Value: Int16 {
         get {
-            return self.int16 ?? 0
+            return self.numberValue.shortValue
+        }
+        set {
+            self.object = NSNumber(short: newValue)
         }
     }
     
     public var uInt16: UInt16? {
         get {
-            if self.type == .Number {
-                return self.object.unsignedShortValue
+            return self.number?.unsignedShortValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(unsignedShort: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var uInt16Value: UInt16 {
         get {
-            return self.uInt16 ?? 0
+            return self.numberValue.unsignedShortValue
+        }
+        set {
+            self.object = NSNumber(unsignedShort: newValue)
         }
     }
 
     public var int32: Int32? {
         get {
-            if self.type == .Number {
-                return self.object.intValue
+            return self.number?.intValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(int: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var int32Value: Int32 {
         get {
-            return self.int32 ?? 0
+            return self.numberValue.intValue
+        }
+        set {
+            self.object = NSNumber(int: newValue)
         }
     }
     
     public var uInt32: UInt32? {
         get {
-            if self.type == .Number {
-                return self.object.unsignedIntValue
+            return self.number?.unsignedIntValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(unsignedInt: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var uInt32Value: UInt32 {
         get {
-            return self.uInt32 ?? 0
+            return self.numberValue.unsignedIntValue
+        }
+        set {
+            self.object = NSNumber(unsignedInt: newValue)
         }
     }
     
     public var int64: Int64? {
         get {
-            if self.type == .Number {
-                return self.object.longLongValue
+            return self.number?.longLongValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(longLong: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var int64Value: Int64 {
         get {
-            return self.int64 ?? 0
+            return self.numberValue.longLongValue
+        }
+        set {
+            self.object = NSNumber(longLong: newValue)
         }
     }
     
     public var uInt64: UInt64? {
         get {
-            if self.type == .Number {
-                return self.object.unsignedLongLongValue
+            return self.number?.unsignedLongLongValue
+        }
+        set {
+            if newValue != nil {
+                self.object = NSNumber(unsignedLongLong: newValue!)
+            } else {
+                self.object =  NSNull()
             }
-            return nil
         }
     }
     
     public var uInt64Value: UInt64 {
         get {
-            return self.uInt64 ?? 0
+            return self.numberValue.unsignedLongLongValue
+        }
+        set {
+            self.object = NSNumber(unsignedLongLong: newValue)
         }
     }
 }
@@ -883,7 +979,11 @@ extension NSNumber: Comparable {
         get {
             switch String.fromCString(self.objCType)! {
             case "c", "C":
-                return true
+                if self.compare(NSNumber(bool: true)) == NSComparisonResult.OrderedSame || self.compare(NSNumber(bool: false)) == NSComparisonResult.OrderedSame {
+                    return true
+                } else {
+                    return false
+                }
             default:
                 return false
             }

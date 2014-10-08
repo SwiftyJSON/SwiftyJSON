@@ -14,7 +14,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 	- [Non-optional getter](#non-optional-getter)
 	- [Setter](#setter)
 	- [Raw object](#raw-object)
-	- [Literal convertible](#literal-convertible)
+	- [Literal convertibles](#literal-convertibles)
 1. [Work with Alamofire](#work-with-alamofire)
 	
 ##Why is the typical JSON handling in Swift NOT good?
@@ -143,11 +143,12 @@ let name = json[0]["name"].stringValue
 
 ####Loop
 ```swift
-let json = JSON(data:dataFromNetworking)
-	//If json is .Dictionary
+//If json is .Dictionary
 for (key: String, subJson: JSON) in json {
-	//Do something you want
+//Do something you want
 }
+```
+```swift
 
 //If json is .Array
 //The `index` is 0..<json.count's string value
@@ -280,8 +281,8 @@ if let json = JSON.fromRaw(object) {
 	//object can not be converted to JSON
 }
 ```
-####Literal convertible
-More info about the literal convertible. please read [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/) by Mattt Thompson
+####Literal convertibles
+More info about the literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
 ```swift
 //StringLiteralConvertible
 let json:JSON = "I'm a json"

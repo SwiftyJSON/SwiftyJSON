@@ -20,6 +20,8 @@
 		A87080EA19E43C0700CDE086 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87080E919E43C0700CDE086 /* StringTests.swift */; };
 		A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */; };
 		A885D1DC19CFCFF0002FD4C3 /* SwiftyJSONTests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */; };
+		A8B66C8C19E51D6500540692 /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8B19E51D6500540692 /* DictionaryTests.swift */; };
+		A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8D19E52F4200540692 /* ArrayTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		A87080E919E43C0700CDE086 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		A885D1D119CF1EE6002FD4C3 /* SwiftyJSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSONTests.swift; sourceTree = "<group>"; };
 		A885D1DA19CFCFF0002FD4C3 /* SwiftyJSONTests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SwiftyJSONTests.json; sourceTree = "<group>"; };
+		A8B66C8B19E51D6500540692 /* DictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTests.swift; sourceTree = "<group>"; };
+		A8B66C8D19E52F4200540692 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 				A87080E519E3DF7800CDE086 /* ComparableTests.swift */,
 				A87080E919E43C0700CDE086 /* StringTests.swift */,
 				A87080E719E439DA00CDE086 /* NumberTests.swift */,
+				A8B66C8B19E51D6500540692 /* DictionaryTests.swift */,
+				A8B66C8D19E52F4200540692 /* ArrayTests.swift */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
 			path = Tests;
@@ -253,6 +259,8 @@
 				A819C49919E1B10300ADCC3D /* RawRepresentableTests.swift in Sources */,
 				A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */,
 				A885D1D219CF1EE6002FD4C3 /* SwiftyJSONTests.swift in Sources */,
+				A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */,
+				A8B66C8C19E51D6500540692 /* DictionaryTests.swift in Sources */,
 				A819C4A119E37FC600ADCC3D /* PrintableTests.swift in Sources */,
 				A819C49719E1A7DD00ADCC3D /* LiteralConvertibleTests.swift in Sources */,
 				A87080EA19E43C0700CDE086 /* StringTests.swift in Sources */,

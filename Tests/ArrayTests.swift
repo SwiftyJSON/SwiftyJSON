@@ -1,4 +1,4 @@
-//  StringTests.swift
+//  ArrayTests.swift
 //
 //  Copyright (c) 2014 Pinglin Tang
 //
@@ -24,29 +24,23 @@ import UIKit
 import XCTest
 import SwiftyJSON
 
-class StringTests: XCTestCase {
+class ArrayTests: XCTestCase {
 
-    func testString() {
-        //getter
-        var json = JSON("abcdefg hijklmn;opqrst.?+_()")
-        XCTAssertEqual(json.string!, "abcdefg hijklmn;opqrst.?+_()")
-        XCTAssertEqual(json.stringValue, "abcdefg hijklmn;opqrst.?+_()")
-
-        json.string = "12345?67890.@#"
-        XCTAssertEqual(json.string!, "12345?67890.@#")
-        XCTAssertEqual(json.stringValue, "12345?67890.@#")
+    func testSingleDimensionalArraysGetter() {
+        let array = ["1","2", "a", "B", "D"]
+        let json = JSON(array)
+        XCTAssertEqual((json.array![0] as JSON).string!, "1")
+        XCTAssertEqual((json.array![1] as JSON).string!, "2")
+        XCTAssertEqual((json.array![2] as JSON).string!, "a")
+        XCTAssertEqual((json.array![3] as JSON).string!, "B")
+        XCTAssertEqual((json.array![4] as JSON).string!, "D")
     }
     
-    func testURL() {
-        let json = JSON("http://github.com")
-        XCTAssertEqual(json.URL!, NSURL(string:"http://github.com"))
-    }
-
-    func testURLPercentEscapes() {
-        let emDash = "\\u2014"
-        let urlString = "http://examble.com/unencoded" + emDash + "string"
-        let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        let json = JSON(urlString)
-        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!), "Wrong unpacked ")
+    func testSingleDimensionalArraysSetter() {
+        let array = ["1","2", "a", "B", "D"]
+        var json = JSON(array)
+        json.arrayObject = ["111", "222"]
+        XCTAssertEqual((json.array![0] as JSON).string!, "111")
+        XCTAssertEqual((json.array![1] as JSON).string!, "222")
     }
 }

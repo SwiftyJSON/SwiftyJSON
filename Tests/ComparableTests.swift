@@ -1,4 +1,3 @@
-//
 //  ComparableTests.swift
 //
 //  Copyright (c) 2014 Pinglin Tang

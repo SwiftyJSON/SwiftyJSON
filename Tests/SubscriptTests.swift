@@ -159,7 +159,7 @@ class SubscriptTests: XCTestCase {
     
     func testDictionaryAllArray() {
         //Swift bug: [1, 2.01,3.09] is convert to [1, 2, 3] (Array<Int>)
-        var json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
         XCTAssertEqual(json[0], [1,2.123456,123456789])
         XCTAssertEqual(json[0][1].double!, 2.123456)
         XCTAssertEqual(json[0][2], 123456789)
@@ -172,10 +172,30 @@ class SubscriptTests: XCTestCase {
     }
     
     func testOutOfBounds() {
-        var json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
         XCTAssertEqual(json[9], JSON.nullJSON)
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[9][8], JSON.nullJSON)
+        XCTAssertEqual(json[8][7].error!.code, ErrorIndexOutOfBounds)
+    }
+    
+    func testErrorWrongType() {
+        let json = JSON(12345)
+        XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[9].error!.code, ErrorWrongType)
         XCTAssertEqual(json[8][7].error!.code, ErrorWrongType)
+        XCTAssertEqual(json["name"], JSON.nullJSON)
+        XCTAssertEqual(json["name"].error!.code, ErrorWrongType)
+        XCTAssertEqual(json[0]["name"].error!.code, ErrorWrongType)
+        XCTAssertEqual(json["type"]["name"].error!.code, ErrorWrongType)
+        XCTAssertEqual(json["name"][99].error!.code, ErrorWrongType)
+    }
+    
+    func testErrorNotExist() {
+        let json = ["name":"NAME", "age":15]
+        XCTAssertEqual(json["Type"], JSON.nullJSON)
+        XCTAssertEqual(json["Type"].error!.code, ErrorNotExist)
+        XCTAssertEqual(json["Type"][1].error!.code, ErrorNotExist)
+        XCTAssertEqual(json["Type"]["Value"].error!.code, ErrorNotExist)
     }
 }

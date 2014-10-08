@@ -27,6 +27,26 @@ import SwiftyJSON
 
 class SequenceTypeTests: XCTestCase {
 
+    func testJSONFile() {
+        if let file = NSBundle(forClass:BaseTests.self).pathForResource("Tests", ofType: "json") {
+            let testData = NSData(contentsOfFile: file)
+            let json = JSON(data:testData)
+            for (index, sub) in json {
+                switch (index as NSString).integerValue {
+                case 0:
+                    XCTAssertEqual(sub["id_str"],"240558470661799936")
+                case 1:
+                    XCTAssertEqual(sub["id_str"],"240556426106372096")
+                case 2:
+                    XCTAssertEqual(sub["id_str"],"240539141056638977")
+                default:0
+                }
+            }
+        } else {
+            XCTFail("Can't find the test JSON file")
+        }
+    }
+    
     func testArrayAllNumber() {
         var json:JSON = [1,2.0,3.3,123456789,987654321.123456789]
         XCTAssertEqual(json.count, 5)

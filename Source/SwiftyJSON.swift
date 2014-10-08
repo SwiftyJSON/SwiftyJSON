@@ -202,10 +202,9 @@ extension JSON {
                     returnJSON._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
                 }
             } else {
-                returnJSON._error = NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an array"])
+                returnJSON._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
             }
             return returnJSON
-
         }
         set {
             if self.type == .Array {
@@ -231,7 +230,7 @@ extension JSON {
                     returnJSON._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
                 }
             } else {
-                returnJSON._error = NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Wrong type, It is not an dictionary"])
+                returnJSON._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] failure, It is not an dictionary"])
             }
             return returnJSON
         }
@@ -400,7 +399,11 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSMutableArray(array: newValue!, copyItems: true)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
 }
@@ -442,7 +445,11 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if newValue != nil {
+                self.object = NSMutableDictionary(dictionary: newValue!, copyItems: true)
+            } else {
+                self.object = NSNull()
+            }
         }
     }
 }

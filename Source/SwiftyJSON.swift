@@ -332,7 +332,7 @@ extension JSON: Printable, DebugPrintable {
             case .Null:
                 return self.error?.description ?? "null"
             default:
-                return "unknown"
+                return self.error?.description ?? "unknown"
             }
         }
     }
@@ -351,13 +351,9 @@ extension JSON: Printable, DebugPrintable {
             case .Bool:
                 return (self.object as Bool).description
             case .Null:
-                if self.error != nil {
-                    return self.error!.debugDescription
-                } else {
-                    return "null"
-                }
+                return self.error?.debugDescription ?? "null"
             default:
-                return "unknown"
+                return self.error?.debugDescription ?? "unknown"
             }
         }
     }

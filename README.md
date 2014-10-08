@@ -112,6 +112,20 @@ let json = JSON(data: dataFromNetworking)
 ```swift
 let json = JSON(object: jsonObject)
 ```
+####Loop
+```swift
+let json = JSON(data:dataFromNetworking)
+//If json is .Mapping
+for (key: String, subJson: JSON) in json {
+//Do something you want
+}
+
+//If json is .Sequence
+//The `index` is 0..<json.count's string value
+for (index: String, subJson: JSON) in json {
+//Do something you want
+}
+```
 
 ####Use the optional getter
 ```swift
@@ -170,7 +184,7 @@ let list: Array<JSON> = json["list"].arrayValue
 let user: Dictionary<String, JSON> = json["user"].dictionaryValue
 ```
 
-###Get the raw object from JSON
+####Get the raw object from JSON
 ```swift
 let json = JSON(data: dataFromNetworking)
 if let jsonObject: AnyObject = json.object {

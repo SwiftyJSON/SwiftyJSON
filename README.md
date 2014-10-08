@@ -229,7 +229,7 @@ if let id = json["user"]["is_translator"].bool {
 ```
 ```swift
 //Int
-if let id = json["user"]["id"].integer {
+if let id = json["user"]["id"].int {
    //Do something you want
 } else {
    //Print the error
@@ -241,7 +241,7 @@ if let id = json["user"]["id"].integer {
 Non-optional getter is named `xxxValue`
 ```swift
 //If not a Number or nil, return 0
-let id: Int = json["id"].integerValue
+let id: Int = json["id"].intValue
 ```
 ```swift
 //If not a String or nil, return ""

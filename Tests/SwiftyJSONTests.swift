@@ -60,7 +60,6 @@ class SwiftyJSONTests: XCTestCase {
 
     func testCompare2() {
         let json = JSON("32.1234567890")
-        
     }
     
     func testCompare() {
@@ -252,16 +251,7 @@ class SwiftyJSONTests: XCTestCase {
         let json = JSON(data:self.testData)
         XCTAssertNotNil(json.object)
     }
-    
-    func testJSONURLPercentEscapes() {
-        let emDash = "\\u2014"
-        let urlString = "http://examble.com/unencoded" + emDash + "string"
-        let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
-        let json = JSON(urlString)
-        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!), "Wrong unpacked ")
-    }
-    
     func testNumberCompare(){
         XCTAssertEqual(NSNumber(double: 888332), NSNumber(int:888332))
         XCTAssertNotEqual(NSNumber(double: 888332.1), NSNumber(int:888332))

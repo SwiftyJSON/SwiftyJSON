@@ -1,4 +1,4 @@
-//  SwiftyJSONTests.swift
+//  BaseTests.swift
 //
 //  Copyright (c) 2014 Ruoyu Fu, Pinglin Tang
 //
@@ -24,7 +24,7 @@ import UIKit
 import XCTest
 import SwiftyJSON
 
-class SwiftyJSONTests: XCTestCase {
+class BaseTests: XCTestCase {
 
     var testData: NSData!
     
@@ -32,7 +32,7 @@ class SwiftyJSONTests: XCTestCase {
         
         super.setUp()
         
-        if let file = NSBundle(forClass:SwiftyJSONTests.self).pathForResource("SwiftyJSONTests", ofType: "json") {
+        if let file = NSBundle(forClass:BaseTests.self).pathForResource("Tests", ofType: "json") {
             self.testData = NSData(contentsOfFile: file)
         } else {
             XCTFail("Can't find the test JSON file")

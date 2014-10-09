@@ -67,7 +67,16 @@ class ViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if let nextController = segue.destinationViewController.topViewController as? ViewController {
+
+        var object: AnyObject
+        switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
+        case .OrderedSame, .OrderedDescending:
+            object = segue.destinationViewController.topViewController
+        case .OrderedAscending:
+            object = segue.destinationViewController
+        }
+        
+        if let nextController = object as? ViewController {
             
             if let indexPath = self.tableView.indexPathForSelectedRow() {
                 var row = indexPath.row
@@ -85,6 +94,7 @@ class ViewController: UITableViewController {
                     print("")
                 }
                 nextController.json = nextJson
+                print(nextJson)
             }
         }
     }

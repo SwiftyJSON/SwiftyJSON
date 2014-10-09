@@ -99,7 +99,7 @@ class BaseTests: XCTestCase {
         let new_tweets_1_coordinates_coordinates = JSON([-122.25831,37.871609])
         XCTAssertEqual(tweets_1_coordinates_coordinates, new_tweets_1_coordinates_coordinates)
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_double!, -122.25831)
-        XCTAssertEqual(tweets_1_coordinates_coordinates_point_1_float!, 37.871609)
+        XCTAssertTrue(tweets_1_coordinates_coordinates_point_1_float! == 37.871609)
         let tweets_1_coordinates_coordinates_point_0_string = tweets_1_coordinates_coordinates[0].stringValue
         let tweets_1_coordinates_coordinates_point_1_string = tweets_1_coordinates_coordinates[1].stringValue
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_string, "-122.25831")

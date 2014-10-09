@@ -30,35 +30,35 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = 1234567890.876623
         var jsonR1:JSON = JSON(1234567890.876623)
         XCTAssertEqual(jsonL1, jsonR1)
-        XCTAssertEqual(jsonL1, 1234567890.876623)
+        XCTAssertTrue(jsonL1 == 1234567890.876623)
 
         var jsonL2:JSON = 987654321
         var jsonR2:JSON = JSON(987654321)
         XCTAssertEqual(jsonL2, jsonR2)
-        XCTAssertEqual(jsonR2, 987654321)
+        XCTAssertTrue(jsonR2 == 987654321)
 
         
         var jsonL3:JSON = JSON(NSNumber(double:87654321.12345678))
         var jsonR3:JSON = JSON(NSNumber(double:87654321.12345678))
         XCTAssertEqual(jsonL3, jsonR3)
-        XCTAssertEqual(jsonR3, 87654321.12345678)
+        XCTAssertTrue(jsonR3 == 87654321.12345678)
     }
     
     func testNumberNotEqual() {
         var jsonL1:JSON = 1234567890.876623
         var jsonR1:JSON = JSON(123.123)
         XCTAssertNotEqual(jsonL1, jsonR1)
-        XCTAssertNotEqual(jsonL1, 34343)
+        XCTAssertFalse(jsonL1 == 34343)
         
         var jsonL2:JSON = 8773
         var jsonR2:JSON = JSON(123.23)
         XCTAssertNotEqual(jsonL2, jsonR2)
-        XCTAssertNotEqual(jsonR1, 454352)
+        XCTAssertFalse(jsonR1 == 454352)
         
         var jsonL3:JSON = JSON(NSNumber(double:87621.12345678))
         var jsonR3:JSON = JSON(NSNumber(double:87654321.45678))
         XCTAssertNotEqual(jsonL3, jsonR3)
-        XCTAssertNotEqual(jsonL3, 4545.232)
+        XCTAssertFalse(jsonL3 == 4545.232)
     }
     
     func testNumberGreaterThanOrEqual() {
@@ -133,7 +133,7 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = true
         var jsonR1:JSON = JSON(true)
         XCTAssertEqual(jsonL1, jsonR1)
-        XCTAssertEqual(jsonL1, true)
+        XCTAssertTrue(jsonL1 == true)
 
         var jsonL2:JSON = false
         var jsonR2:JSON = JSON(false)
@@ -145,7 +145,7 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = true
         var jsonR1:JSON = JSON(false)
         XCTAssertNotEqual(jsonL1, jsonR1)
-        XCTAssertNotEqual(jsonL1, false)
+        XCTAssertTrue(jsonL1 != false)
 
         var jsonL2:JSON = false
         var jsonR2:JSON = JSON(true)
@@ -157,7 +157,7 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = true
         var jsonR1:JSON = JSON(true)
         XCTAssertGreaterThanOrEqual(jsonL1, jsonR1)
-        XCTAssertGreaterThanOrEqual(jsonL1,true)
+        XCTAssertTrue(jsonL1 >= true)
         
         var jsonL2:JSON = false
         var jsonR2:JSON = JSON(false)
@@ -169,7 +169,7 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = true
         var jsonR1:JSON = JSON(true)
         XCTAssertLessThanOrEqual(jsonL1, jsonR1)
-        XCTAssertLessThanOrEqual(true, jsonR1)
+        XCTAssertTrue(true <= jsonR1)
         
         var jsonL2:JSON = false
         var jsonR2:JSON = JSON(false)
@@ -234,7 +234,7 @@ class ComparableTests: XCTestCase {
         var jsonR1:JSON = JSON("abcdefg 123456789 !@#$%^&*()")
 
         XCTAssertEqual(jsonL1, jsonR1)
-        XCTAssertEqual(jsonL1, "abcdefg 123456789 !@#$%^&*()")
+        XCTAssertTrue(jsonL1 == "abcdefg 123456789 !@#$%^&*()")
     }
     
     func testStringNotEqual() {
@@ -242,7 +242,7 @@ class ComparableTests: XCTestCase {
         var jsonR1:JSON = JSON("-=[]\\\"987654321")
         
         XCTAssertNotEqual(jsonL1, jsonR1)
-        XCTAssertNotEqual(jsonL1, "not equal")
+        XCTAssertTrue(jsonL1 != "not equal")
     }
     
     func testStringGreaterThanOrEqual() {
@@ -250,12 +250,12 @@ class ComparableTests: XCTestCase {
         var jsonR1:JSON = JSON("abcdefg 123456789 !@#$%^&*()")
         
         XCTAssertGreaterThanOrEqual(jsonL1, jsonR1)
-        XCTAssertGreaterThanOrEqual(jsonL1, "abcdefg 123456789 !@#$%^&*()")
+        XCTAssertTrue(jsonL1 >= "abcdefg 123456789 !@#$%^&*()")
 
         var jsonL2:JSON = "z-+{}:"
         var jsonR2:JSON = JSON("a<>?:")
         XCTAssertGreaterThanOrEqual(jsonL2, jsonR2)
-        XCTAssertGreaterThanOrEqual(jsonL2, "mnbvcxz")
+        XCTAssertTrue(jsonL2 >= "mnbvcxz")
     }
     
     func testStringLessThanOrEqual() {
@@ -263,12 +263,12 @@ class ComparableTests: XCTestCase {
         var jsonR1:JSON = JSON("abcdefg 123456789 !@#$%^&*()")
         
         XCTAssertLessThanOrEqual(jsonL1, jsonR1)
-        XCTAssertLessThanOrEqual(jsonL1, "abcdefg 123456789 !@#$%^&*()")
+        XCTAssertTrue(jsonL1 <= "abcdefg 123456789 !@#$%^&*()")
         
         var jsonL2:JSON = "z-+{}:"
         var jsonR2:JSON = JSON("a<>?:")
         XCTAssertLessThanOrEqual(jsonR2, jsonL2)
-        XCTAssertLessThanOrEqual("mnbvcxz", jsonL2)
+        XCTAssertTrue("mnbvcxz" <= jsonL2)
     }
     
     func testStringGreaterThan() {
@@ -301,7 +301,7 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = nil
         var jsonR1:JSON = JSON(NSNull())
         XCTAssertEqual(jsonL1, jsonR1)
-        XCTAssertNotEqual(jsonL1, "123")
+        XCTAssertTrue(jsonL1 != "123")
         XCTAssertFalse(jsonL1 > "abcd")
         XCTAssertFalse(jsonR1 < "*&^")
         XCTAssertFalse(jsonL1 >= "jhfid")
@@ -314,8 +314,8 @@ class ComparableTests: XCTestCase {
         var jsonL1:JSON = [1,2,"4",5,"6"]
         var jsonR1:JSON = JSON([1,2,"4",5,"6"])
         XCTAssertEqual(jsonL1, jsonR1)
-        XCTAssertEqual(jsonL1, [1,2,"4",5,"6"])
-        XCTAssertNotEqual(jsonL1, ["abcd","efg"])
+        XCTAssertTrue(jsonL1 == [1,2,"4",5,"6"])
+        XCTAssertTrue(jsonL1 != ["abcd","efg"])
         XCTAssertTrue(jsonL1 >= jsonR1)
         XCTAssertTrue(jsonL1 <= jsonR1)
         XCTAssertFalse(jsonL1 > ["abcd",""])

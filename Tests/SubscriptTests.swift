@@ -103,6 +103,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[1]["a"], JSON(rawValue: "A")!)
         XCTAssertEqual(json[1]["b"], JSON("B"))
         XCTAssertNotNil(json[2]["null"].null)
+        XCTAssertNotNil(json[2,"null"].null)
     }
     
     func testDictionaryAllNumber() {
@@ -167,8 +168,12 @@ class SubscriptTests: XCTestCase {
         XCTAssertTrue(json[1] == ["aa","bbb","cccc"])
         XCTAssertTrue(json[2][0] == true)
         XCTAssertTrue(json[2][1] == "766")
+        XCTAssertTrue(json[[2,1]] == "766")
         XCTAssertEqual(json[2][2], JSON(NSNull()))
+        XCTAssertEqual(json[2,2], JSON(NSNull()))
         XCTAssertEqual(json[2][3], JSON(655231.9823))
+        XCTAssertEqual(json[2,3], JSON(655231.9823))
+        XCTAssertEqual(json[[2,3]], JSON(655231.9823))
     }
     
     func testOutOfBounds() {
@@ -177,6 +182,8 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[9][8], JSON.nullJSON)
         XCTAssertEqual(json[8][7].error!.code, ErrorIndexOutOfBounds)
+        XCTAssertEqual(json[8,7].error!.code, ErrorIndexOutOfBounds)
+        XCTAssertEqual(json[999].error!.code, ErrorIndexOutOfBounds)
     }
     
     func testErrorWrongType() {
@@ -189,6 +196,9 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[0]["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json["type"]["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json["name"][99].error!.code, ErrorWrongType)
+        XCTAssertEqual(json[1,"Value"].error!.code, ErrorWrongType)
+        XCTAssertEqual(json[1, 2,"Value"].error!.code, ErrorWrongType)
+        XCTAssertEqual(json[[1, 2,"Value"]].error!.code, ErrorWrongType)
     }
     
     func testErrorNotExist() {
@@ -196,6 +206,34 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["Type"], JSON.nullJSON)
         XCTAssertEqual(json["Type"].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type"][1].error!.code, ErrorNotExist)
+        XCTAssertEqual(json["Type", 1].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type"]["Value"].error!.code, ErrorNotExist)
+        XCTAssertEqual(json["Type","Value"].error!.code, ErrorNotExist)
+    }
+    
+    func testMultilevelGetter() {
+        let json:JSON = [[[[["one":1]]]]]
+        XCTAssertEqual(json[[0, 0, 0, 0, "one"]].int!, 1)
+        XCTAssertEqual(json[0, 0, 0, 0, "one"].int!, 1)
+        XCTAssertEqual(json[0][0][0][0]["one"].int!, 1)
+    }
+    
+    func testMultilevelSetter() {
+        var json:JSON = [[[[["num":1]]]]]
+        json[0, 0, 0, 0, "num"] = 2
+        XCTAssertEqual(json[[0, 0, 0, 0, "num"]].intValue, 2)
+        json[0, 0, 0, 0, "num"] = nil
+        XCTAssertEqual(json[0, 0, 0, 0, "num"].null!, NSNull())
+        json[0, 0, 0, 0, "num"] = 100.009
+        XCTAssertEqual(json[0][0][0][0]["num"].doubleValue, 100.009)
+        json[[0, 0, 0, 0]] = ["name":"Jack"]
+        XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Jack")
+        XCTAssertEqual(json[0][0][0][0]["name"].stringValue, "Jack")
+        XCTAssertEqual(json[[0,0,0,0,"name"]].stringValue, "Jack")
+        json[[0,0,0,0,"name"]].string = "Mike"
+        XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Mike")
+        let path:[SubscriptType] = [0,0,0,0,"name"]
+        json[path].string = "Jim"
+        XCTAssertEqual(json[path].stringValue, "Jim")
     }
 }

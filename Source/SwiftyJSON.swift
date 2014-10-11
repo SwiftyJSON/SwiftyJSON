@@ -185,19 +185,25 @@ extension JSON: SequenceType{
     }
 }
 
+public protocol SubscriptType {}
+extension Int: SubscriptType {}
+extension String: SubscriptType {}
+
+typealias Filter = JSON -> JSON
+
 // MARK: - Subscript
 extension JSON {
     
     /**
        If self is .Sequence return the array[index]'s json else return .Null with error
      */
-    public subscript(idx: Int) -> JSON {
+    private subscript(#index: Int) -> JSON {
         get {
             var returnJSON = JSON.nullJSON
             if self.type == .Array {
                 let array_ = self.object as Array<AnyObject>
-                if array_.count > idx {
-                    returnJSON = JSON(array_[idx])
+                if array_.count > index {
+                    returnJSON = JSON(array_[index])
                 } else {
                     returnJSON._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
                 }
@@ -209,8 +215,8 @@ extension JSON {
         set {
             if self.type == .Array {
                 var array_ = self.object as Array<AnyObject>
-                if array_.count > idx {
-                    array_[idx] = newValue.object
+                if array_.count > index {
+                    array_[index] = newValue.object
                     self.object = array_
                 }
             }
@@ -220,7 +226,7 @@ extension JSON {
     /**
        If self is .Sequence return the dictionary[key]'s JSON else return .Null with error
      */
-    public subscript(key: String) -> JSON {
+    private subscript(#key: String) -> JSON {
         get {
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
@@ -240,6 +246,67 @@ extension JSON {
                 dictionary_[key] = newValue.object
                 self.object = dictionary_
             }
+        }
+    }
+    
+    private subscript(#sub: SubscriptType) -> JSON {
+        get {
+            switch sub {
+            case let key as String: return self[key:key]
+            case let index as Int: return self[index:index]
+            default:return JSON.nullJSON
+            }
+        }
+        set {
+            switch sub {
+            case let key as String: self[key:key] = newValue
+            case let index as Int: self[index:index] = newValue
+            default:0
+            }
+        }
+    }
+    
+    public subscript(path: [SubscriptType]) -> JSON {
+        get {
+            if path.count == 0 {
+                return JSON.nullJSON
+            }
+            
+            var next = self
+            for sub in path {
+                next = next[sub:sub]
+            }
+            return next
+        }
+        set {
+            
+            switch path.count {
+            case 0: return
+            case 1: self[sub:path[0]] = newValue
+            default:
+                var last = newValue
+                var newPath = path
+                newPath.removeLast()
+                for sub in path.reverse() {
+                    var lastLast = self[newPath]
+                    lastLast[sub:sub] = last
+                    last = lastLast
+                    if newPath.count <= 1 {
+                        break
+                    }
+                    newPath.removeLast()
+                }
+                self[sub:newPath[0]] = last
+            }
+        }
+    }
+    
+    public subscript(path: SubscriptType...) -> JSON {
+        get {
+            return self[path]
+        }
+        set {
+            self[path] = newValue
         }
     }
 }

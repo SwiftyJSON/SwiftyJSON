@@ -179,6 +179,7 @@ class SubscriptTests: XCTestCase {
     func testOutOfBounds() {
         let json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
         XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[-2].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[9][8], JSON.nullJSON)
         XCTAssertEqual(json[8][7].error!.code, ErrorIndexOutOfBounds)

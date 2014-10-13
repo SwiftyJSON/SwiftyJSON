@@ -201,18 +201,22 @@ extension JSON {
      */
     private subscript(#index: Int) -> JSON {
         get {
-            var returnJSON = JSON.nullJSON
-            if self.type == .Array {
-                let array_ = self.object as Array<AnyObject>
-                if array_.count > index {
-                    returnJSON = JSON(array_[index])
-                } else {
-                    returnJSON._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
-                }
-            } else {
-                returnJSON._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
+            
+            if self.type != .Array {
+                var errorResult_ = JSON.nullJSON
+                errorResult_._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
+                return errorResult_
             }
-            return returnJSON
+            
+            let array_ = self.object as [AnyObject]
+
+            if index >= 0 && index < array_.count {
+                return JSON(array_[index])
+            }
+            
+            var errorResult_ = JSON.nullJSON
+            errorResult_._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
+            return errorResult_
         }
         set {
             if self.type == .Array {
@@ -253,17 +257,17 @@ extension JSON {
     
     private subscript(#sub: SubscriptType) -> JSON {
         get {
-            switch sub {
-            case let key as String: return self[key:key]
-            case let index as Int: return self[index:index]
-            default:return JSON.nullJSON
+            if sub is String {
+                return self[key:sub as String]
+            } else {
+                return self[index:sub as Int]
             }
         }
         set {
-            switch sub {
-            case let key as String: self[key:key] = newValue
-            case let index as Int: self[index:index] = newValue
-            default:0
+            if sub is String {
+                self[key:sub as String] = newValue
+            } else {
+                self[index:sub as Int] = newValue
             }
         }
     }
@@ -290,9 +294,9 @@ extension JSON {
                 var newPath = path
                 newPath.removeLast()
                 for sub in path.reverse() {
-                    var lastLast = self[newPath]
-                    lastLast[sub:sub] = last
-                    last = lastLast
+                    var previousLast = self[newPath]
+                    previousLast[sub:sub] = last
+                    last = previousLast
                     if newPath.count <= 1 {
                         break
                     }

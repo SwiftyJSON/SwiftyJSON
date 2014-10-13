@@ -265,32 +265,5 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(NSNumber(bool: true), NSNumber(bool:true))
     }
     
-    func testInitPerformance() {
-
-        self.measureBlock() {
-            var t:Int = 0
-            while (true) {
-                if t == 100 {
-                    break
-                }
-                JSON(data:self.testData)
-                t++
-            }
-        }
-    }
-    
-    func testObjectMethodPerformance() {
-        var json = JSON(data:self.testData)
-        self.measureBlock() {
-            var t:Int = 0
-            while (true) {
-                if t == 100 {
-                    break
-                }
-                let object:AnyObject? = json.object
-                t++
-            }
-        }
-    }
 
 }

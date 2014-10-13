@@ -437,19 +437,15 @@ extension JSON: Printable, DebugPrintable {
 
 // MARK: - Array
 extension JSON {
-    
+
     //Optional Array<JSON>
     public var array: Array<JSON>? {
         get {
             if self.type == .Array {
-                let array_ = self.object as Array<AnyObject>
-                var returnArray_ = Array<JSON>()
-                for subObject_ in array_ {
-                    returnArray_.append(JSON(subObject_))
-                }
-                return returnArray_
+                return map(self.object as Array<AnyObject>){ JSON($0) }
+            } else {
+                return nil
             }
-            return nil
         }
     }
     
@@ -483,17 +479,20 @@ extension JSON {
 // MARK: - Dictionary
 extension JSON {
     
+    private func _map<Key:Hashable ,Value, NewValue>(source: [Key: Value], transform: Value -> NewValue) -> [Key: NewValue] {
+        var result = [Key: NewValue](minimumCapacity:source.count)
+        for (key,value) in source {
+            result[key] = transform(value)
+        }
+        return result
+    }
+
     //Optional Dictionary<String, JSON>
     public var dictionary: Dictionary<String, JSON>? {
         get {
-            switch self.type {
-            case .Dictionary:
-                var jsonDictionary_ = Dictionary<String, JSON>()
-                for (key_, value_) in self.object as Dictionary<String, AnyObject> {
-                    jsonDictionary_[key_] = JSON( value_)
-                }
-                return jsonDictionary_
-            default:
+            if self.type == .Dictionary {
+                return _map(self.object as Dictionary<String, AnyObject>){ JSON($0) }
+            } else {
                 return nil
             }
         }

@@ -1052,18 +1052,19 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
+private let trueNumber = NSNumber(bool: true)
+private let falseNumber = NSNumber(bool: false)
+private let trueObjCType = String.fromCString(trueNumber.objCType)
+private let falseObjCType = String.fromCString(falseNumber.objCType)
+
 // MARK: - NSNumber: Comparable
 extension NSNumber: Comparable {
     var isBool:Bool {
         get {
-            switch String.fromCString(self.objCType)! {
-            case "c", "C":
-                if self.compare(NSNumber(bool: true)) == NSComparisonResult.OrderedSame || self.compare(NSNumber(bool: false)) == NSComparisonResult.OrderedSame {
-                    return true
-                } else {
-                    return false
-                }
-            default:
+            let objCType = String.fromCString(self.objCType)
+            if (self.compare(trueNumber) == NSComparisonResult.OrderedSame &&  objCType == trueObjCType) ||  (self.compare(falseNumber) == NSComparisonResult.OrderedSame && objCType == falseObjCType){
+                return true
+            } else {
                 return false
             }
         }

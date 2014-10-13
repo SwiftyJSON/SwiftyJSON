@@ -144,8 +144,10 @@ extension JSON: SequenceType{
     public var count: Int {
         get {
             switch self.type {
-            case .Array, .Dictionary:
-                return self.object.count
+            case .Array:
+                return self.arrayValue.count
+            case .Dictionary:
+                return self.dictionaryValue.count
             default:
                 return 0
             }
@@ -553,8 +555,10 @@ extension JSON: BooleanType {
             switch self.type {
             case .Bool, .Number, .String:
                 return self.object.boolValue
-            case .Array, .Dictionary:
-                return self.object.count > 0
+            case .Array:
+                return self.arrayValue.count > 0
+            case .Dictionary:
+                return self.dictionaryValue.count > 0
             case .Null:
                 return false
             default:

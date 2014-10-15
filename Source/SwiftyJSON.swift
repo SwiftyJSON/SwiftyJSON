@@ -393,6 +393,18 @@ extension JSON: RawRepresentable {
 	public var rawValue: AnyObject {
 		return self.object
 	}
+
+    public func rawData(options opt: NSJSONWritingOptions = .PrettyPrinted, error: NSErrorPointer = nil) -> NSData? {
+        return NSJSONSerialization.dataWithJSONObject(self.object, options: opt, error:error)
+    }
+    
+    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .PrettyPrinted, error: NSErrorPointer = nil) -> String? {
+        if let data = self.rawData(options: opt, error:error) {
+            return NSString(data: data, encoding: encoding)
+        } else {
+            return nil
+        }
+    }
 }
 
 //MARK: - Printable, DebugPrintable

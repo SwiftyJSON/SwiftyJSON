@@ -85,4 +85,17 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+    
+    func testRawStringMethodPerformance() {
+        let json = JSON(data:testData)
+        self.measureBlock() {
+            for _ in 1...100 {
+                autoreleasepool{
+                    var string = json.rawString()
+                    XCTAssertTrue(string != nil)
+                }
+            }
+        }
+    }
+
 }

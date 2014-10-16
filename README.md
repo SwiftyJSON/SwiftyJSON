@@ -262,13 +262,18 @@ json.dictionary = ["name":"Jack", "age":25]
 let jsonObject: AnyObject = json.object
 ```
 ```swift
-if let jsonObject: AnyObject = json.toRaw
+if let jsonObject: AnyObject = json.rawValue
 ```
 ```swift
-if let json = JSON.fromRaw(object) {
-	//object can be converted to JSON
-} else {
-	//object can not be converted to JSON
+//convert the JSON to raw NSData
+if let data = json.rawData() {
+    //Do something you want
+}
+```
+```swift
+//convert the JSON to raw String
+if let string = json.rawString() {
+    //Do something you want
 }
 ```
 ####Literal convertibles
@@ -317,12 +322,13 @@ json["age"] = "25" //It's OK to set String
 json["address"] = "L.A." // Add the "address": "L.A." in json
 ```
 ```swift
-//Mix
+//Array & Dictionary
 var json:JSON =  ["name":"Jack", "age": 25, "list":["a","b","c",["what":"this"]]]
 json["list"][3]["what"] = "that"
 json["list",3,"what"] = "that"
 let path = ["list",3,"what"]
 json[path] = "that"
+```
 ##Work with Alamofire
 
 To use Alamofire and SwiftyJSON, try [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON).

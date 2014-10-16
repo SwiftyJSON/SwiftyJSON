@@ -23,38 +23,6 @@ But while dealing with things that naturally implicit about types such as JSON, 
 
 Take the Twitter API for example: say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline)
 
-```JSON
-
-[
-  {
-    ......
-    "text": "just another test",
-    ......
-    "user": {
-      "name": "OAuth Dancer",
-      "favourites_count": 7,
-      "entities": {
-        "url": {
-          "urls": [
-            {
-              "expanded_url": null,
-              "url": "http://bit.ly/oauth-dancer",
-              "indices": [
-                0,
-                26
-              ],
-              "display_url": null
-            }
-          ]
-        }
-      ......
-    },
-    "in_reply_to_screen_name": null,
-  },
-  ......]
-  
-```
-
 The code would look like this:
 
 ```swift
@@ -138,22 +106,43 @@ let json = JSON(jsonObject)
 
 ####Subscript
 ```swift
-let name = json[0]["name"].stringValue
+//With a int from JSON supposed to an Array
+let name = json[0].double
 ```
-
+```swift
+//With a string from JSON supposed to an Dictionary
+let name = json["name"].stringValue
+```
+```swift
+//With an array like path to the element
+let path = [1,"list",2,"name"]
+let name = json[path].string 
+//Just the same
+let name = json[1]["like"][2]["name"].string
+```
+```swift
+//With a literal array to the element
+let name = json[1,"list",2,"name"].string 
+//Just the same
+let name = json[1]["like"][2]["name"].string
+```
+```swift
+//With a Hard Way
+let name = json[[1,"list",2,"name"]].string
+```
 ####Loop
 ```swift
 //If json is .Dictionary
 for (key: String, subJson: JSON) in json {
-//Do something you want
+   //Do something you want
 }
 ```
+*The first element always String even the JSON's object is Array*
 ```swift
-
 //If json is .Array
 //The `index` is 0..<json.count's string value
 for (index: String, subJson: JSON) in json {
-//Do something you want
+    //Do something you want
 }
 ```
 ####Error
@@ -168,38 +157,34 @@ It will never happen in SwiftyJSON
 ```swift
 let json = JSON(["name", "age"])
 let name = json[999].string {
-	//Do something you want
+    //Do something you want
 } else {
-	println(json[999].error) // "Array[999] is out of bounds"
+    println(json[999].error) // "Array[999] is out of bounds"
 }
 ```
 ```swift
 let json = JSON(["name":"Jack", "age": 25])
 let name = json["address"].string {
-	//Do something you want
+    //Do something you want
 } else {
-	println(json["address"].error) // "Dictionary["address"] does not exist"
+    println(json["address"].error) // "Dictionary["address"] does not exist"
 }
 ```
 ```swift
 let json = JSON(12345)
 let age = json[0].string {
-	//Do something you want
+    //Do something you want
 } else {
-	println(json[0])       // "Array[0] failure, It is not an array"
-	println(json[0].error) // "Array[0] failure, It is not an array"
+    println(json[0])       // "Array[0] failure, It is not an array"
+    println(json[0].error) // "Array[0] failure, It is not an array"
 }
 
 let name = json["name"].string {
-	//Do something you want
+    //Do something you want
 } else {
-	println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-	println(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+    println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
+    println(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
-```
-```swift
-json["name"] = JSON("new-name")
-json["0"] = JSON("new-name")
 ```
 
 ####Optional getter
@@ -261,12 +246,17 @@ let user: Dictionary<String, JSON> = json["user"].dictionaryValue
 
 ####Setter
 ```swift
+json["name"] = JSON("new-name")
+json[0] = JSON(1)
+```
+```swift
 json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
 json.array = [1,2,3,4]
 json.dictionary = ["name":"Jack", "age":25]
 ```
+
 ####Raw object
 ```swift
 let jsonObject: AnyObject = json.object
@@ -326,7 +316,13 @@ json["name"] = "Mike"
 json["age"] = "25" //It's OK to set String
 json["address"] = "L.A." // Add the "address": "L.A." in json
 ```
-
+```swift
+//Mix
+var json:JSON =  ["name":"Jack", "age": 25, "list":["a","b","c",["what":"this"]]]
+json["list"][3]["what"] = "that"
+json["list",3,"what"] = "that"
+let path = ["list",3,"what"]
+json[path] = "that"
 ##Work with Alamofire
 
 To use Alamofire and SwiftyJSON, try [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON).

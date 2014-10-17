@@ -545,6 +545,14 @@ extension JSON {
     public var number: NSNumber? {
         get {
             switch self.type {
+            case .String:
+                let scanner = NSScanner(string: self.object as String)
+                if scanner.scanDouble(nil){
+                    if (scanner.atEnd) {
+                        return NSNumber(double:(self.object as NSString).doubleValue)
+                    }
+                }
+                return nil
             case .Number, .Bool:
                 return self.object as? NSNumber
             default:

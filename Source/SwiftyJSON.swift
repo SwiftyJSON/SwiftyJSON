@@ -108,9 +108,9 @@ public struct JSON {
                 _type = .String
             case let null as NSNull:
                 _type = .Null
-            case let array as Array<AnyObject>:
+            case let array as [AnyObject]:
                 _type = .Array
-            case let dictionary as Dictionary<String, AnyObject>:
+            case let dictionary as [String : AnyObject]:
                 _type = .Dictionary
             default:
                 _type = .Unknow
@@ -139,9 +139,9 @@ extension JSON: SequenceType{
         get {
             switch self.type {
             case .Array:
-                return (self.object as Array<AnyObject>).isEmpty
+                return (self.object as [AnyObject]).isEmpty
             case .Dictionary:
-                return (self.object as Dictionary<String, AnyObject>).isEmpty
+                return (self.object as [String : AnyObject]).isEmpty
             default:
                 return false
             }
@@ -170,7 +170,7 @@ extension JSON: SequenceType{
     public func generate() -> GeneratorOf <(String, JSON)> {
         switch self.type {
         case .Array:
-            let array_ = object as Array<AnyObject>
+            let array_ = object as [AnyObject]
             var generate_ = array_.generate()
             var index_: Int = 0
             return GeneratorOf<(String, JSON)> {
@@ -181,7 +181,7 @@ extension JSON: SequenceType{
                 }
             }
         case .Dictionary:
-            let dictionary_ = object as Dictionary<String, AnyObject>
+            let dictionary_ = object as [String : AnyObject]
             var generate_ = dictionary_.generate()
             return GeneratorOf<(String, JSON)> {
                 if let (key_: String, value_: AnyObject) = generate_.next() {
@@ -233,7 +233,7 @@ extension JSON {
         }
         set {
             if self.type == .Array {
-                var array_ = self.object as Array<AnyObject>
+                var array_ = self.object as [AnyObject]
                 if array_.count > index {
                     array_[index] = newValue.object
                     self.object = array_
@@ -259,7 +259,7 @@ extension JSON {
         }
         set {
             if self.type == .Dictionary {
-                var dictionary_ = self.object as Dictionary<String, AnyObject>
+                var dictionary_ = self.object as [String : AnyObject]
                 dictionary_[key] = newValue.object
                 self.object = dictionary_
             }
@@ -457,9 +457,9 @@ extension JSON: Printable, DebugPrintable {
             case .String:
                 return self.object as String
             case .Array:
-                return (self.object as Array<AnyObject>).description
+                return (self.object as [AnyObject]).description
             case .Dictionary:
-                return (self.object as Dictionary<String, AnyObject>).description
+                return (self.object as [String : AnyObject]).description
             case .Bool:
                 return (self.object as Bool).description
             case .Null:
@@ -478,9 +478,9 @@ extension JSON: Printable, DebugPrintable {
             case .String:
                 return self.object as String
             case .Array:
-                return (self.object as Array<AnyObject>).debugDescription
+                return (self.object as [AnyObject]).debugDescription
             case .Dictionary:
-                return (self.object as Dictionary<String, AnyObject>).debugDescription
+                return (self.object as [String : AnyObject]).debugDescription
             case .Bool:
                 return (self.object as Bool).description
             case .Null:
@@ -496,30 +496,30 @@ extension JSON: Printable, DebugPrintable {
 
 extension JSON {
 
-    //Optional Array<JSON>
-    public var array: Array<JSON>? {
+    //Optional [JSON]
+    public var array: [JSON]? {
         get {
             if self.type == .Array {
-                return map(self.object as Array<AnyObject>){ JSON($0) }
+                return map(self.object as [AnyObject]){ JSON($0) }
             } else {
                 return nil
             }
         }
     }
     
-    //Non-optional Array<JSON>
-    public var arrayValue: Array<JSON> {
+    //Non-optional [JSON]
+    public var arrayValue: [JSON] {
         get {
             return self.array ?? []
         }
     }
     
-    //Optional Array<AnyObject>
-    public var arrayObject: Array<AnyObject>? {
+    //Optional [AnyObject]
+    public var arrayObject: [AnyObject]? {
         get {
             switch self.type {
             case .Array:
-                return self.object as? Array<AnyObject>
+                return self.object as? [AnyObject]
             default:
                 return nil
             }
@@ -546,30 +546,30 @@ extension JSON {
         return result
     }
 
-    //Optional Dictionary<String, JSON>
-    public var dictionary: Dictionary<String, JSON>? {
+    //Optional [String : JSON]
+    public var dictionary: [String : JSON]? {
         get {
             if self.type == .Dictionary {
-                return _map(self.object as Dictionary<String, AnyObject>){ JSON($0) }
+                return _map(self.object as [String : AnyObject]){ JSON($0) }
             } else {
                 return nil
             }
         }
     }
     
-    //Non-optional Dictionary<String, JSON>
-    public var dictionaryValue: Dictionary<String, JSON> {
+    //Non-optional [String : JSON]
+    public var dictionaryValue: [String : JSON] {
         get {
             return self.dictionary ?? [:]
         }
     }
     
-    //Optional Dictionary<String, AnyObject>
-    public var dictionaryObject: Dictionary<String, AnyObject>? {
+    //Optional [String : AnyObject]
+    public var dictionaryObject: [String : AnyObject]? {
         get {
             switch self.type {
             case .Dictionary:
-                return self.object as? Dictionary<String, AnyObject>
+                return self.object as? [String : AnyObject]
             default:
                 return nil
             }
@@ -1205,12 +1205,12 @@ extension JSON {
     }
     
     @availability(*, unavailable, renamed="dictionaryObject")
-    public var dictionaryObjects: Dictionary<String, AnyObject>? {
+    public var dictionaryObjects: [String : AnyObject]? {
         get { return self.dictionaryObject }
     }
     
     @availability(*, unavailable, renamed="arrayObject")
-    public var arrayObjects: Array<AnyObject>? {
+    public var arrayObjects: [AnyObject]? {
         get { return self.arrayObject }
     }
     

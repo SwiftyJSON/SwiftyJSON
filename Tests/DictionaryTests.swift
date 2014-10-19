@@ -49,8 +49,8 @@ class DictionaryTests: XCTestCase {
     
     func testSetter() {
         var json:JSON = ["test":"case"]
-        XCTAssertEqual(json.dictionaryObject! as Dictionary<String,String>, ["test":"case"])
+        XCTAssertEqual(json.dictionaryObject! as [String : String], ["test":"case"])
         json.dictionaryObject = ["name":"NAME"]
-        XCTAssertEqual(json.dictionaryObject! as Dictionary<String,String>, ["name":"NAME"])
+        XCTAssertEqual(json.dictionaryObject! as [String : String], ["name":"NAME"])
     }
 }

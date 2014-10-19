@@ -33,7 +33,7 @@ class DictionaryTests: XCTestCase {
         XCTAssertEqual((json.dictionary!["number"]! as JSON).double!, 9823.212)
         XCTAssertEqual((json.dictionary!["name"]! as JSON).string!, "NAME")
         XCTAssertEqual(((json.dictionary!["list"]! as JSON).array![0] as JSON).int!, 1234)
-        XCTAssertEqual(((json.dictionary!["list"]! as JSON).array![1] as JSON).int!, 4.212)
+        XCTAssertEqual(((json.dictionary!["list"]! as JSON).array![1] as JSON).double!, 4.212)
         XCTAssertEqual((((json.dictionary!["object"]! as JSON).dictionaryValue)["sub_number"]! as JSON).double!, 877.2323)
         XCTAssertTrue(json.dictionary!["null"] == nil)
         //dictionaryValue

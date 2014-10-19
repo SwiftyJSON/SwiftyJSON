@@ -96,10 +96,10 @@ class BaseTests: XCTestCase {
         let tweets_1_coordinates_coordinates = tweets_1_coordinates["coordinates"]
         let tweets_1_coordinates_coordinates_point_0_double = tweets_1_coordinates_coordinates[0].double
         let tweets_1_coordinates_coordinates_point_1_float = tweets_1_coordinates_coordinates[1].float
-        let new_tweets_1_coordinates_coordinates = JSON([-122.25831,37.871609])
+        let new_tweets_1_coordinates_coordinates = JSON([-122.25831,37.871609] as NSArray)
         XCTAssertEqual(tweets_1_coordinates_coordinates, new_tweets_1_coordinates_coordinates)
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_double!, -122.25831)
-        XCTAssertEqual(tweets_1_coordinates_coordinates_point_1_float!, 37.871609)
+        XCTAssertTrue(tweets_1_coordinates_coordinates_point_1_float! == 37.871609)
         let tweets_1_coordinates_coordinates_point_0_string = tweets_1_coordinates_coordinates[0].stringValue
         let tweets_1_coordinates_coordinates_point_1_string = tweets_1_coordinates_coordinates[1].stringValue
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_string, "-122.25831")
@@ -186,9 +186,11 @@ class BaseTests: XCTestCase {
 
         XCTAssertEqual(JSON(1).description,"1")
         XCTAssertEqual(JSON(22).description,"22")
+        #if (arch(x86_64) || arch(arm64))
+        XCTAssertEqual(JSON(9.22337203685478E18).description,"9.22337203685478e+18")
+        #elseif (arch(i386) || arch(arm))
         XCTAssertEqual(JSON(2147483647).description,"2147483647")
-        XCTAssertEqual(JSON(2147483648).description,"2147483648")
-        
+        #endif
         XCTAssertEqual(JSON(-1).description,"-1")
         XCTAssertEqual(JSON(-934834834).description,"-934834834")
         XCTAssertEqual(JSON(-2147483648).description,"-2147483648")
@@ -263,32 +265,5 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(NSNumber(bool: true), NSNumber(bool:true))
     }
     
-    func testInitPerformance() {
-
-        self.measureBlock() {
-            var t:Int = 0
-            while (true) {
-                if t == 100 {
-                    break
-                }
-                JSON(data:self.testData)
-                t++
-            }
-        }
-    }
-    
-    func testObjectMethodPerformance() {
-        var json = JSON(data:self.testData)
-        self.measureBlock() {
-            var t:Int = 0
-            while (true) {
-                if t == 100 {
-                    break
-                }
-                let object:AnyObject? = json.object
-                t++
-            }
-        }
-    }
 
 }

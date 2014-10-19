@@ -1,4 +1,4 @@
-//  StringTests.swift
+//  RawTests.swift
 //
 //  Copyright (c) 2014 Pinglin Tang
 //
@@ -24,29 +24,31 @@ import UIKit
 import XCTest
 import SwiftyJSON
 
-class StringTests: XCTestCase {
+class RawTests: XCTestCase {
 
-    func testString() {
-        //getter
-        var json = JSON("abcdefg hijklmn;opqrst.?+_()")
-        XCTAssertEqual(json.string!, "abcdefg hijklmn;opqrst.?+_()")
-        XCTAssertEqual(json.stringValue, "abcdefg hijklmn;opqrst.?+_()")
-
-        json.string = "12345?67890.@#"
-        XCTAssertEqual(json.string!, "12345?67890.@#")
-        XCTAssertEqual(json.stringValue, "12345?67890.@#")
+    func testArray() {
+        let json:JSON = [1, "2", 3.12, NSNull(), true, ["name": "Jack"]]
+        let data = json.rawData()
+        let string = json.rawString()
+        XCTAssertTrue (data != nil)
+        XCTAssertTrue (string!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        println(string!)
     }
     
-    func testURL() {
-        let json = JSON("http://github.com")
-        XCTAssertEqual(json.URL!, NSURL(string:"http://github.com")!)
+    func testDictionary() {
+        let json:JSON = ["number":111111.23456789, "name":"Jack", "list":[1,2,3,4], "bool":false, "null":NSNull()]
+        let data = json.rawData()
+        let string = json.rawString()
+        XCTAssertTrue (data != nil)
+        XCTAssertTrue (string!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        println(string!)
     }
 
-    func testURLPercentEscapes() {
-        let emDash = "\\u2014"
-        let urlString = "http://examble.com/unencoded" + emDash + "string"
-        let encodedURLString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        let json = JSON(urlString)
-        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measureBlock() {
+            // Put the code you want to measure the time of here.
+        }
     }
+
 }

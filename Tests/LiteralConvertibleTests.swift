@@ -32,8 +32,8 @@ class LiteralConvertibleTests: XCTestCase {
         XCTAssertEqual(json.intValue, 1234567890)
         XCTAssertEqual(json.double!, 1234567890.876623)
         XCTAssertEqual(json.doubleValue, 1234567890.876623)
-        XCTAssertEqual(json.float!, 1234567890.876623)
-        XCTAssertEqual(json.floatValue, 1234567890.876623)
+        XCTAssertTrue(json.float! == 1234567890.876623)
+        XCTAssertTrue(json.floatValue == 1234567890.876623)
     }
     
     func testBool() {

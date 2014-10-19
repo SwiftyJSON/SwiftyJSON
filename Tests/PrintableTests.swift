@@ -63,7 +63,7 @@ class PrintableTests: XCTestCase {
     
     func testDictionary() {
         var json:JSON = ["1":2,"2":2, "3":3]
-        XCTAssertEqual(json.description, "[2: 2, 3: 3, 1: 2]")
-        XCTAssertEqual(json.debugDescription, "[\"2\": 2, \"3\": 3, \"1\": 2]")
+        XCTAssertEqual(json.description, ["1":2,"2":2, "3":3].description)
+        XCTAssertEqual(json.debugDescription, ["1":2,"2":2, "3":3].debugDescription)
     }
 }

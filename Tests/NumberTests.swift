@@ -90,15 +90,15 @@ class NumberTests: XCTestCase {
 
     func testFloat() {
         var json = JSON(54321.12345)
-        XCTAssertEqual(json.float!, 54321.12345)
-        XCTAssertEqual(json.floatValue, 54321.12345)
+        XCTAssertTrue(json.float! == 54321.12345)
+        XCTAssertTrue(json.floatValue == 54321.12345)
         println(json.numberValue.doubleValue)
         XCTAssertEqual(json.numberValue, 54321.12345)
         XCTAssertEqual(json.stringValue, "54321.12345")
         
         json.float = 23231.65
-        XCTAssertEqual(json.float!, 23231.65)
-        XCTAssertEqual(json.floatValue, 23231.65)
+        XCTAssertTrue(json.float! == 23231.65)
+        XCTAssertTrue(json.floatValue == 23231.65)
         XCTAssertEqual(json.numberValue, NSNumber(float:23231.65))
         
         json.floatValue = -98766.23
@@ -115,8 +115,8 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.stringValue, "123456789")
         
         json.int = nil
-        XCTAssertEqual(json.boolValue, false)
-        XCTAssertEqual(json.intValue, 0.0)
+        XCTAssertTrue(json.boolValue == false)
+        XCTAssertTrue(json.intValue == 0)
         XCTAssertEqual(json.numberValue, 0)
         XCTAssertEqual(json.object as NSNull, NSNull())
         XCTAssertTrue(json.int == nil)
@@ -134,26 +134,26 @@ class NumberTests: XCTestCase {
     
     func testUInt() {
         var json = JSON(123456789)
-        XCTAssertEqual(json.uInt!, 123456789)
-        XCTAssertEqual(json.uIntValue, 123456789)
+        XCTAssertTrue(json.uInt! == 123456789)
+        XCTAssertTrue(json.uIntValue == 123456789)
         XCTAssertEqual(json.numberValue, NSNumber(unsignedInteger: 123456789))
         XCTAssertEqual(json.stringValue, "123456789")
         
         json.uInt = nil
-        XCTAssertEqual(json.boolValue, false)
-        XCTAssertEqual(json.uIntValue, 0.0)
+        XCTAssertTrue(json.boolValue == false)
+        XCTAssertTrue(json.uIntValue == 0)
         XCTAssertEqual(json.numberValue, 0)
         XCTAssertEqual(json.object as NSNull, NSNull())
         XCTAssertTrue(json.uInt == nil)
         
         json.uIntValue = 76543
-        XCTAssertEqual(json.uInt!, 76543)
-        XCTAssertEqual(json.uIntValue, 76543)
+        XCTAssertTrue(json.uInt! == 76543)
+        XCTAssertTrue(json.uIntValue == 76543)
         XCTAssertEqual(json.numberValue, NSNumber(unsignedInteger: 76543))
         
         json.uIntValue = 98765421
-        XCTAssertEqual(json.uInt!, 98765421)
-        XCTAssertEqual(json.uIntValue, 98765421)
+        XCTAssertTrue(json.uInt! == 98765421)
+        XCTAssertTrue(json.uIntValue == 98765421)
         XCTAssertEqual(json.numberValue, NSNumber(unsignedInteger: 98765421))
     }
     
@@ -174,22 +174,31 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, nm128)
         XCTAssertEqual(json.stringValue, "-128")
         
-        let n0 = NSNumber(char: 0)
+        let n0 = NSNumber(char: 0 as Int8)
         json.int8Value = n0.charValue
         XCTAssertTrue(json.int8! == n0.charValue)
         XCTAssertTrue(json.int8Value == n0.charValue)
         println(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
-        XCTAssertEqual(json.stringValue, "false")
+        #if (arch(x86_64) || arch(arm64))
+           XCTAssertEqual(json.stringValue, "false")
+        #elseif (arch(i386) || arch(arm))
+            XCTAssertEqual(json.stringValue, "0")
+        #endif
         
-        let n1 = NSNumber(char: 1)
+        
+        let n1 = NSNumber(char: 1 as Int8)
         json.int8Value = n1.charValue
         XCTAssertTrue(json.int8! == n1.charValue)
         XCTAssertTrue(json.int8Value == n1.charValue)
         XCTAssertTrue(json.number! == n1)
         XCTAssertEqual(json.numberValue, n1)
-        XCTAssertEqual(json.stringValue, "true")
+        #if (arch(x86_64) || arch(arm64))
+            XCTAssertEqual(json.stringValue, "true")
+        #elseif (arch(i386) || arch(arm))
+            XCTAssertEqual(json.stringValue, "1")
+        #endif
     }
     
     func testUInt8() {

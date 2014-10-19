@@ -432,7 +432,7 @@ extension JSON: RawRepresentable {
 		return self.object
 	}
 
-    public func rawData(options opt: NSJSONWritingOptions = .PrettyPrinted, error: NSErrorPointer = nil) -> NSData? {
+    public func rawData(options opt: NSJSONWritingOptions = NSJSONWritingOptions(0), error: NSErrorPointer = nil) -> NSData? {
         return NSJSONSerialization.dataWithJSONObject(self.object, options: opt, error:error)
     }
     

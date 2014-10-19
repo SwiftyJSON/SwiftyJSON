@@ -43,12 +43,28 @@ class RawTests: XCTestCase {
         XCTAssertTrue (string!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
         println(string!)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testString() {
+        let json:JSON = "I'm a json"
+        println(json.rawString())
+        XCTAssertTrue(json.rawString() == "I'm a json")
     }
-
+    
+    func testNumber() {
+        let json:JSON = 123456789.123
+        println(json.rawString())
+        XCTAssertTrue(json.rawString() == "123456789.123")
+    }
+    
+    func testBool() {
+        let json:JSON = true
+        println(json.rawString())
+        XCTAssertTrue(json.rawString() == "true")
+    }
+    
+    func testNull() {
+        let json:JSON = nil
+        println(json.rawString())
+        XCTAssertTrue(json.rawString() == "null")
+    }
 }

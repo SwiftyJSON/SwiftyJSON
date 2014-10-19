@@ -437,9 +437,22 @@ extension JSON: RawRepresentable {
     }
     
     public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .PrettyPrinted, error: NSErrorPointer = nil) -> String? {
-        if let data = self.rawData(options: opt, error:error) {
-            return NSString(data: data, encoding: encoding)
-        } else {
+        switch self.type {
+        case .Array, .Dictionary:
+            if let data = self.rawData(options: opt, error:error) {
+                return NSString(data: data, encoding: encoding)
+            } else {
+                return nil
+            }
+        case .String:
+            return (self.object as String)
+        case .Number:
+            return (self.object as NSNumber).stringValue
+        case .Bool:
+            return (self.object as Bool).description
+        case .Null:
+            return "null"
+        default:
             return nil
         }
     }

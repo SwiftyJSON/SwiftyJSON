@@ -613,12 +613,6 @@ extension JSON: BooleanType {
             switch self.type {
             case .Bool, .Number, .String:
                 return self.object.boolValue
-            case .Array:
-                return self.arrayValue.count > 0
-            case .Dictionary:
-                return self.dictionaryValue.count > 0
-            case .Null:
-                return false
             default:
                 return false
             }

@@ -47,7 +47,7 @@ class BaseTests: XCTestCase {
         let json0 = JSON(data:self.testData)
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")
-        XCTAssertEqual(JSON(["1":"2"]).description, ["1":"2"].description)
+        XCTAssertEqual(JSON(["1":"2"])["1"].string!, "2")
         var dictionary = NSMutableDictionary()
         dictionary.setObject(NSNumber(double: 1.0), forKey: "number" as NSString)
         dictionary.setObject(NSNull(), forKey: "null" as NSString)

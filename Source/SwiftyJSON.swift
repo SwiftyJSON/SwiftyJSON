@@ -463,45 +463,15 @@ extension JSON: RawRepresentable {
 extension JSON: Printable, DebugPrintable {
     
     public var description: String {
-        get {
-            switch type {
-            case .Number:
-                return self.object.description
-            case .String:
-                return self.object as String
-            case .Array:
-                return (self.object as [AnyObject]).description
-            case .Dictionary:
-                return (self.object as [String : AnyObject]).description
-            case .Bool:
-                return (self.object as Bool).description
-            case .Null:
-                return self.error?.description ?? "null"
-            default:
-                return self.error?.description ?? "unknown"
-            }
+        if let string = self.rawString(options:.PrettyPrinted) {
+            return string
+        } else {
+            return "unknown"
         }
     }
     
     public var debugDescription: String {
-        get {
-            switch type {
-            case .Number:
-                return (self.object as NSNumber).debugDescription
-            case .String:
-                return self.object as String
-            case .Array:
-                return (self.object as [AnyObject]).debugDescription
-            case .Dictionary:
-                return (self.object as [String : AnyObject]).debugDescription
-            case .Bool:
-                return (self.object as Bool).description
-            case .Null:
-                return self.error?.debugDescription ?? "null"
-            default:
-                return self.error?.debugDescription ?? "unknown"
-            }
-        }
+        return description
     }
 }
 

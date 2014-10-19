@@ -436,10 +436,10 @@ extension JSON: RawRepresentable {
         return NSJSONSerialization.dataWithJSONObject(self.object, options: opt, error:error)
     }
     
-    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .PrettyPrinted, error: NSErrorPointer = nil) -> String? {
+    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .PrettyPrinted) -> String? {
         switch self.type {
         case .Array, .Dictionary:
-            if let data = self.rawData(options: opt, error:error) {
+            if let data = self.rawData(options: opt) {
                 return NSString(data: data, encoding: encoding)
             } else {
                 return nil

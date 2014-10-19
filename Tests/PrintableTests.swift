@@ -57,13 +57,18 @@ class PrintableTests: XCTestCase {
     
     func testArray() {
         var json:JSON = [1,2,"4",5,"6"]
+        var description = json.description.stringByReplacingOccurrencesOfString("\n", withString: "")
+        description = description.stringByReplacingOccurrencesOfString(" ", withString: "")
+        XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
         XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
         XCTAssertTrue(json.debugDescription.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
     }
     
     func testDictionary() {
         var json:JSON = ["1":2,"2":2, "3":3]
+        var debugDescription = json.debugDescription.stringByReplacingOccurrencesOfString("\n", withString: "")
+        debugDescription = debugDescription.stringByReplacingOccurrencesOfString(" ", withString: "")
         XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
-        XCTAssertTrue(json.debugDescription.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        XCTAssertEqual(debugDescription, "{\"1\":2,\"2\":2,\"3\":3}")
     }
 }

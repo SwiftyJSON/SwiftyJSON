@@ -83,9 +83,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.0
-
-> For Xcode 6.1, check out the `xcode6.1` branch.
+- Xcode 6.1
 
 ##Integration
 

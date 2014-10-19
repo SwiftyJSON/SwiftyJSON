@@ -680,11 +680,7 @@ extension JSON {
             }
         }
         set {
-            if newValue != nil {
-                self.object = newValue!.copy()
-            } else {
-                self.object = NSNull()
-            }
+            self.object = newValue?.copy() ?? NSNull()
         }
     }
     

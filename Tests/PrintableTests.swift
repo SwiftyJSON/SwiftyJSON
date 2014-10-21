@@ -65,10 +65,12 @@ class PrintableTests: XCTestCase {
     }
     
     func testDictionary() {
-        var json:JSON = ["1":2,"2":2, "3":3]
+        var json:JSON = ["1":2,"2":"two", "3":3]
         var debugDescription = json.debugDescription.stringByReplacingOccurrencesOfString("\n", withString: "")
         debugDescription = debugDescription.stringByReplacingOccurrencesOfString(" ", withString: "")
         XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
-        XCTAssertEqual(debugDescription, "{\"1\":2,\"2\":2,\"3\":3}")
+        XCTAssertTrue(debugDescription.rangeOfString("\"1\":2", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
+        XCTAssertTrue(debugDescription.rangeOfString("\"2\":\"two\"", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
+        XCTAssertTrue(debugDescription.rangeOfString("\"3\":3", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
     }
 }

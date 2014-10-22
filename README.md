@@ -1,4 +1,4 @@
-#SwiftyJSON
+#SwiftyJSON [中文介绍](http://tangplin.github.io/swiftyjson/)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 

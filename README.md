@@ -18,10 +18,9 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 1. [Work with Alamofire](#work-with-alamofire)
 	
 ##Why is the typical JSON handling in Swift NOT good?
-Swift is very strict about types, it's good while explicit typing left us little chance to make mistakes. 
-But while dealing with things that naturally implicit about types such as JSON, it's painful.
+Swift is very strict about types. But although explicit typing leaves us little chance of making mistakes, it becomes painful when dealing with things that are naturally implicit about types, such as JSON. 
 
-Take the Twitter API for example: say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline)
+Take the Twitter API for example.  Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline).
 
 The code would look like this:
 
@@ -53,7 +52,7 @@ if let userName = (((jsonObject as? NSArray)?[0] as? NSDictionary)?["user"] as? 
 }
 
 ```
-An unreadable mess for something like this should really be simple!
+An unreadable mess--for something that should really be simple!
 
 With SwiftyJSON all you have to do is:
 
@@ -66,7 +65,7 @@ if let userName = json[0]["user"]["name"].string{
 
 ```
 
-And don't worry about the Optional Wrapping thing, it's done for you automatically
+And don't worry about the Optional Wrapping thing. It's done for you automatically
 
 ```swift
 
@@ -87,7 +86,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 
 ##Integration
 
-CocoaPods is not fully supported for Swift yet, to use this library in your project you should:  
+CocoaPods is not fully supported for Swift yet. To use this library in your project you should:  
 
 1. for Projects just drag SwiftyJSON.swift to the project tree
 2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett
@@ -146,9 +145,9 @@ for (index: String, subJson: JSON) in json {
 ####Error
 Use subscript to get/set value in Array or Dicitonary
 
-*  If json is an array, the app may crash with index may be out  of bounds.
+*  If json is an array, the app may crash with "index out-of-bounds."
 *  If json is a dictionary, it will get `nil` without the reason. 
-*  If json is not an array or a dictionary, the app may crash with wrong selector exception.
+*  If json is not an array or a dictionary, the app may crash with the wrong selector exception.
 
 It will never happen in SwiftyJSON
 

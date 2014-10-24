@@ -18,7 +18,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 1. [Work with Alamofire](#work-with-alamofire)
 	
 ##Why is the typical JSON handling in Swift NOT good?
-Swift is very strict about types. But although explicit typing leaves us little chance of making mistakes, it becomes painful when dealing with things that are naturally implicit about types, such as JSON. 
+Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.
 
 Take the Twitter API for example.  Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline).
 
@@ -134,7 +134,7 @@ for (key: String, subJson: JSON) in json {
    //Do something you want
 }
 ```
-*The first element always String even the JSON's object is Array*
+*The first element is always String, even if the JSON's object is Array*
 ```swift
 //If json is .Array
 //The `index` is 0..<json.count's string value

@@ -732,6 +732,47 @@ extension JSON {
     }
 }
 
+//MARK: - NSDate
+extension JSON {
+    
+    //Optional NSDate
+    public var date: NSDate? {
+        get {
+            switch self.type {
+            case .String:
+                let dateRegEx = NSRegularExpression(pattern: "^\\/date\\((-?\\d++)(?:([+-])(\\d{2})(\\d{2}))?\\)\\/$", options: .CaseInsensitive, error: nil)!
+                
+                let string = self.object as NSString
+                let range = NSMakeRange(0, string.length)
+                
+                if let regexResult = dateRegEx.firstMatchInString(string, options: .Anchored, range:range) {
+                    var seconds = (string.substringWithRange(regexResult.rangeAtIndex(1)) as NSString).doubleValue / 1000.0
+                    
+                    if regexResult.numberOfRanges >= 2 {
+                        let sign = string.substringWithRange(regexResult.rangeAtIndex(2))
+                        let hour = (sign + string.substringWithRange(regexResult.rangeAtIndex(3)) as NSString).intValue
+                        let minute = (sign + string.substringWithRange(regexResult.rangeAtIndex(4)) as NSString).intValue
+                        
+                        seconds += Double(hour * 60 * 60 + minute * 60)
+                    }
+                    return NSDate(timeIntervalSince1970: seconds)
+                }
+                return nil
+            default:
+                return nil
+            }
+        }
+        set {
+            if newValue != nil {
+                let seconds = newValue!.timeIntervalSince1970
+                self.object = "/Date(\(Int64(seconds*1000))+0000)/"
+            } else {
+                self.object = NSNull()
+            }
+        }
+    }
+}
+
 // MARK: - Int, Double, Float, Int8, Int16, Int32, Int64
 
 extension JSON {

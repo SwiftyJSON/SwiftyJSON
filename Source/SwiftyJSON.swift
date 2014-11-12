@@ -48,7 +48,7 @@ public enum Type :Int{
     case Array
     case Dictionary
     case Null
-    case Unknow
+    case Unknown
 }
 
 // MARK: - JSON Base
@@ -113,7 +113,7 @@ public struct JSON {
             case let dictionary as [String : AnyObject]:
                 _type = .Dictionary
             default:
-                _type = .Unknow
+                _type = .Unknown
                 _object = NSNull()
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
             }
@@ -421,7 +421,7 @@ extension JSON: NilLiteralConvertible {
 extension JSON: RawRepresentable {
 	
 	public init?(rawValue: AnyObject) {
-		if JSON(rawValue).type == .Unknow {
+		if JSON(rawValue).type == .Unknown {
 			return nil
 		} else {
 			self.init(rawValue)

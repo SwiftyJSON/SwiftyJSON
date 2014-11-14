@@ -332,8 +332,14 @@ SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
 Alamofire.request(.GET, url, parameters: parameters)
   .responseJSON { (req, res, json, error) in
-    // Init a SwiftyJSON object using the Alamofire JSON response handler.
-    var json = JSON(json!)
-    NSLog("GET Result: \(json)")
+    if(error != nil) {
+      NSLog("Error: \(error)")
+      println(req)
+      println(res)
+    }
+    else {
+      NSLog("Success: \(url)")
+      var json = JSON(json!)
+    }
   }
 ```

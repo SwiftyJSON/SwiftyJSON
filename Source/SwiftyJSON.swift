@@ -889,6 +889,18 @@ extension JSON {
     }
 }
 
+//MARK: - Date (read only)
+extension JSON {
+    public func date(dateFormatter: NSDateFormatter) -> NSDate? {
+        if let string = self.string {
+            if let date = dateFormatter.dateFromString(string) {
+                return date
+            }
+        }
+        return nil
+    }
+}
+
 //MARK: - Comparable
 extension JSON: Comparable {}
 

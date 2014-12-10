@@ -108,9 +108,9 @@ public struct JSON {
                 _type = .String
             case let null as NSNull:
                 _type = .Null
-            case let array as [AnyObject]:
+            case let array as NSArray:
                 _type = .Array
-            case let dictionary as [String : AnyObject]:
+            case let dictionary as NSDictionary:
                 _type = .Dictionary
             default:
                 _type = .Unknown

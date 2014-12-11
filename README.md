@@ -328,4 +328,18 @@ json[path] = "that"
 ```
 ##Work with Alamofire
 
-To use Alamofire and SwiftyJSON, try [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON).
+SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
+```swift
+Alamofire.request(.GET, url, parameters: parameters)
+  .responseJSON { (req, res, json, error) in
+    if(error != nil) {
+      NSLog("Error: \(error)")
+      println(req)
+      println(res)
+    }
+    else {
+      NSLog("Success: \(url)")
+      var json = JSON(json!)
+    }
+  }
+```

@@ -1120,7 +1120,7 @@ public func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 public func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return !(rhs == rhs)
+    return !(lhs == rhs)
 }
 
 public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {

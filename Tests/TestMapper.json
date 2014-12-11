@@ -1,0 +1,27 @@
+[
+ {
+    "id" : "12345",
+    "text" : "just some test",
+    "cars" : [ "Audi", "BMW", "Bugatti", "Chevy", ["More","Array", "Data"]],
+    "retweeted":false,
+    "Nothing" : null,
+    "user":{
+        "name":"Toothless The Night Fury",
+        "profile_sidebar_fill_color":"JetBlack",
+        "profile_background_tile":true
+        }
+ },
+ {
+ "id" : "98765",
+ "text" : "What would our world be like if we had Dragons?",
+ "cars" : [ "Ferrari", ["JustAnother","Array"]],
+ "retweeted":true,
+ "Nothing" : null,
+ "user": {
+    "name":"Hiccup The Viking",
+    "profile_sidebar_fill_color":"Human Beige",
+    "profile_background_tile":false
+  }
+ }
+ 
+]

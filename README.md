@@ -118,13 +118,13 @@ let name = json["name"].stringValue
 let path = [1,"list",2,"name"]
 let name = json[path].string 
 //Just the same
-let name = json[1]["like"][2]["name"].string
+let name = json[1]["list"][2]["name"].string
 ```
 ```swift
 //With a literal array to the element
 let name = json[1,"list",2,"name"].string 
 //Just the same
-let name = json[1]["like"][2]["name"].string
+let name = json[1]["list"][2]["name"].string
 ```
 ```swift
 //With a Hard Way

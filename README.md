@@ -2,14 +2,14 @@
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
-1. [Why is the typical JSON handling in Swift NOT good](#Why-is-the-typical-JSON-handling-in-Swift-NOT-good)
+1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
 1. [Requirements](#requirements)
 1. [Integration](#integration)
 1. [Usage](#usage)
 	- [Initialization](#initialization)
 	- [Subscript](#subscript)
-	- [Error](#Error)
 	- [Loop](#loop)
+	- [Error](#error)
 	- [Optional getter](#optional-getter)
 	- [Non-optional getter](#non-optional-getter)
 	- [Setter](#setter)

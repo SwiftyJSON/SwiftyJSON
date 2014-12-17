@@ -121,13 +121,13 @@ public struct JSON {
     }
     
     /// json type
-    public var type: Type { get { return _type } }
+    public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { get { return self._error } }
+    public var error: NSError? { return self._error }
     
     /// The static null json
-    public static var nullJSON: JSON { get { return JSON(NSNull()) } }
+    public static var nullJSON: JSON { return JSON(NSNull()) }
 
 }
 
@@ -136,7 +136,6 @@ extension JSON: SequenceType{
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
     var isEmpty: Bool {
-        get {
             switch self.type {
             case .Array:
                 return (self.object as [AnyObject]).isEmpty
@@ -144,13 +143,11 @@ extension JSON: SequenceType{
                 return (self.object as [String : AnyObject]).isEmpty
             default:
                 return false
-            }
         }
     }
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.count` or `dictonary.count` otherwise return `0`.
     public var count: Int {
-        get {
             switch self.type {
             case .Array:
                 return self.arrayValue.count
@@ -158,7 +155,6 @@ extension JSON: SequenceType{
                 return self.dictionaryValue.count
             default:
                 return 0
-            }
         }
     }
     

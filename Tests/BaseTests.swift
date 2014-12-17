@@ -43,6 +43,7 @@ class BaseTests: XCTestCase {
     }
     
     func testInit() {
+       
         let json0 = JSON(data:self.testData)
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")

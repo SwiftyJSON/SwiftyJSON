@@ -121,13 +121,13 @@ public struct JSON {
     }
     
     /// json type
-    public var type: Type { get { return _type } }
+    public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { get { return self._error } }
+    public var error: NSError? { return self._error }
     
     /// The static null json
-    public static var nullJSON: JSON { get { return JSON(NSNull()) } }
+    public static var nullJSON: JSON { return JSON(NSNull()) }
 
 }
 
@@ -136,7 +136,6 @@ extension JSON: SequenceType{
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
     var isEmpty: Bool {
-        get {
             switch self.type {
             case .Array:
                 return (self.object as [AnyObject]).isEmpty
@@ -144,13 +143,11 @@ extension JSON: SequenceType{
                 return (self.object as [String : AnyObject]).isEmpty
             default:
                 return false
-            }
         }
     }
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.count` or `dictonary.count` otherwise return `0`.
     public var count: Int {
-        get {
             switch self.type {
             case .Array:
                 return self.arrayValue.count
@@ -158,7 +155,6 @@ extension JSON: SequenceType{
                 return self.dictionaryValue.count
             default:
                 return 0
-            }
         }
     }
     
@@ -245,6 +241,12 @@ extension JSON {
     /// If `type` is `.Dictionary`, return json which's object is `dictionary[key]` , otherwise return null json with error.
     private subscript(#key: String) -> JSON {
         get {
+            
+            if key.pathComponents.count != 1{
+                let path = subscriptHelper(path: key)
+                return self[path]
+            }
+            
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
                 if let object_: AnyObject = self.object[key] {
@@ -258,6 +260,13 @@ extension JSON {
             return returnJSON
         }
         set {
+            
+            if key.pathComponents.count != 1{
+                let path = subscriptHelper(path: key)
+                self[path] = newValue
+            }
+
+            
             if self.type == .Dictionary {
                 var dictionary_ = self.object as [String : AnyObject]
                 dictionary_[key] = newValue.object
@@ -284,6 +293,29 @@ extension JSON {
         }
     }
     
+    
+    
+    /**
+    Convert path = "1/2/32/who" syntax to path = [1,2,32,who]
+    
+    :param: string path to convert
+    
+    :returns: converted [SubscriptType]
+    */
+    private func subscriptHelper(#path : String) -> [SubscriptType]{
+        let pathArray_ = path.pathComponents;
+        var pathArray = Array<SubscriptType>()
+        for item in pathArray_{
+            if let number = item.toInt(){
+                pathArray.append(number)
+            }
+            else{
+                pathArray.append(item)
+            }
+        }
+        return pathArray
+    }
+
     /**
     Find a json in the complex data structuresby using the Int/String's array.
     
@@ -297,7 +329,8 @@ extension JSON {
     
     :returns: Return a json found by the path or a null json with error
     */
-    public subscript(path: [SubscriptType]) -> JSON {
+    
+    public subscript(path:[SubscriptType]) -> JSON {
         get {
             if path.count == 0 {
                 return JSON.nullJSON

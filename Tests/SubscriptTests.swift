@@ -222,14 +222,17 @@ class SubscriptTests: XCTestCase {
         var json:JSON = [[[[["num":1]]]]]
         json[0, 0, 0, 0, "num"] = 2
         XCTAssertEqual(json[[0, 0, 0, 0, "num"]].intValue, 2)
-        json[0, 0, 0, 0, "num"] = nil
+        XCTAssertEqual(json["0/0/0/0/num"].intValue, 2)
+        json["0/0/0/0/num"] = nil
         XCTAssertEqual(json[0, 0, 0, 0, "num"].null!, NSNull())
-        json[0, 0, 0, 0, "num"] = 100.009
+        XCTAssertEqual(json["0/0/0/0/num"].null!, NSNull())
+        json["0/0/0/0/num"] = 100.009
         XCTAssertEqual(json[0][0][0][0]["num"].doubleValue, 100.009)
         json[[0, 0, 0, 0]] = ["name":"Jack"]
-        XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Jack")
+        XCTAssertEqual(json["0/0/0/0/name"].stringValue, "Jack")
         XCTAssertEqual(json[0][0][0][0]["name"].stringValue, "Jack")
         XCTAssertEqual(json[[0,0,0,0,"name"]].stringValue, "Jack")
+        XCTAssertEqual(json[["0/0/0/0/name"]].stringValue, "Jack")
         json[[0,0,0,0,"name"]].string = "Mike"
         XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Mike")
         let path:[SubscriptType] = [0,0,0,0,"name"]

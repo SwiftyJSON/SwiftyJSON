@@ -241,6 +241,12 @@ extension JSON {
     /// If `type` is `.Dictionary`, return json which's object is `dictionary[key]` , otherwise return null json with error.
     private subscript(#key: String) -> JSON {
         get {
+            
+            if key.pathComponents.count != 1{
+                let path = subscriptHelper(path: key)
+                return self[path]
+            }
+            
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
                 if let object_: AnyObject = self.object[key] {
@@ -254,6 +260,13 @@ extension JSON {
             return returnJSON
         }
         set {
+            
+            if key.pathComponents.count != 1{
+                let path = subscriptHelper(path: key)
+                self[path] = newValue
+            }
+
+            
             if self.type == .Dictionary {
                 var dictionary_ = self.object as [String : AnyObject]
                 dictionary_[key] = newValue.object
@@ -293,7 +306,24 @@ extension JSON {
     
     :returns: Return a json found by the path or a null json with error
     */
-    public subscript(path: [SubscriptType]) -> JSON {
+    
+    
+    private func subscriptHelper(#path : String) -> [SubscriptType]{
+        let pathArray_ = path.pathComponents;
+        var pathArray = Array<SubscriptType>()
+        for item in pathArray_{
+            if let number = item.toInt(){
+                pathArray.append(number)
+            }
+            else{
+                pathArray.append(item)
+            }
+        }
+        return pathArray
+    }
+    
+    
+    public subscript(path:[SubscriptType]) -> JSON {
         get {
             if path.count == 0 {
                 return JSON.nullJSON

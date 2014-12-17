@@ -293,21 +293,15 @@ extension JSON {
         }
     }
     
+    
+    
     /**
-    Find a json in the complex data structuresby using the Int/String's array.
+    Convert path = "1/2/32/who" syntax to path = [1,2,32,who]
     
-    :param: path The target json's path. Example: 
-                   
-            let json = JSON[data]
-            let path = [9,"list","person","name"]
-            let name = json[path]
+    :param: string path to convert
     
-            The same as: let name = json[9]["list"]["person"]["name"]
-    
-    :returns: Return a json found by the path or a null json with error
+    :returns: converted [SubscriptType]
     */
-    
-    
     private func subscriptHelper(#path : String) -> [SubscriptType]{
         let pathArray_ = path.pathComponents;
         var pathArray = Array<SubscriptType>()
@@ -321,7 +315,20 @@ extension JSON {
         }
         return pathArray
     }
+
+    /**
+    Find a json in the complex data structuresby using the Int/String's array.
     
+    :param: path The target json's path. Example: 
+                   
+            let json = JSON[data]
+            let path = [9,"list","person","name"]
+            let name = json[path]
+    
+            The same as: let name = json[9]["list"]["person"]["name"]
+    
+    :returns: Return a json found by the path or a null json with error
+    */
     
     public subscript(path:[SubscriptType]) -> JSON {
         get {

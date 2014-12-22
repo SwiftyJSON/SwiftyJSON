@@ -135,7 +135,7 @@ public struct JSON {
 extension JSON: SequenceType{
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         get {
             switch self.type {
             case .Array:

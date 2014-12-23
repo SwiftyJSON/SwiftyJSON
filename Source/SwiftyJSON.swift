@@ -132,7 +132,7 @@ public struct JSON {
 }
 
 // MARK: - SequenceType
-extension JSON: SequenceType{
+extension JSON : Swift.SequenceType {
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
     public var isEmpty: Bool {

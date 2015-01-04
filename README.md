@@ -89,7 +89,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding
 `github "SwiftyJSON/SwiftyJSON" >= 2.1.2` to your `Cartfile`
 
-CocoaPods is not fully supported for Swift yet. To use this library in your project you should:  
+CocoaPods is now supported for Swift yet. But to use this library in your project manually you should:  
 
 1. for Projects just drag SwiftyJSON.swift to the project tree
 2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett

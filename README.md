@@ -65,7 +65,7 @@ if let userName = json[0]["user"]["name"].string{
 
 ```
 
-And don't worry about the Optional Wrapping thing. It's done for you automatically
+And don't worry about the Optional Wrapping thing. It's done for you automatically.
 
 ```swift
 
@@ -89,10 +89,10 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding
 `github "SwiftyJSON/SwiftyJSON" >= 2.1.2` to your `Cartfile`
 
-CocoaPods is now supported for Swift yet. But to use this library in your project manually you should:  
+CocoaPods is now supported for Swift. But to use this library in your project manually you may:  
 
-1. for Projects just drag SwiftyJSON.swift to the project tree
-2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett
+1. for Projects, just drag SwiftyJSON.swift to the project tree
+2. for Workspaces, include the whole SwiftyJSON.xcodeproj (as suggested by @garnett)
 
 ## Usage
 
@@ -152,7 +152,7 @@ Use subscript to get/set value in Array or Dicitonary
 *  If json is a dictionary, it will get `nil` without the reason. 
 *  If json is not an array or a dictionary, the app may crash with the wrong selector exception.
 
-It will never happen in SwiftyJSON
+It will never happen in SwiftyJSON.
 
 ```swift
 let json = JSON(["name", "age"])

@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.authors     = { "lingoer" => "lingoerer@gmail.com", "tangplin" => "tangplin@gmail.com" }
 
   s.osx.deployment_target = "10.9"
-  s.ios.deployment_target = "7.0"
+  s.ios.deployment_target = "8.0"
   s.source   = { :git => "https://github.com/SwiftyJSON/SwiftyJSON.git", :tag => "2.1.2"}
   s.source_files = "Source/*.swift"
 end

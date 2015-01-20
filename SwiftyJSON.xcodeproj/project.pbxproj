@@ -209,9 +209,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		2E4FEFDA19575BE100351305 /* SwiftyJSON */ = {
+		2E4FEFDA19575BE100351305 /* SwiftyJSON iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E4FEFF119575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON" */;
+			buildConfigurationList = 2E4FEFF119575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON iOS" */;
 			buildPhases = (
 				2E4FEFD619575BE100351305 /* Sources */,
 				2E4FEFD719575BE100351305 /* Frameworks */,
@@ -222,7 +222,7 @@
 			);
 			dependencies = (
 			);
-			name = SwiftyJSON;
+			name = "SwiftyJSON iOS";
 			productName = SwiftyJSON;
 			productReference = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */;
 			productType = "com.apple.product-type.framework";
@@ -245,9 +245,9 @@
 			productReference = 2E4FEFE619575BE100351305 /* SwiftyJSONTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSONOSX */ = {
+		4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSON OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4EC1C1DC1A0C1A2D0026ED0B /* Build configuration list for PBXNativeTarget "SwiftyJSONOSX" */;
+			buildConfigurationList = 4EC1C1DC1A0C1A2D0026ED0B /* Build configuration list for PBXNativeTarget "SwiftyJSON OSX" */;
 			buildPhases = (
 				4EC1C1C41A0C1A2D0026ED0B /* Sources */,
 				4EC1C1C51A0C1A2D0026ED0B /* Frameworks */,
@@ -258,7 +258,7 @@
 			);
 			dependencies = (
 			);
-			name = SwiftyJSONOSX;
+			name = "SwiftyJSON OSX";
 			productName = SwiftyJSONOSX;
 			productReference = 4EC1C1C91A0C1A2D0026ED0B /* SwiftyJSON.framework */;
 			productType = "com.apple.product-type.framework";
@@ -316,9 +316,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2E4FEFDA19575BE100351305 /* SwiftyJSON */,
+				2E4FEFDA19575BE100351305 /* SwiftyJSON iOS */,
 				2E4FEFE519575BE100351305 /* SwiftyJSONTests */,
-				4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSONOSX */,
+				4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSON OSX */,
 				4EC1C1D21A0C1A2D0026ED0B /* SwiftyJSONOSXTests */,
 			);
 		};
@@ -419,12 +419,12 @@
 /* Begin PBXTargetDependency section */
 		2E4FEFE919575BE100351305 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2E4FEFDA19575BE100351305 /* SwiftyJSON */;
+			target = 2E4FEFDA19575BE100351305 /* SwiftyJSON iOS */;
 			targetProxy = 2E4FEFE819575BE100351305 /* PBXContainerItemProxy */;
 		};
 		4EC1C1D61A0C1A2D0026ED0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSONOSX */;
+			target = 4EC1C1C81A0C1A2D0026ED0B /* SwiftyJSON OSX */;
 			targetProxy = 4EC1C1D51A0C1A2D0026ED0B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -530,7 +530,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SwiftyJSON;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -548,7 +548,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SwiftyJSON;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -588,7 +588,6 @@
 		4EC1C1DD1A0C1A2D0026ED0B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -613,7 +612,6 @@
 		4EC1C1DE1A0C1A2D0026ED0B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -685,7 +683,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E4FEFF119575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON" */ = {
+		2E4FEFF119575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E4FEFF219575BE100351305 /* Debug */,
@@ -703,7 +701,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4EC1C1DC1A0C1A2D0026ED0B /* Build configuration list for PBXNativeTarget "SwiftyJSONOSX" */ = {
+		4EC1C1DC1A0C1A2D0026ED0B /* Build configuration list for PBXNativeTarget "SwiftyJSON OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4EC1C1DD1A0C1A2D0026ED0B /* Debug */,

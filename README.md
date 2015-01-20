@@ -168,7 +168,7 @@ It will never happen in SwiftyJSON.
 
 ```swift
 let json = JSON(["name", "age"])
-let name = json[999].string {
+if let name = json[999].string {
     //Do something you want
 } else {
     println(json[999].error) // "Array[999] is out of bounds"
@@ -176,7 +176,7 @@ let name = json[999].string {
 ```
 ```swift
 let json = JSON(["name":"Jack", "age": 25])
-let name = json["address"].string {
+if let name = json["address"].string {
     //Do something you want
 } else {
     println(json["address"].error) // "Dictionary["address"] does not exist"
@@ -184,14 +184,14 @@ let name = json["address"].string {
 ```
 ```swift
 let json = JSON(12345)
-let age = json[0].string {
+if let age = json[0].string {
     //Do something you want
 } else {
     println(json[0])       // "Array[0] failure, It is not an array"
     println(json[0].error) // "Array[0] failure, It is not an array"
 }
 
-let name = json["name"].string {
+if let name = json["name"].string {
     //Do something you want
 } else {
     println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"

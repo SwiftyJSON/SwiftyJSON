@@ -298,11 +298,9 @@
 					};
 					4EC1C1C81A0C1A2D0026ED0B = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = MTP6A36P8K;
 					};
 					4EC1C1D21A0C1A2D0026ED0B = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = W2HM34DEHT;
 					};
 				};
 			};

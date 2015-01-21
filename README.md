@@ -30,7 +30,7 @@ let jsonObject : AnyObject! = NSJSONSerialization.JSONObjectWithData(dataFromTwi
 if let statusesArray = jsonObject as? NSArray{
     if let aStatus = statusesArray[0] as? NSDictionary{
         if let user = aStatus["user"] as? NSDictionary{
-            if let userName = user["name"] as? NSDictionary{
+            if let userName = user["name"] as? NSString{
                 //Finally We Got The Name
                 
             }

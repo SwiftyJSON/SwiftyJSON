@@ -168,7 +168,7 @@ It will never happen in SwiftyJSON.
 
 ```swift
 let json = JSON(["name", "age"])
-let name = json[999].string {
+if let name = json[999].string {
     //Do something you want
 } else {
     println(json[999].error) // "Array[999] is out of bounds"

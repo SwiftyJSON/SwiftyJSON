@@ -163,7 +163,7 @@ extension JSON: SequenceType{
     }
     
     /**
-    If `type` is `.Array` or `.Dictionary`, return a generator over the elements like `Array` or `Dictionary, otherwise return a generator over empty.
+    If `type` is `.Array` or `.Dictionary`, return a generator over the elements like `Array` or `Dictionary`, otherwise return a generator over empty.
     
     :returns: Return a *generator* over the elements of this *sequence*.
     */

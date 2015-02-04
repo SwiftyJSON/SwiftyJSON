@@ -265,7 +265,7 @@ json[0] = JSON(1)
 json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
-json.array = [1,2,3,4]
+json.arrayObject = [1,2,3,4]
 json.dictionary = ["name":"Jack", "age":25]
 ```
 

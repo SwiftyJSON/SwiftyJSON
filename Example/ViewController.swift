@@ -43,7 +43,7 @@ class ViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("JSONCell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("JSONCell", forIndexPath: indexPath) as! UITableViewCell
             
         var row = indexPath.row
         
@@ -52,8 +52,8 @@ class ViewController: UITableViewController {
             cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
         case .Dictionary:
-            let key: AnyObject = (self.json.object as NSDictionary).allKeys[row]
-            let value = self.json[key as String]
+            let key: AnyObject = (self.json.object as! NSDictionary).allKeys[row]
+            let value = self.json[key as! String]
             cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
         default:

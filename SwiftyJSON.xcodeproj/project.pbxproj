@@ -41,7 +41,7 @@
 		2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E4FEFDF19575BE100351305 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E4FEFE019575BE100351305 /* SwiftyJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
-		2E4FEFE619575BE100351305 /* SwiftyJSONTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyJSONTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A819C49619E1A7DD00ADCC3D /* LiteralConvertibleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiteralConvertibleTests.swift; sourceTree = "<group>"; };
 		A819C49819E1B10300ADCC3D /* RawRepresentableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawRepresentableTests.swift; sourceTree = "<group>"; };
 		A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptTests.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */,
-				2E4FEFE619575BE100351305 /* SwiftyJSONTests.xctest */,
+				2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,9 +178,9 @@
 			productReference = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		2E4FEFE519575BE100351305 /* SwiftyJSONTests */ = {
+		2E4FEFE519575BE100351305 /* SwiftyJSON iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E4FEFF419575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSONTests" */;
+			buildConfigurationList = 2E4FEFF419575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON iOS Tests" */;
 			buildPhases = (
 				2E4FEFE219575BE100351305 /* Sources */,
 				2E4FEFE319575BE100351305 /* Frameworks */,
@@ -191,9 +191,9 @@
 			dependencies = (
 				2E4FEFE919575BE100351305 /* PBXTargetDependency */,
 			);
-			name = SwiftyJSONTests;
+			name = "SwiftyJSON iOS Tests";
 			productName = SwiftyJSONTests;
-			productReference = 2E4FEFE619575BE100351305 /* SwiftyJSONTests.xctest */;
+			productReference = 2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -226,7 +226,7 @@
 			projectRoot = "";
 			targets = (
 				2E4FEFDA19575BE100351305 /* SwiftyJSON iOS */,
-				2E4FEFE519575BE100351305 /* SwiftyJSONTests */,
+				2E4FEFE519575BE100351305 /* SwiftyJSON iOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -465,7 +465,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E4FEFF419575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSONTests" */ = {
+		2E4FEFF419575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E4FEFF519575BE100351305 /* Debug */,

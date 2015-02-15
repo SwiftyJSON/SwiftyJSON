@@ -20,20 +20,6 @@
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4EC1C1D21A0C1A2D0026ED0B"
-               BuildableName = "SwiftyJSONOSXTests.xctest"
-               BlueprintName = "SwiftyJSONOSXTests"
-               ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4EC1C1D21A0C1A2D0026ED0B"
-               BuildableName = "SwiftyJSONOSXTests.xctest"
-               BlueprintName = "SwiftyJSONOSXTests"
-               ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

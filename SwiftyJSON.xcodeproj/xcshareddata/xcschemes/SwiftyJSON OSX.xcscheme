@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0620"
+   LastUpgradeVersion = "0610"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,22 +15,22 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "030B6CC21A6E16E800C2D4F1"
-               BuildableName = "SwiftyJSON OSX.framework"
+               BuildableName = "SwiftyJSON.framework"
                BlueprintName = "SwiftyJSON OSX"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4EC1C1D21A0C1A2D0026ED0B"
-               BuildableName = "SwiftyJSONOSXTests.xctest"
-               BlueprintName = "SwiftyJSONOSXTests"
+               BlueprintIdentifier = "9C8BA3071A90FA1C00B7074E"
+               BuildableName = "SwiftyJSON OSX Tests.xctest"
+               BlueprintName = "SwiftyJSON OSX Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4EC1C1D21A0C1A2D0026ED0B"
-               BuildableName = "SwiftyJSONOSXTests.xctest"
-               BlueprintName = "SwiftyJSONOSXTests"
+               BlueprintIdentifier = "9C8BA3071A90FA1C00B7074E"
+               BuildableName = "SwiftyJSON OSX Tests.xctest"
+               BlueprintName = "SwiftyJSON OSX Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "030B6CC21A6E16E800C2D4F1"
-            BuildableName = "SwiftyJSON OSX.framework"
+            BuildableName = "SwiftyJSON.framework"
             BlueprintName = "SwiftyJSON OSX"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "030B6CC21A6E16E800C2D4F1"
-            BuildableName = "SwiftyJSON OSX.framework"
+            BuildableName = "SwiftyJSON.framework"
             BlueprintName = "SwiftyJSON OSX"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "030B6CC21A6E16E800C2D4F1"
-            BuildableName = "SwiftyJSON OSX.framework"
+            BuildableName = "SwiftyJSON.framework"
             BlueprintName = "SwiftyJSON OSX"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>

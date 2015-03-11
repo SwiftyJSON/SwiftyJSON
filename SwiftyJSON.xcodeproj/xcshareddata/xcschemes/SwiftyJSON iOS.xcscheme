@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2E4FEFE519575BE100351305"
-               BuildableName = "SwiftyJSONTests.xctest"
-               BlueprintName = "SwiftyJSONTests"
+               BuildableName = "SwiftyJSON iOS Tests.xctest"
+               BlueprintName = "SwiftyJSON iOS Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2E4FEFE519575BE100351305"
-               BuildableName = "SwiftyJSONTests.xctest"
-               BlueprintName = "SwiftyJSONTests"
+               BuildableName = "SwiftyJSON iOS Tests.xctest"
+               BlueprintName = "SwiftyJSON iOS Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </TestableReference>

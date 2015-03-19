@@ -111,7 +111,7 @@ class BaseTests: XCTestCase {
         let created_at = json[0]["created_at"].string
         let id_str = json[0]["id_str"].string
         let favorited = json[0]["favorited"].bool
-        let id = json[0]["id"].int
+        let id = json[0]["id"].int64
         let in_reply_to_user_id_str = json[0]["in_reply_to_user_id_str"]
         XCTAssertEqual(created_at!, "Tue Aug 28 21:16:23 +0000 2012")
         XCTAssertEqual(id_str!,"240558470661799936")

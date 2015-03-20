@@ -83,6 +83,17 @@ public struct JSON {
         self.object = object
     }
 
+    /**
+    Creates a JSON from a [JSON]
+    
+    :param: jsonArray A Swift array of JSON objects
+    
+    :returns: The created JSON
+    */
+    public init(_ jsonArray:[JSON]) {
+        self.init(jsonArray.map { $0.object })
+    }
+
     /// Private object
     private var _object: AnyObject = NSNull()
     /// Private type

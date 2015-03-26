@@ -140,13 +140,13 @@ class BaseTests: XCTestCase {
             break
         }
         
-        var index = 0
-        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as [String]
-        for (aKey, aJson) in json[1] {
-            XCTAssertEqual(aKey, keys[index])
-            XCTAssertEqual(aJson, json[1][keys[index]])
-            break
-        }
+//        var index = 0
+//        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as [String]
+//        for (aKey, aJson) in json[1] {
+//            XCTAssertEqual(aKey, keys[index])
+//            XCTAssertEqual(aJson, json[1][keys[index]])
+//            break
+//        }
     }
     
     func testJSONNumberCompare() {

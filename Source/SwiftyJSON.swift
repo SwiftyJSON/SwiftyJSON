@@ -119,9 +119,9 @@ public struct JSON {
                 _type = .String
             case let null as NSNull:
                 _type = .Null
-            case let array as [AnyObject]:
+            case let array as NSArray:
                 _type = .Array
-            case let dictionary as [String : AnyObject]:
+            case let dictionary as NSDictionary:
                 _type = .Dictionary
             default:
                 _type = .Unknown
@@ -150,9 +150,9 @@ extension JSON : Swift.SequenceType {
         get {
             switch self.type {
             case .Array:
-                return (self.object as [AnyObject]).isEmpty
+                return (self.object as NSArray).count == 0
             case .Dictionary:
-                return (self.object as [String : AnyObject]).isEmpty
+                return (self.object as NSDictionary).count == 0
             default:
                 return false
             }
@@ -181,22 +181,23 @@ extension JSON : Swift.SequenceType {
     public func generate() -> GeneratorOf <(String, JSON)> {
         switch self.type {
         case .Array:
-            let array_ = object as [AnyObject]
-            var generate_ = array_.generate()
+            let array_ = object as NSArray
             var index_: Int = 0
             return GeneratorOf<(String, JSON)> {
-                if let element_: AnyObject = generate_.next() {
+                if index_ < array_.count
+                {
+                    let element_: AnyObject = array_.objectAtIndex(index_)
                     return ("\(index_++)", JSON(element_))
                 } else {
                     return nil
                 }
             }
         case .Dictionary:
-            let dictionary_ = object as [String : AnyObject]
-            var generate_ = dictionary_.generate()
+            let dictionary_ = object as NSDictionary
+            let keys_ = dictionary_.keyEnumerator()
             return GeneratorOf<(String, JSON)> {
-                if let (key_: String, value_: AnyObject) = generate_.next() {
-                    return (key_, JSON(value_))
+                if let key_ = keys_.nextObject() as? String {
+                    return (key_, JSON(dictionary_.valueForKey(key_)!))
                 } else {
                     return nil
                 }
@@ -232,10 +233,10 @@ extension JSON {
                 return errorResult_
             }
             
-            let array_ = self.object as [AnyObject]
+            let array_ = self.object as NSArray
 
             if index >= 0 && index < array_.count {
-                return JSON(array_[index])
+                return JSON(array_.objectAtIndex(index))
             }
             
             var errorResult_ = JSON.nullJSON
@@ -258,7 +259,7 @@ extension JSON {
         get {
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
-                if let object_: AnyObject = self.object[key] {
+                if let object_: AnyObject = self.object.valueForKey(key) {
                     returnJSON = JSON(object_)
                 } else {
                     returnJSON._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
@@ -298,7 +299,7 @@ extension JSON {
     /**
     Find a json in the complex data structuresby using the Int/String's array.
     
-    :param: path The target json's path. Example: 
+    :param: path The target json's path. Example:
                    
             let json = JSON[data]
             let path = [9,"list","person","name"]

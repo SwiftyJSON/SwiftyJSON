@@ -89,7 +89,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 ####Carthage
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 ```
-github "SwiftyJSON/SwiftyJSON" >= 2.1.2
+github "SwiftyJSON/SwiftyJSON" >= 2.1.3
 ```
 
 ####CocoaPods

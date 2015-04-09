@@ -141,7 +141,7 @@ class BaseTests: XCTestCase {
         }
         
         var index = 0
-        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as [String]
+        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as! [String]
         for (aKey, aJson) in json[1] {
             XCTAssertEqual(aKey, keys[index])
             XCTAssertEqual(aJson, json[1][keys[index]])
@@ -202,7 +202,7 @@ class BaseTests: XCTestCase {
 
         XCTAssertEqual(JSON(Int(Int.max)).description,"\(Int.max)")
         XCTAssertEqual(JSON(NSNumber(long: Int.min)).description,"\(Int.min)")
-        XCTAssertEqual(JSON(NSNumber(unsignedLong: ULONG_MAX)).description,"\(ULONG_MAX)")
+        XCTAssertEqual(JSON(NSNumber(unsignedLong: UInt.max)).description,"\(UInt.max)")
         XCTAssertEqual(JSON(NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")
         XCTAssertEqual(JSON(NSNumber(longLong: Int64.max)).description,"\(Int64.max)")
         XCTAssertEqual(JSON(NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")

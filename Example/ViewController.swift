@@ -49,15 +49,15 @@ class ViewController: UITableViewController {
         
         switch self.json.type {
         case .Array:
-            cell.textLabel.text = "\(row)"
+            cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
         case .Dictionary:
             let key: AnyObject = (self.json.object as NSDictionary).allKeys[row]
             let value = self.json[key as String]
-            cell.textLabel.text = "\(key)"
+            cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
         default:
-            cell.textLabel.text = ""
+            cell.textLabel?.text = ""
             cell.detailTextLabel?.text = self.json.description
         }
         

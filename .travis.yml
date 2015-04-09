@@ -1,0 +1,2 @@
+language: objective-c
+script: "xcodebuild test -workspace SwiftyJSON.xcworkspace -scheme \"SwiftyJSON iOS\" -destination \"platform=iOS Simulator,name=iPhone 5\""

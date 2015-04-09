@@ -2,14 +2,14 @@
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
-1. [Why is the typical JSON handling in Swift NOT good](#Why-is-the-typical-JSON-handling-in-Swift-NOT-good)
+1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
 1. [Requirements](#requirements)
 1. [Integration](#integration)
 1. [Usage](#usage)
 	- [Initialization](#initialization)
 	- [Subscript](#subscript)
-	- [Error](#Error)
 	- [Loop](#loop)
+	- [Error](#error)
 	- [Optional getter](#optional-getter)
 	- [Non-optional getter](#non-optional-getter)
 	- [Setter](#setter)
@@ -30,7 +30,7 @@ let jsonObject : AnyObject! = NSJSONSerialization.JSONObjectWithData(dataFromTwi
 if let statusesArray = jsonObject as? NSArray{
     if let aStatus = statusesArray[0] as? NSDictionary{
         if let user = aStatus["user"] as? NSDictionary{
-            if let userName = user["name"] as? NSDictionary{
+            if let userName = user["name"] as? NSString{
                 //Finally We Got The Name
                 
             }
@@ -65,7 +65,7 @@ if let userName = json[0]["user"]["name"].string{
 
 ```
 
-And don't worry about the Optional Wrapping thing. It's done for you automatically
+And don't worry about the Optional Wrapping thing. It's done for you automatically.
 
 ```swift
 
@@ -86,13 +86,27 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 
 ##Integration
 
-You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding
-`github "SwiftyJSON/SwiftyJSON" >= 2.1.1` to your `Cartfile`
+####Carthage
+You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
+```
+github "SwiftyJSON/SwiftyJSON" >= 2.1.2
+```
 
-CocoaPods is not fully supported for Swift yet. To use this library in your project you should:  
+####CocoaPods
+You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+```ruby
+pod "SwiftyJSON", ">= 2.1.3"
+```
+Note that it needs you to install CocoaPods 36 version, and requires your iOS deploy target >= 8.0:
+```bash
+[sudo] gem install cocoapods -v '>=0.36'
+```
+####Manually
 
-1. for Projects just drag SwiftyJSON.swift to the project tree
-2. for Workspaces you may include the whole SwiftyJSON.xcodeproj as suggested by @garnett
+To use this library in your project manually you may:  
+
+1. for Projects, just drag SwiftyJSON.swift to the project tree
+2. for Workspaces, include the whole SwiftyJSON.xcodeproj (as suggested by @garnett)
 
 ## Usage
 
@@ -118,13 +132,13 @@ let name = json["name"].stringValue
 let path = [1,"list",2,"name"]
 let name = json[path].string 
 //Just the same
-let name = json[1]["like"][2]["name"].string
+let name = json[1]["list"][2]["name"].string
 ```
 ```swift
 //With a literal array to the element
 let name = json[1,"list",2,"name"].string 
 //Just the same
-let name = json[1]["like"][2]["name"].string
+let name = json[1]["list"][2]["name"].string
 ```
 ```swift
 //With a Hard Way
@@ -152,11 +166,11 @@ Use subscript to get/set value in Array or Dicitonary
 *  If json is a dictionary, it will get `nil` without the reason. 
 *  If json is not an array or a dictionary, the app may crash with the wrong selector exception.
 
-It will never happen in SwiftyJSON
+It will never happen in SwiftyJSON.
 
 ```swift
 let json = JSON(["name", "age"])
-let name = json[999].string {
+if let name = json[999].string {
     //Do something you want
 } else {
     println(json[999].error) // "Array[999] is out of bounds"
@@ -164,7 +178,7 @@ let name = json[999].string {
 ```
 ```swift
 let json = JSON(["name":"Jack", "age": 25])
-let name = json["address"].string {
+if let name = json["address"].string {
     //Do something you want
 } else {
     println(json["address"].error) // "Dictionary["address"] does not exist"
@@ -172,14 +186,14 @@ let name = json["address"].string {
 ```
 ```swift
 let json = JSON(12345)
-let age = json[0].string {
+if let age = json[0].string {
     //Do something you want
 } else {
     println(json[0])       // "Array[0] failure, It is not an array"
     println(json[0].error) // "Array[0] failure, It is not an array"
 }
 
-let name = json["name"].string {
+if let name = json["name"].string {
     //Do something you want
 } else {
     println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
@@ -253,7 +267,7 @@ json[0] = JSON(1)
 json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
-json.array = [1,2,3,4]
+json.arrayObject = [1,2,3,4]
 json.dictionary = ["name":"Jack", "age":25]
 ```
 
@@ -331,4 +345,18 @@ json[path] = "that"
 ```
 ##Work with Alamofire
 
-To use Alamofire and SwiftyJSON, try [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON).
+SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
+```swift
+Alamofire.request(.GET, url, parameters: parameters)
+  .responseJSON { (req, res, json, error) in
+    if(error != nil) {
+      NSLog("Error: \(error)")
+      println(req)
+      println(res)
+    }
+    else {
+      NSLog("Success: \(url)")
+      var json = JSON(json!)
+    }
+  }
+```

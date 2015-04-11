@@ -258,7 +258,7 @@ extension JSON {
         get {
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
-                let dictionary_ = self.object as [String: AnyObject]
+                let dictionary_ = self.object as! [String: AnyObject]
                 if let object_: AnyObject = dictionary_[key] {
                     returnJSON = JSON(object_)
                 } else {

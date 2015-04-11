@@ -111,7 +111,7 @@ class BaseTests: XCTestCase {
         let created_at = json[0]["created_at"].string
         let id_str = json[0]["id_str"].string
         let favorited = json[0]["favorited"].bool
-        let id = json[0]["id"].int
+        let id = json[0]["id"].int64
         let in_reply_to_user_id_str = json[0]["in_reply_to_user_id_str"]
         XCTAssertEqual(created_at!, "Tue Aug 28 21:16:23 +0000 2012")
         XCTAssertEqual(id_str!,"240558470661799936")
@@ -141,7 +141,7 @@ class BaseTests: XCTestCase {
         }
         
         var index = 0
-        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as [String]
+        let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as! [String]
         for (aKey, aJson) in json[1] {
             XCTAssertEqual(aKey, keys[index])
             XCTAssertEqual(aJson, json[1][keys[index]])
@@ -202,7 +202,7 @@ class BaseTests: XCTestCase {
 
         XCTAssertEqual(JSON(Int(Int.max)).description,"\(Int.max)")
         XCTAssertEqual(JSON(NSNumber(long: Int.min)).description,"\(Int.min)")
-        XCTAssertEqual(JSON(NSNumber(unsignedLong: ULONG_MAX)).description,"\(ULONG_MAX)")
+        XCTAssertEqual(JSON(NSNumber(unsignedLong: UInt.max)).description,"\(UInt.max)")
         XCTAssertEqual(JSON(NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")
         XCTAssertEqual(JSON(NSNumber(longLong: Int64.max)).description,"\(Int64.max)")
         XCTAssertEqual(JSON(NSNumber(unsignedLongLong: UInt64.max)).description,"\(UInt64.max)")

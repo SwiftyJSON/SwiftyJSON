@@ -35,10 +35,10 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertTrue(json.floatValue == 948394394.347384)
         
         var object: AnyObject = json.rawValue
-        XCTAssertEqual(object as Int, 948394394)
-        XCTAssertEqual(object as Double, 948394394.347384)
-        XCTAssertTrue(object as Float == 948394394.347384)
-        XCTAssertEqual(object as NSNumber, 948394394.347384)
+        XCTAssertEqual(object as! Int, 948394394)
+        XCTAssertEqual(object as! Double, 948394394.347384)
+        XCTAssertTrue(object as! Float == 948394394.347384)
+        XCTAssertEqual(object as! NSNumber, 948394394.347384)
     }
     
     func testBool() {
@@ -51,16 +51,16 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(jsonFalse.boolValue, false)
         
         var objectTrue: AnyObject = jsonTrue.rawValue
-        XCTAssertEqual(objectTrue as Int, 1)
-        XCTAssertEqual(objectTrue as Double, 1.0)
-        XCTAssertEqual(objectTrue as Bool, true)
-        XCTAssertEqual(objectTrue as NSNumber, NSNumber(bool: true))
+        XCTAssertEqual(objectTrue as! Int, 1)
+        XCTAssertEqual(objectTrue as! Double, 1.0)
+        XCTAssertEqual(objectTrue as! Bool, true)
+        XCTAssertEqual(objectTrue as! NSNumber, NSNumber(bool: true))
         
         var objectFalse: AnyObject = jsonFalse.rawValue
-        XCTAssertEqual(objectFalse as Int, 0)
-        XCTAssertEqual(objectFalse as Double, 0.0)
-        XCTAssertEqual(objectFalse as Bool, false)
-        XCTAssertEqual(objectFalse as NSNumber, NSNumber(bool: false))
+        XCTAssertEqual(objectFalse as! Int, 0)
+        XCTAssertEqual(objectFalse as! Double, 0.0)
+        XCTAssertEqual(objectFalse as! Bool, false)
+        XCTAssertEqual(objectFalse as! NSNumber, NSNumber(bool: false))
     }
     
     func testString() {
@@ -73,13 +73,13 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertTrue(json.null == nil)
             XCTAssertTrue(json.error == nil)
             XCTAssertTrue(json.type == .String)
-            XCTAssertEqual(json.object as String, string)
+            XCTAssertEqual(json.object as! String, string)
         } else {
             XCTFail("Should not run into here")
         }
         
         let object: AnyObject = JSON(rawValue: string)!.rawValue
-        XCTAssertEqual(object as String, string)
+        XCTAssertEqual(object as! String, string)
     }
     
     func testNil() {
@@ -95,7 +95,7 @@ class RawRepresentableTests: XCTestCase {
         }
         
         let object: AnyObject = JSON(rawValue: array)!.rawValue
-        XCTAssertTrue(array == object as NSArray)
+        XCTAssertTrue(array == object as! NSArray)
     }
     
     func testDictionary() {
@@ -105,6 +105,6 @@ class RawRepresentableTests: XCTestCase {
         }
 
         let object: AnyObject = JSON(rawValue: dictionary)!.rawValue
-        XCTAssertTrue(dictionary == object as NSDictionary)
+        XCTAssertTrue(dictionary == object as! NSDictionary)
     }
 }

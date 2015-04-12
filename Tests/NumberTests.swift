@@ -37,7 +37,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, 123456789.0987654321)
         json.number = nil
         XCTAssertEqual(json.numberValue, 0)
-        XCTAssertEqual(json.object as NSNull, NSNull())
+        XCTAssertEqual(json.object as! NSNull, NSNull())
         XCTAssertTrue(json.number == nil)
         json.numberValue = 2.9876
         XCTAssertEqual(json.number!, 2.9876)
@@ -119,7 +119,7 @@ class NumberTests: XCTestCase {
         XCTAssertTrue(json.boolValue == false)
         XCTAssertTrue(json.intValue == 0)
         XCTAssertEqual(json.numberValue, 0)
-        XCTAssertEqual(json.object as NSNull, NSNull())
+        XCTAssertEqual(json.object as! NSNull, NSNull())
         XCTAssertTrue(json.int == nil)
         
         json.intValue = 76543
@@ -144,7 +144,7 @@ class NumberTests: XCTestCase {
         XCTAssertTrue(json.boolValue == false)
         XCTAssertTrue(json.uIntValue == 0)
         XCTAssertEqual(json.numberValue, 0)
-        XCTAssertEqual(json.object as NSNull, NSNull())
+        XCTAssertEqual(json.object as! NSNull, NSNull())
         XCTAssertTrue(json.uInt == nil)
         
         json.uIntValue = 76543

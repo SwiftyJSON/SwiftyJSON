@@ -141,8 +141,13 @@ let name = json[1,"list",2,"name"].string
 let name = json[1]["list"][2]["name"].string
 ```
 ```swift
-//With a Hard Way
-let name = json[[1,"list",2,"name"]].string
+//With a hard way
+let name = json[].string
+```
+```swift
+//With a custom way
+let keys:[SubscriptType] = [1,"list",2,"name"]
+let name = json[keys].string
 ```
 ####Loop
 ```swift

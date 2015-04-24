@@ -668,6 +668,14 @@ extension JSON {
     public var number: NSNumber? {
         get {
             switch self.type {
+            case .String:
+                let scanner = NSScanner(string: self.object as! String)
+                if scanner.scanDouble(nil){
+                    if (scanner.atEnd) {
+                        return NSNumber(double:(self.object as! NSString).doubleValue)
+                    }
+                }
+                return nil
             case .Number, .Bool:
                 return self.object as? NSNumber
             default:
@@ -682,20 +690,7 @@ extension JSON {
     //Non-optional number
     public var numberValue: NSNumber {
         get {
-            switch self.type {
-            case .String:
-                let scanner = NSScanner(string: self.object as! String)
-                if scanner.scanDouble(nil){
-                    if (scanner.atEnd) {
-                        return NSNumber(double:(self.object as! NSString).doubleValue)
-                    }
-                }
-                return NSNumber(double: 0.0)
-            case .Number, .Bool:
-                return self.object as! NSNumber
-            default:
-                return NSNumber(double: 0.0)
-            }
+                return number ?? NSNumber(double: 0.0)
         }
         set {
             self.object = newValue.copy()

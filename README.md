@@ -26,16 +26,13 @@ The code would look like this:
 
 ```swift
 
-let jsonObject : AnyObject! = NSJSONSerialization.JSONObjectWithData(dataFromTwitter, options: NSJSONReadingOptions.MutableContainers, error: nil)
-if let statusesArray = jsonObject as? NSArray{
-    if let aStatus = statusesArray[0] as? NSDictionary{
-        if let user = aStatus["user"] as? NSDictionary{
-            if let userName = user["name"] as? NSString{
-                //Finally We Got The Name
+let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
 
-            }
-        }
-    }
+if let statusesArray = JSONObject as? [AnyObject],
+   let status = statusesArray[0] as? [String: AnyObject],
+   let user = status["user"] as? [String: AnyObject],
+   let username = user["name"] as? String {
+    // Finally we got the username
 }
 
 ```
@@ -46,9 +43,10 @@ Even if we use optional chaining, it would also cause a mess:
 
 ```swift
 
-let jsonObject : AnyObject! = NSJSONSerialization.JSONObjectWithData(dataFromTwitter, options: NSJSONReadingOptions.MutableContainers, error: nil)
-if let userName = (((jsonObject as? NSArray)?[0] as? NSDictionary)?["user"] as? NSDictionary)?["name"]{
-  //What A disaster above
+let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
+
+if let username = (((JSONObject as? [AnyObject])?[0] as? [String: AnyObject])?["user"] as? [String: AnyObject])?["name"] as? String {
+    // What a disaster
 }
 
 ```

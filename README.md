@@ -84,13 +84,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 
 ##Integration
 
-####Carthage
-You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
-```
-github "SwiftyJSON/SwiftyJSON" >= 2.2
-```
-
-####CocoaPods
+####CocoaPods (iOS 8+, OS X 10.9+)
 You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
 ```ruby
 pod "SwiftyJSON", ">= 2.2"
@@ -99,12 +93,19 @@ Note that it needs you to install CocoaPods 36 version, and requires your iOS de
 ```bash
 [sudo] gem install cocoapods -v '>=0.36'
 ```
-####Manually
+
+####Carthage (iOS 8+, OS X 10.9+)
+You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
+```
+github "SwiftyJSON/SwiftyJSON" >= 2.2
+```
+
+####Manually (iOS 7+, OS X 10.9+)
 
 To use this library in your project manually you may:  
 
 1. for Projects, just drag SwiftyJSON.swift to the project tree
-2. for Workspaces, include the whole SwiftyJSON.xcodeproj (as suggested by @garnett)
+2. for Workspaces, include the whole SwiftyJSON.xcodeproj
 
 ## Usage
 

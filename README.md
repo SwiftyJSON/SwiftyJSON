@@ -20,7 +20,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 ##Why is the typical JSON handling in Swift NOT good?
 Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.
 
-Take the Twitter API for example.  Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline).
+Take the Twitter API for example. Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline).
 
 The code would look like this:
 
@@ -42,7 +42,7 @@ if let statusesArray = jsonObject as? NSArray{
 
 It's not good.
 
-Even if we use optional chaining, it would also cause a mess:
+Even if we use optional chaining, it would be messy:
 
 ```swift
 
@@ -120,25 +120,21 @@ let json = JSON(jsonObject)
 
 ####Subscript
 ```swift
-//With a int from JSON supposed to an Array
+//Getting a double from a JSON Array
 let name = json[0].double
 ```
 ```swift
-//With a string from JSON supposed to an Dictionary
+//Getting a string from a JSON Dictionary
 let name = json["name"].stringValue
 ```
 ```swift
-//With an array like path to the element
+//Getting a string using a path to the element
 let path = [1,"list",2,"name"]
 let name = json[path].string
 //Just the same
 let name = json[1]["list"][2]["name"].string
-```
-```swift
-//With a literal array to the element
+//Alternatively
 let name = json[1,"list",2,"name"].string
-//Just the same
-let name = json[1]["list"][2]["name"].string
 ```
 ```swift
 //With a hard way
@@ -156,7 +152,7 @@ for (key: String, subJson: JSON) in json {
    //Do something you want
 }
 ```
-*The first element is always String, even if the JSON's object is Array*
+*The first element is always a String, even if the JSON is an Array*
 ```swift
 //If json is .Array
 //The `index` is 0..<json.count's string value
@@ -165,11 +161,12 @@ for (index: String, subJson: JSON) in json {
 }
 ```
 ####Error
-Use subscript to get/set value in Array or Dicitonary
+Use a subscript to get/set a value in an Array or Dictionary
 
-*  If json is an array, the app may crash with "index out-of-bounds."
-*  If json is a dictionary, it will get `nil` without the reason.
-*  If json is not an array or a dictionary, the app may crash with the wrong selector exception.
+If the json is:
+*  an array, the app may crash with "index out-of-bounds."
+*  a dictionary, it will get `nil` without a reason.
+*  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
 
 It will never happen in SwiftyJSON.
 
@@ -290,44 +287,44 @@ if let data = json.rawData() {
 }
 ```
 ```swift
-//convert the JSON to raw String
+//convert the JSON to a raw String
 if let string = json.rawString() {
     //Do something you want
 }
 ```
 ####Literal convertibles
-More info about the literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
+For more info about literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
 ```swift
 //StringLiteralConvertible
-let json:JSON = "I'm a json"
+let json: JSON = "I'm a json"
 ```
 ```swift
 //IntegerLiteralConvertible
-let json:JSON =  12345
+let json: JSON =  12345
 ```
 ```swift
 //BooleanLiteralConvertible
-let json:JSON =  true
+let json: JSON =  true
 ```
 ```swift
 //FloatLiteralConvertible
-let json:JSON =  2.8765
+let json: JSON =  2.8765
 ```
 ```swift
 //DictionaryLiteralConvertible
-let json:JSON =  ["I":"am", "a":"json"]
+let json: JSON =  ["I":"am", "a":"json"]
 ```
 ```swift
 //ArrayLiteralConvertible
-let json:JSON =  ["I", "am", "a", "json"]
+let json: JSON =  ["I", "am", "a", "json"]
 ```
 ```swift
 //NilLiteralConvertible
-let json:JSON =  nil
+let json: JSON =  nil
 ```
 ```swift
 //With subscript in array
-var json:JSON =  [1,2,3]
+var json: JSON =  [1,2,3]
 json[0] = 100
 json[1] = 200
 json[2] = 300
@@ -335,14 +332,14 @@ json[999] = 300 //Don't worry, nothing will happen
 ```
 ```swift
 //With subscript in dictionary
-var json:JSON =  ["name":"Jack", "age": 25]
+var json: JSON =  ["name": "Jack", "age": 25]
 json["name"] = "Mike"
 json["age"] = "25" //It's OK to set String
 json["address"] = "L.A." // Add the "address": "L.A." in json
 ```
 ```swift
 //Array & Dictionary
-var json:JSON =  ["name":"Jack", "age": 25, "list":["a","b","c",["what":"this"]]]
+var json: JSON =  ["name": "Jack", "age": 25, "list": ["a", "b", "c", ["what": "this"]]]
 json["list"][3]["what"] = "that"
 json["list",3,"what"] = "that"
 let path = ["list",3,"what"]

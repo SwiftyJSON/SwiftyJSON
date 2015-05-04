@@ -2,9 +2,61 @@
 
 ## [Unreleased](https://github.com/SwiftyJSON/SwiftyJSON/tree/HEAD)
 
-[Full Changelog](https://github.com/SwiftyJSON/SwiftyJSON/compare/2.1.3...HEAD)
+[Full Changelog](https://github.com/SwiftyJSON/SwiftyJSON/compare/2.2.0...HEAD)
 
 **Closed issues:**
+
+- 156 compiler errors Mavericks + Xcode 6.2 [\#220](https://github.com/SwiftyJSON/SwiftyJSON/issues/220)
+
+- 'AnyObject' is not convertible to 'String'; did you mean to use 'as!' to force downcast? [\#218](https://github.com/SwiftyJSON/SwiftyJSON/issues/218)
+
+- pod -\> SwiftyJSON \(2.1.3\) is out-of-date if we compare it to the version mentioned in README.md file. [\#212](https://github.com/SwiftyJSON/SwiftyJSON/issues/212)
+
+- 无法获取到 2.2版本的 [\#211](https://github.com/SwiftyJSON/SwiftyJSON/issues/211)
+
+- Publish Podspec for version 2.2.0 [\#210](https://github.com/SwiftyJSON/SwiftyJSON/issues/210)
+
+- dropping elements? or am I doing something wrong? [\#209](https://github.com/SwiftyJSON/SwiftyJSON/issues/209)
+
+- Not working with Swift 1.2 [\#208](https://github.com/SwiftyJSON/SwiftyJSON/issues/208)
+
+- 在 Mac 项目里用 Carthage 无法编译 [\#193](https://github.com/SwiftyJSON/SwiftyJSON/issues/193)
+
+- 使用中发现解析效率比较低 [\#190](https://github.com/SwiftyJSON/SwiftyJSON/issues/190)
+
+- Looks like it will require a change of "as"es to "as!" for Swift 1.2... [\#150](https://github.com/SwiftyJSON/SwiftyJSON/issues/150)
+
+- No response appeared [\#118](https://github.com/SwiftyJSON/SwiftyJSON/issues/118)
+
+- Swift Optional Values from JSON [\#116](https://github.com/SwiftyJSON/SwiftyJSON/issues/116)
+
+- It seems not easy to manipulate an array or dictionary? [\#110](https://github.com/SwiftyJSON/SwiftyJSON/issues/110)
+
+**Merged pull requests:**
+
+- Fix for xcode 6.3..1 issue [\#224](https://github.com/SwiftyJSON/SwiftyJSON/pull/224) ([datomnurdin](https://github.com/datomnurdin))
+
+- Update the first two examples snippets [\#223](https://github.com/SwiftyJSON/SwiftyJSON/pull/223) ([kmikael](https://github.com/kmikael))
+
+- Allow .number to parse number from string instead of just numberValue [\#219](https://github.com/SwiftyJSON/SwiftyJSON/pull/219) ([yonaskolb](https://github.com/yonaskolb))
+
+- Fixed spelling and grammar mistakes in README.md. Made some swift syntax... [\#214](https://github.com/SwiftyJSON/SwiftyJSON/pull/214) ([pRizz](https://github.com/pRizz))
+
+## [2.2.0](https://github.com/SwiftyJSON/SwiftyJSON/tree/2.2.0) (2015-04-13)
+
+[Full Changelog](https://github.com/SwiftyJSON/SwiftyJSON/compare/2.1.3...2.2.0)
+
+**Closed issues:**
+
+- init doesn't set type correctly [\#206](https://github.com/SwiftyJSON/SwiftyJSON/issues/206)
+
+- SwitfyJSON breaks with update to iOS 8.3 & Xcode 6.3 [\#200](https://github.com/SwiftyJSON/SwiftyJSON/issues/200)
+
+- 'NSString?' is not convertible to 'String?' error with Swift 1.2 [\#198](https://github.com/SwiftyJSON/SwiftyJSON/issues/198)
+
+- I can't install it by carthage [\#181](https://github.com/SwiftyJSON/SwiftyJSON/issues/181)
+
+- Can't compare JSON to Float [\#171](https://github.com/SwiftyJSON/SwiftyJSON/issues/171)
 
 - extend data to results [\#160](https://github.com/SwiftyJSON/SwiftyJSON/issues/160)
 
@@ -28,6 +80,42 @@
 
 **Merged pull requests:**
 
+- Only building tests for testing [\#207](https://github.com/SwiftyJSON/SwiftyJSON/pull/207) ([spanage](https://github.com/spanage))
+
+- Added compatibility with Swift 1.2. [\#204](https://github.com/SwiftyJSON/SwiftyJSON/pull/204) ([jankaltoun](https://github.com/jankaltoun))
+
+- Fix for issue \#200 [\#203](https://github.com/SwiftyJSON/SwiftyJSON/pull/203) ([chschu](https://github.com/chschu))
+
+- Updated to Swift 1.2 [\#202](https://github.com/SwiftyJSON/SwiftyJSON/pull/202) ([scottdelly](https://github.com/scottdelly))
+
+- Updated to Swift 1.2 [\#201](https://github.com/SwiftyJSON/SwiftyJSON/pull/201) ([scottdelly](https://github.com/scottdelly))
+
+- Update to Swift 1.2 [\#199](https://github.com/SwiftyJSON/SwiftyJSON/pull/199) ([kimdv](https://github.com/kimdv))
+
+- Should not get subscript from AnyObject. [\#196](https://github.com/SwiftyJSON/SwiftyJSON/pull/196) ([Candyroot](https://github.com/Candyroot))
+
+- Update for Swift 1.2 [\#195](https://github.com/SwiftyJSON/SwiftyJSON/pull/195) ([justinmakaila](https://github.com/justinmakaila))
+
+- Update README.md [\#194](https://github.com/SwiftyJSON/SwiftyJSON/pull/194) ([manijshrestha](https://github.com/manijshrestha))
+
+- Optimize the code to avoid useless casts to swift arrays. [\#188](https://github.com/SwiftyJSON/SwiftyJSON/pull/188) ([mirion](https://github.com/mirion))
+
+- Fixed the buildable name in the OSX scheme [\#187](https://github.com/SwiftyJSON/SwiftyJSON/pull/187) ([cnoon](https://github.com/cnoon))
+
+- Updated code signing identities for OSX target and tests [\#186](https://github.com/SwiftyJSON/SwiftyJSON/pull/186) ([cnoon](https://github.com/cnoon))
+
+- Fix int overflow compile error [\#178](https://github.com/SwiftyJSON/SwiftyJSON/pull/178) ([mono0926](https://github.com/mono0926))
+
+- Fixed a bug when accessing a value directly via a string subscript when the current object is a dictionary [\#176](https://github.com/SwiftyJSON/SwiftyJSON/pull/176) ([JosephDuffy](https://github.com/JosephDuffy))
+
+- Better support for carthage users [\#174](https://github.com/SwiftyJSON/SwiftyJSON/pull/174) ([rromanchuk](https://github.com/rromanchuk))
+
+- Fixes a 32bit/64bit issue. [\#172](https://github.com/SwiftyJSON/SwiftyJSON/pull/172) ([enhorn](https://github.com/enhorn))
+
+- Update README for new Cocoapods [\#170](https://github.com/SwiftyJSON/SwiftyJSON/pull/170) ([joelparkerhenderson](https://github.com/joelparkerhenderson))
+
+- Fixed a crash when entering json\["NotExistPath"\] [\#167](https://github.com/SwiftyJSON/SwiftyJSON/pull/167) ([ybeapps](https://github.com/ybeapps))
+
 - Adding Swift 1.2 support [\#158](https://github.com/SwiftyJSON/SwiftyJSON/pull/158) ([Jasdev](https://github.com/Jasdev))
 
 - Fix issues with the OS X target and scheme [\#156](https://github.com/SwiftyJSON/SwiftyJSON/pull/156) ([rastersize](https://github.com/rastersize))
@@ -38,7 +126,11 @@
 
 - Change to not build test when building iOS framework target \[Xcode 6.3 + external tools\] [\#153](https://github.com/SwiftyJSON/SwiftyJSON/pull/153) ([rastersize](https://github.com/rastersize))
 
+- Fix tests not building for 32-bit \[Xcode 6.3\] [\#152](https://github.com/SwiftyJSON/SwiftyJSON/pull/152) ([rastersize](https://github.com/rastersize))
+
 - Swift 1.2 compatibility fixes [\#149](https://github.com/SwiftyJSON/SwiftyJSON/pull/149) ([darrarski](https://github.com/darrarski))
+
+- \[README.md\] Setter for JSON array should use arrayObject not array  [\#146](https://github.com/SwiftyJSON/SwiftyJSON/pull/146) ([lwu](https://github.com/lwu))
 
 - add missing ` in comments [\#142](https://github.com/SwiftyJSON/SwiftyJSON/pull/142) ([zhxnlai](https://github.com/zhxnlai))
 
@@ -53,6 +145,10 @@
 - Update README.md [\#135](https://github.com/SwiftyJSON/SwiftyJSON/pull/135) ([esbenvb](https://github.com/esbenvb))
 
 - Fixed the broken Carthage OS X Support. [\#134](https://github.com/SwiftyJSON/SwiftyJSON/pull/134) ([remaerd](https://github.com/remaerd))
+
+- Prefixed "SequenceType" extension with Module name [\#124](https://github.com/SwiftyJSON/SwiftyJSON/pull/124) ([ravero](https://github.com/ravero))
+
+- Code cleaning [\#123](https://github.com/SwiftyJSON/SwiftyJSON/pull/123) ([wiruzx](https://github.com/wiruzx))
 
 ## [2.1.3](https://github.com/SwiftyJSON/SwiftyJSON/tree/2.1.3) (2015-01-10)
 
@@ -207,8 +303,6 @@
 **Merged pull requests:**
 
 - Update for new features \[Issue \#60\] [\#63](https://github.com/SwiftyJSON/SwiftyJSON/pull/63) ([tangplin](https://github.com/tangplin))
-
-- SwiftJSON update feature implemented [\#61](https://github.com/SwiftyJSON/SwiftyJSON/pull/61) ([k06a](https://github.com/k06a))
 
 ## [1.1.0](https://github.com/SwiftyJSON/SwiftyJSON/tree/1.1.0) (2014-10-02)
 

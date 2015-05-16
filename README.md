@@ -111,6 +111,9 @@ To use this library in your project manually you may:
 
 ####Initialization
 ```swift
+import SwiftyJSON
+```
+```swift
 let json = JSON(data: dataFromNetworking)
 ```
 ```swift

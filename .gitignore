@@ -19,3 +19,6 @@ DerivedData
 
 #CocoaPods
 Pods
+
+#Carthage
+Carthage/Build

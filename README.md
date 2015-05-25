@@ -87,17 +87,19 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string{
 ####CocoaPods (iOS 8+, OS X 10.9+)
 You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
 ```ruby
-pod "SwiftyJSON", ">= 2.2"
+platform :ios, '8.0'
+use_frameworks!
+
+target 'MyApp' do
+    pod 'SwiftyJSON', '~> 2.2.0'
+end
 ```
 Note that it needs you to install CocoaPods 36 version, and requires your iOS deploy target >= 8.0:
-```bash
-[sudo] gem install cocoapods -v '>=0.36'
-```
 
 ####Carthage (iOS 8+, OS X 10.9+)
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 ```
-github "SwiftyJSON/SwiftyJSON" >= 2.2
+github "SwiftyJSON/SwiftyJSON" >= 2.2.0
 ```
 
 ####Manually (iOS 7+, OS X 10.9+)

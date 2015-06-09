@@ -78,7 +78,7 @@ class PerformanceTests: XCTestCase {
         self.measureBlock() {
             for _ in 1...100 {
                 autoreleasepool{
-                    var dictionary = json.dictionary
+                    let dictionary = json.dictionary
                     XCTAssertTrue(dictionary?.count > 0)
                 }
             }
@@ -90,7 +90,7 @@ class PerformanceTests: XCTestCase {
         self.measureBlock() {
             for _ in 1...100 {
                 autoreleasepool{
-                    var string = json.rawString()
+                    let string = json.rawString()
                     XCTAssertTrue(string != nil)
                 }
             }

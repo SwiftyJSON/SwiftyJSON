@@ -46,7 +46,7 @@ class PerformanceTests: XCTestCase {
         self.measureBlock() {
             for _ in 1...100 {
                 let json = JSON(data:self.testData)
-                XCTAssertTrue(json != JSON.nullJSON)
+                XCTAssertTrue(json != JSON.null)
             }
         }
     }

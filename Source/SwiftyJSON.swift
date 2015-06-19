@@ -140,8 +140,9 @@ public struct JSON {
     public var error: NSError? { get { return self._error } }
     
     /// The static null json
-    public static var nullJSON: JSON { get { return JSON(NSNull()) } }
-
+    @available(*, unavailable, renamed="null")
+    public static var nullJSON: JSON { get { return null } }
+    public static var null: JSON { get { return JSON(NSNull()) } }
 }
 
 // MARK: - SequenceType
@@ -229,7 +230,7 @@ extension JSON {
         get {
             
             if self.type != .Array {
-                var errorResult_ = JSON.nullJSON
+                var errorResult_ = JSON.null
                 errorResult_._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
                 return errorResult_
             }
@@ -240,7 +241,7 @@ extension JSON {
                 return JSON(array_[index])
             }
             
-            var errorResult_ = JSON.nullJSON
+            var errorResult_ = JSON.null
             errorResult_._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
             return errorResult_
         }
@@ -258,7 +259,7 @@ extension JSON {
     /// If `type` is `.Dictionary`, return json which's object is `dictionary[key]` , otherwise return null json with error.
     private subscript(key key: String) -> JSON {
         get {
-            var returnJSON = JSON.nullJSON
+            var returnJSON = JSON.null
             if self.type == .Dictionary {
                 let dictionary_ = self.object as! [String : AnyObject]
                 if let object_: AnyObject = dictionary_[key] {
@@ -314,7 +315,7 @@ extension JSON {
     public subscript(path: [SubscriptType]) -> JSON {
         get {
             switch path.count {
-            case 0: return JSON.nullJSON
+            case 0: return JSON.null
             case 1: return self[sub: path[0]]
             default:
                 var aPath = path; aPath.removeAtIndex(0)

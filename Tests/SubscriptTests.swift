@@ -179,10 +179,10 @@ class SubscriptTests: XCTestCase {
     
     func testOutOfBounds() {
         let json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
-        XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[-2].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
-        XCTAssertEqual(json[9][8], JSON.nullJSON)
+        XCTAssertEqual(json[9][8], JSON.null)
         XCTAssertEqual(json[8][7].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[8,7].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[999].error!.code, ErrorIndexOutOfBounds)
@@ -190,10 +190,10 @@ class SubscriptTests: XCTestCase {
     
     func testErrorWrongType() {
         let json = JSON(12345)
-        XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[9].error!.code, ErrorWrongType)
         XCTAssertEqual(json[8][7].error!.code, ErrorWrongType)
-        XCTAssertEqual(json["name"], JSON.nullJSON)
+        XCTAssertEqual(json["name"], JSON.null)
         XCTAssertEqual(json["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json[0]["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json["type"]["name"].error!.code, ErrorWrongType)
@@ -205,7 +205,7 @@ class SubscriptTests: XCTestCase {
     
     func testErrorNotExist() {
         let json:JSON = ["name":"NAME", "age":15]
-        XCTAssertEqual(json["Type"], JSON.nullJSON)
+        XCTAssertEqual(json["Type"], JSON.null)
         XCTAssertEqual(json["Type"].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type"][1].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type", 1].error!.code, ErrorNotExist)

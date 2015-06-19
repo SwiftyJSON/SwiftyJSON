@@ -220,7 +220,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[0][0][0][0]["one"].int!, 1)
     }
     
-    func testMultilevelSetter() {
+    func testMultilevelSetter1() {
         var json:JSON = [[[[["num":1]]]]]
         json[0, 0, 0, 0, "num"] = 2
         XCTAssertEqual(json[[0, 0, 0, 0, "num"]].intValue, 2)
@@ -237,5 +237,29 @@ class SubscriptTests: XCTestCase {
         let path:[SubscriptType] = [0,0,0,0,"name"]
         json[path].string = "Jim"
         XCTAssertEqual(json[path].stringValue, "Jim")
+    }
+    
+    func testMultilevelSetter2() {
+        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]]]
+        json["user","info","name"] = "jim"
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "jim")
+        XCTAssertEqual(json["user","info","email"], "jack@gmail.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","info","email"] = "jim@hotmail.com"
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "jim")
+        XCTAssertEqual(json["user","info","email"], "jim@hotmail.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","info"] = ["name":"tom","email":"tom@qq.com"]
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "tom")
+        XCTAssertEqual(json["user","info","email"], "tom@qq.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","feeds"] = [77323,2313,4545,323]
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "tom")
+        XCTAssertEqual(json["user","info","email"], "tom@qq.com")
+        XCTAssertEqual(json["user","feeds"], [77323,2313,4545,323])
     }
 }

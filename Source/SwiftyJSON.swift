@@ -313,35 +313,24 @@ extension JSON {
     */
     public subscript(path: [SubscriptType]) -> JSON {
         get {
-            if path.count == 0 {
-                return JSON.nullJSON
+            switch path.count {
+            case 0: return JSON.nullJSON
+            case 1: return self[sub: path[0]]
+            default:
+                var aPath = path; aPath.removeAtIndex(0)
+                let nextJSON = self[sub: path[0]]
+                return nextJSON[aPath]
             }
-            
-            var next = self
-            for sub in path {
-                next = next[sub:sub]
-            }
-            return next
         }
         set {
-            
             switch path.count {
             case 0: return
-            case 1: self[sub:path[0]] = newValue
+            case 1: self[sub:path[0]].object = newValue.object
             default:
-                var last = newValue
-                var newPath = path
-                newPath.removeLast()
-                for sub in Array(path.reverse()) {
-                    var previousLast = self[newPath]
-                    previousLast[sub:sub] = last
-                    last = previousLast
-                    if newPath.count <= 1 {
-                        break
-                    }
-                    newPath.removeLast()
-                }
-                self[sub:newPath[0]] = last
+                var aPath = path; aPath.removeAtIndex(0)
+                var nextJSON = self[sub: path[0]]
+                nextJSON[aPath] = newValue
+                self[sub: path[0]] = nextJSON
             }
         }
     }

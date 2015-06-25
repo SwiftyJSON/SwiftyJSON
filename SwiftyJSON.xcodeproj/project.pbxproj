@@ -280,9 +280,9 @@
 			productReference = 2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		6595294C1B3BC81700AED25B /* Swifty JSON watchOS */ = {
+		6595294C1B3BC81700AED25B /* SwiftyJSON watchOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 659529541B3BC81700AED25B /* Build configuration list for PBXNativeTarget "Swifty JSON watchOS" */;
+			buildConfigurationList = 659529541B3BC81700AED25B /* Build configuration list for PBXNativeTarget "SwiftyJSON watchOS" */;
 			buildPhases = (
 				659529481B3BC81700AED25B /* Sources */,
 				659529491B3BC81700AED25B /* Frameworks */,
@@ -293,7 +293,7 @@
 			);
 			dependencies = (
 			);
-			name = "Swifty JSON watchOS";
+			name = "SwiftyJSON watchOS";
 			productName = "Swifty JSON watchOS";
 			productReference = 6595294D1B3BC81700AED25B /* SwiftyJSON.framework */;
 			productType = "com.apple.product-type.framework";
@@ -377,7 +377,7 @@
 				2E4FEFE519575BE100351305 /* SwiftyJSON iOS Tests */,
 				9C7DFC5A1A9102BD005AA3F7 /* SwiftyJSON OSX */,
 				9C7DFC641A9102BD005AA3F7 /* SwiftyJSON OSX Tests */,
-				6595294C1B3BC81700AED25B /* Swifty JSON watchOS */,
+				6595294C1B3BC81700AED25B /* SwiftyJSON watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -826,13 +826,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		659529541B3BC81700AED25B /* Build configuration list for PBXNativeTarget "Swifty JSON watchOS" */ = {
+		659529541B3BC81700AED25B /* Build configuration list for PBXNativeTarget "SwiftyJSON watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				659529521B3BC81700AED25B /* Debug */,
 				659529531B3BC81700AED25B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9C7DFC6E1A9102BD005AA3F7 /* Build configuration list for PBXNativeTarget "SwiftyJSON OSX" */ = {
 			isa = XCConfigurationList;

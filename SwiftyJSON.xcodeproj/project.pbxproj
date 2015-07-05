@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E4FEFE119575BE100351305 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2E4FEFE719575BE100351305 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */; };
+		6860A44C1B48E97200CC8B23 /* JSONSerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6860A44B1B48E97200CC8B23 /* JSONSerializeTests.swift */; };
 		9C459EF41A910334008C9A41 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C459EF51A910361008C9A41 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		9C459EF81A9103C1008C9A41 /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
@@ -66,6 +67,7 @@
 		2E4FEFDF19575BE100351305 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		2E4FEFE019575BE100351305 /* SwiftyJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
 		2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6860A44B1B48E97200CC8B23 /* JSONSerializeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializeTests.swift; sourceTree = "<group>"; };
 		9C459EF61A9103B1008C9A41 /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
 		9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +179,7 @@
 				A863BE2719EED46F0092A41F /* RawTests.swift */,
 				A8B66C8B19E51D6500540692 /* DictionaryTests.swift */,
 				A8B66C8D19E52F4200540692 /* ArrayTests.swift */,
+				6860A44B1B48E97200CC8B23 /* JSONSerializeTests.swift */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
 			path = Tests;
@@ -386,6 +389,7 @@
 				A819C4A119E37FC600ADCC3D /* PrintableTests.swift in Sources */,
 				A819C49719E1A7DD00ADCC3D /* LiteralConvertibleTests.swift in Sources */,
 				A87080EA19E43C0700CDE086 /* StringTests.swift in Sources */,
+				6860A44C1B48E97200CC8B23 /* JSONSerializeTests.swift in Sources */,
 				A87080E619E3DF7800CDE086 /* ComparableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

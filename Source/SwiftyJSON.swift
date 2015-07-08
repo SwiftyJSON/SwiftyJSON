@@ -119,9 +119,9 @@ public struct JSON {
                 _type = .String
             case let null as NSNull:
                 _type = .Null
-            case let array as [AnyObject]:
+            case let array as NSArray:
                 _type = .Array
-            case let dictionary as [String : AnyObject]:
+            case let dictionary as NSDictionary:
                 _type = .Dictionary
             default:
                 _type = .Unknown
@@ -258,7 +258,7 @@ extension JSON {
         get {
             var returnJSON = JSON.nullJSON
             if self.type == .Dictionary {
-                let dictionary_ = self.object as! [String : AnyObject]
+                let dictionary_ = self.object as! NSDictionary
                 if let object_: AnyObject = dictionary_[key] {
                     returnJSON = JSON(object_)
                 } else {

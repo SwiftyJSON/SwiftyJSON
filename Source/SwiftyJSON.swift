@@ -94,6 +94,21 @@ public struct JSON {
         self.init(jsonArray.map { $0.object })
     }
 
+    /**
+    Creates a JSON from a [String: JSON]
+    
+    :param: jsonDictionary A Swift dictionary of JSON objects
+    
+    :returns: The created JSON
+    */
+    public init(_ jsonDictionary:[String: JSON]) {
+        var dictionary = [String: AnyObject]()
+        for (key, json) in jsonDictionary {
+            dictionary[key] = json.object
+        }
+        self.init(dictionary)
+    }
+
     /// Private object
     private var _object: AnyObject = NSNull()
     /// Private type

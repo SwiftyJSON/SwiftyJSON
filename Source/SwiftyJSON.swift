@@ -164,9 +164,9 @@ extension JSON : Swift.SequenceType {
         get {
             switch self.type {
             case .Array:
-                return self.arrayValue.count
+                return (self.object as! [AnyObject]).count
             case .Dictionary:
-                return self.dictionaryValue.count
+                return (self.object as! [String : AnyObject]).count
             default:
                 return 0
             }

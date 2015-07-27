@@ -25,37 +25,37 @@ import SwiftyJSON
 
 class PrintableTests: XCTestCase {
     func testNumber() {
-        var json:JSON = 1234567890.876623
+        let json:JSON = 1234567890.876623
         XCTAssertEqual(json.description, "1234567890.876623")
         XCTAssertEqual(json.debugDescription, "1234567890.876623")
     }
     
     func testBool() {
-        var jsonTrue:JSON = true
+        let jsonTrue:JSON = true
         XCTAssertEqual(jsonTrue.description, "true")
         XCTAssertEqual(jsonTrue.debugDescription, "true")
-        var jsonFalse:JSON = false
+        let jsonFalse:JSON = false
         XCTAssertEqual(jsonFalse.description, "false")
         XCTAssertEqual(jsonFalse.debugDescription, "false")
     }
     
     func testString() {
-        var json:JSON = "abcd efg, HIJK;LMn"
+        let json:JSON = "abcd efg, HIJK;LMn"
         XCTAssertEqual(json.description, "abcd efg, HIJK;LMn")
         XCTAssertEqual(json.debugDescription, "abcd efg, HIJK;LMn")
     }
     
     func testNil() {
-        var jsonNil_1:JSON = nil
+        let jsonNil_1:JSON = nil
         XCTAssertEqual(jsonNil_1.description, "null")
         XCTAssertEqual(jsonNil_1.debugDescription, "null")
-        var jsonNil_2:JSON = JSON(NSNull())
+        let jsonNil_2:JSON = JSON(NSNull())
         XCTAssertEqual(jsonNil_2.description, "null")
         XCTAssertEqual(jsonNil_2.debugDescription, "null")
     }
     
     func testArray() {
-        var json:JSON = [1,2,"4",5,"6"]
+        let json:JSON = [1,2,"4",5,"6"]
         var description = json.description.stringByReplacingOccurrencesOfString("\n", withString: "")
         description = description.stringByReplacingOccurrencesOfString(" ", withString: "")
         XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
@@ -64,7 +64,7 @@ class PrintableTests: XCTestCase {
     }
     
     func testDictionary() {
-        var json:JSON = ["1":2,"2":"two", "3":3]
+        let json:JSON = ["1":2,"2":"two", "3":3]
         var debugDescription = json.debugDescription.stringByReplacingOccurrencesOfString("\n", withString: "")
         debugDescription = debugDescription.stringByReplacingOccurrencesOfString(" ", withString: "")
         XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)

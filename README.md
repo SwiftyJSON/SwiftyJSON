@@ -157,7 +157,7 @@ let name = json[keys].string
 ####Loop
 ```swift
 //If json is .Dictionary
-for (key: String, subJson: JSON) in json {
+for (key,subJson):(String, JSON) in json {
    //Do something you want
 }
 ```
@@ -165,7 +165,7 @@ for (key: String, subJson: JSON) in json {
 ```swift
 //If json is .Array
 //The `index` is 0..<json.count's string value
-for (index: String, subJson: JSON) in json {
+for (key,subJson):(String, JSON) in json {
     //Do something you want
 }
 ```

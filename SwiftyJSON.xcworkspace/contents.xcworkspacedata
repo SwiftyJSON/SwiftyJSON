@@ -5,6 +5,6 @@
       location = "group:SwiftyJSON.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Example.xcodeproj">
+      location = "group:Example/Example.xcodeproj">
    </FileRef>
 </Workspace>

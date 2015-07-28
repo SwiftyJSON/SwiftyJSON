@@ -314,14 +314,7 @@ extension JSON {
     */
     public subscript(path: [SubscriptType]) -> JSON {
         get {
-            switch path.count {
-            case 0: return JSON.null
-            case 1: return self[sub: path[0]]
-            default:
-                var aPath = path; aPath.removeAtIndex(0)
-                let nextJSON = self[sub: path[0]]
-                return nextJSON[aPath]
-            }
+            return path.reduce(self) { $0[sub: $1] }
         }
         set {
             switch path.count {

@@ -69,7 +69,9 @@ public struct JSON {
             let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: opt)
             self.init(object)
         } catch let aError as NSError {
-            error.memory = aError
+            if error != nil {
+                error.memory = aError
+            }
             self.init(NSNull())
         }
     }
@@ -715,7 +717,7 @@ extension JSON {
         get {
             switch self.type {
             case .String:
-                if let encodedString_ = self.object.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+                if let encodedString_ = self.object.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
                     return NSURL(string: encodedString_)
                 } else {
                     return nil

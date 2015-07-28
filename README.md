@@ -91,7 +91,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'SwiftyJSON', '~> 2.2.0'
+    pod 'SwiftyJSON', '~> 2.2.1'
 end
 ```
 Note that it needs you to install CocoaPods 36 version, and requires your iOS deploy target >= 8.0:
@@ -99,7 +99,7 @@ Note that it needs you to install CocoaPods 36 version, and requires your iOS de
 ####Carthage (iOS 8+, OS X 10.9+)
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 ```
-github "SwiftyJSON/SwiftyJSON" >= 2.2.0
+github "SwiftyJSON/SwiftyJSON" >= 2.2.1
 ```
 
 ####Manually (iOS 7+, OS X 10.9+)

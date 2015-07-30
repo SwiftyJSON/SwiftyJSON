@@ -103,7 +103,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[1]["b"], JSON("B"))
         XCTAssertNotNil(json[2]["null"].null)
         XCTAssertNotNil(json[2,"null"].null)
-        let keys:[SubscriptType] = [1, "a"]
+        let keys:[JSONSubscriptType] = [1, "a"]
         XCTAssertEqual(json[keys], JSON(rawValue: "A")!)
     }
     
@@ -234,7 +234,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[[0,0,0,0,"name"]].stringValue, "Jack")
         json[[0,0,0,0,"name"]].string = "Mike"
         XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Mike")
-        let path:[SubscriptType] = [0,0,0,0,"name"]
+        let path:[JSONSubscriptType] = [0,0,0,0,"name"]
         json[path].string = "Jim"
         XCTAssertEqual(json[path].stringValue, "Jim")
     }

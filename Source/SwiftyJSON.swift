@@ -165,10 +165,46 @@ public struct JSON {
     public static var null: JSON { get { return JSON(NSNull()) } }
 }
 
-// MARK: - SequenceType
-extension JSON : Swift.SequenceType {
-    
+// MARK: - CollectionType, SequenceType, Indexable
+extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
+
     public typealias Generator = JSONGenerator
+    
+    public typealias Index = JSONIndex
+    
+    public var startIndex: JSON.Index {
+        switch self.type {
+        case .Array:
+            return JSONIndex(arrayIndex: self.rawArray.startIndex)
+        case .Dictionary:
+            return JSONIndex(dictionaryIndex: self.rawDictionary.startIndex)
+        default:
+            return JSONIndex()
+        }
+    }
+
+    public var endIndex: JSON.Index {
+        switch self.type {
+        case .Array:
+            return JSONIndex(arrayIndex: self.rawArray.endIndex)
+        case .Dictionary:
+            return JSONIndex(dictionaryIndex: self.rawDictionary.endIndex)
+        default:
+            return JSONIndex()
+        }
+    }
+    
+    public subscript (position: JSON.Index) -> JSON.Generator.Element {
+        switch self.type {
+        case .Array:
+            return (String(position.arrayIndex), JSON(self.rawArray[position.arrayIndex!]))
+        case .Dictionary:
+            let (key, value) = self.rawDictionary[position.dictionaryIndex!]
+            return (key, JSON(value))
+        default:
+            return ("", JSON.null)
+        }
+    }
     
     /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `false`.
     public var isEmpty: Bool {
@@ -210,14 +246,106 @@ extension JSON : Swift.SequenceType {
     /**
     If `type` is `.Array` or `.Dictionary`, return a generator over the elements like `Array` or `Dictionary`, otherwise return a generator over empty.
     
-    - returns: Return a *generator* over the elements of this *sequence*.
+    - returns: Return a *generator* over the elements of JSON.
     */
     public func generate() -> JSON.Generator {
         return JSON.Generator(self)
     }
 }
 
-public struct JSONGenerator : Swift.GeneratorType {
+public struct JSONIndex: ForwardIndexType, _Incrementable, Equatable, Comparable {
+
+    let arrayIndex: Int?
+    let dictionaryIndex: DictionaryIndex<String, AnyObject>?
+    
+    let type: Type
+    
+    init(){
+        self.arrayIndex = nil
+        self.dictionaryIndex = nil
+        self.type = .Unknown
+    }
+    
+    init(arrayIndex: Int) {
+        self.arrayIndex = arrayIndex
+        self.dictionaryIndex = nil
+        self.type = .Array
+    }
+    
+    init(dictionaryIndex: DictionaryIndex<String, AnyObject>) {
+        self.arrayIndex = nil
+        self.dictionaryIndex = dictionaryIndex
+        self.type = .Dictionary
+    }
+    
+    public func successor() -> JSONIndex {
+        switch self.type {
+        case .Array:
+            return JSONIndex(arrayIndex: self.arrayIndex!.successor())
+        case .Dictionary:
+            return JSONIndex(dictionaryIndex: self.dictionaryIndex!.successor())
+        default:
+            return JSONIndex()
+        }
+    }
+}
+
+public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
+    switch (lhs.type, rhs.type) {
+    case (.Array, .Array):
+        return lhs.arrayIndex == rhs.arrayIndex
+    case (.Dictionary, .Dictionary):
+        return lhs.dictionaryIndex == rhs.dictionaryIndex
+    default:
+        return false
+    }
+}
+
+public func <(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
+    switch (lhs.type, rhs.type) {
+    case (.Array, .Array):
+        return lhs.arrayIndex < rhs.arrayIndex
+    case (.Dictionary, .Dictionary):
+        return lhs.dictionaryIndex < rhs.dictionaryIndex
+    default:
+        return false
+    }
+}
+
+public func <=(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
+    switch (lhs.type, rhs.type) {
+    case (.Array, .Array):
+        return lhs.arrayIndex <= rhs.arrayIndex
+    case (.Dictionary, .Dictionary):
+        return lhs.dictionaryIndex <= rhs.dictionaryIndex
+    default:
+        return false
+    }
+}
+
+public func >=(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
+    switch (lhs.type, rhs.type) {
+    case (.Array, .Array):
+        return lhs.arrayIndex >= rhs.arrayIndex
+    case (.Dictionary, .Dictionary):
+        return lhs.dictionaryIndex >= rhs.dictionaryIndex
+    default:
+        return false
+    }
+}
+
+public func >(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
+    switch (lhs.type, rhs.type) {
+    case (.Array, .Array):
+        return lhs.arrayIndex > rhs.arrayIndex
+    case (.Dictionary, .Dictionary):
+        return lhs.dictionaryIndex > rhs.dictionaryIndex
+    default:
+        return false
+    }
+}
+
+public struct JSONGenerator : GeneratorType {
     
     public typealias Element = (String, JSON)
     
@@ -426,11 +554,6 @@ extension JSON: Swift.FloatLiteralConvertible {
 extension JSON: Swift.DictionaryLiteralConvertible {
 	
 	public init(dictionaryLiteral elements: (String, AnyObject)...) {
-//		var dictionary = [String : AnyObject]()
-//		for (key_, value) in elements {
-//			dictionary_[key_] = value
-//		}
-//		self.init(dictionary_)
         self.init(elements.reduce([String : AnyObject]()){(dictionary: [String : AnyObject], element:(String, AnyObject)) -> [String : AnyObject] in
             var d = dictionary
             d[element.0] = element.1

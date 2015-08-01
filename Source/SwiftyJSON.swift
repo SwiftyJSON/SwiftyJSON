@@ -1176,15 +1176,15 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
-        return (lhs.object as! NSNumber) == (rhs.object as! NSNumber)
+        return lhs.rawNumber == rhs.rawNumber
     case (.String, .String):
-        return (lhs.object as! String) == (rhs.object as! String)
+        return lhs.rawString == rhs.rawString
     case (.Bool, .Bool):
-        return (lhs.object as! Bool) == (rhs.object as! Bool)
+        return lhs.rawNumber.boolValue == rhs.rawNumber.boolValue
     case (.Array, .Array):
-        return (lhs.object as! NSArray) == (rhs.object as! NSArray)
+        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
     case (.Dictionary, .Dictionary):
-        return (lhs.object as! NSDictionary) == (rhs.object as! NSDictionary)
+        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
     case (.Null, .Null):
         return true
     default:
@@ -1196,15 +1196,15 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
-        return (lhs.object as! NSNumber) <= (rhs.object as! NSNumber)
+        return lhs.rawNumber <= rhs.rawNumber
     case (.String, .String):
-        return (lhs.object as! String) <= (rhs.object as! String)
+        return lhs.rawString <= rhs.rawString
     case (.Bool, .Bool):
-        return (lhs.object as! Bool) == (rhs.object as! Bool)
+        return lhs.rawNumber.boolValue == rhs.rawNumber.boolValue
     case (.Array, .Array):
-        return (lhs.object as! NSArray) == (rhs.object as! NSArray)
+        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
     case (.Dictionary, .Dictionary):
-        return (lhs.object as! NSDictionary) == (rhs.object as! NSDictionary)
+        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
     case (.Null, .Null):
         return true
     default:
@@ -1216,15 +1216,15 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
-        return (lhs.object as! NSNumber) >= (rhs.object as! NSNumber)
+        return lhs.rawNumber >= rhs.rawNumber
     case (.String, .String):
-        return (lhs.object as! String) >= (rhs.object as! String)
+        return lhs.rawString >= rhs.rawString
     case (.Bool, .Bool):
-        return (lhs.object as! Bool) == (rhs.object as! Bool)
+        return lhs.rawNumber.boolValue == rhs.rawNumber.boolValue
     case (.Array, .Array):
-        return (lhs.object as! NSArray) == (rhs.object as! NSArray)
+        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
     case (.Dictionary, .Dictionary):
-        return (lhs.object as! NSDictionary) == (rhs.object as! NSDictionary)
+        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
     case (.Null, .Null):
         return true
     default:
@@ -1236,9 +1236,9 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
-        return (lhs.object as! NSNumber) > (rhs.object as! NSNumber)
+        return lhs.rawNumber > rhs.rawNumber
     case (.String, .String):
-        return (lhs.object as! String) > (rhs.object as! String)
+        return lhs.rawString > rhs.rawString
     default:
         return false
     }
@@ -1248,9 +1248,9 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
     
     switch (lhs.type, rhs.type) {
     case (.Number, .Number):
-        return (lhs.object as! NSNumber) < (rhs.object as! NSNumber)
+        return lhs.rawNumber < rhs.rawNumber
     case (.String, .String):
-        return (lhs.object as! String) < (rhs.object as! String)
+        return lhs.rawString < rhs.rawString
     default:
         return false
     }

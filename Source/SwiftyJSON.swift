@@ -885,7 +885,7 @@ extension JSON {
         get {
             switch self.type {
             case .String:
-                if let encodedString_ = self.rawString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+                if let encodedString_ = self.rawString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet()) {
                     return NSURL(string: encodedString_)
                 } else {
                     return nil

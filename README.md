@@ -57,7 +57,7 @@ With SwiftyJSON all you have to do is:
 ```swift
 
 let json = JSON(data: dataFromNetworking)
-if let userName = json[0]["user"]["name"].string{
+if let userName = json[0]["user"]["name"].string {
   //Now you got your value
 }
 
@@ -68,7 +68,7 @@ And don't worry about the Optional Wrapping thing. It's done for you automatical
 ```swift
 
 let json = JSON(data: dataFromNetworking)
-if let userName = json[999999]["wrong_key"]["wrong_name"].string{
+if let userName = json[999999]["wrong_key"]["wrong_name"].string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error

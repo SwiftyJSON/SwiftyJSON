@@ -41,7 +41,7 @@ class DictionaryTests: XCTestCase {
         XCTAssertTrue(json.dictionaryValue["null"] == nil)
         XCTAssertTrue(JSON.null.dictionaryValue == [:])
         //dictionaryObject
-        XCTAssertEqual(json.dictionaryObject!["number"]! as! Double, 9823.212)
+        XCTAssertEqual(json.dictionaryObject!["number"]! as? Double, 9823.212)
         XCTAssertTrue(json.dictionaryObject!["null"] == nil)
         XCTAssertTrue(JSON.null.dictionaryObject == nil)
     }

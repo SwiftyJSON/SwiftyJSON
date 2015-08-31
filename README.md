@@ -94,7 +94,7 @@ target 'MyApp' do
     pod 'SwiftyJSON', '~> 2.2.1'
 end
 ```
-Note that it needs you to install CocoaPods 36 version, and requires your iOS deploy target >= 8.0:
+Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
 
 ####Carthage (iOS 8+, OS X 10.9+)
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
@@ -172,12 +172,12 @@ for (index: String, subJson: JSON) in json {
 ####Error
 Use a subscript to get/set a value in an Array or Dictionary
 
-If the json is:
+If the JSON is:
 *  an array, the app may crash with "index out-of-bounds."
-*  a dictionary, it will get `nil` without a reason.
+*  a dictionary, it will be assigned `nil` without a reason.
 *  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
 
-It will never happen in SwiftyJSON.
+This will never happen in SwiftyJSON.
 
 ```swift
 let json = JSON(["name", "age"])

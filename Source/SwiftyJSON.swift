@@ -1360,3 +1360,9 @@ extension JSON {
         }
     }
 }
+
+//MARK: JSON Serialize
+public protocol JSONSerialize
+{
+    init(_ json:JSON)
+}

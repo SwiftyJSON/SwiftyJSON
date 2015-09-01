@@ -65,10 +65,15 @@ public struct JSON {
     :returns: The created JSON
     */
     public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
-        if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: error) {
+        var tmpError:NSError? = nil
+        if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: opt, error: &tmpError) {
             self.init(object)
         } else {
             self.init(NSNull())
+            self._error = tmpError
+        }
+        if (error != nil) && (self.error != nil) {
+           error.memory = self._error!
         }
     }
     

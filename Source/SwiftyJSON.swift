@@ -1198,6 +1198,26 @@ public func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
+// MARK: - isTruthy
+extension JSON {
+    var isTruthy: Bool {
+        get {
+            switch self.type {
+            case .String:
+                return (self.object as! String) != ""
+            case .Number:
+                return (self.object as! NSNumber) != 0
+            case .Bool:
+                return (self.object as! Bool)
+            case .Array, .Dictionary:
+                return true
+            case .Null, .Unknown:
+                return false
+            }
+        }
+    }
+}
+
 //MARK:- Unavailable
 
 @availability(*, unavailable, renamed="JSON")

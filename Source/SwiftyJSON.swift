@@ -25,13 +25,13 @@ import Foundation
 // MARK: - Error
 
 ///Error domain
-public let ErrorDomain: String! = "SwiftyJSONErrorDomain"
+public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
 ///Error code
-public let ErrorUnsupportedType: Int! = 999
-public let ErrorIndexOutOfBounds: Int! = 900
-public let ErrorWrongType: Int! = 901
-public let ErrorNotExist: Int! = 500
+public let ErrorUnsupportedType: Int = 999
+public let ErrorIndexOutOfBounds: Int = 900
+public let ErrorWrongType: Int = 901
+public let ErrorNotExist: Int = 500
 
 // MARK: - JSON Type
 
@@ -40,7 +40,7 @@ JSON's type definitions.
 
 See http://tools.ietf.org/html/rfc7231#section-4.3
 */
-public enum Type :Int{
+public enum Type {
     
     case Number
     case String
@@ -115,10 +115,37 @@ public struct JSON {
     
     /// Private object
     private var rawArray: [AnyObject] = []
-    private var rawDictionary: [String : AnyObject] = [:]
     private var rawString: String = ""
     private var rawNumber: NSNumber = 0
     private var rawNull: NSNull = NSNull()
+	
+	private var _rawDictionary: NSDictionary = [:]
+	private var rawDictionary: NSDictionary {
+		get {
+			return _rawDictionary
+		}
+		set {
+			_rawDictionary = newValue
+			_swiftDictionary = nil
+		}
+	}
+	
+	private var _swiftDictionary: [String: AnyObject]?
+	private var swiftDictionary: [String: AnyObject] {
+		
+		get {
+			if let rawSwiftDictionary = _swiftDictionary {
+				return rawSwiftDictionary
+			} else {
+				return (rawDictionary as? [String: AnyObject])!
+			}
+		}
+		set {
+			rawDictionary = newValue as NSDictionary
+			_swiftDictionary = newValue
+		}
+	}
+	
     /// Private type
     private var _type: Type = .Null
     /// prviate error
@@ -152,7 +179,7 @@ public struct JSON {
                     _type = .Number
                 }
                 self.rawNumber = number
-            case  let string as String:
+            case let string as String:
                 _type = .String
                 self.rawString = string
             case  _ as NSNull:
@@ -160,7 +187,7 @@ public struct JSON {
             case let array as [AnyObject]:
                 _type = .Array
                 self.rawArray = array
-            case let dictionary as [String : AnyObject]:
+            case let dictionary as NSDictionary:
                 _type = .Dictionary
                 self.rawDictionary = dictionary
             default:
@@ -194,7 +221,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         case .Array:
             return JSONIndex(arrayIndex: self.rawArray.startIndex)
         case .Dictionary:
-            return JSONIndex(dictionaryIndex: self.rawDictionary.startIndex)
+            return JSONIndex(dictionaryIndex: self.swiftDictionary.startIndex)
         default:
             return JSONIndex()
         }
@@ -205,7 +232,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         case .Array:
             return JSONIndex(arrayIndex: self.rawArray.endIndex)
         case .Dictionary:
-            return JSONIndex(dictionaryIndex: self.rawDictionary.endIndex)
+            return JSONIndex(dictionaryIndex: self.swiftDictionary.endIndex)
         default:
             return JSONIndex()
         }
@@ -216,7 +243,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         case .Array:
             return (String(position.arrayIndex), JSON(self.rawArray[position.arrayIndex!]))
         case .Dictionary:
-            let (key, value) = self.rawDictionary[position.dictionaryIndex!]
+            let (key, value) = self.swiftDictionary[position.dictionaryIndex!]
             return (key, JSON(value))
         default:
             return ("", JSON.null)
@@ -230,7 +257,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
             case .Array:
                 return self.rawArray.isEmpty
             case .Dictionary:
-                return self.rawDictionary.isEmpty
+                return self.rawDictionary.count == 0
             default:
                 return true
             }
@@ -376,7 +403,7 @@ public struct JSONGenerator : GeneratorType {
         if type == .Array {
             self.arrayGenerate = json.rawArray.generate()
         }else {
-            self.dictionayGenerate = json.rawDictionary.generate()
+            self.dictionayGenerate = json.swiftDictionary.generate()
         }
     }
     
@@ -454,7 +481,7 @@ extension JSON {
         }
         set {
             if self.type == .Dictionary && newValue.error == nil {
-                self.rawDictionary[key] = newValue.object
+				self.swiftDictionary[key] = newValue.object
             }
         }
     }
@@ -702,11 +729,16 @@ extension JSON {
     //Optional [String : JSON]
     public var dictionary: [String : JSON]? {
         if self.type == .Dictionary {
-            return self.rawDictionary.reduce([String : JSON]()) { (dictionary: [String : JSON], element: (String, AnyObject)) -> [String : JSON] in
-                var d = dictionary
-                d[element.0] = JSON(element.1)
-                return d
-            }
+			
+			var dictionary: [String : JSON] = [:]
+			
+			self.rawDictionary.enumerateKeysAndObjectsUsingBlock() { (key:AnyObject, value:AnyObject, _) -> Void in
+				if let key = key as? String {
+					dictionary[key] = JSON(value)
+				}
+			}
+			
+			return dictionary
         } else {
             return nil
         }
@@ -722,7 +754,7 @@ extension JSON {
         get {
             switch self.type {
             case .Dictionary:
-                return self.rawDictionary
+                return self.swiftDictionary
             default:
                 return nil
             }

@@ -26,7 +26,8 @@ import SwiftyJSON
 class PerformanceTests: XCTestCase {
 
     var testData: NSData!
-    
+    var testDictionaryData: NSData!
+	
     override func setUp() {
         super.setUp()
         
@@ -35,8 +36,14 @@ class PerformanceTests: XCTestCase {
         } else {
             XCTFail("Can't find the test JSON file")
         }
+				
+		if let file = NSBundle(forClass:PerformanceTests.self).pathForResource("PerformanceTests", ofType: "json") {
+			self.testDictionaryData = NSData(contentsOfFile: file)
+		} else {
+			XCTFail("Can't find the test JSON file")
+		}
     }
-    
+	
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -44,17 +51,27 @@ class PerformanceTests: XCTestCase {
     
     func testInitPerformance() {
         self.measureBlock() {
-            for _ in 1...100 {
+            for _ in 1...1000 {
                 let json = JSON(data:self.testData)
                 XCTAssertTrue(json != JSON.null)
             }
         }
     }
-    
+
+	func testDictionaryInitPerformance() {
+		self.measureBlock() {
+			for _ in 1...1000 {
+				let json = JSON(data:self.testDictionaryData)
+				XCTAssertTrue(json != JSON.null)
+			}
+		}
+	}
+
+	
     func testObjectMethodPerformance() {
         var json = JSON(data:self.testData)
         self.measureBlock() {
-            for _ in 1...100 {
+            for _ in 1...5000 {
                 let object:AnyObject? = json.object
                 XCTAssertTrue(object != nil)
             }
@@ -64,7 +81,7 @@ class PerformanceTests: XCTestCase {
     func testArrayMethodPerformance() {
         let json = JSON(data:self.testData)
         self.measureBlock() {
-            for _ in 1...100 {
+            for _ in 1...1000 {
                 autoreleasepool{
                     let array = json.array
                     XCTAssertTrue(array?.count > 0)
@@ -74,9 +91,9 @@ class PerformanceTests: XCTestCase {
     }
     
     func testDictionaryMethodPerformance() {
-        let json = JSON(data:testData)[0]
+        let json = JSON(data:self.testData)[0]
         self.measureBlock() {
-            for _ in 1...100 {
+            for _ in 1...1000 {
                 autoreleasepool{
                     let dictionary = json.dictionary
                     XCTAssertTrue(dictionary?.count > 0)
@@ -84,11 +101,39 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
-    
+
+	func testDictionaryObjectMethodPerformance() {
+		let json = JSON(data:self.testDictionaryData)
+		self.measureBlock() {
+			for _ in 1...1000 {
+				autoreleasepool{
+					let dictionary = json.dictionaryObject
+					XCTAssertTrue(dictionary?.count > 0)
+				}
+			}
+		}
+	}
+
+	func testDictionaryReadPerformance() {
+		let json = JSON(data:self.testDictionaryData)
+		self.measureBlock() {
+			for _ in 1...1000 {
+				autoreleasepool{
+					let testA = json["value1"].string
+					XCTAssertNotNil(testA)
+					let testB = json["itemDic"].dictionary
+					XCTAssertNotNil(testB)
+					let testC = json["value9"].float
+					XCTAssertNotNil(testC)
+				}
+			}
+		}
+	}
+	
     func testRawStringMethodPerformance() {
-        let json = JSON(data:testData)
+        let json = JSON(data:self.testData)
         self.measureBlock() {
-            for _ in 1...100 {
+            for _ in 1...1000 {
                 autoreleasepool{
                     let string = json.rawString()
                     XCTAssertTrue(string != nil)
@@ -96,5 +141,4 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
-
 }

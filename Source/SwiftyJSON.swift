@@ -699,13 +699,11 @@ extension JSON {
         get {
             switch self.type {
             case .String:
-                let scanner = NSScanner(string: self.object as! String)
-                if scanner.scanDouble(nil){
-                    if (scanner.atEnd) {
-                        return NSNumber(double:(self.object as! NSString).doubleValue)
-                    }
+                let decimal = NSDecimalNumber(string: self.object as? String)
+                if decimal == NSDecimalNumber.notANumber() {  // indicates parse error
+                    return NSDecimalNumber.zero()
                 }
-                return NSNumber(double: 0.0)
+                return decimal
             case .Number, .Bool:
                 return self.object as! NSNumber
             default:

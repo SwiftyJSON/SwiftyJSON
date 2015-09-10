@@ -1265,7 +1265,7 @@ private let falseObjCType = String.fromCString(falseNumber.objCType)
 
 // MARK: - NSNumber: Comparable
 
-extension NSNumber: Swift.Comparable {
+extension NSNumber {
     var isBool:Bool {
         get {
             let objCType = String.fromCString(self.objCType)

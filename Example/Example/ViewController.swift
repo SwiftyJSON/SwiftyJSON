@@ -52,7 +52,7 @@ class ViewController: UITableViewController {
             cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
         case .Dictionary:
-            let key: AnyObject = self.json.dictionaryValue.keys.array[row]
+            let key: AnyObject = Array(self.json.dictionaryValue.keys)[row]
             let value = self.json[key as! String]
             cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
@@ -83,7 +83,7 @@ class ViewController: UITableViewController {
             case .Array:
                 nextJson = self.json[row]
             case .Dictionary where row < self.json.dictionaryValue.count:
-                let key = self.json.dictionaryValue.keys.array[row]
+                let key = Array(self.json.dictionaryValue.keys)[row]
                 if let value = self.json.dictionary?[key] {
                     nextJson = value
                 }

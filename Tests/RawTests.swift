@@ -42,8 +42,6 @@ class RawTests: XCTestCase {
             try json.rawData()
         } catch let error as NSError {
             XCTAssertEqual(error.code, ErrorInvalidJSON)
-        } catch {
-            XCTFail()
         }
     }
     

@@ -254,8 +254,8 @@ class BaseTests: XCTestCase {
     func testNumberCompare(){
         XCTAssertEqual(NSNumber(double: 888332), NSNumber(int:888332))
         XCTAssertNotEqual(NSNumber(double: 888332.1), NSNumber(int:888332))
-        XCTAssertLessThan(NSNumber(int: 888332), NSNumber(double:888332.1))
-        XCTAssertGreaterThan(NSNumber(double: 888332.1), NSNumber(int:888332))
+        XCTAssertLessThan(NSNumber(int: 888332).doubleValue, NSNumber(double:888332.1).doubleValue)
+        XCTAssertGreaterThan(NSNumber(double: 888332.1).doubleValue, NSNumber(int:888332).doubleValue)
         XCTAssertFalse(NSNumber(double: 1) == NSNumber(bool:true))
         XCTAssertFalse(NSNumber(int: 0) == NSNumber(bool:false))
         XCTAssertEqual(NSNumber(bool: false), NSNumber(bool:false))

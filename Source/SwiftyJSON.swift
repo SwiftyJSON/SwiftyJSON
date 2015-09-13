@@ -32,6 +32,7 @@ public let ErrorUnsupportedType: Int! = 999
 public let ErrorIndexOutOfBounds: Int! = 900
 public let ErrorWrongType: Int! = 901
 public let ErrorNotExist: Int! = 500
+public let ErrorInvalidJSON: Int! = 490
 
 // MARK: - JSON Type
 
@@ -610,6 +611,10 @@ extension JSON: Swift.RawRepresentable {
     }
     
     public func rawData(options opt: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0)) throws -> NSData {
+        guard NSJSONSerialization.isValidJSONObject(self.object) else {
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "JSON is invalid"])
+        }
+        
         return try NSJSONSerialization.dataWithJSONObject(self.object, options: opt)
     }
     

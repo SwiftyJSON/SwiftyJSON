@@ -47,18 +47,16 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")
         XCTAssertEqual(JSON(["1":"2"])["1"].string!, "2")
-        var dictionary = NSMutableDictionary()
+        let dictionary = NSMutableDictionary()
         dictionary.setObject(NSNumber(double: 1.0), forKey: "number" as NSString)
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
-        let json1 = JSON(dictionary)
-        if let object: AnyObject = NSJSONSerialization.JSONObjectWithData(self.testData, options: nil, error: nil){
+        _ = JSON(dictionary)
+        do {
+            let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
+        } catch _ {
         }
-    }
-
-    func testCompare2() {
-        let json = JSON("32.1234567890")
     }
     
     func testCompare() {
@@ -82,7 +80,7 @@ class BaseTests: XCTestCase {
         let tweets = json
         let tweets_array = json.array
         let tweets_1 = json[1]
-        let tweets_array_1 = tweets_1[1]
+        _ = tweets_1[1]
         let tweets_1_user_name = tweets_1["user"]["name"]
         let tweets_1_user_name_string = tweets_1["user"]["name"].string
         XCTAssertNotEqual(tweets.type, Type.Null)
@@ -140,7 +138,7 @@ class BaseTests: XCTestCase {
             break
         }
         
-        var index = 0
+        let index = 0
         let keys = (json[1].dictionaryObject! as NSDictionary).allKeys as! [String]
         for (aKey, aJson) in json[1] {
             XCTAssertEqual(aKey, keys[index])
@@ -230,13 +228,13 @@ class BaseTests: XCTestCase {
     
     func testErrorHandle() {
         let json = JSON(data:self.testData)
-        if let wrongType = json["wrong-type"].string {
+        if let _ = json["wrong-type"].string {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
         }
 
-        if let notExist = json[0]["not-exist"].string {
+        if let _ = json[0]["not-exist"].string {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json[0]["not-exist"].error!.code, SwiftyJSON.ErrorNotExist)
@@ -258,8 +256,8 @@ class BaseTests: XCTestCase {
         XCTAssertNotEqual(NSNumber(double: 888332.1), NSNumber(int:888332))
         XCTAssertLessThan(NSNumber(int: 888332), NSNumber(double:888332.1))
         XCTAssertGreaterThan(NSNumber(double: 888332.1), NSNumber(int:888332))
-        XCTAssertNotEqual(NSNumber(double: 1), NSNumber(bool:true))
-        XCTAssertNotEqual(NSNumber(int: 0), NSNumber(bool:false))
+        XCTAssertFalse(NSNumber(double: 1) == NSNumber(bool:true))
+        XCTAssertFalse(NSNumber(int: 0) == NSNumber(bool:false))
         XCTAssertEqual(NSNumber(bool: false), NSNumber(bool:false))
         XCTAssertEqual(NSNumber(bool: true), NSNumber(bool:true))
     }

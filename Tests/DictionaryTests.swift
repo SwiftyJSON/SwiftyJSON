@@ -39,11 +39,11 @@ class DictionaryTests: XCTestCase {
         XCTAssertEqual(((((json.dictionaryValue)["object"]! as JSON).dictionaryValue)["sub_name"]! as JSON).string!, "sub_name")
         XCTAssertEqual((json.dictionaryValue["bool"]! as JSON).bool!, true)
         XCTAssertTrue(json.dictionaryValue["null"] == nil)
-        XCTAssertTrue(JSON.nullJSON.dictionaryValue == [:])
+        XCTAssertTrue(JSON.null.dictionaryValue == [:])
         //dictionaryObject
-        XCTAssertEqual(json.dictionaryObject!["number"]! as! Double, 9823.212)
+        XCTAssertEqual(json.dictionaryObject!["number"]! as? Double, 9823.212)
         XCTAssertTrue(json.dictionaryObject!["null"] == nil)
-        XCTAssertTrue(JSON.nullJSON.dictionaryObject == nil)
+        XCTAssertTrue(JSON.null.dictionaryObject == nil)
     }
     
     func testSetter() {

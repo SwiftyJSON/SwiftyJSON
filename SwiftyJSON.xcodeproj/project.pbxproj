@@ -9,6 +9,23 @@
 /* Begin PBXBuildFile section */
 		2E4FEFE119575BE100351305 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2E4FEFE719575BE100351305 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */; };
+		79049A5B1BAB7CF500ABA14A /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79049A4A1BAB7AB200ABA14A /* SwiftyJSON.framework */; };
+		79049A611BAB7D1700ABA14A /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		79049A621BAB7D1700ABA14A /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
+		79049A631BAB7D2C00ABA14A /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
+		79049A641BAB7D2C00ABA14A /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86BAA0D19EBC32B009EAAEB /* PerformanceTests.swift */; };
+		79049A651BAB7D2C00ABA14A /* BaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A885D1D119CF1EE6002FD4C3 /* BaseTests.swift */; };
+		79049A661BAB7D2C00ABA14A /* SequenceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87080E319E3C2A600CDE086 /* SequenceTypeTests.swift */; };
+		79049A671BAB7D2C00ABA14A /* PrintableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C4A019E37FC600ADCC3D /* PrintableTests.swift */; };
+		79049A681BAB7D2C00ABA14A /* SubscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */; };
+		79049A691BAB7D2C00ABA14A /* LiteralConvertibleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49619E1A7DD00ADCC3D /* LiteralConvertibleTests.swift */; };
+		79049A6A1BAB7D2C00ABA14A /* RawRepresentableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49819E1B10300ADCC3D /* RawRepresentableTests.swift */; };
+		79049A6B1BAB7D2C00ABA14A /* ComparableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87080E519E3DF7800CDE086 /* ComparableTests.swift */; };
+		79049A6C1BAB7D2C00ABA14A /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87080E919E43C0700CDE086 /* StringTests.swift */; };
+		79049A6D1BAB7D2C00ABA14A /* NumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87080E719E439DA00CDE086 /* NumberTests.swift */; };
+		79049A6E1BAB7D2C00ABA14A /* RawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A863BE2719EED46F0092A41F /* RawTests.swift */; };
+		79049A6F1BAB7D2C00ABA14A /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8B19E51D6500540692 /* DictionaryTests.swift */; };
+		79049A701BAB7D2C00ABA14A /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8D19E52F4200540692 /* ArrayTests.swift */; };
 		9C459EF41A910334008C9A41 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C459EF51A910361008C9A41 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		9C459EF81A9103C1008C9A41 /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
@@ -53,6 +70,13 @@
 			remoteGlobalIDString = 2E4FEFDA19575BE100351305;
 			remoteInfo = SwiftyJSON;
 		};
+		79049A5C1BAB7CF500ABA14A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2E4FEFD219575BE100351305 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79049A491BAB7AB200ABA14A;
+			remoteInfo = "SwiftyJSON tvOS";
+		};
 		9C7DFC671A9102BD005AA3F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2E4FEFD219575BE100351305 /* Project object */;
@@ -68,6 +92,10 @@
 		2E4FEFDF19575BE100351305 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		2E4FEFE019575BE100351305 /* SwiftyJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
 		2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79049A4A1BAB7AB200ABA14A /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		79049A4E1BAB7AB200ABA14A /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		79049A561BAB7CF500ABA14A /* SwiftyJSON tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79049A5A1BAB7CF500ABA14A /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 		9C459EF61A9103B1008C9A41 /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
 		9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,7 +116,7 @@
 		A8B66C8B19E51D6500540692 /* DictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTests.swift; sourceTree = "<group>"; };
 		A8B66C8D19E52F4200540692 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-watchOS.plist"; path = "/Users/tobiasottenweller/Code/SwiftyJSON/Info-watchOS.plist"; sourceTree = "<absolute>"; };
+		E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-watchOS.plist"; path = "/Volumes/MyData/public/bscarano/SwiftyJSON/Source/Info-watchOS.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +132,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E4FEFE719575BE100351305 /* SwiftyJSON.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A461BAB7AB200ABA14A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A531BAB7CF500ABA14A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79049A5B1BAB7CF500ABA14A /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +192,8 @@
 				9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */,
 				9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */,
 				E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */,
+				79049A4A1BAB7AB200ABA14A /* SwiftyJSON.framework */,
+				79049A561BAB7CF500ABA14A /* SwiftyJSON tvOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +214,7 @@
 				2E4FEFDF19575BE100351305 /* Info-iOS.plist */,
 				030B6CDC1A6E171D00C2D4F1 /* Info-OSX.plist */,
 				E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */,
+				79049A4E1BAB7AB200ABA14A /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -200,6 +246,7 @@
 			children = (
 				A82A1C0D19D922DC009A653D /* Info-iOS.plist */,
 				9C459EF61A9103B1008C9A41 /* Info-OSX.plist */,
+				79049A5A1BAB7CF500ABA14A /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -212,6 +259,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E4FEFE119575BE100351305 /* SwiftyJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A471BAB7AB200ABA14A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79049A611BAB7D1700ABA14A /* SwiftyJSON.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +323,42 @@
 			name = "SwiftyJSON iOS Tests";
 			productName = SwiftyJSONTests;
 			productReference = 2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		79049A491BAB7AB200ABA14A /* SwiftyJSON tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79049A511BAB7AB200ABA14A /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS" */;
+			buildPhases = (
+				79049A451BAB7AB200ABA14A /* Sources */,
+				79049A461BAB7AB200ABA14A /* Frameworks */,
+				79049A471BAB7AB200ABA14A /* Headers */,
+				79049A481BAB7AB200ABA14A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwiftyJSON tvOS";
+			productName = "SwiftyJSON tvOS";
+			productReference = 79049A4A1BAB7AB200ABA14A /* SwiftyJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		79049A551BAB7CF500ABA14A /* SwiftyJSON tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79049A5E1BAB7CF500ABA14A /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS Tests" */;
+			buildPhases = (
+				79049A521BAB7CF500ABA14A /* Sources */,
+				79049A531BAB7CF500ABA14A /* Frameworks */,
+				79049A541BAB7CF500ABA14A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				79049A5D1BAB7CF500ABA14A /* PBXTargetDependency */,
+			);
+			name = "SwiftyJSON tvOS Tests";
+			productName = "SwiftyJSON tvOS Tests";
+			productReference = 79049A561BAB7CF500ABA14A /* SwiftyJSON tvOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		9C7DFC5A1A9102BD005AA3F7 /* SwiftyJSON OSX */ = {
@@ -340,6 +431,12 @@
 						CreatedOnToolsVersion = 6.0;
 						TestTargetID = 2E4FEFDA19575BE100351305;
 					};
+					79049A491BAB7AB200ABA14A = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					79049A551BAB7CF500ABA14A = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					9C7DFC5A1A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -364,6 +461,8 @@
 				2E4FEFE519575BE100351305 /* SwiftyJSON iOS Tests */,
 				9C7DFC5A1A9102BD005AA3F7 /* SwiftyJSON OSX */,
 				9C7DFC641A9102BD005AA3F7 /* SwiftyJSON OSX Tests */,
+				79049A491BAB7AB200ABA14A /* SwiftyJSON tvOS */,
+				79049A551BAB7CF500ABA14A /* SwiftyJSON tvOS Tests */,
 				E4D7CCDE1B9465A700EE7221 /* SwiftyJSON watchOS */,
 			);
 		};
@@ -382,6 +481,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				A885D1DC19CFCFF0002FD4C3 /* Tests.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A481BAB7AB200ABA14A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A541BAB7CF500ABA14A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79049A631BAB7D2C00ABA14A /* Tests.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +552,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		79049A451BAB7AB200ABA14A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79049A621BAB7D1700ABA14A /* SwiftyJSON.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79049A521BAB7CF500ABA14A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79049A661BAB7D2C00ABA14A /* SequenceTypeTests.swift in Sources */,
+				79049A701BAB7D2C00ABA14A /* ArrayTests.swift in Sources */,
+				79049A641BAB7D2C00ABA14A /* PerformanceTests.swift in Sources */,
+				79049A671BAB7D2C00ABA14A /* PrintableTests.swift in Sources */,
+				79049A6B1BAB7D2C00ABA14A /* ComparableTests.swift in Sources */,
+				79049A6D1BAB7D2C00ABA14A /* NumberTests.swift in Sources */,
+				79049A691BAB7D2C00ABA14A /* LiteralConvertibleTests.swift in Sources */,
+				79049A6C1BAB7D2C00ABA14A /* StringTests.swift in Sources */,
+				79049A651BAB7D2C00ABA14A /* BaseTests.swift in Sources */,
+				79049A681BAB7D2C00ABA14A /* SubscriptTests.swift in Sources */,
+				79049A6F1BAB7D2C00ABA14A /* DictionaryTests.swift in Sources */,
+				79049A6E1BAB7D2C00ABA14A /* RawTests.swift in Sources */,
+				79049A6A1BAB7D2C00ABA14A /* RawRepresentableTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9C7DFC561A9102BD005AA3F7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -481,6 +623,11 @@
 			isa = PBXTargetDependency;
 			target = 2E4FEFDA19575BE100351305 /* SwiftyJSON iOS */;
 			targetProxy = 2E4FEFE819575BE100351305 /* PBXContainerItemProxy */;
+		};
+		79049A5D1BAB7CF500ABA14A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79049A491BAB7AB200ABA14A /* SwiftyJSON tvOS */;
+			targetProxy = 79049A5C1BAB7CF500ABA14A /* PBXContainerItemProxy */;
 		};
 		9C7DFC681A9102BD005AA3F7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -640,6 +787,82 @@
 			};
 			name = Release;
 		};
+		79049A4F1BAB7AB200ABA14A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		79049A501BAB7AB200ABA14A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		79049A5F1BAB7CF500ABA14A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.SwiftyJSON.SwiftyJSON-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		79049A601BAB7CF500ABA14A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.SwiftyJSON.SwiftyJSON-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		9C7DFC6F1A9102BD005AA3F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -796,6 +1019,24 @@
 			buildConfigurations = (
 				2E4FEFF519575BE100351305 /* Debug */,
 				2E4FEFF619575BE100351305 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79049A511BAB7AB200ABA14A /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79049A4F1BAB7AB200ABA14A /* Debug */,
+				79049A501BAB7AB200ABA14A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79049A5E1BAB7CF500ABA14A /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79049A5F1BAB7CF500ABA14A /* Debug */,
+				79049A601BAB7CF500ABA14A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

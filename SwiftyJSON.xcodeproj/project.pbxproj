@@ -70,7 +70,7 @@
 		2E4FEFDF19575BE100351305 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		2E4FEFE019575BE100351305 /* SwiftyJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
 		2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7236B4F61BAC14150020529B /* SwiftyJSON tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "SwiftyJSON tvOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7236B4F61BAC14150020529B /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7236B4F71BAC14150020529B /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-tvOS.plist"; path = "/Users/simonbs/Developer/SwiftyJSON/Info-tvOS.plist"; sourceTree = "<absolute>"; };
 		9C459EF61A9103B1008C9A41 /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
 		9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,7 +160,7 @@
 				9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */,
 				9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */,
 				E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */,
-				7236B4F61BAC14150020529B /* SwiftyJSON tvOS.framework */,
+				7236B4F61BAC14150020529B /* SwiftyJSON.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -306,7 +306,7 @@
 			);
 			name = "SwiftyJSON tvOS";
 			productName = SwiftyJSON;
-			productReference = 7236B4F61BAC14150020529B /* SwiftyJSON tvOS.framework */;
+			productReference = 7236B4F61BAC14150020529B /* SwiftyJSON.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		9C7DFC5A1A9102BD005AA3F7 /* SwiftyJSON OSX */ = {
@@ -709,7 +709,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SwiftyJSON;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -731,7 +731,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SwiftyJSON;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;

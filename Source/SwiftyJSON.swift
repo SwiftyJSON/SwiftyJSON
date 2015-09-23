@@ -101,9 +101,9 @@ public struct JSON {
     /**
     Creates a JSON from a [String: JSON]
     
-    :param: jsonDictionary A Swift dictionary of JSON objects
+    - parameter jsonDictionary: A Swift dictionary of JSON objects
     
-    :returns: The created JSON
+    - returns: The created JSON
     */
     public init(_ jsonDictionary:[String: JSON]) {
         var dictionary = [String: AnyObject]()

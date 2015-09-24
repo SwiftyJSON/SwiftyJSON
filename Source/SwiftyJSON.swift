@@ -786,6 +786,10 @@ extension JSON {
             switch self.type {
             case .String:
                 return self.object as? String
+            case .Number:
+                return self.object.stringValue
+            case .Bool:
+                return (self.object as! Bool).description
             default:
                 return nil
             }

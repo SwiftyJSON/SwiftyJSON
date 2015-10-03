@@ -72,7 +72,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error
-    println(json[999999]["wrong_key"]["wrong_name"])
+    print(json[999999]["wrong_key"]["wrong_name"])
 }
 
 ```
@@ -184,7 +184,7 @@ let json = JSON(["name", "age"])
 if let name = json[999].string {
     //Do something you want
 } else {
-    println(json[999].error) // "Array[999] is out of bounds"
+    print(json[999].error) // "Array[999] is out of bounds"
 }
 ```
 ```swift
@@ -192,7 +192,7 @@ let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
     //Do something you want
 } else {
-    println(json["address"].error) // "Dictionary["address"] does not exist"
+    print(json["address"].error) // "Dictionary["address"] does not exist"
 }
 ```
 ```swift
@@ -200,15 +200,15 @@ let json = JSON(12345)
 if let age = json[0].string {
     //Do something you want
 } else {
-    println(json[0])       // "Array[0] failure, It is not an array"
-    println(json[0].error) // "Array[0] failure, It is not an array"
+    print(json[0])       // "Array[0] failure, It is not an array"
+    print(json[0].error) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
     //Do something you want
 } else {
-    println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-    println(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
 ```
 
@@ -219,7 +219,7 @@ if let id = json["user"]["favourites_count"].number {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["favourites_count"].error)
+   print(json["user"]["favourites_count"].error)
 }
 ```
 ```swift
@@ -228,7 +228,7 @@ if let id = json["user"]["name"].string {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["name"])
+   print(json["user"]["name"])
 }
 ```
 ```swift
@@ -237,7 +237,7 @@ if let id = json["user"]["is_translator"].bool {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["is_translator"])
+   print(json["user"]["is_translator"])
 }
 ```
 ```swift
@@ -246,7 +246,7 @@ if let id = json["user"]["id"].int {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["id"])
+   print(json["user"]["id"])
 }
 ...
 ```
@@ -362,8 +362,8 @@ Alamofire.request(.GET, url, parameters: parameters)
   .responseJSON { (req, res, json, error) in
     if(error != nil) {
       NSLog("Error: \(error)")
-      println(req)
-      println(res)
+      print(req)
+      print(res)
     }
     else {
       NSLog("Success: \(url)")

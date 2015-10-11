@@ -41,6 +41,9 @@
 		A885D1DC19CFCFF0002FD4C3 /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
 		A8B66C8C19E51D6500540692 /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8B19E51D6500540692 /* DictionaryTests.swift */; };
 		A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8D19E52F4200540692 /* ArrayTests.swift */; };
+		BDFFE30A1BAD987000656E5D /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDFFE30B1BAD987000656E5D /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
+		BDFFE3101BAD99F600656E5D /* Info-watchOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDFFE30F1BAD99F600656E5D /* Info-watchOS.plist */; };
 		E4D7CCE01B9465A700EE7221 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		E4D7CCE31B9465A700EE7221 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -87,8 +90,10 @@
 		A885D1DA19CFCFF0002FD4C3 /* Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tests.json; sourceTree = "<group>"; };
 		A8B66C8B19E51D6500540692 /* DictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTests.swift; sourceTree = "<group>"; };
 		A8B66C8D19E52F4200540692 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
+		BDFFE3021BAD986400656E5D /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDFFE30C1BAD993F00656E5D /* Info-tvOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		BDFFE30F1BAD99F600656E5D /* Info-watchOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-watchOS.plist"; sourceTree = "<group>"; };
 		E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-watchOS.plist"; path = "/Users/tobiasottenweller/Code/SwiftyJSON/Info-watchOS.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +127,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BDFFE2FE1BAD986400656E5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4D7CCE11B9465A700EE7221 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -149,6 +161,7 @@
 				9C7DFC5B1A9102BD005AA3F7 /* SwiftyJSON.framework */,
 				9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */,
 				E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */,
+				BDFFE3021BAD986400656E5D /* SwiftyJSON.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,7 +181,8 @@
 			children = (
 				2E4FEFDF19575BE100351305 /* Info-iOS.plist */,
 				030B6CDC1A6E171D00C2D4F1 /* Info-OSX.plist */,
-				E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */,
+				BDFFE30F1BAD99F600656E5D /* Info-watchOS.plist */,
+				BDFFE30C1BAD993F00656E5D /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -220,6 +234,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C459EF41A910334008C9A41 /* SwiftyJSON.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDFFE2FF1BAD986400656E5D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDFFE30A1BAD987000656E5D /* SwiftyJSON.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +328,24 @@
 			productReference = 9C7DFC651A9102BD005AA3F7 /* SwiftyJSON OSX Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BDFFE3011BAD986400656E5D /* SwiftyJSON tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDFFE3091BAD986400656E5D /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS" */;
+			buildPhases = (
+				BDFFE2FD1BAD986400656E5D /* Sources */,
+				BDFFE2FE1BAD986400656E5D /* Frameworks */,
+				BDFFE2FF1BAD986400656E5D /* Headers */,
+				BDFFE3001BAD986400656E5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwiftyJSON tvOS";
+			productName = "SwiftyJSON tvOS";
+			productReference = BDFFE3021BAD986400656E5D /* SwiftyJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		E4D7CCDE1B9465A700EE7221 /* SwiftyJSON watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4D7CCE51B9465A700EE7221 /* Build configuration list for PBXNativeTarget "SwiftyJSON watchOS" */;
@@ -346,6 +386,9 @@
 					9C7DFC641A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
+					BDFFE3011BAD986400656E5D = {
+						CreatedOnToolsVersion = 7.1;
+					};
 				};
 			};
 			buildConfigurationList = 2E4FEFD519575BE100351305 /* Build configuration list for PBXProject "SwiftyJSON" */;
@@ -365,6 +408,7 @@
 				9C7DFC5A1A9102BD005AA3F7 /* SwiftyJSON OSX */,
 				9C7DFC641A9102BD005AA3F7 /* SwiftyJSON OSX Tests */,
 				E4D7CCDE1B9465A700EE7221 /* SwiftyJSON watchOS */,
+				BDFFE3011BAD986400656E5D /* SwiftyJSON tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -374,6 +418,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFFE3101BAD99F600656E5D /* Info-watchOS.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +442,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C459EF81A9103C1008C9A41 /* Tests.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDFFE3001BAD986400656E5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +515,14 @@
 				9C459F031A9103C1008C9A41 /* RawTests.swift in Sources */,
 				9C459F051A9103C1008C9A41 /* ArrayTests.swift in Sources */,
 				9C459EFD1A9103C1008C9A41 /* SubscriptTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDFFE2FD1BAD986400656E5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDFFE30B1BAD987000656E5D /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,6 +788,51 @@
 			};
 			name = Release;
 		};
+		BDFFE3071BAD986400656E5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.SwiftyJSON-tvOS";
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		BDFFE3081BAD986400656E5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Source/Info-tvOS.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.SwiftyJSON-tvOS";
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		E4D7CCE61B9465A700EE7221 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -817,6 +922,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		BDFFE3091BAD986400656E5D /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDFFE3071BAD986400656E5D /* Debug */,
+				BDFFE3081BAD986400656E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		E4D7CCE51B9465A700EE7221 /* Build configuration list for PBXNativeTarget "SwiftyJSON watchOS" */ = {
 			isa = XCConfigurationList;

@@ -877,6 +877,12 @@ extension JSON {
             self.object = NSNull()
         }
     }
+    public func isExists() -> Bool{
+        if let errorValue = error where errorValue.code == ErrorNotExist{
+            return false
+        }
+        return true
+    }
 }
 
 //MARK: - URL

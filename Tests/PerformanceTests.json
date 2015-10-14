@@ -1,0 +1,28 @@
+{
+	"value1": "file",
+	"value2": "file",
+	"value3": "file",
+	"value4": "file",
+	"value5": "file",
+	"value6": "File",
+	"value7": "file",
+	"value8": "file",
+	"value9": 9,
+	"itemDic": {
+		"menuitem": [
+					 {
+					 "value": "New",
+					 "onclick": "CreateNewDoc()"
+					 },
+					 {
+					 "value": "Open",
+					 "onclick": "OpenDoc()"
+					 },
+					 {
+					 "value": "Close",
+					 "onclick": "CloseDoc()"
+					 }
+					 ]
+	},
+	"value10": "file"
+}

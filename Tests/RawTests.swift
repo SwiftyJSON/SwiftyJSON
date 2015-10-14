@@ -25,6 +25,26 @@ import SwiftyJSON
 
 class RawTests: XCTestCase {
 
+    func testRawData() {
+        let json: JSON = ["somekey" : "some string value"]
+        let expectedRawData = "{\"somekey\":\"some string value\"}".dataUsingEncoding(NSUTF8StringEncoding)
+        do {
+            let data: NSData = try json.rawData()
+            XCTAssertEqual(expectedRawData, data)
+        } catch _ {
+            XCTFail()
+        }
+    }
+    
+    func testInvalidJSONForRawData() {
+        let json: JSON = "...<nonsense>xyz</nonsense>"
+        do {
+            try json.rawData()
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, ErrorInvalidJSON)
+        }
+    }
+    
     func testArray() {
         let json:JSON = [1, "2", 3.12, NSNull(), true, ["name": "Jack"]]
         let data: NSData?

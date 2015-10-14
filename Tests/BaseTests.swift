@@ -165,7 +165,7 @@ class BaseTests: XCTestCase {
         XCTAssertLessThanOrEqual(JSON(-8763), JSON(-8763))
     }
 
-    func testNumberConverToString(){
+    func testNumberConvertToString(){
         XCTAssertEqual(JSON(true).stringValue, "true")
         XCTAssertEqual(JSON(999.9823).stringValue, "999.9823")
         XCTAssertEqual(JSON(true).number!.stringValue, "1")

@@ -31,14 +31,23 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
         XCTAssertEqual(json.stringValue, "9876543210.123457")
         
+        json.string = "1000000000000000000000000000.1"
+        XCTAssertNil(json.number)
+        XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
+
+        json.string = "1e+27"
+        XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000")
+        
         //setter
         json.number = NSNumber(double: 123456789.0987654321)
         XCTAssertEqual(json.number!, 123456789.0987654321)
         XCTAssertEqual(json.numberValue, 123456789.0987654321)
+        
         json.number = nil
         XCTAssertEqual(json.numberValue, 0)
         XCTAssertEqual(json.object as? NSNull, NSNull())
         XCTAssertTrue(json.number == nil)
+        
         json.numberValue = 2.9876
         XCTAssertEqual(json.number!, 2.9876)
     }

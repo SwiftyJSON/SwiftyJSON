@@ -300,13 +300,13 @@ if let data = json.rawData() {
 if let string = json.rawString() {
     //Do something you want
 }
-
+```
 ####Existance
 ```swift
 //shows you whether value specified in JSON or not
 if json["name"].isExists()
 ```
-```
+
 ####Literal convertibles
 For more info about literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
 ```swift

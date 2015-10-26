@@ -165,7 +165,7 @@ for (key,subJson):(String, JSON) in json {
 ```swift
 //If json is .Array
 //The `index` is 0..<json.count's string value
-for (key,subJson):(String, JSON) in json {
+for (index,subJson):(String, JSON) in json {
     //Do something you want
 }
 ```

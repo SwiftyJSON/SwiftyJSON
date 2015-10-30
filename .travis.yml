@@ -3,4 +3,4 @@ language: objective-c
 osx_image: xcode7
 xcode_sdk: iphonesimulator9.0
 
-script: 'xcodebuild test -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS"'
+script: 'xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" test'

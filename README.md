@@ -26,12 +26,9 @@ The code would look like this:
 
 ```swift
 
-let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
-
-if let statusesArray = JSONObject as? [AnyObject],
-   let status = statusesArray[0] as? [String: AnyObject],
-   let user = status["user"] as? [String: AnyObject],
-   let username = user["name"] as? String {
+if let statusesArray = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+    let user = statusesArray[0]["user"] as? [String: AnyObject],
+    let username = user["name"] as? String {
     // Finally we got the username
 }
 
@@ -43,10 +40,9 @@ Even if we use optional chaining, it would be messy:
 
 ```swift
 
-let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
-
-if let username = (((JSONObject as? [AnyObject])?[0] as? [String: AnyObject])?["user"] as? [String: AnyObject])?["name"] as? String {
-    // What a disaster
+if let JSONObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+    let username = (JSONObject[0]["user"] as? [String: AnyObject])?["name"] as? String {
+        // There's our username
 }
 
 ```

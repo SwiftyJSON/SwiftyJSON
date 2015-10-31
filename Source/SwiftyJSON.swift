@@ -406,24 +406,24 @@ public struct JSONGenerator : GeneratorType {
 /**
 *  To mark both String and Int can be used in subscript.
 */
-public enum JSONSubscriptKey {
+public enum JSONKey {
     case Index(Int)
     case Key(String)
 }
 
 public protocol JSONSubscriptType {
-    var jsonKey:JSONSubscriptKey { get }
+    var jsonKey:JSONKey { get }
 }
 
 extension Int: JSONSubscriptType {
-    public var jsonKey:JSONSubscriptKey {
-        return JSONSubscriptKey.Index(self)
+    public var jsonKey:JSONKey {
+        return JSONKey.Index(self)
     }
 }
 
 extension String: JSONSubscriptType {
-    public var jsonKey:JSONSubscriptKey {
-        return JSONSubscriptKey.Key(self)
+    public var jsonKey:JSONKey {
+        return JSONKey.Key(self)
     }
 }
 

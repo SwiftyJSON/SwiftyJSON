@@ -28,7 +28,7 @@ The code would look like this:
 
 ```swift
 
-if let statusesArray = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+if let statusesArray = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
     let user = statusesArray[0]["user"] as? [String: AnyObject],
     let username = user["name"] as? String {
     // Finally we got the username

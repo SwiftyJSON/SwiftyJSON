@@ -365,8 +365,10 @@ SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 Alamofire.request(.GET, url).validate().responseJSON { response in
     switch response.result {
     case .Success:
-        let json = JSON(response.result.value!)
-        print("JSON: \(json)")
+        if let value = response.result.value {
+          let json = JSON(value)
+          print("JSON: \(json)")
+        }
     case .Failure(let error):
         print(error)
     }

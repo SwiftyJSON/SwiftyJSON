@@ -362,16 +362,15 @@ json[path] = "that"
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
-Alamofire.request(.GET, url, parameters: parameters)
-  .responseJSON { (req, res, json, error) in
-    if(error != nil) {
-      NSLog("Error: \(error)")
-      print(req)
-      print(res)
+Alamofire.request(.GET, url).validate().responseJSON { response in
+    switch response.result {
+    case .Success:
+        if let value = response.result.value {
+          let json = JSON(value)
+          print("JSON: \(json)")
+        }
+    case .Failure(let error):
+        print(error)
     }
-    else {
-      NSLog("Success: \(url)")
-      var json = JSON(json!)
-    }
-  }
+}
 ```

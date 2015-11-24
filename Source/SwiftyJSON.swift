@@ -1301,7 +1301,7 @@ extension NSNumber {
     }
 }
 
-public func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
         return false
@@ -1312,11 +1312,11 @@ public func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-public func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     return !(lhs == rhs)
 }
 
-public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1328,7 +1328,7 @@ public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-public func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1340,7 +1340,7 @@ public func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-public func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1352,7 +1352,7 @@ public func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-public func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):

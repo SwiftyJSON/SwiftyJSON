@@ -39,7 +39,7 @@ public let ErrorInvalidJSON: Int = 490
 /**
 JSON's type definitions.
 
-See http://tools.ietf.org/html/rfc7231#section-4.3
+See http://www.json.org
 */
 public enum Type :Int{
 

@@ -822,11 +822,11 @@ extension JSON {
         get {
             switch self.type {
             case .String:
-                return self.object as! String
+                return self.object as? String ?? ""
             case .Number:
                 return self.object.stringValue
             case .Bool:
-                return (self.object as! Bool).description
+                return String(self.object as? Bool)
             default:
                 return ""
             }
@@ -866,7 +866,7 @@ extension JSON {
                 }
                 return decimal
             case .Number, .Bool:
-                return self.object as! NSNumber
+                return self.object as? NSNumber ?? NSNumber(int: 0)
             default:
                 return NSNumber(double: 0.0)
             }

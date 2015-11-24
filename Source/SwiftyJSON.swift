@@ -826,7 +826,7 @@ extension JSON {
             case .Number:
                 return self.object.stringValue
             case .Bool:
-                return String(self.object as? Bool)
+                return (self.object as? Bool).map { String($0) } ?? ""
             default:
                 return ""
             }

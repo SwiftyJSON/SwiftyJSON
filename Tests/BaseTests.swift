@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+@testable import SwiftyJSON
 
 class BaseTests: XCTestCase {
 

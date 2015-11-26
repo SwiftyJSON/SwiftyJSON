@@ -78,6 +78,17 @@ public struct JSON {
     }
 
     /**
+     Create a JSON from JSON string
+    - parameter string: Normal json string like '{"a":"b"}'
+
+    - returns: The created JSON
+    */
+    public static func parse(string:String) -> JSON {
+        return string.dataUsingEncoding(NSUTF8StringEncoding)
+            .flatMap({JSON(data: $0)}) ?? JSON(NSNull())
+    }
+
+    /**
     Creates a JSON using the object.
 
     - parameter object:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.

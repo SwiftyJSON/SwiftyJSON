@@ -103,7 +103,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[1]["b"], JSON("B"))
         XCTAssertNotNil(json[2]["null"].null)
         XCTAssertNotNil(json[2,"null"].null)
-        let keys:[SubscriptType] = [1, "a"]
+        let keys:[JSONSubscriptType] = [1, "a"]
         XCTAssertEqual(json[keys], JSON(rawValue: "A")!)
     }
     
@@ -179,10 +179,10 @@ class SubscriptTests: XCTestCase {
     
     func testOutOfBounds() {
         let json:JSON = JSON ([[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
-        XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[-2].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
-        XCTAssertEqual(json[9][8], JSON.nullJSON)
+        XCTAssertEqual(json[9][8], JSON.null)
         XCTAssertEqual(json[8][7].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[8,7].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[999].error!.code, ErrorIndexOutOfBounds)
@@ -190,10 +190,10 @@ class SubscriptTests: XCTestCase {
     
     func testErrorWrongType() {
         let json = JSON(12345)
-        XCTAssertEqual(json[9], JSON.nullJSON)
+        XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[9].error!.code, ErrorWrongType)
         XCTAssertEqual(json[8][7].error!.code, ErrorWrongType)
-        XCTAssertEqual(json["name"], JSON.nullJSON)
+        XCTAssertEqual(json["name"], JSON.null)
         XCTAssertEqual(json["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json[0]["name"].error!.code, ErrorWrongType)
         XCTAssertEqual(json["type"]["name"].error!.code, ErrorWrongType)
@@ -205,7 +205,7 @@ class SubscriptTests: XCTestCase {
     
     func testErrorNotExist() {
         let json:JSON = ["name":"NAME", "age":15]
-        XCTAssertEqual(json["Type"], JSON.nullJSON)
+        XCTAssertEqual(json["Type"], JSON.null)
         XCTAssertEqual(json["Type"].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type"][1].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type", 1].error!.code, ErrorNotExist)
@@ -220,7 +220,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[0][0][0][0]["one"].int!, 1)
     }
     
-    func testMultilevelSetter() {
+    func testMultilevelSetter1() {
         var json:JSON = [[[[["num":1]]]]]
         json[0, 0, 0, 0, "num"] = 2
         XCTAssertEqual(json[[0, 0, 0, 0, "num"]].intValue, 2)
@@ -234,8 +234,32 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[[0,0,0,0,"name"]].stringValue, "Jack")
         json[[0,0,0,0,"name"]].string = "Mike"
         XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Mike")
-        let path:[SubscriptType] = [0,0,0,0,"name"]
+        let path:[JSONSubscriptType] = [0,0,0,0,"name"]
         json[path].string = "Jim"
         XCTAssertEqual(json[path].stringValue, "Jim")
+    }
+    
+    func testMultilevelSetter2() {
+        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]]]
+        json["user","info","name"] = "jim"
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "jim")
+        XCTAssertEqual(json["user","info","email"], "jack@gmail.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","info","email"] = "jim@hotmail.com"
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "jim")
+        XCTAssertEqual(json["user","info","email"], "jim@hotmail.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","info"] = ["name":"tom","email":"tom@qq.com"]
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "tom")
+        XCTAssertEqual(json["user","info","email"], "tom@qq.com")
+        XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
+        json["user","feeds"] = [77323,2313,4545,323]
+        XCTAssertEqual(json["user","id"], 987654)
+        XCTAssertEqual(json["user","info","name"], "tom")
+        XCTAssertEqual(json["user","info","email"], "tom@qq.com")
+        XCTAssertEqual(json["user","feeds"], [77323,2313,4545,323])
     }
 }

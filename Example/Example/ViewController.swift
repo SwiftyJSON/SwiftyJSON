@@ -25,7 +25,7 @@ import SwiftyJSON
 
 class ViewController: UITableViewController {
 
-    var json: JSON = JSON.nullJSON
+    var json: JSON = JSON.null
     
     // MARK: - Table view data source
 
@@ -43,16 +43,16 @@ class ViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("JSONCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("JSONCell", forIndexPath: indexPath) as UITableViewCell
             
-        var row = indexPath.row
+        let row = indexPath.row
         
         switch self.json.type {
         case .Array:
             cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
         case .Dictionary:
-            let key: AnyObject = self.json.dictionaryValue.keys.array[row]
+            let key: AnyObject = Array(self.json.dictionaryValue.keys)[row]
             let value = self.json[key as! String]
             cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
@@ -68,34 +68,30 @@ class ViewController: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
 
-        var object: AnyObject
+        var nextController: UIViewController?
         switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
         case .OrderedSame, .OrderedDescending:
-            object = segue.destinationViewController.topViewController
+            nextController = (segue.destinationViewController as! UINavigationController).topViewController
         case .OrderedAscending:
-            object = segue.destinationViewController
+            nextController = segue.destinationViewController
         }
         
-        if let nextController = object as? ViewController {
-            
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
-                var row = indexPath.row
-                var nextJson: JSON = JSON.nullJSON
-                
-                switch self.json.type {
-                case .Array:
-                    nextJson = self.json[row]
-                case .Dictionary where row < self.json.dictionaryValue.count:
-                    let key = self.json.dictionaryValue.keys.array[row]
-                    if let value = self.json.dictionary?[key] {
-                        nextJson = value
-                    }
-                default:
-                    print("")
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            let row = indexPath.row
+            var nextJson: JSON = JSON.null
+            switch self.json.type {
+            case .Array:
+                nextJson = self.json[row]
+            case .Dictionary where row < self.json.dictionaryValue.count:
+                let key = Array(self.json.dictionaryValue.keys)[row]
+                if let value = self.json.dictionary?[key] {
+                    nextJson = value
                 }
-                nextController.json = nextJson
-                print(nextJson)
+            default:
+                print("")
             }
+            (nextController as! ViewController).json = nextJson
+            print(nextJson)
         }
     }
 }

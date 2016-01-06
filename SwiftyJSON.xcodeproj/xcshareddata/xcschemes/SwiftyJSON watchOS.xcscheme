@@ -14,63 +14,30 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9C7DFC5A1A9102BD005AA3F7"
+               BlueprintIdentifier = "E4D7CCDE1B9465A700EE7221"
                BuildableName = "SwiftyJSON.framework"
-               BlueprintName = "SwiftyJSON OSX"
-               ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9C7DFC641A9102BD005AA3F7"
-               BuildableName = "SwiftyJSON OSX Tests.xctest"
-               BlueprintName = "SwiftyJSON OSX Tests"
+               BlueprintName = "SwiftyJSON watchOS"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9C7DFC641A9102BD005AA3F7"
-               BuildableName = "SwiftyJSON OSX Tests.xctest"
-               BlueprintName = "SwiftyJSON OSX Tests"
-               ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C7DFC5A1A9102BD005AA3F7"
-            BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON OSX"
-            ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -78,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C7DFC5A1A9102BD005AA3F7"
+            BlueprintIdentifier = "E4D7CCDE1B9465A700EE7221"
             BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON OSX"
+            BlueprintName = "SwiftyJSON watchOS"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -88,17 +55,17 @@
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C7DFC5A1A9102BD005AA3F7"
+            BlueprintIdentifier = "E4D7CCDE1B9465A700EE7221"
             BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON OSX"
+            BlueprintName = "SwiftyJSON watchOS"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

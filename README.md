@@ -1,5 +1,7 @@
 #SwiftyJSON [中文介绍](http://tangplin.github.io/swiftyjson/)
 
+[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)
+
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
 1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
@@ -26,12 +28,9 @@ The code would look like this:
 
 ```swift
 
-let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
-
-if let statusesArray = JSONObject as? [AnyObject],
-   let status = statusesArray[0] as? [String: AnyObject],
-   let user = status["user"] as? [String: AnyObject],
-   let username = user["name"] as? String {
+if let statusesArray = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+    let user = statusesArray[0]["user"] as? [String: AnyObject],
+    let username = user["name"] as? String {
     // Finally we got the username
 }
 
@@ -43,10 +42,9 @@ Even if we use optional chaining, it would be messy:
 
 ```swift
 
-let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
-
-if let username = (((JSONObject as? [AnyObject])?[0] as? [String: AnyObject])?["user"] as? [String: AnyObject])?["name"] as? String {
-    // What a disaster
+if let JSONObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+    let username = (JSONObject[0]["user"] as? [String: AnyObject])?["name"] as? String {
+        // There's our username
 }
 
 ```
@@ -72,7 +70,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error
-    println(json[999999]["wrong_key"]["wrong_name"])
+    print(json[999999]["wrong_key"]["wrong_name"])
 }
 
 ```
@@ -80,7 +78,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.3
+- Xcode 7
 
 ##Integration
 
@@ -91,7 +89,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'SwiftyJSON', '~> 2.2.1'
+	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 end
 ```
 Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
@@ -99,8 +97,24 @@ Note that this requires CocoaPods version 36, and your iOS deployment target to 
 ####Carthage (iOS 8+, OS X 10.9+)
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 ```
-github "SwiftyJSON/SwiftyJSON" >= 2.2.1
+github "SwiftyJSON/SwiftyJSON"
 ```
+
+####Swift Package Manager
+You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "YOUR_PROJECT_NAME",
+    targets: [],
+    dependencies: [
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: "2.3.3" ..< Version.max)
+    ]
+)
+```
+
+Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more infomation checkout it's [GitHub Page](https://github.com/apple/swift-package-manager)
 
 ####Manually (iOS 7+, OS X 10.9+)
 
@@ -157,7 +171,7 @@ let name = json[keys].string
 ####Loop
 ```swift
 //If json is .Dictionary
-for (key: String, subJson: JSON) in json {
+for (key,subJson):(String, JSON) in json {
    //Do something you want
 }
 ```
@@ -165,7 +179,7 @@ for (key: String, subJson: JSON) in json {
 ```swift
 //If json is .Array
 //The `index` is 0..<json.count's string value
-for (index: String, subJson: JSON) in json {
+for (index,subJson):(String, JSON) in json {
     //Do something you want
 }
 ```
@@ -184,7 +198,7 @@ let json = JSON(["name", "age"])
 if let name = json[999].string {
     //Do something you want
 } else {
-    println(json[999].error) // "Array[999] is out of bounds"
+    print(json[999].error) // "Array[999] is out of bounds"
 }
 ```
 ```swift
@@ -192,7 +206,7 @@ let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
     //Do something you want
 } else {
-    println(json["address"].error) // "Dictionary["address"] does not exist"
+    print(json["address"].error) // "Dictionary["address"] does not exist"
 }
 ```
 ```swift
@@ -200,15 +214,15 @@ let json = JSON(12345)
 if let age = json[0].string {
     //Do something you want
 } else {
-    println(json[0])       // "Array[0] failure, It is not an array"
-    println(json[0].error) // "Array[0] failure, It is not an array"
+    print(json[0])       // "Array[0] failure, It is not an array"
+    print(json[0].error) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
     //Do something you want
 } else {
-    println(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-    println(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
 ```
 
@@ -219,7 +233,7 @@ if let id = json["user"]["favourites_count"].number {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["favourites_count"].error)
+   print(json["user"]["favourites_count"].error)
 }
 ```
 ```swift
@@ -228,7 +242,7 @@ if let id = json["user"]["name"].string {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["name"])
+   print(json["user"]["name"])
 }
 ```
 ```swift
@@ -237,7 +251,7 @@ if let id = json["user"]["is_translator"].bool {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["is_translator"])
+   print(json["user"]["is_translator"])
 }
 ```
 ```swift
@@ -246,7 +260,7 @@ if let id = json["user"]["id"].int {
    //Do something you want
 } else {
    //Print the error
-   println(json["user"]["id"])
+   print(json["user"]["id"])
 }
 ...
 ```
@@ -301,6 +315,12 @@ if let string = json.rawString() {
     //Do something you want
 }
 ```
+####Existance
+```swift
+//shows you whether value specified in JSON or not
+if json["name"].isExists()
+```
+
 ####Literal convertibles
 For more info about literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
 ```swift
@@ -358,16 +378,15 @@ json[path] = "that"
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
-Alamofire.request(.GET, url, parameters: parameters)
-  .responseJSON { (req, res, json, error) in
-    if(error != nil) {
-      NSLog("Error: \(error)")
-      println(req)
-      println(res)
+Alamofire.request(.GET, url).validate().responseJSON { response in
+    switch response.result {
+    case .Success:
+        if let value = response.result.value {
+          let json = JSON(value)
+          print("JSON: \(json)")
+        }
+    case .Failure(let error):
+        print(error)
     }
-    else {
-      NSLog("Success: \(url)")
-      var json = JSON(json!)
-    }
-  }
+}
 ```

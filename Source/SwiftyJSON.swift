@@ -235,7 +235,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         }
     }
 
-    /// If `type` is `.Array` or `.Dictionary`, return `array.empty` or `dictonary.empty` otherwise return `true`.
+    /// If `type` is `.Array` or `.Dictionary`, return `array.isEmpty` or `dictonary.isEmpty` otherwise return `true`.
     public var isEmpty: Bool {
         get {
             switch self.type {

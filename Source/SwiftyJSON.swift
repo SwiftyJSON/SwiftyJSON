@@ -440,7 +440,7 @@ extension String: JSONSubscriptType {
 
 extension JSON {
 
-    /// If `type` is `.Array`, return json which's object is `array[index]`, otherwise return null json with error.
+    /// If `type` is `.Array`, return json whose object is `array[index]`, otherwise return null json with error.
     private subscript(index index: Int) -> JSON {
         get {
             if self.type != .Array {
@@ -464,7 +464,7 @@ extension JSON {
         }
     }
 
-    /// If `type` is `.Dictionary`, return json which's object is `dictionary[key]` , otherwise return null json with error.
+    /// If `type` is `.Dictionary`, return json whose object is `dictionary[key]` , otherwise return null json with error.
     private subscript(key key: String) -> JSON {
         get {
             var r = JSON.null
@@ -535,7 +535,7 @@ extension JSON {
     }
 
     /**
-    Find a json in the complex data structuresby using the Int/String's array.
+    Find a json in the complex data structures by using the Int/String's array.
 
     - parameter path: The target json's path. Example:
 

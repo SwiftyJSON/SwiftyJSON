@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E4FEFE119575BE100351305 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2E4FEFE719575BE100351305 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */; };
+		3F2EC3221C6B463C0070FCCE /* LclJSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2EC3211C6B463C0070FCCE /* LclJSONSerialization.swift */; };
 		7236B4EE1BAC14150020529B /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		7236B4F11BAC14150020529B /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C459EF41A910334008C9A41 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -92,6 +93,7 @@
 		2E4FEFDF19575BE100351305 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		2E4FEFE019575BE100351305 /* SwiftyJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
 		2E4FEFE619575BE100351305 /* SwiftyJSON iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F2EC3211C6B463C0070FCCE /* LclJSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LclJSONSerialization.swift; sourceTree = "<group>"; };
 		7236B4F61BAC14150020529B /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7236B4F71BAC14150020529B /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 		9C459EF61A9103B1008C9A41 /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 		2E4FEFDD19575BE100351305 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3F2EC3211C6B463C0070FCCE /* LclJSONSerialization.swift */,
 				2E4FEFE019575BE100351305 /* SwiftyJSON.h */,
 				A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */,
 				2E4FEFDE19575BE100351305 /* Supporting Files */,
@@ -525,6 +528,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F2EC3221C6B463C0070FCCE /* LclJSONSerialization.swift in Sources */,
 				A8491E1E19CD6DAE00CCFAE6 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

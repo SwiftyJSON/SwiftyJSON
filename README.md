@@ -130,7 +130,7 @@ To use this library in your project manually you may:
 import SwiftyJSON
 ```
 ```swift
-let json = JSON(data: dataFromNetworking)
+let json = JSON(data: dataFromNetworking)    // dataFromNetworking is an NSData object that stores your JSON info
 ```
 ```swift
 let json = JSON(jsonObject)

@@ -243,6 +243,8 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
                 return self.rawArray.isEmpty
             case .Dictionary:
                 return self.rawDictionary.isEmpty
+            case .String:
+                return self.rawString.isEmpty
             default:
                 return true
             }

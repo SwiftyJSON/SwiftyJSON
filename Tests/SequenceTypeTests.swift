@@ -56,7 +56,7 @@ class SequenceTypeTests: XCTestCase {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
             array.append(sub.number!)
-            index++
+            index += 1
         }
         XCTAssertEqual(index, 5)
         XCTAssertEqual(array, [1,2.0,3.3,123456789,987654321.123456789])
@@ -72,7 +72,7 @@ class SequenceTypeTests: XCTestCase {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
             array.append(sub.bool!)
-            index++
+            index += 1
         }
         XCTAssertEqual(index, 5)
         XCTAssertEqual(array, [true, false, false, true, true])
@@ -88,7 +88,7 @@ class SequenceTypeTests: XCTestCase {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
             array.append(sub.string!)
-            index++
+            index += 1
         }
         XCTAssertEqual(index, 3)
         XCTAssertEqual(array, ["aoo","bpp","zoo"])
@@ -104,7 +104,7 @@ class SequenceTypeTests: XCTestCase {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
             array.append(sub.object)
-            index++
+            index += 1
         }
         XCTAssertEqual(index, 4)
         XCTAssertEqual(array[0] as? String, "aoo")
@@ -121,7 +121,7 @@ class SequenceTypeTests: XCTestCase {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
             array.append(sub.object)
-            index++
+            index += 1
         }
         XCTAssertEqual(index, 3)
         XCTAssertEqual((array[0] as! [String : Int])["1"]!, 1)
@@ -140,7 +140,7 @@ class SequenceTypeTests: XCTestCase {
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.number!
-            index++
+            index += 1
         }
         
         XCTAssertEqual(index, 2)
@@ -157,7 +157,7 @@ class SequenceTypeTests: XCTestCase {
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.bool!
-            index++
+            index += 1
         }
         
         XCTAssertEqual(index, 5)
@@ -174,7 +174,7 @@ class SequenceTypeTests: XCTestCase {
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.string!
-            index++
+            index += 1
         }
         
         XCTAssertEqual(index, 3)
@@ -191,7 +191,7 @@ class SequenceTypeTests: XCTestCase {
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
-            index++
+            index += 1
         }
         
         XCTAssertEqual(index, 4)
@@ -210,7 +210,7 @@ class SequenceTypeTests: XCTestCase {
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
-            index++
+            index += 1
         }
         
         XCTAssertEqual(index, 3)

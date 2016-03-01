@@ -383,7 +383,6 @@ Alamofire.request(.GET, url).validate().responseJSON { response in
     case .Success(let value):
         let json = JSON(value)
         print("JSON: \(json)")
-        
     case .Failure(let error):
         print(error)
     }

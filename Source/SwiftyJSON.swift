@@ -1388,7 +1388,7 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 //MARK: Customized to support Unit testing
 private extension JSON {
     func handleErrorForValue(value: AnyObject?, expectedType: Type) {
-        if let handler = self as? ABTestSupport where type != Type.Unknown {
+        if let handler = self as? TestSupport where type != Type.Unknown {
             handler.handleTypeMismatchForValue(value, expectedType: expectedType)
         }
     }
@@ -1399,7 +1399,7 @@ private extension JSON {
  For any mismatch between expected value type and actual type, this method get called on that respective JSON object. The one who cares about mismatch will implement this protocol.
  Note: You need to extend JSON to support this protocol, if needed
  */
-protocol ABTestSupport {
+protocol TestSupport {
     
     func handleTypeMismatchForValue(value: AnyObject?, expectedType: Type)
 }

@@ -1385,21 +1385,26 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-//MARK: Customized to support Unit testing
+//MARK: Added support for unit testing.
 private extension JSON {
+    
+    // This method will triger TestSupport protocol methods.
     func handleErrorForValue(value: AnyObject?, expectedType: Type) {
-        if let handler = self as? TestSupport where type != Type.Unknown {
-            handler.handleTypeMismatchForValue(value, expectedType: expectedType)
+        if let handler = self as? TestSupport where (type != Type.Unknown && type != Type.Null) {
+            handler.handleErrorInJsonParse(value, expectedType: expectedType, error: error)
         }
     }
 }
 
 /**
  This protocol help to support Unit test for models.
- For any mismatch between expected value type and actual type, this method get called on that respective JSON object. The one who cares about mismatch will implement this protocol.
- Note: You need to extend JSON to support this protocol, if needed
+ In following condition methods gets called.
+    1. Type mismatch
+    2. Expected key is missing
+ This method is not called, if value is nil or null
+ Note: You need to extend JSON to support this protocol, to handle any error.
  */
 protocol TestSupport {
     
-    func handleTypeMismatchForValue(value: AnyObject?, expectedType: Type)
+    func handleErrorInJsonParse(value: AnyObject?, expectedType: Type, error: NSError?)
 }

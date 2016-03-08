@@ -396,7 +396,12 @@ public struct JSONGenerator : GeneratorType {
         switch self.type {
         case .Array:
             if let o = self.arrayGenerate?.next() {
-                return (String(self.arrayIndex + 1), JSON(o))
+
+                // update: change ++ to += . it's Swift 3 compatible
+                let cIndex = self.arrayIndex
+                self.arrayIndex += 1
+                
+                return (String(cIndex), JSON(o))
             } else {
                 return nil
             }

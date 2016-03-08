@@ -42,7 +42,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             viewController.json = JSON.null
         }
         
+        testConvertible()
+        
         return true
+    }
+    
+    func testConvertible() {
+        var json: JSON = ["columns" : ["created_at" : "DESC", "id" : "DESC"]]
+        
+        let jsonDic = json["columns"].dictionary
+        
+        var result: [String : String] = [:]
+        if let jsonDic = jsonDic {
+            for (key, value) in jsonDic {
+                result[key] = value.stringValue
+            }
+        }
+        
+        print("\(result)") //["created_at": "DESC", "id": "DESC"]
     }
 }
 

@@ -96,4 +96,28 @@ class RawTests: XCTestCase {
         print(json.rawString())
         XCTAssertTrue(json.rawString() == "null")
     }
+    
+    func testPrettyAndFlat() {
+        let json:JSON = ["number":1234, "name":"Jack", "list":[1,2,3,4], "bool":false]
+        let flatString = json.rawStringFlat()
+        let prettyString = json.rawStringPretty()
+        XCTAssertNotNil(flatString)
+        XCTAssertNotNil(prettyString)
+        
+        print(flatString!)
+        XCTAssertEqual("{\"number\":1234,\"bool\":false,\"list\":[1,2,3,4],\"name\":\"Jack\"}", flatString)
+        
+        print(prettyString!)
+        XCTAssertEqual("{\n" +
+            "  \"number\" : 1234,\n" +
+            "  \"bool\" : false,\n" +
+            "  \"list\" : [\n" +
+            "    1,\n" +
+            "    2,\n" +
+            "    3,\n" +
+            "    4\n" +
+            "  ],\n" +
+            "  \"name\" : \"Jack\"\n" +
+            "}", prettyString)
+    }
 }

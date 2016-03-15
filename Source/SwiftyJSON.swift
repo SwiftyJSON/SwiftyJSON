@@ -65,9 +65,9 @@ public struct JSON {
 
     - returns: The created JSON
     */
-    public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
+    public init(data: NSData, options: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         do {
-            let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: opt)
+            let object: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: options)
             self.init(object)
         } catch let aError as NSError {
             if error != nil {
@@ -146,9 +146,7 @@ public struct JSON {
                 return self.rawDictionary
             case .String:
                 return self.rawString
-            case .Number:
-                return self.rawNumber
-            case .Bool:
+            case .Number, .Bool:
                 return self.rawNumber
             default:
                 return self.rawNull
@@ -183,10 +181,10 @@ public struct JSON {
     }
 
     /// json type
-    public var type: Type { get { return _type } }
+    public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { get { return self._error } }
+    public var error: NSError? { return _error }
 
     /// The static null json
     @available(*, unavailable, renamed="null")
@@ -243,6 +241,8 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
                 return self.rawArray.isEmpty
             case .Dictionary:
                 return self.rawDictionary.isEmpty
+            case .String:
+                return self.rawString.isEmpty
             default:
                 return true
             }
@@ -396,7 +396,12 @@ public struct JSONGenerator : GeneratorType {
         switch self.type {
         case .Array:
             if let o = self.arrayGenerate?.next() {
-                return (String(self.arrayIndex++), JSON(o))
+
+                // update: change ++ to += . it's Swift 3 compatible
+                let cIndex = self.arrayIndex
+                self.arrayIndex += 1
+                
+                return (String(cIndex), JSON(o))
             } else {
                 return nil
             }
@@ -1299,7 +1304,7 @@ private let falseObjCType = String.fromCString(falseNumber.objCType)
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
-    var isBool:Bool {
+    var isBool: Bool {
         get {
             let objCType = String.fromCString(self.objCType)
             if (self.compare(trueNumber) == NSComparisonResult.OrderedSame && objCType == trueObjCType)

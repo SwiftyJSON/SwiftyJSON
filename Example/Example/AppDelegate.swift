@@ -36,12 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let file = NSBundle(forClass:AppDelegate.self).pathForResource("SwiftyJSONTests", ofType: "json") {
             let data = NSData(contentsOfFile: file)!
             let json = JSON(data:data)
+//            let jsondata = JSON(data)
             viewController.json = json
         } else {
             viewController.json = JSON.null
-        }
+        } 
         
         return true
-    }
+    } 
 }
 

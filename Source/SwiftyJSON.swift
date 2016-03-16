@@ -59,7 +59,7 @@ public struct JSON {
     /**
     Creates a JSON using the data.
 
-    - parameter data:  The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
+    - parameter data:  The NSData used to convert to json. Top level object in data is an NSArray or NSDictionary
     - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
     - parameter error: error The NSErrorPointer used to return the error. `nil` by default.
 
@@ -85,7 +85,7 @@ public struct JSON {
     */
     public static func parse(string:String) -> JSON {
         return string.dataUsingEncoding(NSUTF8StringEncoding)
-            .flatMap({JSON(data: $0)}) ?? JSON(NSNull())
+            .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
     }
 
     /**

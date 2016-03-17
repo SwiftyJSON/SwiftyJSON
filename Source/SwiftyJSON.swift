@@ -61,7 +61,7 @@ public struct JSON {
 
     - parameter data:  The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
     - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
-    - parameter error: error The NSErrorPointer used to return the error. `nil` by default.
+    - parameter error: The NSErrorPointer used to return the error. `nil` by default.
 
     - returns: The created JSON
     */
@@ -78,7 +78,7 @@ public struct JSON {
     }
 
     /**
-     Create a JSON from JSON string
+     Creates a JSON from JSON string
     - parameter string: Normal json string like '{"a":"b"}'
 
     - returns: The created JSON
@@ -89,7 +89,7 @@ public struct JSON {
     }
 
     /**
-    Creates a JSON using the object.
+    Creates a JSON using the object
 
     - parameter object:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.
 
@@ -182,13 +182,13 @@ public struct JSON {
         }
     }
 
-    /// json type
+    /// JSON type
     public var type: Type { get { return _type } }
 
     /// Error in JSON
     public var error: NSError? { get { return self._error } }
 
-    /// The static null json
+    /// The static null JSON
     @available(*, unavailable, renamed="null")
     public static var nullJSON: JSON { get { return null } }
     public static var null: JSON { get { return JSON(NSNull()) } }
@@ -417,7 +417,7 @@ public struct JSONGenerator : GeneratorType {
 // MARK: - Subscript
 
 /**
-*  To mark both String and Int can be used in subscript.
+*  To make both String and Int can be used in subscript.
 */
 public enum JSONKey {
     case Index(Int)
@@ -505,7 +505,7 @@ extension JSON {
     }
 
     /**
-    Find a json in the complex data structuresby using the Int/String's array.
+    Find a json in the complex data structures by using array of Int and/or String as path.
 
     - parameter path: The target json's path. Example:
 
@@ -537,7 +537,7 @@ extension JSON {
     }
 
     /**
-    Find a json in the complex data structures by using the Int/String's array.
+    Find a json in the complex data structures by using array of Int and/or String as path.
 
     - parameter path: The target json's path. Example:
 

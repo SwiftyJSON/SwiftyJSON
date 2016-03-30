@@ -219,11 +219,11 @@ public struct JSON {
           value = dict
       default:
           let mirror = Mirror(reflecting: newValue)
-          if  mirror.displayStyle == .Collection  {
+          if  mirror.displayStyle == .collection  {
               type = .Array
               value = mirror.children.map { $0.value as Any }
           }
-          else if  mirror.displayStyle == .Dictionary  {
+          else if  mirror.displayStyle == .dictionary  {
               let children = mirror.children.map { $0.value }
               let elems = convertToKeyValues(children)
               if  children.count == elems.count  {
@@ -251,8 +251,8 @@ public struct JSON {
        var result = [(String, Any)]()
        for pair in pairs {
           let pairMirror = Mirror(reflecting: pair)
-          if  pairMirror.displayStyle == .Tuple  &&  pairMirror.children.count == 2 {
-              let generator = pairMirror.children.generate()
+          if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
+              let generator = pairMirror.children.makeIterator()
               if  let key = generator.next()!.value as? String {
                   result.append((key, generator.next()!.value))
               }
@@ -271,12 +271,12 @@ public struct JSON {
     public var error: NSError? { get { return self._error } }
 
     /// The static null json
-    @available(*, unavailable, renamed="null")
+    @available(*, unavailable, renamed:"null")
     public static var nullJSON: JSON { get { return null } }
     public static var null: JSON { get { return JSON(NSNull() as AnyObject) } }
 
     internal static func stringFromNumber(number: NSNumber) -> String {
-        let type = CFNumberGetType(unsafeBitCast(number, CFNumber.self))
+        let type = CFNumberGetType(unsafeBitCast(number, to: CFNumber.self))
         switch(type) {
             case kCFNumberFloat32Type:
                 return String(number.floatValue)
@@ -317,7 +317,7 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         }
     }
 
-    public subscript (position: JSON.Index) -> JSON.Generator.Element {
+    public subscript (position: JSON.Index) -> Generator.Element {
         switch self.type {
         case .Array:
             return (String(position.arrayIndex), JSON(self.rawArray[position.arrayIndex!]))
@@ -358,9 +358,9 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
     public func underestimateCount() -> Int {
         switch self.type {
         case .Array:
-            return self.rawArray.underestimateCount()
+            return self.rawArray.underestimatedCount
         case .Dictionary:
-            return self.rawDictionary.underestimateCount()
+            return self.rawDictionary.underestimatedCount
         default:
             return 0
         }
@@ -371,12 +371,12 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
 
     - returns: Return a *generator* over the elements of JSON.
     */
-    public func generate() -> JSON.Generator {
+    public func generate() -> Generator {
         return JSON.Generator(self)
     }
 }
 
-public struct JSONIndex: ForwardIndexType, _Incrementable, Equatable, Comparable {
+public struct JSONIndex: ForwardIndex, _Incrementable, Equatable, Comparable {
 
     let arrayIndex: Int?
     let dictionaryIndex: DictionaryIndex<String, Any>?
@@ -468,21 +468,21 @@ public func >(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
     }
 }
 
-public struct JSONGenerator : GeneratorType {
+public struct JSONGenerator : IteratorProtocol {
 
     public typealias Element = (String, JSON)
 
     private let type: Type
-    private var dictionayGenerate: DictionaryGenerator<String, Any>?
-    private var arrayGenerate: IndexingGenerator<[Any]>?
+    private var dictionayGenerate: DictionaryIterator<String, Any>?
+    private var arrayGenerate: IndexingIterator<[Any]>?
     private var arrayIndex: Int = 0
 
     init(_ json: JSON) {
         self.type = json.type
         if type == .Array {
-            self.arrayGenerate = json.rawArray.generate()
+            self.arrayGenerate = json.rawArray.makeIterator()
         }else {
-            self.dictionayGenerate = json.rawDictionary.generate()
+            self.dictionayGenerate = json.rawDictionary.makeIterator()
         }
     }
 
@@ -622,7 +622,7 @@ extension JSON {
             case 1:
                 self[sub:path[0]].object = newValue.object
             default:
-                var aPath = path; aPath.removeAtIndex(0)
+                var aPath = path; aPath.remove(at: 0)
                 var nextJSON = self[sub: path[0]]
                 nextJSON[aPath] = newValue
                 self[sub: path[0]] = nextJSON
@@ -762,7 +762,7 @@ extension JSON: Swift.RawRepresentable {
 
 // MARK: - Printable, DebugPrintable
 
-extension JSON: Swift.Printable, Swift.DebugPrintable {
+extension JSON {
 
     public var description: String {
         if let string = self.rawString(options:.PrettyPrinted) {
@@ -1034,7 +1034,7 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue?.absoluteString?.bridge() ?? NSNull()
+            self.object = newValue?.absoluteString.bridge() ?? NSNull()
         }
     }
 }
@@ -1403,7 +1403,7 @@ private let falseNumber = NSNumber(bool: false)
 extension NSNumber {
     var isBool:Bool {
         get {
-            let type = CFNumberGetType(unsafeBitCast(self, CFNumber.self))
+            let type = CFNumberGetType(unsafeBitCast(self, to: CFNumber.self))
             if  type == kCFNumberSInt8Type  &&
                   (self.compare(trueNumber) == NSComparisonResult.OrderedSame  ||
                    self.compare(falseNumber) == NSComparisonResult.OrderedSame){

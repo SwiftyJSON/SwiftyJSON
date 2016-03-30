@@ -48,7 +48,7 @@ public class LclJSONSerialization {
             }
 
             let mirror = Mirror(reflecting: obj)
-            if  mirror.displayStyle == .Collection  {
+            if  mirror.displayStyle == .collection  {
                 // object is Swift.Array
                 for element in mirror.children {
                     guard isValidJSONObjectInternal(element.value) else {
@@ -57,12 +57,12 @@ public class LclJSONSerialization {
                 }
                 return true
             }
-            else if  mirror.displayStyle == .Dictionary  {
+            else if  mirror.displayStyle == .dictionary  {
                 // object is Swift.Dictionary
                 for pair in mirror.children {
                     let pairMirror = Mirror(reflecting: pair.value)
-                    if  pairMirror.displayStyle == .Tuple  &&  pairMirror.children.count == 2 {
-                        let generator = pairMirror.children.generate()
+                    if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
+                        let generator = pairMirror.children.makeIterator()
                         if  generator.next()!.value is String {
                             guard isValidJSONObjectInternal(generator.next()!.value) else {
                                 return false
@@ -88,7 +88,7 @@ public class LclJSONSerialization {
 
         // top level object must be an Swift.Array or Swift.Dictionary
         let mirror = Mirror(reflecting: obj)
-        guard mirror.displayStyle == .Collection || mirror.displayStyle == .Dictionary else {
+        guard mirror.displayStyle == .collection || mirror.displayStyle == .dictionary else {
             return false
         }
 
@@ -137,10 +137,10 @@ public class LclJSONSerialization {
         }
         else {
             let mirror = Mirror(reflecting: obj)
-            if  mirror.displayStyle == .Collection  {
+            if  mirror.displayStyle == .collection  {
                 try writeJsonArray(mirror.children.map { $0.value as Any }, padding: padding, writer: writer)
             }
-            else if  mirror.displayStyle == .Dictionary  {
+            else if  mirror.displayStyle == .dictionary  {
                 try writeJsonObject(mirror.children.map { $0.value }, padding: padding, writer: writer)
             }
             else {
@@ -161,8 +161,8 @@ public class LclJSONSerialization {
         let realComma = NSString(string: ",")
         for pair in pairs {
            let pairMirror = Mirror(reflecting: pair)
-           if  pairMirror.displayStyle == .Tuple  &&  pairMirror.children.count == 2 {
-               let generator = pairMirror.children.generate()
+           if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
+               let generator = pairMirror.children.makeIterator()
                if  let key = generator.next()!.value as? String {
                    let value = generator.next()!.value
                    writer(comma)

@@ -14,6 +14,8 @@
  * limitations under the License.
  **/
 
+#if os(Linux)
+
 import Foundation
 
 public let LclErrorDomain = "Lcl.Error.Domain"
@@ -233,3 +235,4 @@ public class LclJSONSerialization {
         return NSError(domain: LclErrorDomain, code: 1, userInfo: userInfo)
     }
 }
+#endif

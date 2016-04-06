@@ -89,7 +89,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    pod 'SwiftyJSON'
 end
 ```
 Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:

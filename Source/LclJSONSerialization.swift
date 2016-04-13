@@ -29,9 +29,9 @@ public class LclJSONSerialization {
     private static let NULL = NSString(string: "null")
 
 
-    public class func isValidJSONObject(obj: Any) -> Bool {
+    public class func isValidJSONObject(_ obj: Any) -> Bool {
         // TODO: - revisit this once bridging story gets fully figured out
-        func isValidJSONObjectInternal(obj: Any) -> Bool {
+        func isValidJSONObjectInternal(_ obj: Any) -> Bool {
             // object is Swift.String or NSNull
             if obj is String || obj is Int || obj is Bool || obj is NSNull {
               return true
@@ -97,13 +97,13 @@ public class LclJSONSerialization {
         return isValidJSONObjectInternal(obj)
     }
 
-    public class func dataWithJSONObject(obj: Any, options: NSJSONWritingOptions) throws -> NSData
+    public class func dataWithJSONObject(_ obj: Any, options: NSJSONWritingOptions) throws -> NSData
     {
         let result = NSMutableData()
 
         try writeJson(obj, options: options) { (str: NSString?) in
             if  let str = str  {
-                result.appendBytes(str.cStringUsingEncoding(NSUTF8StringEncoding), length: str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+                result.appendBytes(str.cStringUsingEncoding(NSUTF8StringEncoding)!, length: str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
             }
         }
 
@@ -111,7 +111,7 @@ public class LclJSONSerialization {
     }
 
     /* Helper function to enable writing to NSData as well as NSStream */
-    private static func writeJson(obj: Any, options opt: NSJSONWritingOptions, writer: (NSString?) -> Void) throws {
+    private static func writeJson(_ obj: Any, options opt: NSJSONWritingOptions, writer: (NSString?) -> Void) throws {
         let prettyPrint = opt.rawValue & NSJSONWritingOptions.PrettyPrinted.rawValue  != 0
         let padding: NSString? = prettyPrint ? NSString(string: "") : nil
 
@@ -119,7 +119,7 @@ public class LclJSONSerialization {
     }
 
     /* Write out a JSON value (simple value, object, or array) */
-    private static func writeJsonValue(obj: Any, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonValue(_ obj: Any, padding: NSString?, writer: (NSString?) -> Void) throws {
         if  obj is String  {
             writer("\"")
             writer((obj as! String).bridge())
@@ -153,7 +153,7 @@ public class LclJSONSerialization {
     }
 
     /* Write out a dictionary as a JSON object */
-    private static func writeJsonObject(pairs: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonObject(_ pairs: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
         let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
         let nameValueSeparator = NSString(string: padding != nil ? ": " : ":")
 
@@ -186,7 +186,7 @@ public class LclJSONSerialization {
     }
 
     /* Write out an array as a JSON Array */
-    private static func writeJsonArray(obj: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonArray(_ obj: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
         let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
         writer("[")
 
@@ -209,7 +209,7 @@ public class LclJSONSerialization {
 
        Note: if padding is nil, then all padding, newlines etc., are suppressed
     */
-    private static func setupPadding(padding: NSString?) -> (NSString?, NSString?, NSString?) {
+    private static func setupPadding(_ padding: NSString?) -> (NSString?, NSString?, NSString?) {
         let nestedPadding: NSString?
         let startOfLine: NSString?
         let endOfLine: NSString?
@@ -229,7 +229,7 @@ public class LclJSONSerialization {
         return (nestedPadding, startOfLine, endOfLine)
     }
 
-    private static func createWriteError(reason: String) -> NSError {
+    private static func createWriteError(_ reason: String) -> NSError {
         let userInfo: [String: Any] = [NSLocalizedDescriptionKey: JSON_WRITE_ERROR,
             NSLocalizedFailureReasonErrorKey: reason]
         return NSError(domain: LclErrorDomain, code: 1, userInfo: userInfo)

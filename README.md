@@ -318,7 +318,7 @@ if let string = json.rawString() {
 ####Existance
 ```swift
 //shows you whether value specified in JSON or not
-if json["name"].isExists()
+if json["name"].exists()
 ```
 
 ####Literal convertibles

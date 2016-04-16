@@ -275,7 +275,7 @@ let id: Int = json["id"].intValue
 let name: String = json["name"].stringValue
 ```
 ```swift
-//If not a Array or nil, return []
+//If not an Array or nil, return []
 let list: Array<JSON> = json["list"].arrayValue
 ```
 ```swift
@@ -315,7 +315,7 @@ if let string = json.rawString() {
     //Do something you want
 }
 ```
-####Existance
+####Existence
 ```swift
 //shows you whether value specified in JSON or not
 if json["name"].exists()

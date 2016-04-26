@@ -96,7 +96,11 @@ public struct JSON {
     - returns: The created JSON
     */
     public init(_ object: AnyObject) {
-        self.object = object
+        if object is [NSObject:AnyObject] {
+            self.object = (object as! [NSObject:AnyObject]).convert()
+        }else{
+            self.object = object
+        }
     }
 
     /**
@@ -1311,6 +1315,17 @@ extension NSNumber {
         }
     }
 }
+//MARK:convert all keys to String
+extension Dictionary {
+    func convert() -> [String:AnyObject] {
+        var t = [String:AnyObject]()
+        for (k ,v) in self {
+            t["\(k)"] = v as? AnyObject ?? ""
+        }
+        return t
+    }
+}
+
 
 func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {

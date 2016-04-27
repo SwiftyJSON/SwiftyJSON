@@ -103,7 +103,7 @@ public class LclJSONSerialization {
 
         try writeJson(obj, options: options) { (str: NSString?) in
             if  let str = str  {
-                result.appendBytes(str.cStringUsingEncoding(NSUTF8StringEncoding)!, length: str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+                result.append(str.cStringUsingEncoding(NSUTF8StringEncoding)!, length: str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
             }
         }
 

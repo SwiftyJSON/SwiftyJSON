@@ -393,7 +393,8 @@ extension JSON : Collection, Sequence, Indexable {
             return JSONIndex()
         }
     }
-    
+
+#if os(OSX)
     public func index(after i: JSON.Index) -> JSON.Index {
         switch self.type {
         case .Array:
@@ -404,6 +405,7 @@ extension JSON : Collection, Sequence, Indexable {
             return JSONIndex()
         }
     }
+#endif
 
     public subscript (position: JSON.Index) -> Generator.Element {
         switch self.type {
@@ -510,6 +512,21 @@ public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
         return false
     }
 }
+
+#if os(Linux)
+    extension JSONIndex: ForwardIndex {
+        public func successor() -> JSONIndex {
+            switch self.type {
+                case .Array:
+                    return JSONIndex(arrayIndex: self.arrayIndex!.successor())
+                case .Dictionary:
+                    return JSONIndex(dictionaryIndex: self.dictionaryIndex!.successor())
+                default:
+                    return JSONIndex()
+            }
+        }
+    }
+#endif
 
 public func <(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
     switch (lhs.type, rhs.type) {

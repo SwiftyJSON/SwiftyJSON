@@ -393,6 +393,17 @@ extension JSON : Collection, Sequence, Indexable {
             return JSONIndex()
         }
     }
+    
+    public func index(after i: JSON.Index) -> JSON.Index {
+        switch self.type {
+        case .Array:
+            return JSONIndex(arrayIndex: self.rawArray.index(after: i.arrayIndex!))
+        case .Dictionary:
+            return JSONIndex(dictionaryIndex: self.rawDictionary.index(after: i.dictionaryIndex!))
+        default:
+            return JSONIndex()
+        }
+    }
 
     public subscript (position: JSON.Index) -> Generator.Element {
         switch self.type {
@@ -453,9 +464,8 @@ extension JSON : Collection, Sequence, Indexable {
     }
 }
 
-public struct JSONIndex: ForwardIndex, _Incrementable, Equatable, Comparable {
-
-    let arrayIndex: Int?
+public struct JSONIndex: _Incrementable, Equatable, Comparable {
+    let arrayIndex: Array<Any>.Index?
 #if os(Linux)
     let dictionaryIndex: DictionaryIndex<String, Any>?
 #else
@@ -469,7 +479,7 @@ public struct JSONIndex: ForwardIndex, _Incrementable, Equatable, Comparable {
         self.type = .Unknown
     }
 
-    init(arrayIndex: Int) {
+    init(arrayIndex: Array<Any>.Index) {
         self.arrayIndex = arrayIndex
         self.dictionaryIndex = nil
         self.type = .Array
@@ -488,17 +498,6 @@ public struct JSONIndex: ForwardIndex, _Incrementable, Equatable, Comparable {
         self.type = .Dictionary
     }
 #endif
-
-    public func successor() -> JSONIndex {
-        switch self.type {
-        case .Array:
-            return JSONIndex(arrayIndex: self.arrayIndex!.successor())
-        case .Dictionary:
-            return JSONIndex(dictionaryIndex: self.dictionaryIndex!.successor())
-        default:
-            return JSONIndex()
-        }
-    }
 }
 
 public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {

@@ -103,7 +103,7 @@ public class LclJSONSerialization {
 
         try writeJson(obj, options: options) { (str: NSString?) in
             if  let str = str  {
-                result.append(str.cStringUsingEncoding(NSUTF8StringEncoding)!, length: str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+                result.append(str.cString(using: NSUTF8StringEncoding)!, length: str.lengthOfBytes(using: NSUTF8StringEncoding))
             }
         }
 
@@ -215,8 +215,8 @@ public class LclJSONSerialization {
         let endOfLine: NSString?
         if  let padding = padding  {
             let temp = NSMutableString(capacity: 20)
-            temp.appendString(padding.bridge())
-            temp.appendString("  ")
+            temp.append(padding.bridge())
+            temp.append("  ")
             nestedPadding = NSString(string: temp.bridge())
             startOfLine = padding
             endOfLine = NSString(stringLiteral: "\n")

@@ -779,8 +779,10 @@ extension JSON {
         }
     }
     public func exists() -> Bool{
-        if let errorValue = error , errorValue.code == ErrorNotExist{
-            return false
+        if let errorValue = error, errorValue.code == ErrorNotExist ||
+            errorValue.code == ErrorIndexOutOfBounds ||
+            errorValue.code == ErrorWrongType {
+                return false
         }
         return true
     }

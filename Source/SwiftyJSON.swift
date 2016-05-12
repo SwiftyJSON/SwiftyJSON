@@ -214,10 +214,10 @@ public struct JSON {
           value = number
       case let number as Double:
           type = .Number
-          value = NSNumber(double: number)
+          value = NSNumber(value: number)
       case let number as Int:
           type = .Number
-          value = NSNumber(long: number)
+          value = NSNumber(value: number)
       case  let string as String:
           type = .String
           value = string
@@ -355,7 +355,7 @@ public struct JSON {
             case kCFNumberFloat64Type:
                 return String(number.doubleValue)
             default:
-                return String(number.longLongValue)
+                return String(number.int64Value)
         }
     }
 #endif
@@ -1196,10 +1196,10 @@ extension JSON {
             case .String:
 #if os(Linux)
                 if  let decimal = Double(self.object as! String)  {
-                    return NSNumber(double: decimal)
+                    return NSNumber(value: decimal)
                 }
                 else {  // indicates parse error
-                    return NSNumber(double: 0.0)
+                    return NSNumber(value: 0.0)
                 }   
 #else 
                let decimal = NSDecimalNumber(string: self.object as? String)

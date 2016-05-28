@@ -1293,6 +1293,50 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
+// MARK: - Find
+extension JSON {
+    /**
+    Find an underlying `JSON` object using a depth-first search.
+     
+     - parameter predicate: A method that returns `true` for only a target `JSON` object
+     
+     - returns: The first `JSON` object to satisfy the predicate or `nil` if none does.
+    */
+    func find(@noescape predicate predicate: JSON -> Bool) -> JSON? {
+        if predicate(self) {
+            return self
+        }
+        else if let subJSON = (dictionary?.map { $0.1 } ?? array) {
+            for json in subJSON {
+                if let foundJSON = json.find(predicate: predicate) {
+                    return foundJSON
+                }
+            }
+        }
+        return nil
+    }
+    
+    /**
+     Find underlying `JSON` objects using a depth-first search.
+     
+     - parameter predicate: A method that returns `true` for only a target `JSON` object
+     
+     - returns: All `JSON` objects that satisfy the predicate or an empty array if none does.
+     */
+    func findAll(@noescape predicate predicate: JSON -> Bool) -> [JSON] {
+        var json: [JSON] = []
+        if predicate(self) {
+            json.append(self)
+        }
+        if let subJSON = (dictionary?.map{ $0.1 } ?? array) {
+            for object in subJSON {
+                json += object.findAll(predicate: predicate)
+            }
+        }
+        return json
+    }
+}
+
 private let trueNumber = NSNumber(bool: true)
 private let falseNumber = NSNumber(bool: false)
 private let trueObjCType = String.fromCString(trueNumber.objCType)

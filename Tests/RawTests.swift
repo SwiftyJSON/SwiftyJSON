@@ -27,7 +27,7 @@ class RawTests: XCTestCase {
 
     func testRawData() {
         let json: JSON = ["somekey" : "some string value"]
-        let expectedRawData = "{\"somekey\":\"some string value\"}".dataUsingEncoding(NSUTF8StringEncoding)
+        let expectedRawData = "{\"somekey\":\"some string value\"}".data(using: NSUTF8StringEncoding)
         do {
             let data: NSData = try json.rawData()
             XCTAssertEqual(expectedRawData, data)
@@ -55,7 +55,7 @@ class RawTests: XCTestCase {
         }
         let string = json.rawString()
         XCTAssertTrue (data != nil)
-        XCTAssertTrue (string!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        XCTAssertTrue (string!.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
         print(string!)
     }
     
@@ -69,7 +69,7 @@ class RawTests: XCTestCase {
         }
         let string = json.rawString()
         XCTAssertTrue (data != nil)
-        XCTAssertTrue (string!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        XCTAssertTrue (string!.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
         print(string!)
     }
     

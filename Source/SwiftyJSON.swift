@@ -121,7 +121,11 @@ public struct JSON {
     - returns: The created JSON
     */
     public init(_ jsonArray:[JSON]) {
-        self.init(jsonArray.map { $0.object })
+#if os(Linux)
+        self.init(jsonArray.map { $0.object } as Any)
+#else
+        self.init(jsonArray.map { $0.object } as AnyObject)
+#endif
     }
 
     /**
@@ -140,7 +144,11 @@ public struct JSON {
         for (key, json) in jsonDictionary {
             dictionary[key] = json.object
         }
-        self.init(dictionary)
+#if os(Linux)
+        self.init(dictionary as Any)
+#else
+        self.init(dictionary as AnyObject)
+#endif
     }
 
     /// Private object
@@ -293,11 +301,11 @@ public struct JSON {
         get {
             switch self.type {
             case .Array:
-                return self.rawArray
+                return self.rawArray as AnyObject
             case .Dictionary:
-                return self.rawDictionary
+                return self.rawDictionary as AnyObject
             case .String:
-                return self.rawString
+                return self.rawString as AnyObject
             case .Number:
                 return self.rawNumber
             case .Bool:
@@ -329,7 +337,7 @@ public struct JSON {
                 self.rawDictionary = dictionary
             default:
                 _type = .Unknown
-                _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
+                _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey as NSObject: "It is a unsupported type"])
             }
         }
     }
@@ -635,13 +643,21 @@ extension JSON {
         get {
             if self.type != .Array {
                 var r = JSON.null
-                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
+#if os(Linux)
+                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array" as Any])
+#else
+                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey as AnyObject as! NSObject: "Array[\(index)] failure, It is not an array" as AnyObject])
+#endif
                 return r
             } else if index >= 0 && index < self.rawArray.count {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
-                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
+#if os(Linux)
+                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds" as Any])
+#else
+                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey as AnyObject as! NSObject: "Array[\(index)] is out of bounds" as AnyObject])
+#endif
                 return r
             }
         }
@@ -662,10 +678,18 @@ extension JSON {
                 if let o = self.rawDictionary[key] {
                     r = JSON(o)
                 } else {
-                    r._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
+#if os(Linux)
+                    r._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist" as Any])
+#else
+                    r._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey as NSObject: "Dictionary[\"\(key)\"] does not exist" as AnyObject])
+#endif
                 }
             } else {
-                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] failure, It is not an dictionary"])
+#if os(Linux)
+                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] failure, It is not an dictionary" as Any])
+#else
+                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey as NSObject: "Dictionary[\"\(key)\"] failure, It is not an dictionary" as AnyObject])
+#endif
             }
             return r
         }
@@ -746,7 +770,7 @@ extension JSON {
 }
 
 // MARK: - LiteralConvertible
-
+#if os(Linux)
 extension JSON: Swift.StringLiteralConvertible {
 
     public init(stringLiteral value: StringLiteralType) {
@@ -800,6 +824,61 @@ extension JSON: Swift.ArrayLiteralConvertible {
         self.init(elements)
     }
 }
+#else
+extension JSON: Swift.StringLiteralConvertible {
+
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(value as AnyObject)
+    }
+
+    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+        self.init(value as AnyObject)
+    }
+
+    public init(unicodeScalarLiteral value: StringLiteralType) {
+        self.init(value as AnyObject)
+    }
+}
+
+extension JSON: Swift.IntegerLiteralConvertible {
+
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.init(value as AnyObject)
+    }
+}
+
+extension JSON: Swift.BooleanLiteralConvertible {
+
+    public init(booleanLiteral value: BooleanLiteralType) {
+        self.init(value as AnyObject)
+    }
+}
+
+extension JSON: Swift.FloatLiteralConvertible {
+
+    public init(floatLiteral value: FloatLiteralType) {
+        self.init(value as AnyObject)
+    }
+}
+
+extension JSON: Swift.DictionaryLiteralConvertible {
+
+    public init(dictionaryLiteral elements: (String, AnyObject)...) {
+        self.init(elements.reduce([String : AnyObject](minimumCapacity: elements.count)){(dictionary: [String : AnyObject], element:(String, AnyObject)) -> [String : AnyObject] in
+            var d = dictionary
+            d[element.0] = element.1
+            return d
+            } as AnyObject)
+    }
+}
+
+extension JSON: Swift.ArrayLiteralConvertible {
+
+    public init(arrayLiteral elements: AnyObject...) {
+        self.init(elements as AnyObject)
+    }
+}
+#endif
 
 extension JSON: Swift.NilLiteralConvertible {
 
@@ -845,7 +924,7 @@ extension JSON: Swift.RawRepresentable {
         return try LclJSONSerialization.dataWithJSONObject(self.object, options: opt)
 #else
         guard NSJSONSerialization.isValidJSONObject(self.object) else {
-            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "JSON is invalid"])
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey as NSObject: "JSON is invalid"])
         }
 
         return try NSJSONSerialization.data(withJSONObject: self.object, options: opt)
@@ -975,7 +1054,7 @@ extension JSON {
         }
         set {
             if let array = newValue {
-                self.object = array
+                self.object = array as AnyObject
             } else {
                 self.object = NSNull()
             }
@@ -1047,7 +1126,7 @@ extension JSON {
         }
         set {
             if let v = newValue {
-                self.object = v
+                self.object = v as AnyObject
             } else {
                 self.object = NSNull()
             }
@@ -1271,7 +1350,7 @@ extension JSON {
 #if os(Linux)
             self.object = newValue?.absoluteString.bridge() ?? NSNull()
 #else
-            self.object = newValue?.absoluteString ?? NSNull()
+            self.object = newValue?.absoluteString as? AnyObject ?? NSNull()
 #endif
         }
     }

@@ -27,7 +27,7 @@ import SwiftyJSON
 class SequenceTypeTests: XCTestCase {
 
     func testJSONFile() {
-        if let file = NSBundle(forClass:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = NSBundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
             let testData = NSData(contentsOfFile: file)
             let json = JSON(data:testData!)
             for (index, sub) in json {
@@ -201,7 +201,7 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testDictionaryAllArray() {
-        var json:JSON = JSON (["Number":[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], "String":["aa","bbb","cccc"], "Mix":[true, "766", NSNull(), 655231.9823]])
+        var json:JSON = JSON (["Number":[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], "String":["aa","bbb","cccc"], "Mix":[true, "766", NSNull(), 655231.9823]])
 
         XCTAssertEqual(json.count, 3)
         

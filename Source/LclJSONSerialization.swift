@@ -33,12 +33,18 @@ public class LclJSONSerialization {
         // TODO: - revisit this once bridging story gets fully figured out
         func isValidJSONObjectInternal(_ obj: Any) -> Bool {
             // object is Swift.String or NSNull
-            if obj is String || obj is Int || obj is Bool || obj is NSNull {
+            if obj is String || obj is Int || obj is Bool || obj is NSNull || obj is UInt {
               return true
             }
 
             // object is a Double and is not NaN or infinity
             if let number = obj as? Double  {
+                let invalid = number.isInfinite || number.isNaN
+                return !invalid
+            }
+            
+            // object is a Float and is not NaN or infinity
+            if let number = obj as? Float  {
                 let invalid = number.isInfinite || number.isNaN
                 return !invalid
             }
@@ -128,7 +134,7 @@ public class LclJSONSerialization {
         else if  obj is Bool  {
             writer(obj as! Bool ? TRUE : FALSE)
         }
-        else if  obj is Int || obj is Float || obj is Double {
+        else if  obj is Int || obj is Float || obj is Double || obj is UInt {
             writer(String(obj).bridge())
         }
         else if  obj is NSNumber  {

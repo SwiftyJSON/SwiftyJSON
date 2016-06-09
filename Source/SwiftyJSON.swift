@@ -428,6 +428,10 @@ public protocol JSONSubscriptType {
     var jsonKey:JSONKey { get }
 }
 
+public protocol JSONSerializable {
+    init? (json: JSON)
+}
+
 extension Int: JSONSubscriptType {
     public var jsonKey:JSONKey {
         return JSONKey.Index(self)

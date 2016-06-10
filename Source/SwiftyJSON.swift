@@ -64,7 +64,7 @@ public struct JSON {
     - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
     - returns: The created JSON
     */
-    public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments) {
+    public init(data:NSData, options opt: NSJSONReadingOptions = .allowFragments) {
         do {
             let object: Any = try NSJSONSerialization.jsonObject(with: data, options: opt)
             self.init(object)
@@ -932,7 +932,7 @@ extension JSON: Swift.RawRepresentable {
     }
 
 #if os(Linux)
-    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .PrettyPrinted) -> String? {
+    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .prettyPrinted) -> String? {
         switch self.type {
         case .Array, .Dictionary:
             do {
@@ -983,11 +983,7 @@ extension JSON: Swift.RawRepresentable {
 extension JSON {
 
     public var description: String {
-#if os(Linux)
-        let prettyString = self.rawString(options:.PrettyPrinted)
-#else 
         let prettyString = self.rawString(options:.prettyPrinted)
-#endif
         if let string = prettyString {
             return string
         } else {
@@ -1167,7 +1163,7 @@ extension JSON: Swift.BooleanType {
             case .Number:
                 return self.rawNumber.boolValue
             case .String:
-                return self.rawString.bridge().caseInsensitiveCompare("true") == .OrderedSame
+                return self.rawString.bridge().caseInsensitiveCompare("true") == .orderedSame
             default:
                 return false
             }
@@ -1749,8 +1745,8 @@ extension NSNumber {
 #if os(Linux)
             let type = CFNumberGetType(unsafeBitCast(self, to: CFNumber.self))
             if  type == kCFNumberSInt8Type  &&
-                  (self.compare(trueNumber) == NSComparisonResult.OrderedSame  ||
-                   self.compare(falseNumber) == NSComparisonResult.OrderedSame){
+                  (self.compare(trueNumber) == NSComparisonResult.orderedSame  ||
+                   self.compare(falseNumber) == NSComparisonResult.orderedSame){
                     return true
             } else {
                 return false
@@ -1775,11 +1771,7 @@ func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-#if os(Linux)
-        return lhs.compare(rhs) == NSComparisonResult.OrderedSame
-#else 
         return lhs.compare(rhs) == NSComparisonResult.orderedSame
-#endif
     }
 }
 
@@ -1795,11 +1787,7 @@ func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-#if os(Linux)
-        return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
-#else 
         return lhs.compare(rhs) == NSComparisonResult.orderedAscending
-#endif
     }
 }
 
@@ -1811,11 +1799,7 @@ func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-#if os(Linux)
-        return lhs.compare(rhs) == NSComparisonResult.OrderedDescending
-#else 
         return lhs.compare(rhs) == NSComparisonResult.orderedDescending
-#endif
     }
 }
 
@@ -1827,11 +1811,7 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-#if os(Linux)
-        return lhs.compare(rhs) != NSComparisonResult.OrderedDescending
-#else 
         return lhs.compare(rhs) != NSComparisonResult.orderedDescending
-#endif
     }
 }
 
@@ -1843,10 +1823,6 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-#if os(Linux)
-        return lhs.compare(rhs) != NSComparisonResult.OrderedAscending
-#else 
         return lhs.compare(rhs) != NSComparisonResult.orderedAscending
-#endif
     }
 }

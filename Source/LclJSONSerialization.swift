@@ -118,7 +118,7 @@ public class LclJSONSerialization {
 
     /* Helper function to enable writing to NSData as well as NSStream */
     private static func writeJson(_ obj: Any, options opt: NSJSONWritingOptions, writer: (NSString?) -> Void) throws {
-        let prettyPrint = opt.rawValue & NSJSONWritingOptions.PrettyPrinted.rawValue  != 0
+        let prettyPrint = opt.rawValue & NSJSONWritingOptions.prettyPrinted.rawValue  != 0
         let padding: NSString? = prettyPrint ? NSString(string: "") : nil
 
         try writeJsonValue(obj, padding: padding, writer: writer)

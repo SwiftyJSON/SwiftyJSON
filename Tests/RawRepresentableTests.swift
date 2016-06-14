@@ -54,13 +54,13 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(objectTrue as? Int, 1)
         XCTAssertEqual(objectTrue as? Double, 1.0)
         XCTAssertEqual(objectTrue as? Bool, true)
-        XCTAssertEqual(objectTrue as? NSNumber, NSNumber(bool: true))
+        XCTAssertEqual(objectTrue as? NSNumber, NSNumber(value: true))
         
         let objectFalse: AnyObject = jsonFalse.rawValue
         XCTAssertEqual(objectFalse as? Int, 0)
         XCTAssertEqual(objectFalse as? Double, 0.0)
         XCTAssertEqual(objectFalse as? Bool, false)
-        XCTAssertEqual(objectFalse as? NSNumber, NSNumber(bool: false))
+        XCTAssertEqual(objectFalse as? NSNumber, NSNumber(value: false))
     }
     
     func testString() {
@@ -72,7 +72,7 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertTrue(json.dictionary == nil)
             XCTAssertTrue(json.null == nil)
             XCTAssertTrue(json.error == nil)
-            XCTAssertTrue(json.type == .String)
+            XCTAssertTrue(json.type == .string)
             XCTAssertEqual(json.object as? String, string)
         } else {
             XCTFail("Should not run into here")

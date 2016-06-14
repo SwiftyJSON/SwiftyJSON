@@ -1,5 +1,5 @@
-#SwiftyJSON [中文介绍](http://tangplin.github.io/swiftyjson/)
-
+#SwiftyJSON
+ 
 [![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
@@ -17,6 +17,9 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 	- [Setter](#setter)
 	- [Raw object](#raw-object)
 	- [Literal convertibles](#literal-convertibles)
+> For Swift3 support, take a look at the [swift3 beta branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift3)
+> [中文介绍](http://tangplin.github.io/swiftyjson/)
+
 1. [Work with Alamofire](#work-with-alamofire)
 
 ##Why is the typical JSON handling in Swift NOT good?

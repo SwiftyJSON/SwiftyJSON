@@ -17,12 +17,12 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 	- [Setter](#setter)
 	- [Raw object](#raw-object)
 	- [Literal convertibles](#literal-convertibles)
+1. [Work with Alamofire](#work-with-alamofire)
 
 > For Swift3 support, take a look at the [swift3 beta branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift3)
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
-1. [Work with Alamofire](#work-with-alamofire)
 
 ##Why is the typical JSON handling in Swift NOT good?
 Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.

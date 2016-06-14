@@ -17,6 +17,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 	- [Setter](#setter)
 	- [Raw object](#raw-object)
 	- [Literal convertibles](#literal-convertibles)
+
 > For Swift3 support, take a look at the [swift3 beta branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift3)
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 

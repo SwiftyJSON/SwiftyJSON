@@ -133,7 +133,7 @@ public struct JSON {
     private var rawNull: NSNull = NSNull()
     /// Private type
     private var _type: Type = .Null
-    /// prviate error
+    /// Private error
     private var _error: NSError? = nil
 
     /// Object in JSON

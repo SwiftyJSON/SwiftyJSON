@@ -195,16 +195,16 @@ public struct JSON {
 }
 
 public enum JSONIndex:Comparable {
-    case Array(Int)
-    case Dictionary(DictionaryIndex<String, JSON>)
-    case Null
+    case array(Int)
+    case dictionary(DictionaryIndex<String, JSON>)
+    case null
 }
 
 public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
     switch (lhs, rhs) {
-    case (.Array(let left), .Array(let right)):
+    case (.array(let left), .array(let right)):
         return left == right
-    case (.Dictionary(let left), .Dictionary(let right)):
+    case (.dictionary(let left), .dictionary(let right)):
         return left == right
     default:
         return false
@@ -213,9 +213,9 @@ public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
 
 public func <(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
     switch (lhs, rhs) {
-    case (.Array(let left), .Array(let right)):
+    case (.array(let left), .array(let right)):
         return left < right
-    case (.Dictionary(let left), .Dictionary(let right)):
+    case (.dictionary(let left), .dictionary(let right)):
         return left < right
     default:
         return false
@@ -230,42 +230,42 @@ extension JSON: Collection{
     public var startIndex: Index{
         switch type {
         case .array:
-            return .Array(rawArray.startIndex)
+            return .array(rawArray.startIndex)
         case .dictionary:
-            return .Dictionary(dictionaryValue.startIndex)
+            return .dictionary(dictionaryValue.startIndex)
         default:
-            return .Null
+            return .null
         }
     }
 
     public var endIndex: Index{
         switch type {
         case .array:
-            return .Array(rawArray.endIndex)
+            return .array(rawArray.endIndex)
         case .dictionary:
-            return .Dictionary(dictionaryValue.endIndex)
+            return .dictionary(dictionaryValue.endIndex)
         default:
-            return .Null
+            return .null
         }
     }
 
     public func index(after i: Index) -> Index {
         switch i {
-        case .Array(let idx):
-            return .Array(rawArray.index(after: idx))
-        case .Dictionary(let idx):
-            return .Dictionary(dictionaryValue.index(after: idx))
+        case .array(let idx):
+            return .array(rawArray.index(after: idx))
+        case .dictionary(let idx):
+            return .dictionary(dictionaryValue.index(after: idx))
         default:
-            return .Null
+            return .null
         }
 
     }
 
     public subscript (position: Index) -> (String, JSON) {
         switch position {
-        case .Array(let idx):
+        case .array(let idx):
             return (String(idx), JSON(self.rawArray[idx]))
-        case .Dictionary(let idx):
+        case .dictionary(let idx):
             return dictionaryValue[idx]
         default:
             return ("", JSON.null)

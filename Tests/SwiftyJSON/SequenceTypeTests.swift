@@ -27,18 +27,27 @@ import SwiftyJSON
 class SequenceTypeTests: XCTestCase {
 
     func testJSONFile() {
-        if let file = NSBundle(forClass:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = NSBundle.pathForResource("Tests", ofType: "json", inDirectory: "Tests/SwiftyJSON") {
             let testData = NSData(contentsOfFile: file)
             let json = JSON(data:testData!)
+            var ind = 0
             for (index, sub) in json {
-                switch (index as NSString).integerValue {
+                switch (ind)  {
                 case 0:
-                    XCTAssertTrue(sub["id_str"] == "240558470661799936")
+                    let case0 = sub["id_str"].rawString()!
+                    print("Case 0 \(case0)")
+                    XCTAssertEqual(case0, "240558470661799936")
+                    ind += 1
                 case 1:
-                    XCTAssertTrue(sub["id_str"] == "240556426106372096")
+                    let case1 = sub["id_str"].rawString()!
+                    XCTAssertEqual(case1, "240556426106372096")
+                    ind += 1
                 case 2:
-                    XCTAssertTrue(sub["id_str"] == "240539141056638977")
-                default:0
+                    let case2 = sub["id_str"].rawString()!
+                    XCTAssertEqual(case2, "240539141056638977")
+                default:
+                    XCTFail("testJSONFile failed, index not found")
+                    break
                 }
             }
         } else {
@@ -54,7 +63,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [NSNumber]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            var ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.number!)
             index += 1
         }
@@ -70,7 +80,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [Bool]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            var ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.bool!)
             index += 1
         }
@@ -86,7 +97,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [String]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            var ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.string!)
             index += 1
         }
@@ -102,7 +114,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [AnyObject]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            var ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.object)
             index += 1
         }
@@ -119,7 +132,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [AnyObject]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            var ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.object)
             index += 1
         }
@@ -201,7 +215,7 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testDictionaryAllArray() {
-        var json:JSON = JSON (["Number":[NSNumber(integer:1),NSNumber(double:2.123456),NSNumber(int:123456789)], "String":["aa","bbb","cccc"], "Mix":[true, "766", NSNull(), 655231.9823]])
+        var json:JSON = JSON (["Number":[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], "String":["aa","bbb","cccc"], "Mix":[true, "766", NSNull(), 655231.9823]])
 
         XCTAssertEqual(json.count, 3)
         

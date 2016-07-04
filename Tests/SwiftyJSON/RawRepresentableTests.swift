@@ -54,18 +54,18 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(objectTrue as? Int, 1)
         XCTAssertEqual(objectTrue as? Double, 1.0)
         XCTAssertEqual(objectTrue as? Bool, true)
-        XCTAssertEqual(objectTrue as? NSNumber, NSNumber(bool: true))
+        XCTAssertEqual(objectTrue as? NSNumber, NSNumber(value: true))
         
         let objectFalse: AnyObject = jsonFalse.rawValue
         XCTAssertEqual(objectFalse as? Int, 0)
         XCTAssertEqual(objectFalse as? Double, 0.0)
         XCTAssertEqual(objectFalse as? Bool, false)
-        XCTAssertEqual(objectFalse as? NSNumber, NSNumber(bool: false))
+        XCTAssertEqual(objectFalse as? NSNumber, NSNumber(value: false))
     }
     
     func testString() {
         let string = "The better way to deal with JSON data in Swift."
-        if let json:JSON = JSON(rawValue: string) {
+        if let json:JSON = JSON(rawValue: string as AnyObject) {
             XCTAssertEqual(json.string!, string)
             XCTAssertEqual(json.stringValue, string)
             XCTAssertTrue(json.array == nil)
@@ -78,7 +78,7 @@ class RawRepresentableTests: XCTestCase {
             XCTFail("Should not run into here")
         }
         
-        let object: AnyObject = JSON(rawValue: string)!.rawValue
+        let object: AnyObject = JSON(rawValue: string as AnyObject)!.rawValue
         XCTAssertEqual(object as? String, string)
     }
     

@@ -30,8 +30,7 @@ class BaseTests: XCTestCase {
     override func setUp() {
         
         super.setUp()
-        
-        if let file = NSBundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = NSBundle.pathForResource("Tests", ofType: "json", inDirectory: "Tests/SwiftyJSON") {
             self.testData = NSData(contentsOfFile: file)
         } else {
             XCTFail("Can't find the test JSON file")

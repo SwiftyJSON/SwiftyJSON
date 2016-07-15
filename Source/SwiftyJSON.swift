@@ -75,9 +75,9 @@ public struct JSON {
         }
     }
 #else
-    public init(data:NSData, options opt: NSJSONReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    public init(data:NSData, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
         do {
-            let object: AnyObject = try NSJSONSerialization.jsonObject(with: data, options: opt)
+            let object: AnyObject = try JSONSerialization.jsonObject(with: data as Data, options: opt)
             self.init(object)
         } catch let aError as NSError {
             if error != nil {
@@ -87,6 +87,7 @@ public struct JSON {
         }
     }
 #endif
+
     /**
      Create a JSON from JSON string
     - parameter string: Normal json string like '{"a":"b"}'
@@ -94,7 +95,11 @@ public struct JSON {
     - returns: The created JSON
     */
     public static func parse(string:String) -> JSON {
-        return string.data(using: NSUTF8StringEncoding).flatMap({JSON(data: $0)}) ?? JSON(NSNull())     
+        #if os(Linux)
+            return string.data(using: NSUTF8StringEncoding).flatMap({JSON(data: $0)}) ?? JSON(NSNull())
+        #else
+            return string.data(using: String.Encoding.utf8).flatMap({JSON(data: $0)}) ?? JSON(NSNull())
+        #endif
     }
 
 #if os(Linux)
@@ -916,20 +921,24 @@ extension JSON: Swift.RawRepresentable {
         return self.object
     }
 #endif
-    public func rawData(options opt: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0)) throws -> NSData {
+
 #if os(Linux)
+    public func rawData(options opt: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0)) throws -> NSData {
         guard LclJSONSerialization.isValidJSONObject(self.object) else {
             throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "JSON is invalid"])
         }
+    
         return try LclJSONSerialization.dataWithJSONObject(self.object, options: opt)
+    }
 #else
-        guard NSJSONSerialization.isValidJSONObject(self.object) else {
+    public func rawData(options opt: JSONSerialization.WritingOptions = JSONSerialization.WritingOptions(rawValue: 0)) throws -> NSData {
+        guard JSONSerialization.isValidJSONObject(self.object) else {
             throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey as NSObject: "JSON is invalid"])
         }
-
-        return try NSJSONSerialization.data(withJSONObject: self.object, options: opt)
-#endif
+        
+        return try JSONSerialization.data(withJSONObject: self.object, options: opt)
     }
+#endif
 
 #if os(Linux)
     public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .prettyPrinted) -> String? {
@@ -954,12 +963,12 @@ extension JSON: Swift.RawRepresentable {
         }
     }
 #else
-    public func rawString(encoding: UInt = NSUTF8StringEncoding, options opt: NSJSONWritingOptions = .prettyPrinted) -> String? {
+    public func rawString(encoding: UInt = String.Encoding.utf8.rawValue, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
         switch self.type {
         case .Array, .Dictionary:
             do {
                 let data = try self.rawData(options: opt)
-                return NSString(data: data, encoding: encoding) as? String
+                return NSString(data: data as Data, encoding: encoding) as? String
             } catch _ {
                 return nil
             }
@@ -1332,7 +1341,7 @@ extension JSON {
                     return nil
                 }
 #else 
-                guard let encodedString_ = self.rawString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed()) else {
+                guard let encodedString_ = self.rawString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
                     return nil
                 }
 #endif
@@ -1753,8 +1762,8 @@ extension NSNumber {
             }
 #else
             let objCType = String(self.objCType)
-            if (self.compare(trueNumber) == NSComparisonResult.orderedSame && objCType == trueObjCType)
-                || (self.compare(falseNumber) == NSComparisonResult.orderedSame && objCType == falseObjCType){
+            if (self.compare(trueNumber) == ComparisonResult.orderedSame && objCType == trueObjCType)
+                || (self.compare(falseNumber) == ComparisonResult.orderedSame && objCType == falseObjCType){
                     return true
             } else {
                 return false
@@ -1771,7 +1780,11 @@ func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-        return lhs.compare(rhs) == NSComparisonResult.orderedSame
+        #if os(Linux)
+            return lhs.compare(rhs) == NSComparisonResult.orderedSame
+        #else
+            return lhs.compare(rhs) == ComparisonResult.orderedSame
+        #endif
     }
 }
 
@@ -1787,7 +1800,11 @@ func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-        return lhs.compare(rhs) == NSComparisonResult.orderedAscending
+        #if os(Linux)
+            return lhs.compare(rhs) == NSComparisonResult.orderedAscending
+        #else
+            return lhs.compare(rhs) == ComparisonResult.orderedAscending
+        #endif
     }
 }
 
@@ -1799,7 +1816,11 @@ func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-        return lhs.compare(rhs) == NSComparisonResult.orderedDescending
+        #if os(Linux)
+            return lhs.compare(rhs) == NSComparisonResult.orderedDescending
+        #else
+            return lhs.compare(rhs) == ComparisonResult.orderedDescending
+        #endif
     }
 }
 
@@ -1811,7 +1832,11 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-        return lhs.compare(rhs) != NSComparisonResult.orderedDescending
+        #if os(Linux)
+            return lhs.compare(rhs) == NSComparisonResult.orderedDescending
+        #else
+            return lhs.compare(rhs) == ComparisonResult.orderedDescending
+        #endif
     }
 }
 
@@ -1823,6 +1848,10 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     case (true, false):
         return false
     default:
-        return lhs.compare(rhs) != NSComparisonResult.orderedAscending
+        #if os(Linux)
+            return lhs.compare(rhs) == NSComparisonResult.orderedAscending
+        #else
+            return lhs.compare(rhs) == ComparisonResult.orderedAscending
+        #endif
     }
 }

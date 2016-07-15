@@ -736,8 +736,8 @@ extension JSON {
             switch self.type {
             case .string:
                 let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber() {  // indicates parse error
-                    return NSDecimalNumber.zero()
+                if decimal == NSDecimalNumber.notA {  // indicates parse error
+                    return NSDecimalNumber.zero
                 }
                 return decimal
             case .number, .bool:

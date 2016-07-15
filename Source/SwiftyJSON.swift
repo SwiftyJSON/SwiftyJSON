@@ -873,11 +873,9 @@ extension JSON {
         get {
             switch self.type {
             case .String:
-                let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber() {  // indicates parse error
-                    return NSDecimalNumber.zero()
-                }
-                return decimal
+                guard let string = self.object as? String else { return NSNumber(int: 0) }
+                let number = NSNumberFormatter().numberFromString(string) ?? NSNumber(int: 0)
+                return number
             case .Number, .Bool:
                 return self.object as? NSNumber ?? NSNumber(int: 0)
             default:

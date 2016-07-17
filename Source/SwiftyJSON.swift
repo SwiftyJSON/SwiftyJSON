@@ -1833,9 +1833,9 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
         return false
     default:
         #if os(Linux)
-            return lhs.compare(rhs) == NSComparisonResult.orderedDescending
+            return lhs.compare(rhs) != NSComparisonResult.orderedDescending
         #else
-            return lhs.compare(rhs) == ComparisonResult.orderedDescending
+            return lhs.compare(rhs) != ComparisonResult.orderedDescending
         #endif
     }
 }
@@ -1849,9 +1849,9 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
         return false
     default:
         #if os(Linux)
-            return lhs.compare(rhs) == NSComparisonResult.orderedAscending
+            return lhs.compare(rhs) != NSComparisonResult.orderedAscending
         #else
-            return lhs.compare(rhs) == ComparisonResult.orderedAscending
+            return lhs.compare(rhs) != ComparisonResult.orderedAscending
         #endif
     }
 }

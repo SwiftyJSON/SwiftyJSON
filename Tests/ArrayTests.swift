@@ -27,7 +27,7 @@ class ArrayTests: XCTestCase {
 
     func testSingleDimensionalArraysGetter() {
         let array = ["1","2", "a", "B", "D"]
-        let json = JSON(array)
+        let json = JSON(array as AnyObject)
         XCTAssertEqual((json.array![0] as JSON).string!, "1")
         XCTAssertEqual((json.array![1] as JSON).string!, "2")
         XCTAssertEqual((json.array![2] as JSON).string!, "a")
@@ -37,7 +37,7 @@ class ArrayTests: XCTestCase {
     
     func testSingleDimensionalArraysSetter() {
         let array = ["1","2", "a", "B", "D"]
-        var json = JSON(array)
+        var json = JSON(array as AnyObject)
         json.arrayObject = ["111", "222"]
         XCTAssertEqual((json.array![0] as JSON).string!, "111")
         XCTAssertEqual((json.array![1] as JSON).string!, "222")

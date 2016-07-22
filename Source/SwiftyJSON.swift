@@ -768,8 +768,8 @@ extension JSON {
             self.object = NSNull()
         }
     }
-    public func exists() -> Bool{
-        if let errorValue = error where errorValue.code == ErrorNotExist{
+    public func exists() -> Bool {
+        if let errorValue = error, errorValue.code == ErrorNotExist {
             return false
         }
         return true

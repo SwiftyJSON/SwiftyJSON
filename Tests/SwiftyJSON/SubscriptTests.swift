@@ -21,9 +21,34 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class SubscriptTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (SubscriptTests) -> () throws -> Void)] {
+        return [
+            ("testArrayAllNumber", testArrayAllNumber),
+            ("testArrayAllBool", testArrayAllBool),
+            ("testArrayAllString", testArrayAllString),
+            ("testArrayWithNull", testArrayWithNull),
+            ("testArrayAllDictionary", testArrayAllDictionary),
+            ("testDictionaryAllNumber", testDictionaryAllNumber),
+            ("testDictionaryAllBool", testDictionaryAllBool),
+            ("testDictionaryAllString", testDictionaryAllString),
+            ("testDictionaryWithNull", testDictionaryWithNull),
+            ("testDictionaryAllArray", testDictionaryAllArray),
+            ("testOutOfBounds", testOutOfBounds),
+            ("testErrorWrongType", testErrorWrongType),
+            ("testErrorNotExist", testErrorNotExist),
+            ("testMultilevelGetter", testMultilevelGetter),
+            ("testMultilevelSetter1", testMultilevelSetter1),
+            ("testMultilevelSetter2", testMultilevelSetter2),
+        ]
+    }
+// END OF GENERATED CODE
 
     func testArrayAllNumber() {
         var json:JSON = [1,2.0,3.3,123456789,987654321.123456789]
@@ -63,7 +88,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testArrayAllString() {
-        var json:JSON = JSON(rawValue: ["aoo","bpp","zoo"] as NSArray)!
+        var json:JSON = JSON(rawValue: ["aoo","bpp","zoo"])!
         XCTAssertTrue(json == ["aoo","bpp","zoo"])
         XCTAssertTrue(json[0] == "aoo")
         XCTAssertTrue(json[1] == "bpp")
@@ -76,7 +101,11 @@ class SubscriptTests: XCTestCase {
     }
     
     func testArrayWithNull() {
-        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as NSArray)!
+        #if os(Linux)
+            var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [JSON.AnyType?])!
+        #else
+            var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"])!
+        #endif
         XCTAssertTrue(json[0] == "aoo")
         XCTAssertTrue(json[1] == "bpp")
         XCTAssertNil(json[2].string)
@@ -135,7 +164,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testDictionaryAllString() {
-        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","z":"zoo"] as NSDictionary)!
+        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","z":"zoo"])!
         XCTAssertTrue(json["a"] == "aoo")
         XCTAssertEqual(json["bb"], JSON("bpp"))
         XCTAssertTrue(json["z"] == "zoo")
@@ -147,7 +176,11 @@ class SubscriptTests: XCTestCase {
     }
     
     func testDictionaryWithNull() {
-        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as NSDictionary)!
+        #if os(Linux)
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:JSON.AnyType?])!
+        #else
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"])!
+        #endif
         XCTAssertTrue(json["a"] == "aoo")
         XCTAssertEqual(json["bb"], JSON("bpp"))
         XCTAssertEqual(json["null"], JSON(NSNull()))
@@ -161,7 +194,7 @@ class SubscriptTests: XCTestCase {
     
     func testDictionaryAllArray() {
         //Swift bug: [1, 2.01,3.09] is convert to [1, 2, 3] (Array<Int>)
-        let json:JSON = JSON ([[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json:JSON = JSON ([[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]])
         XCTAssertTrue(json[0] == [1,2.123456,123456789])
         XCTAssertEqual(json[0][1].double!, 2.123456)
         XCTAssertTrue(json[0][2] == 123456789)
@@ -178,7 +211,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testOutOfBounds() {
-        let json:JSON = JSON ([[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json:JSON = JSON ([[NSNumber(value:1),NSNumber(value:2.123456),NSNumber(value:123456789)], ["aa","bbb","cccc"], [true, "766", NSNull(), 655231.9823]])
         XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[-2].error!.code, ErrorIndexOutOfBounds)
         XCTAssertEqual(json[6].error!.code, ErrorIndexOutOfBounds)
@@ -240,7 +273,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testMultilevelSetter2() {
-        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]]]
+        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]] as [String:JSON.AnyType]]
         json["user","info","name"] = "jim"
         XCTAssertEqual(json["user","id"], 987654)
         XCTAssertEqual(json["user","info","name"], "jim")

@@ -22,27 +22,50 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class SequenceTypeTests: XCTestCase {
 
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (SequenceTypeTests) -> () throws -> Void)] {
+        return [
+            ("testJSONFile", testJSONFile),
+            ("testArrayAllNumber", testArrayAllNumber),
+            ("testArrayAllBool", testArrayAllBool),
+            ("testArrayAllString", testArrayAllString),
+            ("testArrayWithNull", testArrayWithNull),
+            ("testArrayAllDictionary", testArrayAllDictionary),
+            ("testDictionaryAllNumber", testDictionaryAllNumber),
+            ("testDictionaryAllBool", testDictionaryAllBool),
+            ("testDictionaryAllString", testDictionaryAllString),
+            ("testDictionaryWithNull", testDictionaryWithNull),
+            ("testDictionaryAllArray", testDictionaryAllArray),
+        ]
+    }
+// END OF GENERATED CODE
     func testJSONFile() {
-        if let file = NSBundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
-            let testData = NSData(contentsOfFile: file)
-            let json = JSON(data:testData!)
-            for (index, sub) in json {
-                switch (index as NSString).integerValue {
-                case 0:
-                    XCTAssertTrue(sub["id_str"] == "240558470661799936")
-                case 1:
-                    XCTAssertTrue(sub["id_str"] == "240556426106372096")
-                case 2:
-                    XCTAssertTrue(sub["id_str"] == "240539141056638977")
-                default:0
-                }
+        let testData = NSData(contentsOfFile: "Tests/SwiftyJSON/Tests.json")
+        let json = JSON(data:testData!)
+        var ind = 0
+        for (_, sub) in json {
+            switch (ind)  {
+            case 0:
+                let case0 = sub["id_str"].rawString()!
+                XCTAssertEqual(case0, "240558470661799936")
+                ind += 1
+            case 1:
+                let case1 = sub["id_str"].rawString()!
+                XCTAssertEqual(case1, "240556426106372096")
+                ind += 1
+            case 2:
+                let case2 = sub["id_str"].rawString()!
+                XCTAssertEqual(case2, "240539141056638977")
+            default:
+                XCTFail("testJSONFile failed, index not found")
+                break
             }
-        } else {
-            XCTFail("Can't find the test JSON file")
         }
     }
     
@@ -54,7 +77,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [NSNumber]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            let ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.number!)
             index += 1
         }
@@ -70,7 +94,8 @@ class SequenceTypeTests: XCTestCase {
         var array = [Bool]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            let ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.bool!)
             index += 1
         }
@@ -79,14 +104,15 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testArrayAllString() {
-        var json:JSON = JSON(rawValue: ["aoo","bpp","zoo"] as NSArray)!
+        var json:JSON = JSON(rawValue: ["aoo","bpp","zoo"])!
         XCTAssertEqual(json.count, 3)
         
         var index = 0
         var array = [String]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            let ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.string!)
             index += 1
         }
@@ -95,14 +121,21 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testArrayWithNull() {
-        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as NSArray)!
+        #if os(Linux)
+        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [JSON.AnyType?])!
+        #else
+        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"])!
+        #endif
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var array = [AnyObject]()
+
+        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        var array = [AnyType]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            let ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.object)
             index += 1
         }
@@ -116,19 +149,25 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var array = [AnyObject]()
+
+        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        var array = [AnyType]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
-            XCTAssertEqual(i, "\(index)")
+            let ind: Int? = index
+            XCTAssertEqual(i, "\(ind)")
             array.append(sub.object)
             index += 1
         }
         XCTAssertEqual(index, 3)
+        #if !os(Linux)
+        // Such conversions are not supported on Linux
         XCTAssertEqual((array[0] as! [String : Int])["1"]!, 1)
         XCTAssertEqual((array[0] as! [String : Int])["2"]!, 2)
         XCTAssertEqual((array[1] as! [String : String])["a"]!, "A")
         XCTAssertEqual((array[1] as! [String : String])["b"]!, "B")
         XCTAssertEqual((array[2] as! [String : NSNull])["null"]!, NSNull())
+        #endif
     }
     
     func testDictionaryAllNumber() {
@@ -166,7 +205,7 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testDictionaryAllString() {
-        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","z":"zoo"] as NSDictionary)!
+        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","z":"zoo"])!
         XCTAssertEqual(json.count, 3)
         
         var index = 0
@@ -183,11 +222,17 @@ class SequenceTypeTests: XCTestCase {
     }
     
     func testDictionaryWithNull() {
-        var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as NSDictionary)!
+        #if os(Linux)
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:JSON.AnyType?])!
+        #else
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"])!
+        #endif
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+
+        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        var dictionary = [String: AnyType]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
@@ -206,7 +251,9 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+
+        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        var dictionary = [String: AnyType]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
@@ -214,6 +261,8 @@ class SequenceTypeTests: XCTestCase {
         }
         
         XCTAssertEqual(index, 3)
+        #if !os(Linux)
+        // Such conversions are not supported on Linux
         XCTAssertEqual((dictionary["Number"] as! NSArray)[0] as? Int, 1)
         XCTAssertEqual((dictionary["Number"] as! NSArray)[1] as? Double, 2.123456)
         XCTAssertEqual((dictionary["String"] as! NSArray)[0] as? String, "aa")
@@ -221,5 +270,6 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[1] as? String, "766")
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[2] as? NSNull, NSNull())
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[3] as? Double, 655231.9823)
+        #endif
     }
 }

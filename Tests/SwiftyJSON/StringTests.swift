@@ -21,9 +21,21 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class StringTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (StringTests) -> () throws -> Void)] {
+        return [
+            ("testString", testString),
+            ("testURL", testURL),
+            ("testURLPercentEscapes", testURLPercentEscapes),
+        ]
+    }
+// END OF GENERATED CODE
 
     func testString() {
         //getter
@@ -44,8 +56,13 @@ class StringTests: XCTestCase {
     func testURLPercentEscapes() {
         let emDash = "\\u2014"
         let urlString = "http://examble.com/unencoded" + emDash + "string"
-        let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed())
-        let json = JSON(urlString as AnyObject)
+        
+        #if os(Linux)
+            let encodedURLString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        #else
+            let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed())
+        #endif
+        let json = JSON(urlString as JSON.AnyType)
         XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
     }
 }

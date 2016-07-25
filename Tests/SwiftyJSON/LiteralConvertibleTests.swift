@@ -21,9 +21,24 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class LiteralConvertibleTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (LiteralConvertibleTests) -> () throws -> Void)] {
+        return [
+            ("testNumber", testNumber),
+            ("testBool", testBool),
+            ("testString", testString),
+            ("testNil", testNil),
+            ("testArray", testArray),
+            ("testDictionary", testDictionary),
+        ]
+    }
+// END OF GENERATED CODE
 
     func testNumber() {
         var json:JSON = 1234567890.876623
@@ -53,7 +68,7 @@ class LiteralConvertibleTests: XCTestCase {
     func testNil() {
         let jsonNil_1:JSON = nil
         XCTAssert(jsonNil_1 == nil)
-        let jsonNil_2:JSON = JSON(NSNull)
+        let jsonNil_2:JSON = JSON(NSNull.self)
         XCTAssert(jsonNil_2 != nil)
         let jsonNil_3:JSON = JSON([1:2])
         XCTAssert(jsonNil_3 != nil)

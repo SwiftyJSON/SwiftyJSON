@@ -21,13 +21,35 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class PrintableTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (PrintableTests) -> () throws -> Void)] {
+        return [
+            ("testNumber", testNumber),
+            ("testBool", testBool),
+            ("testString", testString),
+            ("testNil", testNil),
+            ("testArray", testArray),
+            ("testDictionary", testDictionary),
+        ]
+    }
+// END OF GENERATED CODE
     func testNumber() {
         let json:JSON = 1234567890.876623
-        XCTAssertEqual(json.description, "1234567890.876623")
-        XCTAssertEqual(json.debugDescription, "1234567890.876623")
+        // Number of fraction digits differs on OSX and Linux,
+        // issue https://github.com/IBM-Swift/SwiftRuntime/issues/183
+        #if os(Linux)
+            XCTAssertEqual(json.description, "1234567890.87662")
+            XCTAssertEqual(json.debugDescription, "1234567890.87662")
+        #else
+            XCTAssertEqual(json.description, "1234567890.876623")
+            XCTAssertEqual(json.debugDescription, "1234567890.876623")
+        #endif
     }
     
     func testBool() {
@@ -59,17 +81,29 @@ class PrintableTests: XCTestCase {
         var description = json.description.replacingOccurrences(of: "\n", with: "")
         description = description.replacingOccurrences(of: " ", with: "")
         XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
-        XCTAssertTrue(json.description.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
-        XCTAssertTrue(json.debugDescription.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
+        #if os(Linux)
+            XCTAssertTrue(json.description.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
+            XCTAssertTrue(json.debugDescription.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
+        #else
+            XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
+            XCTAssertTrue(json.debugDescription.lengthOfBytes(using: String.Encoding.utf8) > 0)
+        #endif
     }
     
     func testDictionary() {
         let json:JSON = ["1":2,"2":"two", "3":3]
         var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
         debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")
-        XCTAssertTrue(json.description.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
-        XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.range(of:"\"3\":3", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
+        #if os(Linux)
+            XCTAssertTrue(json.description.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
+            XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
+            XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
+            XCTAssertTrue(debugDescription.range(of:"\"3\":3", options: NSStringCompareOptions.caseInsensitiveSearch) != nil)
+        #else
+            XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
+            XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: .caseInsensitive) != nil)
+            XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: .caseInsensitive) != nil)
+            XCTAssertTrue(debugDescription.range(of:"\"3\":3", options: .caseInsensitive) != nil)
+        #endif
     }
 }

@@ -21,27 +21,45 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
+
+#if os(Linux)
+// autoreleasepool is Objective-C feature
+//TODO check what is its equivalent in Swift on Linux
+func autoreleasepool(callback:() -> ()) {
+     callback()
+}
+#endif
 
 class PerformanceTests: XCTestCase {
 
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (PerformanceTests) -> () throws -> Void)] {
+        return [
+            ("testInitPerformance", testInitPerformance),
+            ("testObjectMethodPerformance", testObjectMethodPerformance),
+            ("testArrayMethodPerformance", testArrayMethodPerformance),
+            ("testDictionaryMethodPerformance", testDictionaryMethodPerformance),
+            ("testRawStringMethodPerformance", testRawStringMethodPerformance),
+        ]
+    }
+// END OF GENERATED CODE
+
     var testData: NSData!
-    
+
     override func setUp() {
         super.setUp()
-        
-        if let file = NSBundle(for:PerformanceTests.self).pathForResource("Tests", ofType: "json") {
-            self.testData = NSData(contentsOfFile: file)
-        } else {
-            XCTFail("Can't find the test JSON file")
-        }
+
+        self.testData = NSData(contentsOfFile: "Tests/SwiftyJSON/Tests.json")
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testInitPerformance() {
         self.measure() {
             for _ in 1...100 {
@@ -50,12 +68,12 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
-    
+
     func testObjectMethodPerformance() {
-        var json = JSON(data:self.testData)
+        let json = JSON(data:self.testData)
         self.measure() {
             for _ in 1...100 {
-                let object:AnyObject? = json.object
+                let object: JSON.AnyType? = json.object
                 XCTAssertTrue(object != nil)
             }
         }
@@ -72,7 +90,7 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
-    
+
     func testDictionaryMethodPerformance() {
         let json = JSON(data:testData)[0]
         self.measure() {
@@ -84,7 +102,7 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
-    
+
     func testRawStringMethodPerformance() {
         let json = JSON(data:testData)
         self.measure() {

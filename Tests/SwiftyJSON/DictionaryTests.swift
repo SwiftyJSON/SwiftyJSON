@@ -21,13 +21,25 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+
+@testable import SwiftyJSON
 
 class DictionaryTests: XCTestCase {
 
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (DictionaryTests) -> () throws -> Void)] {
+        return [
+            ("testGetter", testGetter),
+            ("testSetter", testSetter),
+        ]
+    }
+// END OF GENERATED CODE
+
     func testGetter() {
-        let dictionary = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object":["sub_number":877.2323, "sub_name":"sub_name"], "bool":true]
-        let json = JSON(dictionary as AnyObject)
+        let subDictionary: [String: JSON.AnyType] = ["sub_number":877.2323, "sub_name":"sub_name"]
+        let dictionary: [String: JSON.AnyType] = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object": subDictionary, "bool":true]
+        let json = JSON(dictionary as JSON.AnyType)
+
         //dictionary
         XCTAssertEqual((json.dictionary!["number"]! as JSON).double!, 9823.212)
         XCTAssertEqual((json.dictionary!["name"]! as JSON).string!, "NAME")
@@ -48,8 +60,24 @@ class DictionaryTests: XCTestCase {
     
     func testSetter() {
         var json:JSON = ["test":"case"]
-        XCTAssertEqual(json.dictionaryObject! as! [String : String], ["test":"case"])
+        XCTAssertEqual(convert(json.dictionaryObject), ["test":"case"])
         json.dictionaryObject = ["name":"NAME"]
-        XCTAssertEqual(json.dictionaryObject! as! [String : String], ["name":"NAME"])
+        XCTAssertEqual(convert(json.dictionaryObject), ["name":"NAME"])
+    }
+
+    private func convert(_ dictionary: [String: JSON.AnyType]?) -> [String: String] {
+        var dictionaryToReturn = [String: String]()
+
+        guard let dictionary = dictionary else {
+            return dictionaryToReturn
+        }
+
+        for (key, value) in dictionary {
+            if let stringValue = value as? String {
+                dictionaryToReturn[key] = stringValue
+            }
+        }
+
+        return dictionaryToReturn
     }
 }

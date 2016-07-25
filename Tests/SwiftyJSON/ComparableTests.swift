@@ -21,9 +21,39 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
 
 class ComparableTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (ComparableTests) -> () throws -> Void)] {
+        return [
+            ("testNumberEqual", testNumberEqual),
+            ("testNumberNotEqual", testNumberNotEqual),
+            ("testNumberGreaterThanOrEqual", testNumberGreaterThanOrEqual),
+            ("testNumberLessThanOrEqual", testNumberLessThanOrEqual),
+            ("testNumberGreaterThan", testNumberGreaterThan),
+            ("testNumberLessThan", testNumberLessThan),
+            ("testBoolEqual", testBoolEqual),
+            ("testBoolNotEqual", testBoolNotEqual),
+            ("testBoolGreaterThanOrEqual", testBoolGreaterThanOrEqual),
+            ("testBoolLessThanOrEqual", testBoolLessThanOrEqual),
+            ("testBoolGreaterThan", testBoolGreaterThan),
+            ("testBoolLessThan", testBoolLessThan),
+            ("testStringEqual", testStringEqual),
+            ("testStringNotEqual", testStringNotEqual),
+            ("testStringGreaterThanOrEqual", testStringGreaterThanOrEqual),
+            ("testStringLessThanOrEqual", testStringLessThanOrEqual),
+            ("testStringGreaterThan", testStringGreaterThan),
+            ("testStringLessThan", testStringLessThan),
+            ("testNil", testNil),
+            ("testArray", testArray),
+            ("testDictionary", testDictionary),
+        ]
+    }
+// END OF GENERATED CODE
 
     func testNumberEqual() {
         let jsonL1:JSON = 1234567890.876623
@@ -323,8 +353,10 @@ class ComparableTests: XCTestCase {
     }
     
     func testDictionary() {
-        let jsonL1:JSON = ["2": 2, "name": "Jack", "List": ["a", 1.09, NSNull()]]
-        let jsonR1:JSON = JSON(["2": 2, "name": "Jack", "List": ["a", 1.09, NSNull()]])
+        let list: [JSON.AnyType] = ["a", 1.09, NSNull()]
+
+        let jsonL1:JSON = ["2": 2, "name": "Jack", "List": list]
+        let jsonR1:JSON = JSON(["2": 2, "name": "Jack", "List": list] as [String: JSON.AnyType])
         
         XCTAssertEqual(jsonL1, jsonR1)
         XCTAssertTrue(jsonL1 != ["1":2,"Hello":"World","Koo":"Foo"])

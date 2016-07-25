@@ -21,20 +21,54 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+import Foundation
+
+@testable import SwiftyJSON
+
 class NumberTests: XCTestCase {
+
+// GENERATED: allTests required for Swift 3.0
+    static var allTests : [(String, (NumberTests) -> () throws -> Void)] {
+        return [
+            ("testNumber", testNumber),
+            ("testBool", testBool),
+            ("testDouble", testDouble),
+            ("testFloat", testFloat),
+            ("testInt", testInt),
+            ("testUInt", testUInt),
+            ("testInt8", testInt8),
+            ("testUInt8", testUInt8),
+            ("testInt16", testInt16),
+            ("testUInt16", testUInt16),
+            ("testInt32", testInt32),
+            ("testUInt32", testUInt32),
+            ("testInt64", testInt64),
+            ("testUInt64", testUInt64),
+        ]
+    }
+// END OF GENERATED CODE
 
     func testNumber() {
         //getter
         var json = JSON(NSNumber(value: 9876543210.123456789))
         XCTAssertEqual(json.number!, 9876543210.123456789)
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
-        XCTAssertEqual(json.stringValue, "9876543210.123457")
+        // Number of fraction digits differs on OSX and Linux, 
+        // issue https://github.com/IBM-Swift/SwiftRuntime/issues/183
+        #if os(Linux)
+            XCTAssertEqual(json.stringValue, "9876543210.12346")
+        #else
+            XCTAssertEqual(json.stringValue, "9876543210.123457")
+        #endif
         
         json.string = "1000000000000000000000000000.1"
         XCTAssertNil(json.number)
+        #if !os(Linux)
+            // blocked by defect https://bugs.swift.org/browse/SR-1464?jql=text%20~%20%22NSNumber%22
+            //TODO: remove ifdef once the defect is resolved
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
-
+        #endif
+        
         json.string = "1e+27"
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000")
         
@@ -80,7 +114,13 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.double!, 9876543210.123456789)
         XCTAssertEqual(json.doubleValue, 9876543210.123456789)
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
-        XCTAssertEqual(json.stringValue, "9876543210.123457")
+        // Number of fraction digits differs on OSX and Linux,
+        // issue https://github.com/IBM-Swift/SwiftRuntime/issues/183
+        #if os(Linux)
+            XCTAssertEqual(json.stringValue, "9876543210.12346")
+        #else
+            XCTAssertEqual(json.stringValue, "9876543210.123457")
+        #endif
         
         json.double = 2.8765432
         XCTAssertEqual(json.double!, 2.8765432)
@@ -102,19 +142,18 @@ class NumberTests: XCTestCase {
         var json = JSON(54321.12345)
         XCTAssertTrue(json.float! == 54321.12345)
         XCTAssertTrue(json.floatValue == 54321.12345)
-        print(json.numberValue.doubleValue)
         XCTAssertEqual(json.numberValue, 54321.12345)
         XCTAssertEqual(json.stringValue, "54321.12345")
         
         json.float = 23231.65
         XCTAssertTrue(json.float! == 23231.65)
         XCTAssertTrue(json.floatValue == 23231.65)
-        XCTAssertEqual(json.numberValue, NSNumber(value:23231.65))
+        XCTAssertEqualWithAccuracy(Double(json.numberValue), 23231.65, accuracy: 0.001)
         
         json.floatValue = -98766.23
         XCTAssertEqual(json.float!, -98766.23)
         XCTAssertEqual(json.floatValue, -98766.23)
-        XCTAssertEqual(json.numberValue, NSNumber(value:-98766.23))
+        XCTAssertEqualWithAccuracy(Double(json.numberValue), -98766.23, accuracy: 0.05)
     }
     
     func testInt() {
@@ -188,7 +227,6 @@ class NumberTests: XCTestCase {
         json.int8Value = n0.int8Value
         XCTAssertTrue(json.int8! == n0.int8Value)
         XCTAssertTrue(json.int8Value == n0.int8Value)
-        print(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         #if (arch(x86_64) || arch(arm64))
@@ -232,17 +270,26 @@ class NumberTests: XCTestCase {
         json.uInt8Value = nm0.uint8Value
         XCTAssertTrue(json.uInt8! == nm0.uint8Value)
         XCTAssertTrue(json.uInt8Value == nm0.uint8Value)
-        XCTAssertTrue(json.number! == nm0)
+        
+        #if !os(Linux)
+            // Because of https://github.com/IBM-Swift/SwiftRuntime/issues/185
+            // the type is Bool instead of Number
+            XCTAssertTrue(json.number! == nm0)
+            XCTAssertEqual(json.stringValue, "0")
+        #endif
         XCTAssertEqual(json.numberValue, nm0)
-        XCTAssertEqual(json.stringValue, "0")
 
         let nm1 = NSNumber(value: 1)
         json.uInt8 = nm1.uint8Value
         XCTAssertTrue(json.uInt8! == nm1.uint8Value)
         XCTAssertTrue(json.uInt8Value == nm1.uint8Value)
-        XCTAssertTrue(json.number! == nm1)
+        #if !os(Linux)
+            // Because of https://github.com/IBM-Swift/SwiftRuntime/issues/185
+            // the type is Bool instead of Number
+            XCTAssertTrue(json.number! == nm1)
+            XCTAssertEqual(json.stringValue, "1")
+        #endif
         XCTAssertEqual(json.numberValue, nm1)
-        XCTAssertEqual(json.stringValue, "1")
     }
 
     func testInt16() {
@@ -267,7 +314,6 @@ class NumberTests: XCTestCase {
         json.int16Value = n0.int16Value
         XCTAssertTrue(json.int16! == n0.int16Value)
         XCTAssertTrue(json.int16Value == n0.int16Value)
-        print(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")
@@ -353,7 +399,7 @@ class NumberTests: XCTestCase {
     }
 
     func testInt64() {
-        let int64Max = NSNumber(value: INT64_MAX)
+        let int64Max = NSNumber(value: Int64.max)
         var json = JSON(int64Max)
         XCTAssertTrue(json.int64! == int64Max.int64Value)
         XCTAssertTrue(json.int64Value == int64Max.int64Value)
@@ -369,7 +415,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, n32767)
         XCTAssertEqual(json.stringValue, "32767")
         
-        let int64Min = NSNumber(value: (INT64_MAX-1) * -1)
+        let int64Min = NSNumber(value: (Int64.max-1) * -1)
         json.int64Value = int64Min.int64Value
         XCTAssertTrue(json.int64! == int64Min.int64Value)
         XCTAssertTrue(json.int64Value == int64Min.int64Value)
@@ -379,7 +425,7 @@ class NumberTests: XCTestCase {
     }
     
     func testUInt64() {
-        let uInt64Max = NSNumber(value: UINT64_MAX)
+        let uInt64Max = NSNumber(value: UInt64.max)
         var json = JSON(uInt64Max)
         XCTAssertTrue(json.uInt64! == uInt64Max.uint64Value)
         XCTAssertTrue(json.uInt64Value == uInt64Max.uint64Value)

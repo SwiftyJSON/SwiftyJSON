@@ -46,6 +46,7 @@ class SubscriptTests: XCTestCase {
             ("testMultilevelGetter", testMultilevelGetter),
             ("testMultilevelSetter1", testMultilevelSetter1),
             ("testMultilevelSetter2", testMultilevelSetter2),
+            ("testEmptyPath", testEmptyPath),
         ]
     }
 // END OF GENERATED CODE
@@ -294,5 +295,15 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["user","info","name"], "tom")
         XCTAssertEqual(json["user","info","email"], "tom@qq.com")
         XCTAssertEqual(json["user","feeds"], [77323,2313,4545,323])
+    }
+    
+    func testEmptyPath() {
+        var json = JSON(["number": JSON(123), "code": JSON(456)])
+        
+        let emptyArray: [String] = []
+        let emptySubscript = emptyArray.map { $0 as JSONSubscriptType}
+        
+        json[emptySubscript] = JSON(7)
+        XCTAssertEqual(json.number!, 7)
     }
 }

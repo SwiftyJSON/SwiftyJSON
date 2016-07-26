@@ -720,7 +720,7 @@ extension JSON {
         set {
             switch path.count {
             case 0:
-                return
+                self.object = newValue.object
             case 1:
                 self[sub:path[0]].object = newValue.object
             default:

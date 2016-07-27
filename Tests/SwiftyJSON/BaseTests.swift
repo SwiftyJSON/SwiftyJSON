@@ -103,9 +103,9 @@ class BaseTests: XCTestCase {
         _ = tweets_1[1]
         let tweets_1_user_name = tweets_1["user"]["name"]
         let tweets_1_user_name_string = tweets_1["user"]["name"].string
-        XCTAssertNotEqual(tweets.type, Type.Null)
+        XCTAssertNotEqual(tweets.type, Type.null)
         XCTAssert(tweets_array != nil)
-        XCTAssertNotEqual(tweets_1.type, Type.Null)
+        XCTAssertNotEqual(tweets_1.type, Type.null)
         XCTAssertEqual(tweets_1_user_name, JSON("Raffi Krikorian"))
         XCTAssertEqual(tweets_1_user_name_string!, "Raffi Krikorian")
 
@@ -135,7 +135,7 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(id_str!,"240558470661799936")
         XCTAssertFalse(favorited!)
         XCTAssertEqual(id!,240558470661799936)
-        XCTAssertEqual(in_reply_to_user_id_str.type, Type.Null)
+        XCTAssertEqual(in_reply_to_user_id_str.type, Type.null)
 
         let user = json[0]["user"]
         let user_name = user["name"].string

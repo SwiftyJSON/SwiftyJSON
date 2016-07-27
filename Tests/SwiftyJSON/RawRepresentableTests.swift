@@ -98,7 +98,7 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertTrue(json.dictionary == nil)
             XCTAssertTrue(json.null == nil)
             XCTAssertTrue(json.error == nil)
-            XCTAssertTrue(json.type == .String)
+            XCTAssertTrue(json.type == .string)
             XCTAssertEqual(json.object as? String, string)
         } else {
             XCTFail("Should not run into here")

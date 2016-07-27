@@ -1,7 +1,37 @@
-language: objective-c
+# Travis CI build file for Kitura sample app.
+# Kitura runs on OS X and Linux (Ubuntu).
+# See the following URLs for further details on Travis CI
+# https://docs.travis-ci.com/user/customizing-the-build/
+# https://docs.travis-ci.com/user/docker/
+# https://docs.travis-ci.com/user/multi-os/
 
-osx_image: xcode7.1
-xcode_sdk: iphonesimulator9.0
+# whitelist (branches that should be built)
+branches:
+  only:
+    - master
+    - develop
+    - /^issue.*$/
 
-script: 'sh scripts/ci.sh'
+notifications:
+  slack:
+    secure: "a8YICVgxrxDWGRytxE1btfADbQEsSlIoxigk8bwuK0RWfuRQVlWkfB1eRpAmSVbyxeMbVH4D5rY7b7R4mH6erfCB1wEsh5nMrataBzPa5AR3zaqu6cYYUOpZJQfMjGCUBtH0xqcC4YWGmqdxSfpNGV+xyTG9WKTuOirz0elZT9NqlgmXrGjn+BamiuTC8I0KYb3Pmv/WWP012rKzJUb+D0I4OLE0iQgGC5gVfB9RxtB+2ZuhtLcSdDpI9ugkRTNV/q6bfZ+iZLZY5vLh9DtJiOT7I9j3KkrrD3+kJs9z8AsIHUyIEsgwsD6ZkMboEpPPnrXXMsENaj7f+IxugqURslgANqnPgl1cR8YHA865pMY1PUD9oWk5yPtQZ3CLrp4Tr/DNF3NI58QWwQxnGkRQERMxPiECxU6if5PQmX/utgmd36TGZPGb1iLYo3RAIok6EyhYsz8OdYSkbNMvMWcnpw17Zbi84izNJ9KslK7uwheTZ0cPwKeKFm9Tj801CM+9Qa22JxSjdSx45NIrcpdiAihb/cpmiPSsLyDqSyLl6Z8ABFELl70EJTJQ1+V1u9AsY0cMcvM3xe9Ra1oR1ydydzyjnQpxTowcCcKoyiDSukRuRwpQYq8galvLKdvhQmZkpWA/klUFT4X24AVFCtYpFCzVdHUmA7qHOAK2ezWT+OA="
+    
+matrix:
+  include:
+    - os: linux
+      services: docker
+      sudo: required
+    - os: osx
+      osx_image: xcode8
+      sudo: required
 
+before_install:
+  - git submodule init
+  - git submodule update
+  - cd Kitura-Build && git checkout master && cd $TRAVIS_BUILD_DIR
+
+script:
+  - echo ">> Let's build and test the '$TRAVIS_BRANCH' branch for SwiftyJSON."
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./Kitura-Build/run_kitura_ubuntu_container.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR Kitura; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./Kitura-Build/build_kitura_package.sh ; fi
+  - echo ">> Build and tests completed. See above for status."

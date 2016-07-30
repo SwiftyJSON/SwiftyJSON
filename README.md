@@ -152,6 +152,12 @@ if let dataFromString = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allow
 //Getting a double from a JSON Array
 let name = json[0].double
 ```
+
+```swift
+//Getting an array of string from a JSON Array
+let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
+```
+
 ```swift
 //Getting a string from a JSON Dictionary
 let name = json["name"].stringValue

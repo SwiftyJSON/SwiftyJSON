@@ -52,6 +52,13 @@ public enum Type :Int{
     case Unknown
 }
 
+private extension Optional {
+    @warn_unused_result
+    func nsMap(@noescape f: (Wrapped) throws -> NSObject) rethrows -> NSObject {
+        return try map(f) ?? NSNull()
+    }
+}
+
 // MARK: - JSON Base
 
 public struct JSON {
@@ -598,7 +605,7 @@ extension JSON: Swift.DictionaryLiteralConvertible {
             var d = dictionary
             d[element.0] = element.1
             return d
-            })
+        })
     }
 }
 
@@ -767,7 +774,7 @@ extension JSON: Swift.BooleanType {
             }
         }
         set {
-            self.object = newValue.map { NSNumber(bool: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(bool: $0) }
         }
     }
 
@@ -802,7 +809,7 @@ extension JSON {
             }
         }
         set {
-          self.object = newValue.map { NSString(string: $0) } ?? NSNull()
+          self.object = newValue.nsMap { NSString(string: $0) }
         }
     }
 
@@ -919,7 +926,7 @@ extension JSON {
             return self.number?.doubleValue
         }
         set {
-            self.object = newValue.map { NSNumber(double: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(double: $0) }
         }
     }
 
@@ -937,7 +944,7 @@ extension JSON {
             return self.number?.floatValue
         }
         set {
-            self.object = newValue.map { NSNumber(float: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(float: $0) }
         }
     }
 
@@ -955,7 +962,7 @@ extension JSON {
             return self.number?.longValue
         }
         set {
-            self.object = newValue.map { NSNumber(integer: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(integer: $0) }
         }
     }
 
@@ -973,7 +980,7 @@ extension JSON {
             return self.number?.unsignedLongValue
         }
         set {
-            self.object = newValue.map { NSNumber(unsignedLong: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(unsignedLong: $0) }
         }
     }
 
@@ -991,7 +998,7 @@ extension JSON {
             return self.number?.charValue
         }
         set {
-            self.object = newValue.map { NSNumber(char: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(char: $0) }
         }
     }
 
@@ -1009,7 +1016,7 @@ extension JSON {
             return self.number?.unsignedCharValue
         }
         set {
-            self.object = newValue.map { NSNumber(unsignedChar: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(unsignedChar: $0) }
         }
     }
 
@@ -1027,7 +1034,7 @@ extension JSON {
             return self.number?.shortValue
         }
         set {
-            self.object = newValue.map { NSNumber(short: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(short: $0) }
         }
     }
 
@@ -1045,7 +1052,7 @@ extension JSON {
             return self.number?.unsignedShortValue
         }
         set {
-            self.object = newValue.map { NSNumber(unsignedShort: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(unsignedShort: $0) }
         }
     }
 
@@ -1063,7 +1070,7 @@ extension JSON {
             return self.number?.intValue
         }
         set {
-            self.object = newValue.map { NSNumber(int: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(int: $0) }
         }
     }
 
@@ -1081,7 +1088,7 @@ extension JSON {
             return self.number?.unsignedIntValue
         }
         set {
-            self.object = newValue.map { NSNumber(unsignedInt: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(unsignedInt: $0) }
         }
     }
 
@@ -1099,7 +1106,7 @@ extension JSON {
             return self.number?.longLongValue
         }
         set {
-            self.object = newValue.map { NSNumber(longLong: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(longLong: $0) }
         }
     }
 
@@ -1117,7 +1124,7 @@ extension JSON {
             return self.number?.unsignedLongLongValue
         }
         set {
-            self.object = newValue.map { NSNumber(unsignedLongLong: $0) } ?? NSNull()
+            self.object = newValue.nsMap { NSNumber(unsignedLongLong: $0) }
         }
     }
 

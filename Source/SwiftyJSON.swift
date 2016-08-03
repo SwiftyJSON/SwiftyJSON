@@ -1236,21 +1236,16 @@ extension NSNumber {
     var isBool:Bool {
         get {
             let objCType = String.fromCString(self.objCType)
-            if (self.compare(trueNumber) == .OrderedSame && objCType == trueObjCType)
-                || (self.compare(falseNumber) == .OrderedSame && objCType == falseObjCType){
-                    return true
-            } else {
-                return false
-            }
+            return (self.compare(trueNumber) == .OrderedSame && objCType == trueObjCType) ||
+                   (self.compare(falseNumber) == .OrderedSame && objCType == falseObjCType)
         }
     }
 }
 
 func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
+    case (false, true),
+         (true, false):
         return false
     default:
         return lhs.compare(rhs) == .OrderedSame
@@ -1262,11 +1257,9 @@ func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
-
     switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
+    case (false, true),
+         (true, false):
         return false
     default:
         return lhs.compare(rhs) == .OrderedAscending
@@ -1274,11 +1267,9 @@ func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
-
     switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
+    case (false, true),
+         (true, false):
         return false
     default:
         return lhs.compare(rhs) == .OrderedDescending
@@ -1286,11 +1277,9 @@ func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-
     switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
+    case (false, true),
+         (true, false):
         return false
     default:
         return lhs.compare(rhs) != .OrderedDescending
@@ -1298,11 +1287,9 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-
     switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
+    case (false, true),
+         (true, false):
         return false
     default:
         return lhs.compare(rhs) != .OrderedAscending

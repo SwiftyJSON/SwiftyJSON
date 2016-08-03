@@ -426,18 +426,18 @@ public enum JSONKey {
 }
 
 public protocol JSONSubscriptType {
-    var jsonKey:JSONKey { get }
+    var jsonKey: JSONKey { get }
 }
 
 extension Int: JSONSubscriptType {
-    public var jsonKey:JSONKey {
-        return JSONKey.Index(self)
+    public var jsonKey: JSONKey {
+        return .Index(self)
     }
 }
 
 extension String: JSONSubscriptType {
     public var jsonKey:JSONKey {
-        return JSONKey.Key(self)
+        return .Key(self)
     }
 }
 

@@ -27,7 +27,7 @@ import SwiftyJSON
 class SequenceTypeTests: XCTestCase {
 
     func testJSONFile() {
-        if let file = Bundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             let testData = try? Data(contentsOf: URL(fileURLWithPath: file))
             let json = JSON(data:testData!)
             for (index, sub) in json {

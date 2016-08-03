@@ -190,15 +190,15 @@ public struct JSON {
     }
 
     /// json type
-    public var type: Type { get { return _type } }
+    public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { get { return self._error } }
+    public var error: NSError? { return self._error }
 
     /// The static null json
     @available(*, unavailable, renamed="null")
-    public static var nullJSON: JSON { get { return null } }
-    public static var null: JSON { get { return JSON(NSNull()) } }
+    public static var nullJSON: JSON { return null }
+    public static var null: JSON { return JSON(NSNull()) }
 }
 
 // MARK: - CollectionType, SequenceType, Indexable
@@ -244,15 +244,13 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
 
     /// If `type` is `.Array` or `.Dictionary`, return `array.isEmpty` or `dictonary.isEmpty` otherwise return `true`.
     public var isEmpty: Bool {
-        get {
-            switch self.type {
-            case .Array:
-                return self.rawArray.isEmpty
-            case .Dictionary:
-                return self.rawDictionary.isEmpty
-            default:
-                return true
-            }
+        switch self.type {
+        case .Array:
+            return self.rawArray.isEmpty
+        case .Dictionary:
+            return self.rawDictionary.isEmpty
+        default:
+            return true
         }
     }
 
@@ -689,20 +687,16 @@ extension JSON {
 
     //Optional [JSON]
     public var array: [JSON]? {
-        get {
-            if self.type == .Array {
-                return self.rawArray.map{ JSON($0) }
-            } else {
-                return nil
-            }
+        if self.type == .Array {
+            return self.rawArray.map{ JSON($0) }
+        } else {
+            return nil
         }
     }
 
     //Non-optional [JSON]
     public var arrayValue: [JSON] {
-        get {
-            return self.array ?? []
-        }
+        return self.array ?? []
     }
 
     //Optional [AnyObject]
@@ -1234,11 +1228,9 @@ private let falseObjCType = String.fromCString(falseNumber.objCType)
 
 extension NSNumber {
     var isBool:Bool {
-        get {
-            let objCType = String.fromCString(self.objCType)
-            return (self.compare(trueNumber) == .OrderedSame && objCType == trueObjCType) ||
-                   (self.compare(falseNumber) == .OrderedSame && objCType == falseObjCType)
-        }
+        let objCType = String.fromCString(self.objCType)
+        return (self.compare(trueNumber) == .OrderedSame && objCType == trueObjCType) ||
+               (self.compare(falseNumber) == .OrderedSame && objCType == falseObjCType)
     }
 }
 

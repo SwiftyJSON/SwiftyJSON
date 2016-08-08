@@ -24,9 +24,9 @@ public let LclErrorDomain = "Lcl.Error.Domain"
 public class LclJSONSerialization {
     private static let JSON_WRITE_ERROR = "JSON Write failure."
 
-    private static let FALSE = NSString(string: "false")
-    private static let TRUE = NSString(string: "true")
-    private static let NULL = NSString(string: "null")
+    private static let FALSE = "false"
+    private static let TRUE = "true"
+    private static let NULL = "null"
 
 
     public class func isValidJSONObject(_ obj: Any) -> Bool {
@@ -103,13 +103,13 @@ public class LclJSONSerialization {
         return isValidJSONObjectInternal(obj)
     }
 
-    public class func dataWithJSONObject(_ obj: Any, options: NSJSONWritingOptions) throws -> NSData
+    public class func dataWithJSONObject(_ obj: Any, options: JSONSerialization.WritingOptions) throws -> Data
     {
-        let result = NSMutableData()
+        var result = Data()
 
-        try writeJson(obj, options: options) { (str: NSString?) in
+        try writeJson(obj, options: options) { (str: String?) in
             if  let str = str  {
-                result.append(str.cString(using: NSUTF8StringEncoding)!, length: str.lengthOfBytes(using: NSUTF8StringEncoding))
+                result.append(str.data(using: String.Encoding.utf8) ?? Data())
             }
         }
 
@@ -117,28 +117,28 @@ public class LclJSONSerialization {
     }
 
     /* Helper function to enable writing to NSData as well as NSStream */
-    private static func writeJson(_ obj: Any, options opt: NSJSONWritingOptions, writer: (NSString?) -> Void) throws {
-        let prettyPrint = opt.rawValue & NSJSONWritingOptions.prettyPrinted.rawValue  != 0
-        let padding: NSString? = prettyPrint ? NSString(string: "") : nil
+    private static func writeJson(_ obj: Any, options opt: JSONSerialization.WritingOptions, writer: (String?) -> Void) throws {
+        let prettyPrint = opt.rawValue & JSONSerialization.WritingOptions.prettyPrinted.rawValue  != 0
+        let padding: String? = prettyPrint ? "" : nil
 
         try writeJsonValue(obj, padding: padding, writer: writer)
     }
 
     /* Write out a JSON value (simple value, object, or array) */
-    private static func writeJsonValue(_ obj: Any, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonValue(_ obj: Any, padding: String?, writer: (String?) -> Void) throws {
         if  obj is String  {
             writer("\"")
-            writer((obj as! String).bridge())
+            writer((obj as! String))
             writer("\"")
         }
         else if  obj is Bool  {
             writer(obj as! Bool ? TRUE : FALSE)
         }
         else if  obj is Int || obj is Float || obj is Double || obj is UInt {
-            writer(String(obj).bridge())
+            writer(String(obj))
         }
         else if  obj is NSNumber  {
-            writer(JSON.stringFromNumber(obj as! NSNumber).bridge())
+            writer(JSON.stringFromNumber(obj as! NSNumber))
         }
         else if obj is NSNull {
             writer(NULL)
@@ -159,14 +159,14 @@ public class LclJSONSerialization {
     }
 
     /* Write out a dictionary as a JSON object */
-    private static func writeJsonObject(_ pairs: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonObject(_ pairs: Array<Any>, padding: String?, writer: (String?) -> Void) throws {
         let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
-        let nameValueSeparator = NSString(string: padding != nil ? ": " : ":")
+        let nameValueSeparator = padding != nil ? ": " : ":"
 
         writer("{")
 
-        var comma = NSString(string: "")
-        let realComma = NSString(string: ",")
+        var comma = ""
+        let realComma = ","
         for pair in pairs {
            let pairMirror = Mirror(reflecting: pair)
            if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
@@ -178,7 +178,7 @@ public class LclJSONSerialization {
                    writer(endOfLine)
                    writer(nestedPadding)
                    writer("\"")
-                   writer(key.bridge())
+                   writer(key)
                    writer("\"")
                    writer(nameValueSeparator)
                    try writeJsonValue(value, padding: nestedPadding, writer: writer)
@@ -192,12 +192,12 @@ public class LclJSONSerialization {
     }
 
     /* Write out an array as a JSON Array */
-    private static func writeJsonArray(_ obj: Array<Any>, padding: NSString?, writer: (NSString?) -> Void) throws {
+    private static func writeJsonArray(_ obj: Array<Any>, padding: String?, writer: (String?) -> Void) throws {
         let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
         writer("[")
 
-        var comma = NSString(string: "")
-        let realComma = NSString(string: ",")
+        var comma = ""
+        let realComma = ","
         for value in obj {
             writer(comma)
             comma = realComma
@@ -215,17 +215,14 @@ public class LclJSONSerialization {
 
        Note: if padding is nil, then all padding, newlines etc., are suppressed
     */
-    private static func setupPadding(_ padding: NSString?) -> (NSString?, NSString?, NSString?) {
-        let nestedPadding: NSString?
-        let startOfLine: NSString?
-        let endOfLine: NSString?
+    private static func setupPadding(_ padding: String?) -> (String?, String?, String?) {
+        var nestedPadding: String?
+        var startOfLine: String?
+        var endOfLine: String?
         if  let padding = padding  {
-            let temp = NSMutableString(capacity: 20)
-            temp.append(padding.bridge())
-            temp.append("  ")
-            nestedPadding = NSString(string: temp.bridge())
+            nestedPadding = padding + "  "
             startOfLine = padding
-            endOfLine = NSString(stringLiteral: "\n")
+            endOfLine = "\n"
         }
         else {
             nestedPadding = nil

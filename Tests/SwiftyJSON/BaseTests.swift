@@ -46,12 +46,18 @@ class BaseTests: XCTestCase {
     }
 // END OF GENERATED CODE
 
-    var testData: NSData!
+    var testData: Data!
 
     override func setUp() {
 
         super.setUp()
-        self.testData = NSData(contentsOfFile: "Tests/SwiftyJSON/Tests.json")
+        do {
+            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+        }
+        catch {
+            XCTFail("FAiled to read in the test data")
+            exit(1)
+        }
     }
 
     override func tearDown() {
@@ -68,11 +74,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            #if os(Linux)
-                let object: JSON.AnyType = try NSJSONSerialization.jsonObject(with: self.testData, options: [])
-            #else
-                let object: JSON.AnyType = try JSONSerialization.jsonObject(with: self.testData as Data, options: [])
-            #endif
+            let object: JSON.AnyType = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {

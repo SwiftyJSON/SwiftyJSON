@@ -46,26 +46,31 @@ class SequenceTypeTests: XCTestCase {
     }
 // END OF GENERATED CODE
     func testJSONFile() {
-        let testData = NSData(contentsOfFile: "Tests/SwiftyJSON/Tests.json")
-        let json = JSON(data:testData!)
-        var ind = 0
-        for (_, sub) in json {
-            switch (ind)  {
-            case 0:
-                let case0 = sub["id_str"].rawString()!
-                XCTAssertEqual(case0, "240558470661799936")
-                ind += 1
-            case 1:
-                let case1 = sub["id_str"].rawString()!
-                XCTAssertEqual(case1, "240556426106372096")
-                ind += 1
-            case 2:
-                let case2 = sub["id_str"].rawString()!
-                XCTAssertEqual(case2, "240539141056638977")
-            default:
-                XCTFail("testJSONFile failed, index not found")
-                break
+        do {
+            let testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+            let json = JSON(data:testData)
+            var ind = 0
+            for (_, sub) in json {
+                switch (ind)  {
+                case 0:
+                    let case0 = sub["id_str"].rawString()!
+                    XCTAssertEqual(case0, "240558470661799936")
+                    ind += 1
+                case 1:
+                    let case1 = sub["id_str"].rawString()!
+                    XCTAssertEqual(case1, "240556426106372096")
+                    ind += 1
+                case 2:
+                    let case2 = sub["id_str"].rawString()!
+                    XCTAssertEqual(case2, "240539141056638977")
+                default:
+                    XCTFail("testJSONFile failed, index not found")
+                    break
+                }
             }
+        }
+        catch {
+            XCTFail("Failed to read in the test data")
         }
     }
     

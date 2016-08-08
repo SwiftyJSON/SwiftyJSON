@@ -44,13 +44,9 @@ class RawTests: XCTestCase {
 
     func testRawData() {
         let json : JSON = ["somekey" : "some string value"]
-        #if os(Linux)
-            let expectedRawData = "{\"somekey\":\"some string value\"}".data(using: NSUTF8StringEncoding)
-        #else
-            let expectedRawData = "{\"somekey\":\"some string value\"}".data(using: String.Encoding.utf8)
-        #endif
+        let expectedRawData = "{\"somekey\":\"some string value\"}".data(using: String.Encoding.utf8)
         do {
-            let data: NSData = try json.rawData()
+            let data = try json.rawData()
             XCTAssertEqual(expectedRawData, data)
         } catch _ {
             XCTFail()
@@ -77,7 +73,7 @@ class RawTests: XCTestCase {
     func testArray() {
         let json : JSON = [1, "2", 3.12, NSNull(), true, ["name": "Jack"]]
         
-        let data: NSData?
+        let data: Data?
         do {
             data = try json.rawData()
         } catch _ {
@@ -85,16 +81,12 @@ class RawTests: XCTestCase {
         }
         let string = json.rawString()
         XCTAssertTrue (data != nil)
-        #if os(Linux)
-            XCTAssertTrue (string!.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
-        #else
-            XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        #endif
+        XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
     }
     
     func testDictionary() {
         let json : JSON = ["number":111111.23456789, "name":"Jack", "list":[1,2,3,4], "bool":false, "null":NSNull()]
-        let data: NSData?
+        let data: Data?
         do {
             data = try json.rawData()
         } catch _ {
@@ -102,11 +94,7 @@ class RawTests: XCTestCase {
         }
         let string = json.rawString()
         XCTAssertTrue (data != nil)
-        #if os(Linux)
-            XCTAssertTrue (string!.lengthOfBytes(using: NSUTF8StringEncoding) > 0)
-        #else
-            XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        #endif
+        XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
     }
     
     func testString() {

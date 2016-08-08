@@ -47,12 +47,18 @@ class PerformanceTests: XCTestCase {
     }
 // END OF GENERATED CODE
 
-    var testData: NSData!
+    var testData: Data!
 
     override func setUp() {
         super.setUp()
 
-        self.testData = NSData(contentsOfFile: "Tests/SwiftyJSON/Tests.json")
+        do {
+            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+        }
+        catch {
+            XCTFail("Failed to read in the test data")
+            exit(1)
+        }
     }
 
     override func tearDown() {
@@ -85,7 +91,7 @@ class PerformanceTests: XCTestCase {
             for _ in 1...100 {
                 autoreleasepool{
                     let array = json.array
-                    XCTAssertTrue(array?.count > 0)
+                    XCTAssertTrue( (array?.count ?? 0) > 0)
                 }
             }
         }
@@ -97,7 +103,7 @@ class PerformanceTests: XCTestCase {
             for _ in 1...100 {
                 autoreleasepool{
                     let dictionary = json.dictionary
-                    XCTAssertTrue(dictionary?.count > 0)
+                    XCTAssertTrue( (dictionary?.count ?? 0) > 0)
                 }
             }
         }

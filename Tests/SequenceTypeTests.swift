@@ -38,7 +38,8 @@ class SequenceTypeTests: XCTestCase {
                     XCTAssertTrue(sub["id_str"] == "240556426106372096")
                 case 2:
                     XCTAssertTrue(sub["id_str"] == "240539141056638977")
-                default:0
+                default:
+                    continue
                 }
             }
         } else {

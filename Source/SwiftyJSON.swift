@@ -736,7 +736,7 @@ extension JSON {
             switch self.type {
             case .string:
                 let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber {  // indicates parse error
+                if decimal == NSDecimalNumber.notA {  // indicates parse error
                     return NSDecimalNumber.zero
                 }
                 return decimal
@@ -769,7 +769,7 @@ extension JSON {
         }
     }
     public func exists() -> Bool{
-        if let errorValue = error , errorValue.code == ErrorNotExist{
+        if let errorValue = error  where errorValue.code == ErrorNotExist{
             return false
         }
         return true

@@ -96,5 +96,23 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+    
+    func testLargeDictionaryMethodPerformance() {
+        var data: [String: JSON] = [:]
+        (0...100000).forEach { n in
+            data["\(n)"] = JSON([
+                "name": "item\(n)",
+                "id": n
+                ])
+        }
+        let json = JSON(data)
+
+        self.measureBlock() {
+            autoreleasepool{
+                let dictionary = json.dictionary
+                XCTAssertTrue(dictionary?.count > 0)
+            }
+        }
+    }
 
 }

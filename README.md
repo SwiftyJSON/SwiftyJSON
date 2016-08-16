@@ -299,7 +299,7 @@ json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
 json.arrayObject = [1,2,3,4]
-json.dictionary = ["name":"Jack", "age":25]
+json.dictionaryObject = ["name":"Jack", "age":25]
 ```
 
 ####Raw object

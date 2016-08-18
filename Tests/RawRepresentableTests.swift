@@ -42,11 +42,11 @@ class RawRepresentableTests: XCTestCase {
     }
     
     func testBool() {
-        var jsonTrue:JSON = JSON(rawValue: true as NSNumber)!
+        var jsonTrue:JSON = JSON(rawValue: true)!
         XCTAssertEqual(jsonTrue.bool!, true)
         XCTAssertEqual(jsonTrue.boolValue, true)
         
-        var jsonFalse:JSON = JSON(rawValue: false as NSNumber)!
+        var jsonFalse:JSON = JSON(rawValue: false)!
         XCTAssertEqual(jsonFalse.bool!, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
         

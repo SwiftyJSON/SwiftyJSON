@@ -52,7 +52,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            let object: AnyObject = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let object: Any = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {

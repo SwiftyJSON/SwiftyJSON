@@ -1153,20 +1153,26 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
+fileprivate let trueNumber = NSNumber(value: true)
+fileprivate let falseNumber = NSNumber(value: false)
+fileprivate let trueObjCType = String(cString: trueNumber.objCType)
+fileprivate let falseObjCType = String(cString: falseNumber.objCType)
 
+
+//A C++ bool or a C99 _Bool
+//Do Not Know Why self.objCType is "B", maybe a bug.
+fileprivate let cppBoolType = "B"
 
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
     var isBool:Bool {
         get {
-            let trueNumber = NSNumber(value: true)
-            let falseNumber = NSNumber(value: false)
-            let trueObjCType = String(cString: trueNumber.objCType)
-            let falseObjCType = String(cString: falseNumber.objCType)
+
             let objCType = String(cString: self.objCType)
-            if (self.compare(trueNumber) == ComparisonResult.orderedSame && objCType == trueObjCType)
-                || (self.compare(falseNumber) == ComparisonResult.orderedSame && objCType == falseObjCType){
+
+            if (self.compare(trueNumber) == ComparisonResult.orderedSame && (objCType == trueObjCType || objCType == cppBoolType))
+                || (self.compare(falseNumber) == ComparisonResult.orderedSame && (objCType == falseObjCType || objCType == cppBoolType)){
                     return true
             } else {
                 return false

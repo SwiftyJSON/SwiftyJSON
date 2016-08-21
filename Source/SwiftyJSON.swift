@@ -158,7 +158,8 @@ public struct JSON {
             _error = nil
             switch newValue {
             case let number as NSNumber:
-                if number.isBool {
+                if (newValue is BooleanLiteralType && !(newValue is IntegerLiteralType
+                    || newValue is FloatLiteralType)) || number.isBool {
                     _type = .bool
                 } else {
                     _type = .number
@@ -169,10 +170,10 @@ public struct JSON {
                 self.rawString = string
             case  _ as NSNull:
                 _type = .null
-            case let array as [AnyObject]:
+            case let array as [Any]:
                 _type = .array
                 self.rawArray = array
-            case let dictionary as [String : AnyObject]:
+            case let dictionary as [String : Any]:
                 _type = .dictionary
                 self.rawDictionary = dictionary
             default:
@@ -321,7 +322,7 @@ extension JSON {
         set {
             if self.type == .array {
                 if self.rawArray.count > index && newValue.error == nil {
-                    self.rawArray[index] = newValue.object
+                    self.rawArray[index] = newValue
                 }
             }
         }
@@ -344,7 +345,7 @@ extension JSON {
         }
         set {
             if self.type == .dictionary && newValue.error == nil {
-                self.rawDictionary[key] = newValue.object
+                self.rawDictionary[key] = newValue
             }
         }
     }
@@ -387,7 +388,7 @@ extension JSON {
             case 0:
                 return
             case 1:
-                self[sub:path[0]].object = newValue.object
+                self[sub:path[0]].object = newValue
             default:
                 var aPath = path; aPath.remove(at: 0)
                 var nextJSON = self[sub: path[0]]
@@ -458,8 +459,8 @@ extension JSON: Swift.ExpressibleByFloatLiteral {
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
 
-    public init(dictionaryLiteral elements: (String, AnyObject)...) {
-        self.init(elements.reduce([String : AnyObject](minimumCapacity: elements.count)){(dictionary: [String : AnyObject], element:(String, AnyObject)) -> [String : AnyObject] in
+    public init(dictionaryLiteral elements: (String, Any)...) {
+        self.init(elements.reduce([String : Any](minimumCapacity: elements.count)){(dictionary: [String : Any], element:(String, Any)) -> [String : Any] in
             var d = dictionary
             d[element.0] = element.1
             return d
@@ -469,7 +470,7 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
 
 extension JSON: Swift.ExpressibleByArrayLiteral {
 
-    public init(arrayLiteral elements: AnyObject...) {
+    public init(arrayLiteral elements: Any...) {
         self.init(elements)
     }
 }
@@ -567,7 +568,7 @@ extension JSON {
         }
     }
 
-    //Optional [AnyObject]
+    //Optional [Any]
     public var arrayObject: [Any]? {
         get {
             switch self.type {
@@ -610,7 +611,7 @@ extension JSON {
         return self.dictionary ?? [:]
     }
 
-    //Optional [String : AnyObject]
+    //Optional [String : Any]
     public var dictionaryObject: [String : Any]? {
         get {
             switch self.type {

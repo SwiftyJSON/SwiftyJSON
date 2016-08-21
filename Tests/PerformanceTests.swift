@@ -52,10 +52,10 @@ class PerformanceTests: XCTestCase {
     }
     
     func testObjectMethodPerformance() {
-        var json = JSON(data:self.testData)
+        let json = JSON(data:self.testData)
         self.measure() {
             for _ in 1...100 {
-                let object:AnyObject? = json.object
+                let object:Any? = json.object
                 XCTAssertTrue(object != nil)
             }
         }
@@ -67,7 +67,7 @@ class PerformanceTests: XCTestCase {
             for _ in 1...100 {
                 autoreleasepool{
                     let array = json.array
-                    XCTAssertTrue(array?.count > 0)
+                    XCTAssertTrue((array?.count)! > 0)
                 }
             }
         }
@@ -79,7 +79,7 @@ class PerformanceTests: XCTestCase {
             for _ in 1...100 {
                 autoreleasepool{
                     let dictionary = json.dictionary
-                    XCTAssertTrue(dictionary?.count > 0)
+                    XCTAssertTrue((dictionary?.count)! > 0)
                 }
             }
         }

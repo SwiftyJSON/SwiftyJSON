@@ -100,7 +100,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
@@ -117,7 +117,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
@@ -188,7 +188,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
@@ -207,7 +207,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object

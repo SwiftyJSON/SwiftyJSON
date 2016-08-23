@@ -19,7 +19,7 @@ notifications:
 matrix:
   include:
     - os: linux
-      services: docker
+      dist: trusty
       sudo: required
     - os: osx
       osx_image: xcode8
@@ -29,4 +29,4 @@ before_install:
   - git submodule update --init --remote --merge --recursive
 
 script:
-  - ./Package-Builder/script_travis.sh $TRAVIS_OS_NAME $TRAVIS_BRANCH $TRAVIS_BUILD_DIR SwiftyJSON
+  - ./Package-Builder/build-package.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR

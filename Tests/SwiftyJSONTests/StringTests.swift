@@ -62,7 +62,7 @@ class StringTests: XCTestCase {
         #else
             let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         #endif
-        let json = JSON(urlString as JSON.AnyType)
+        let json = JSON(urlString as Any)
         XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
     }
 }

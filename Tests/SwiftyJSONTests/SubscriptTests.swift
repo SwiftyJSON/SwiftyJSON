@@ -103,7 +103,7 @@ class SubscriptTests: XCTestCase {
     
     func testArrayWithNull() {
         #if os(Linux)
-            var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [JSON.AnyType?])!
+            var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [Any?])!
         #else
             var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"])!
         #endif
@@ -178,7 +178,7 @@ class SubscriptTests: XCTestCase {
     
     func testDictionaryWithNull() {
         #if os(Linux)
-            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:JSON.AnyType?])!
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:Any?])!
         #else
             var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"])!
         #endif
@@ -274,7 +274,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testMultilevelSetter2() {
-        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]] as [String:JSON.AnyType]]
+        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]] as [String:Any]]
         json["user","info","name"] = "jim"
         XCTAssertEqual(json["user","id"], 987654)
         XCTAssertEqual(json["user","info","name"], "jim")

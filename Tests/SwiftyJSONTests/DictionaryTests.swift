@@ -36,9 +36,9 @@ class DictionaryTests: XCTestCase {
 // END OF GENERATED CODE
 
     func testGetter() {
-        let subDictionary: [String: JSON.AnyType] = ["sub_number":877.2323, "sub_name":"sub_name"]
-        let dictionary: [String: JSON.AnyType] = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object": subDictionary, "bool":true]
-        let json = JSON(dictionary as JSON.AnyType)
+        let subDictionary: [String: Any] = ["sub_number":877.2323, "sub_name":"sub_name"]
+        let dictionary: [String: Any] = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object": subDictionary, "bool":true]
+        let json = JSON(dictionary as Any)
 
         //dictionary
         XCTAssertEqual((json.dictionary!["number"]! as JSON).double!, 9823.212)
@@ -65,7 +65,7 @@ class DictionaryTests: XCTestCase {
         XCTAssertEqual(convert(json.dictionaryObject), ["name":"NAME"])
     }
 
-    private func convert(_ dictionary: [String: JSON.AnyType]?) -> [String: String] {
+    private func convert(_ dictionary: [String: Any]?) -> [String: String] {
         var dictionaryToReturn = [String: String]()
 
         guard let dictionary = dictionary else {

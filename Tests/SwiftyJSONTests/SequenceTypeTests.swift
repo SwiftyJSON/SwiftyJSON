@@ -47,7 +47,7 @@ class SequenceTypeTests: XCTestCase {
 // END OF GENERATED CODE
     func testJSONFile() {
         do {
-            let testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+            let testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
             let json = JSON(data:testData)
             var ind = 0
             for (_, sub) in json {
@@ -127,7 +127,7 @@ class SequenceTypeTests: XCTestCase {
     
     func testArrayWithNull() {
         #if os(Linux)
-        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [JSON.AnyType?])!
+        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [Any?])!
         #else
         var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"])!
         #endif
@@ -135,7 +135,7 @@ class SequenceTypeTests: XCTestCase {
         
         var index = 0
 
-        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        typealias AnyType = Any //swift compiler does not like [Any]() expression
         var array = [AnyType]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
@@ -155,7 +155,7 @@ class SequenceTypeTests: XCTestCase {
         
         var index = 0
 
-        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        typealias AnyType = Any //swift compiler does not like [Any]() expression
         var array = [AnyType]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
@@ -228,7 +228,7 @@ class SequenceTypeTests: XCTestCase {
     
     func testDictionaryWithNull() {
         #if os(Linux)
-            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:JSON.AnyType?])!
+            var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"] as [String:Any?])!
         #else
             var json:JSON = JSON(rawValue: ["a":"aoo","bb":"bpp","null":NSNull(), "z":"zoo"])!
         #endif
@@ -236,7 +236,7 @@ class SequenceTypeTests: XCTestCase {
         
         var index = 0
 
-        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        typealias AnyType = Any //swift compiler does not like [Any]() expression
         var dictionary = [String: AnyType]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
@@ -257,7 +257,7 @@ class SequenceTypeTests: XCTestCase {
         
         var index = 0
 
-        typealias AnyType = JSON.AnyType //swift compiler does not like [JSON.AnyType]() expression
+        typealias AnyType = Any //swift compiler does not like [Any]() expression
         var dictionary = [String: AnyType]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])

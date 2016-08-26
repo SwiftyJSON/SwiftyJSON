@@ -53,7 +53,7 @@ class PerformanceTests: XCTestCase {
         super.setUp()
 
         do {
-            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
         }
         catch {
             XCTFail("Failed to read in the test data")
@@ -79,8 +79,7 @@ class PerformanceTests: XCTestCase {
         let json = JSON(data:self.testData)
         self.measure() {
             for _ in 1...100 {
-                let object: JSON.AnyType? = json.object
-                XCTAssertTrue(object != nil)
+                _ = json.object
             }
         }
     }

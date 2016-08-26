@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import SwiftyJSONTestSuite
+@testable import SwiftyJSONTests
 
 XCTMain([
     testCase(ArrayTests.allTests),

@@ -52,7 +52,7 @@ class BaseTests: XCTestCase {
 
         super.setUp()
         do {
-            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSON/Tests.json"))
+            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
         }
         catch {
             XCTFail("FAiled to read in the test data")
@@ -74,7 +74,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            let object: JSON.AnyType = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let object: Any = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {
@@ -238,13 +238,13 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
         #endif
 
-        XCTAssertEqual(JSON(Double.infinity as JSON.AnyType).description,"inf")
-        XCTAssertEqual(JSON(-Double.infinity as JSON.AnyType).description,"-inf")
-        XCTAssertEqual(JSON(Double.nan as JSON.AnyType).description,"nan")
+        XCTAssertEqual(JSON(Double.infinity as Any).description,"inf")
+        XCTAssertEqual(JSON(-Double.infinity as Any).description,"-inf")
+        XCTAssertEqual(JSON(Double.nan as Any).description,"nan")
 
-        XCTAssertEqual(JSON(1.0/0.0 as JSON.AnyType).description,"inf")
-        XCTAssertEqual(JSON(-1.0/0.0 as JSON.AnyType).description,"-inf")
-        XCTAssertEqual(JSON(0.0/0.0 as JSON.AnyType).description,"nan")
+        XCTAssertEqual(JSON(1.0/0.0 as Any).description,"inf")
+        XCTAssertEqual(JSON(-1.0/0.0 as Any).description,"-inf")
+        XCTAssertEqual(JSON(0.0/0.0 as Any).description,"nan")
     }
 
     func testNullJSON() {
@@ -261,7 +261,7 @@ class BaseTests: XCTestCase {
 
     func testExistance() {
         let dictionary = ["number":1111]
-        let json = JSON(dictionary as JSON.AnyType)
+        let json = JSON(dictionary as Any)
 
         XCTAssertFalse(json["unspecifiedValue"].exists())
         XCTAssertTrue(json["number"].exists())

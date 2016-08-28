@@ -47,7 +47,7 @@ class StringTests: XCTestCase {
         XCTAssertEqual(json.string!, "12345?67890.@#")
         XCTAssertEqual(json.stringValue, "12345?67890.@#")
     }
-    
+
     func testURL() {
         let json = JSON("http://github.com")
         XCTAssertEqual(json.URL!, NSURL(string:"http://github.com")!)
@@ -56,12 +56,7 @@ class StringTests: XCTestCase {
     func testURLPercentEscapes() {
         let emDash = "\\u2014"
         let urlString = "http://examble.com/unencoded" + emDash + "string"
-        
-        #if os(Linux)
-            let encodedURLString = urlString.bridge().stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.urlQueryAllowed)
-        #else
-            let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-        #endif
+        let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let json = JSON(urlString as Any)
         XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
     }

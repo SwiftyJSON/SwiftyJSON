@@ -1380,7 +1380,7 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
 //MARK: - Save and load JSON locally using NSUserDefaults.
 extension JSON {
-    public func saveToLocal(forKey: String) -> Bool {
+    public func saveLocally(forKey: String) -> Bool {
         let defaults = NSUserDefaults.standardUserDefaults()
         var rawData: NSData
         do {
@@ -1394,9 +1394,9 @@ extension JSON {
         return true
     }
     
-    static public func loadFromLocal(Key: String) -> JSON? {
+    static public func loadLocally(forKey: String) -> JSON? {
         let defaults = NSUserDefaults.standardUserDefaults()
-        guard let rawData = defaults.valueForKey(Key) as? NSData else {
+        guard let rawData = defaults.valueForKey(forKey) as? NSData else {
             return nil
         }
         

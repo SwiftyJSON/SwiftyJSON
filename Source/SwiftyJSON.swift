@@ -188,10 +188,13 @@ public struct JSON {
     /// Error in JSON
     public var error: NSError? { get { return self._error } }
 
+    public var currentPath: String = "root"
+    
     /// The static null json
     @available(*, unavailable, renamed="null")
     public static var nullJSON: JSON { get { return null } }
     public static var null: JSON { get { return JSON(NSNull()) } }
+    
 }
 
 // MARK: - CollectionType, SequenceType, Indexable
@@ -450,7 +453,9 @@ extension JSON {
                 r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
                 return r
             } else if index >= 0 && index < self.rawArray.count {
-                return JSON(self.rawArray[index])
+                var json = JSON(self.rawArray[index])
+                json.currentPath = self.currentPath + "[\(index)]"
+                return json
             } else {
                 var r = JSON.null
                 r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
@@ -473,6 +478,7 @@ extension JSON {
             if self.type == .Dictionary {
                 if let o = self.rawDictionary[key] {
                     r = JSON(o)
+                    r.currentPath = self.currentPath + "[\"\(key)\"]"
                 } else {
                     r._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
                 }

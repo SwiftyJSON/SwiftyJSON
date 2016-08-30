@@ -27,7 +27,7 @@ import SwiftyJSON
 class SequenceTypeTests: XCTestCase {
 
     func testJSONFile() {
-        if let file = Bundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             let testData = try? Data(contentsOf: URL(fileURLWithPath: file))
             let json = JSON(data:testData!)
             for (index, sub) in json {
@@ -100,11 +100,11 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
-            array.append(sub.object)
+            array.append(sub.object as AnyObject)
             index += 1
         }
         XCTAssertEqual(index, 4)
@@ -117,11 +117,11 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
-            array.append(sub.object)
+            array.append(sub.object as AnyObject)
             index += 1
         }
         XCTAssertEqual(index, 3)
@@ -188,7 +188,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 4)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object
@@ -207,7 +207,7 @@ class SequenceTypeTests: XCTestCase {
         XCTAssertEqual(json.count, 3)
         
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
             dictionary[key] = sub.object

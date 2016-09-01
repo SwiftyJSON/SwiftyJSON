@@ -50,13 +50,11 @@ class LiteralConvertibleTests: XCTestCase {
         XCTAssertEqual(json.stringValue, "abcd efg, HIJK;LMn")
     }
     
-    func testNil() {
-        let jsonNil_1:JSON = nil
-        XCTAssert(jsonNil_1 == nil)
-        let jsonNil_2:JSON = JSON(NSNull)
-        XCTAssert(jsonNil_2 != nil)
-        let jsonNil_3:JSON = JSON([1:2])
-        XCTAssert(jsonNil_3 != nil)
+    func testNull() {
+        let jsonNil_1:JSON = .null
+        XCTAssert(jsonNil_1 == .null)
+        let jsonNil_2:JSON = JSON([1:2])
+        XCTAssert(jsonNil_2 != .null)
     }
     
     func testArray() {

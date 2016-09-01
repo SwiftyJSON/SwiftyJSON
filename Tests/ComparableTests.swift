@@ -323,7 +323,7 @@ class ComparableTests: XCTestCase {
     }
     
     func testDictionary() {
-        let jsonL1:JSON = ["2": 2, "name": "Jack", "List": ["a", 1.09, NSNull()]]
+        let jsonL1:JSON = ["2": 2 as AnyObject, "name": "Jack" as AnyObject, "List": ["a", 1.09, NSNull()]]
         let jsonR1:JSON = JSON(["2": 2, "name": "Jack", "List": ["a", 1.09, NSNull()]])
         
         XCTAssertEqual(jsonL1, jsonR1)

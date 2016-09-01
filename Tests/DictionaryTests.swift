@@ -26,7 +26,7 @@ import SwiftyJSON
 class DictionaryTests: XCTestCase {
 
     func testGetter() {
-        let dictionary = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object":["sub_number":877.2323, "sub_name":"sub_name"], "bool":true]
+        let dictionary = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object":["sub_number":877.2323, "sub_name":"sub_name"], "bool":true] as [String : Any]
         let json = JSON(dictionary)
         //dictionary
         XCTAssertEqual((json.dictionary!["number"]! as JSON).double!, 9823.212)
@@ -37,7 +37,8 @@ class DictionaryTests: XCTestCase {
         XCTAssertTrue(json.dictionary!["null"] == nil)
         //dictionaryValue
         XCTAssertEqual(((((json.dictionaryValue)["object"]! as JSON).dictionaryValue)["sub_name"]! as JSON).string!, "sub_name")
-        XCTAssertEqual((json.dictionaryValue["bool"]! as JSON).bool!, true)
+
+        XCTAssertEqual(json.dictionaryValue["bool"], true)
         XCTAssertTrue(json.dictionaryValue["null"] == nil)
         XCTAssertTrue(JSON.null.dictionaryValue == [:])
         //dictionaryObject
@@ -47,7 +48,7 @@ class DictionaryTests: XCTestCase {
     }
     
     func testSetter() {
-        var json:JSON = ["test":"case"]
+        var json:JSON = ["test":"case" as AnyObject]
         XCTAssertEqual(json.dictionaryObject! as! [String : String], ["test":"case"])
         json.dictionaryObject = ["name":"NAME"]
         XCTAssertEqual(json.dictionaryObject! as! [String : String], ["name":"NAME"])

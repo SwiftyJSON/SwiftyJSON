@@ -31,7 +31,7 @@ class BaseTests: XCTestCase {
         
         super.setUp()
         
-        if let file = Bundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         } else {
             XCTFail("Can't find the test JSON file")
@@ -52,7 +52,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            let object: AnyObject = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let object = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {
@@ -161,6 +161,9 @@ class BaseTests: XCTestCase {
     }
     
     func testNumberPrint(){
+      
+        print(JSON(false).description)
+        print(JSON(true).description)
 
         XCTAssertEqual(JSON(false).description,"false")
         XCTAssertEqual(JSON(true).description,"true")

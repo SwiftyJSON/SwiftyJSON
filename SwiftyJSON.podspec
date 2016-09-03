@@ -5,7 +5,8 @@ Pod::Spec.new do |s|
   s.homepage    = "https://github.com/SwiftyJSON/SwiftyJSON"
   s.license     = { :type => "MIT" }
   s.authors     = { "lingoer" => "lingoerer@gmail.com", "tangplin" => "tangplin@gmail.com" }
-
+  
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
   s.requires_arc = true
   s.osx.deployment_target = "10.9"
   s.ios.deployment_target = "8.0"

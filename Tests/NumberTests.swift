@@ -54,13 +54,13 @@ class NumberTests: XCTestCase {
     
     func testBool() {
         var json = JSON(true)
-        XCTAssertEqual(json.bool!, true)
+        XCTAssertEqual(json.bool, true)
         XCTAssertEqual(json.boolValue, true)
         XCTAssertEqual(json.numberValue, true as NSNumber)
         XCTAssertEqual(json.stringValue, "true")
         
         json.bool = false
-        XCTAssertEqual(json.bool!, false)
+        XCTAssertEqual(json.bool, false)
         XCTAssertEqual(json.boolValue, false)
         XCTAssertEqual(json.numberValue, false as NSNumber)
         
@@ -70,7 +70,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, 0)
         
         json.boolValue = true
-        XCTAssertEqual(json.bool!, true)
+        XCTAssertEqual(json.bool, true)
         XCTAssertEqual(json.boolValue, true)
         XCTAssertEqual(json.numberValue, true as NSNumber)
     }

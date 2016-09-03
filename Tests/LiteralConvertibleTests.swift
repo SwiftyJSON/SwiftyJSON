@@ -37,10 +37,10 @@ class LiteralConvertibleTests: XCTestCase {
     
     func testBool() {
         var jsonTrue:JSON = true
-        XCTAssertEqual(jsonTrue.bool!, true)
+        XCTAssertEqual(jsonTrue.bool, true)
         XCTAssertEqual(jsonTrue.boolValue, true)
         var jsonFalse:JSON = false
-        XCTAssertEqual(jsonFalse.bool!, false)
+        XCTAssertEqual(jsonFalse.bool, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
     }
 
@@ -53,7 +53,7 @@ class LiteralConvertibleTests: XCTestCase {
     func testNil() {
         let jsonNil_1:JSON = nil
         XCTAssert(jsonNil_1 == nil)
-        let jsonNil_2:JSON = JSON(NSNull)
+        let jsonNil_2:JSON = JSON(NSNull.self)
         XCTAssert(jsonNil_2 != nil)
         let jsonNil_3:JSON = JSON([1:2])
         XCTAssert(jsonNil_3 != nil)
@@ -66,7 +66,7 @@ class LiteralConvertibleTests: XCTestCase {
     }
     
     func testDictionary() {
-        let json:JSON = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]]
+        let json:JSON = ["1":2 as AnyObject,"2":2 as AnyObject,"three":3 as AnyObject,"list":["aa","bb","dd"]]
         XCTAssertEqual(json.dictionary!, ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]])
         XCTAssertEqual(json.dictionaryValue, ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]])
     }

@@ -64,12 +64,12 @@ class PrintableTests: XCTestCase {
     }
     
     func testDictionary() {
-        let json:JSON = ["1":2,"2":"two", "3":3]
+        let json:JSON = ["1":2 as AnyObject,"2":"two" as AnyObject, "3":3 as AnyObject]
         var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
         debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: NSString.CompareOptions.caseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: NSString.CompareOptions.caseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.range(of: "\"3\":3", options: NSString.CompareOptions.caseInsensitiveSearch) != nil)
+        XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: NSString.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: NSString.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(debugDescription.range(of: "\"3\":3", options: NSString.CompareOptions.caseInsensitive) != nil)
     }
 }

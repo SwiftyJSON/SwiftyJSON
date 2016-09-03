@@ -26,7 +26,7 @@ import SwiftyJSON
 class RawTests: XCTestCase {
 
     func testRawData() {
-        let json: JSON = ["somekey" : "some string value"]
+        let json: JSON = ["somekey" : "some string value" as AnyObject]
         let expectedRawData = "{\"somekey\":\"some string value\"}".data(using: String.Encoding.utf8)
         do {
             let data: Data = try json.rawData()
@@ -60,7 +60,7 @@ class RawTests: XCTestCase {
     }
     
     func testDictionary() {
-        let json:JSON = ["number":111111.23456789, "name":"Jack", "list":[1,2,3,4], "bool":false, "null":NSNull()]
+        let json:JSON = ["number":111111.23456789 as AnyObject, "name":"Jack" as AnyObject, "list":[1,2,3,4], "bool":false, "null":NSNull()]
         let data: Data?
         do {
             data = try json.rawData()

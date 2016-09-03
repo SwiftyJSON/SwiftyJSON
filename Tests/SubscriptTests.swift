@@ -108,7 +108,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testDictionaryAllNumber() {
-        var json:JSON = ["double":1.11111, "int":987654321]
+        var json:JSON = ["double":1.11111 as AnyObject, "int":987654321 as AnyObject]
         XCTAssertEqual(json["double"].double!, 1.11111)
         XCTAssertTrue(json["int"] == 987654321)
         
@@ -121,7 +121,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testDictionaryAllBool() {
-        var json:JSON = ["t":true, "f":false, "false":false, "tr":true, "true":true]
+        var json:JSON = ["t":true as AnyObject, "f":false as AnyObject, "false":false as AnyObject, "tr":true as AnyObject, "true":true as AnyObject]
         XCTAssertTrue(json["t"] == true)
         XCTAssertTrue(json["f"] == false)
         XCTAssertTrue(json["false"] == false)
@@ -204,7 +204,7 @@ class SubscriptTests: XCTestCase {
     }
     
     func testErrorNotExist() {
-        let json:JSON = ["name":"NAME", "age":15]
+        let json:JSON = ["name":"NAME" as AnyObject, "age":15 as AnyObject]
         XCTAssertEqual(json["Type"], JSON.null)
         XCTAssertEqual(json["Type"].error!.code, ErrorNotExist)
         XCTAssertEqual(json["Type"][1].error!.code, ErrorNotExist)
@@ -228,7 +228,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json[0, 0, 0, 0, "num"].null!, NSNull())
         json[0, 0, 0, 0, "num"] = 100.009
         XCTAssertEqual(json[0][0][0][0]["num"].doubleValue, 100.009)
-        json[[0, 0, 0, 0]] = ["name":"Jack"]
+        json[[0, 0, 0, 0]] = ["name":"Jack" as AnyObject]
         XCTAssertEqual(json[0,0,0,0,"name"].stringValue, "Jack")
         XCTAssertEqual(json[0][0][0][0]["name"].stringValue, "Jack")
         XCTAssertEqual(json[[0,0,0,0,"name"]].stringValue, "Jack")
@@ -251,7 +251,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["user","info","name"], "jim")
         XCTAssertEqual(json["user","info","email"], "jim@hotmail.com")
         XCTAssertEqual(json["user","feeds"], [98833,23443,213239,23232])
-        json["user","info"] = ["name":"tom","email":"tom@qq.com"]
+        json["user","info"] = ["name":"tom" as AnyObject,"email":"tom@qq.com" as AnyObject]
         XCTAssertEqual(json["user","id"], 987654)
         XCTAssertEqual(json["user","info","name"], "tom")
         XCTAssertEqual(json["user","info","email"], "tom@qq.com")

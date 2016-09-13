@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Makefile
-export KITURA_CI_BUILD_SCRIPTS_DIR=Package-Builder/build
+export BUILDER_SCRIPTS_DIR=Package-Builder/build
 
 -include Package-Builder/build/Makefile
 

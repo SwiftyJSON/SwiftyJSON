@@ -34,7 +34,7 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertTrue(json.float! == 948394394.347384)
         XCTAssertTrue(json.floatValue == 948394394.347384)
         
-        let object: AnyObject = json.rawValue
+        let object: AnyObject = json.rawValue as AnyObject
         XCTAssertEqual(object as? Int, 948394394)
         XCTAssertEqual(object as? Double, 948394394.347384)
         XCTAssertTrue(object as! Float == 948394394.347384)
@@ -50,13 +50,13 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(jsonFalse.bool!, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
         
-        let objectTrue: AnyObject = jsonTrue.rawValue
+        let objectTrue: AnyObject = jsonTrue.rawValue as AnyObject
         XCTAssertEqual(objectTrue as? Int, 1)
         XCTAssertEqual(objectTrue as? Double, 1.0)
         XCTAssertEqual(objectTrue as? Bool, true)
         XCTAssertEqual(objectTrue as? NSNumber, NSNumber(value: true))
         
-        let objectFalse: AnyObject = jsonFalse.rawValue
+        let objectFalse: AnyObject = jsonFalse.rawValue as AnyObject
         XCTAssertEqual(objectFalse as? Int, 0)
         XCTAssertEqual(objectFalse as? Double, 0.0)
         XCTAssertEqual(objectFalse as? Bool, false)
@@ -78,7 +78,7 @@ class RawRepresentableTests: XCTestCase {
             XCTFail("Should not run into here")
         }
         
-        let object: AnyObject = JSON(rawValue: string)!.rawValue
+        let object: AnyObject = JSON(rawValue: string)!.rawValue as AnyObject
         XCTAssertEqual(object as? String, string)
     }
     
@@ -94,7 +94,7 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertEqual(json, JSON(array))
         }
         
-        let object: AnyObject = JSON(rawValue: array)!.rawValue
+        let object: AnyObject = JSON(rawValue: array)!.rawValue as AnyObject
         XCTAssertTrue(array == object as! NSArray)
     }
     
@@ -104,7 +104,7 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertEqual(json, JSON(dictionary))
         }
 
-        let object: AnyObject = JSON(rawValue: dictionary)!.rawValue
+        let object: AnyObject = JSON(rawValue: dictionary)!.rawValue as AnyObject
         XCTAssertTrue(dictionary == object as! NSDictionary)
     }
 }

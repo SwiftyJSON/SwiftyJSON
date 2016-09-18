@@ -28,15 +28,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         let navigationController = self.window?.rootViewController as! UINavigationController
         let viewController = navigationController.topViewController as! ViewController
         
-        if let file = NSBundle(forClass:AppDelegate.self).pathForResource("SwiftyJSONTests", ofType: "json") {
-            let data = NSData(contentsOfFile: file)!
-            let json = JSON(data:data)
-            viewController.json = json
+        if let file = Bundle.main.path(forResource: "SwiftyJSONTests", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: file))
+                let json = JSON(data: data)
+                viewController.json = json
+            } catch {
+                viewController.json = JSON.null
+            }
         } else {
             viewController.json = JSON.null
         }

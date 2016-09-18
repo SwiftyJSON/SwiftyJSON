@@ -31,7 +31,7 @@ class BaseTests: XCTestCase {
         
         super.setUp()
         
-        if let file = Bundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         } else {
             XCTFail("Can't find the test JSON file")
@@ -52,7 +52,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            let object: AnyObject = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let object: Any = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {
@@ -122,13 +122,13 @@ class BaseTests: XCTestCase {
         let user_name = user["name"].string
         let user_profile_image_url = user["profile_image_url"].URL
         XCTAssert(user_name == "OAuth Dancer")
-        XCTAssert(user_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
+        XCTAssert(user_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
 
         let user_dictionary = json[0]["user"].dictionary
         let user_dictionary_name = user_dictionary?["name"]?.string
         let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.URL
         XCTAssert(user_dictionary_name == "OAuth Dancer")
-        XCTAssert(user_dictionary_name_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
+        XCTAssert(user_dictionary_name_profile_image_url == NSURL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
     }
     
     func testJSONNumberCompare() {

@@ -253,5 +253,31 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(NSNumber(value: true), NSNumber(value:true))
     }
     
+    func testIsEmpty() {
+        let objectText = "{" +
+            "        \"orderOpened\" : {" +
+            "        \"takeProfit\" : 0," +
+            "        \"expiry\" : \"1474216372000000\"," +
+            "        \"id\" : 10443794095," +
+            "        \"stopLoss\" : 0," +
+            "        \"trailingStop\" : 0," +
+            "        \"units\" : 1," +
+            "        \"upperBound\" : 0," +
+            "        \"side\" : \"buy\"," +
+            "        \"lowerBound\" : 0" +
+            "        }," +
+            "    \"instrument\" : \"EUR_USD\"," +
+            "    \"price\" : 0.5," +
+            "    \"time\" : \"1474216370000000\"" +
+        "}"
+        
+        let json = JSON.parse(objectText)
+        
+        let jsonTradeOpened = json["tradeOpened"]
+        let jsonOrderOpened = json["orderOpened"]
+        
+        XCTAssert(jsonTradeOpened.isEmpty == true)
+        XCTAssert(jsonOrderOpened.isEmpty == false)
+    }
 
 }

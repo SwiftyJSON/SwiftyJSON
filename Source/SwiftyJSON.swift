@@ -272,7 +272,40 @@ extension JSON: Collection{
         }
     }
 
-
+    /// If `type` is `.Array` or `.Dictionary`, return `array.isEmpty` or `dictonary.isEmpty` otherwise return `true`.
+    public var isEmpty: Bool {
+        switch self.type {
+        case .array:
+            return self.rawArray.isEmpty
+        case .dictionary:
+            return self.rawDictionary.isEmpty
+        default:
+            return true
+        }
+    }
+    
+    /// If `type` is `.Array` or `.Dictionary`, return `array.count` or `dictonary.count` otherwise return `0`.
+    public var count: Int {
+        switch self.type {
+        case .array:
+            return self.rawArray.count
+        case .dictionary:
+            return self.rawDictionary.count
+        default:
+            return 0
+        }
+    }
+    
+    public var underestimatedCount: Int {
+        switch self.type {
+        case .array:
+            return self.rawArray.underestimatedCount
+        case .dictionary:
+            return self.rawDictionary.underestimatedCount
+        default:
+            return 0
+        }
+    }
 }
 
 // MARK: - Subscript

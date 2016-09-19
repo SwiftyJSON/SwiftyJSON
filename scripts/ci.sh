@@ -2,7 +2,7 @@
 
 set -e
 
-xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" test
+xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6s" test
 
 xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" test
 

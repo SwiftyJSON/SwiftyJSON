@@ -31,7 +31,7 @@ class BaseTests: XCTestCase {
         
         super.setUp()
         
-        if let file = Bundle(for:BaseTests.self).pathForResource("Tests", ofType: "json") {
+        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         } else {
             XCTFail("Can't find the test JSON file")
@@ -52,7 +52,7 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
         do {
-            let object: AnyObject = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let object = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
             XCTAssertEqual(json0, json2)
         } catch _ {
@@ -253,5 +253,31 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(NSNumber(value: true), NSNumber(value:true))
     }
     
+    func testIsEmpty() {
+        let objectText = "{" +
+            "        \"orderOpened\" : {" +
+            "        \"takeProfit\" : 0," +
+            "        \"expiry\" : \"1474216372000000\"," +
+            "        \"id\" : 10443794095," +
+            "        \"stopLoss\" : 0," +
+            "        \"trailingStop\" : 0," +
+            "        \"units\" : 1," +
+            "        \"upperBound\" : 0," +
+            "        \"side\" : \"buy\"," +
+            "        \"lowerBound\" : 0" +
+            "        }," +
+            "    \"instrument\" : \"EUR_USD\"," +
+            "    \"price\" : 0.5," +
+            "    \"time\" : \"1474216370000000\"" +
+        "}"
+        
+        let json = JSON.parse(objectText)
+        
+        let jsonTradeOpened = json["tradeOpened"]
+        let jsonOrderOpened = json["orderOpened"]
+        
+        XCTAssert(jsonTradeOpened.isEmpty == true)
+        XCTAssert(jsonOrderOpened.isEmpty == false)
+    }
 
 }

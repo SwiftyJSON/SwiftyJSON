@@ -53,7 +53,7 @@ class LiteralConvertibleTests: XCTestCase {
     func testNil() {
         let jsonNil_1:JSON = nil
         XCTAssert(jsonNil_1 == nil)
-        let jsonNil_2:JSON = JSON(NSNull)
+        let jsonNil_2:JSON = JSON(NSNull.self)
         XCTAssert(jsonNil_2 != nil)
         let jsonNil_3:JSON = JSON([1:2])
         XCTAssert(jsonNil_3 != nil)

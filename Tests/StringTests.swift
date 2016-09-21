@@ -48,4 +48,15 @@ class StringTests: XCTestCase {
         let json = JSON(urlString)
         XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
     }
+    
+    func testUUID(){
+        let json = JSON("948C3B42-6719-4041-823F-96F43B5E24B3")
+        XCTAssertEqual(json.UUID!, NSUUID(UUIDString: "948C3B42-6719-4041-823F-96F43B5E24B3")!)
+    }
+    
+    func testBase64(){
+        let json = JSON("SGVsbG8gd29ybGQhISE=")
+        let data = "Hello world!!!".dataUsingEncoding(NSUTF8StringEncoding)!
+        XCTAssertEqual(json.base64Data!, data)
+    }
 }

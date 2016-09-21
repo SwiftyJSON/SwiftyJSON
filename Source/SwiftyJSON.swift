@@ -786,6 +786,62 @@ extension JSON {
     }
 }
 
+// MARK: - UUID, Base64, timestamp
+extension JSON{
+    
+    // Optional data in base64
+    public var base64Data: NSData?{
+        get{
+            switch self.type{
+            case .String:
+                let value = self.rawString
+                return NSData(base64EncodedString: value, options: [])
+            default:
+                return nil
+            }
+        }
+        set{
+            self.object = newValue?.base64EncodedStringWithOptions([]) ?? NSNull()
+        }
+    }
+    
+    // Optional UUID
+    public var UUID: NSUUID?{
+        get{
+            switch  self.type {
+            case .String:
+                let value = self.rawString
+                return NSUUID(UUIDString: value)
+            default:
+                return nil
+            }
+        }
+        set{
+            self.object = newValue?.UUIDString ?? NSNull()
+        }
+    }
+    
+    // Optional NSDate in UTC timestamp format
+    public var timestamp: NSDate?{
+        get{
+            switch  self.type {
+            case .Number:
+                let value = self.rawNumber.doubleValue
+                return NSDate(timeIntervalSince1970: value)
+            default:
+                return nil
+            }
+        }
+        set{
+            guard let u = newValue else{
+                self.object = NSNull()
+                return
+            }
+            self.object = NSNumber(double: u.timeIntervalSince1970)
+        }
+    }
+}
+
 //MARK: - URL
 extension JSON {
     

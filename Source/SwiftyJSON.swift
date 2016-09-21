@@ -1248,3 +1248,45 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
         return lhs.compare(rhs) != ComparisonResult.orderedAscending
     }
 }
+
+
+//MARK: - Save and load JSON locally using NSUserDefaults.
+extension JSON {
+    /**
+     Save JSON locally to NSUserDefaults.
+     
+     - parameter forKey: String key for NSUserDefaults set.
+     
+     - returns: Bool.
+     */
+
+    public func saveLocally(forKey: String) -> Bool {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var rawData: NSData
+        do {
+            rawData = try self.rawData()
+        }
+        catch {
+            return false
+        }
+        
+        defaults.setValue(rawData, forKey: forKey)
+        return true
+    }
+    
+    /**
+     Load JSON locally from NSUserDefaults.
+     
+     - parameter forKey: String key to call JSON  from NSUserDefaults.
+     
+     - returns: JSON or nil.
+     */
+    public static func loadLocally(forKey: String) -> JSON? {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        guard let rawData = defaults.valueForKey(forKey) as? NSData else {
+            return nil
+        }
+        
+        return JSON(data: rawData)
+    }
+}

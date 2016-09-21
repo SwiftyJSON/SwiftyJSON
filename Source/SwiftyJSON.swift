@@ -634,7 +634,7 @@ extension JSON {
 
 // MARK: - Bool
 
-extension JSON: Swift.Boolean {
+extension JSON {
 
     //Optional bool
     public var bool: Bool? {
@@ -738,8 +738,8 @@ extension JSON {
             switch self.type {
             case .string:
                 let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber() {  // indicates parse error
-                    return NSDecimalNumber.zero()
+                if decimal == NSDecimalNumber.notANumber {  // indicates parse error
+                    return NSDecimalNumber.zero
                 }
                 return decimal
             case .number, .bool:
@@ -771,7 +771,7 @@ extension JSON {
         }
     }
     public func exists() -> Bool{
-        if let errorValue = error where errorValue.code == ErrorNotExist{
+        if let errorValue = error , errorValue.code == ErrorNotExist{
             return false
         }
         return true

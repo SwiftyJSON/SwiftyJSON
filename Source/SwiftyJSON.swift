@@ -206,6 +206,8 @@ public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool {
         return left == right
     case (.dictionary(let left), .dictionary(let right)):
         return left == right
+    case (.null, .null):
+        return true
     default:
         return false
     }

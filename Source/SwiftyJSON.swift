@@ -738,8 +738,8 @@ extension JSON {
             switch self.type {
             case .string:
                 let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber() {  // indicates parse error
-                    return NSDecimalNumber.zero()
+                if decimal == NSDecimalNumber.notA {  // indicates parse error
+                    return NSDecimalNumber.zero
                 }
                 return decimal
             case .number, .bool:
@@ -770,8 +770,8 @@ extension JSON {
             self.object = NSNull()
         }
     }
-    public func exists() -> Bool{
-        if let errorValue = error where errorValue.code == ErrorNotExist{
+    public func exists() -> Bool {
+        if let errorValue = error, errorValue.code == ErrorNotExist {
             return false
         }
         return true

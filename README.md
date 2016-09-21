@@ -88,7 +88,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 ##Integration
 
 ####CocoaPods (iOS 8+, OS X 10.9+)
-You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+You can use [CocoaPods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
 ```ruby
 platform :ios, '8.0'
 use_frameworks!

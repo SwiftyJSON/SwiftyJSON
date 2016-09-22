@@ -57,15 +57,15 @@ public enum Type :Int{
 public struct JSON {
     
     /**
-     Creates a JSON using the data.
-     
-     - parameter data:  The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
-     - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
-     - parameter error: error The NSErrorPointer used to return the error. `nil` by default.
-     
-     - returns: The created JSON
-     */
-    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    Creates a JSON using the data.
+
+    - parameter data:  The NSData used to convert to json. Top level object in data is an NSArray or NSDictionary
+    - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
+    - parameter error: error The NSErrorPointer used to return the error. `nil` by default.
+
+    - returns: The created JSON
+    */
+    public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         do {
             let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
             self.init(object)
@@ -79,13 +79,13 @@ public struct JSON {
     
     /**
      Create a JSON from JSON string
-     - parameter string: Normal json string like '{"a":"b"}'
-     
-     - returns: The created JSON
-     */
-    public static func parse(_ string:String) -> JSON {
-        return string.data(using: String.Encoding.utf8)
-            .flatMap({JSON(data: $0)}) ?? JSON(NSNull())
+    - parameter string: Normal json string like '{"a":"b"}'
+
+    - returns: The created JSON
+    */
+    public static func parse(string:String) -> JSON {
+        return string.dataUsingEncoding(NSUTF8StringEncoding)
+            .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
     }
     
     /**

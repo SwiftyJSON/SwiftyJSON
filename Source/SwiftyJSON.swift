@@ -57,7 +57,6 @@ public enum Type :Int{
 public struct JSON {
     
     /**
-<<<<<<< HEAD
     Creates a JSON using the data.
 
     - parameter data:  The NSData used to convert to json. Top level object in data is an NSArray or NSDictionary

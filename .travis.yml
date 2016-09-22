@@ -3,4 +3,6 @@ language: objective-c
 osx_image: xcode8
 xcode_sdk: iphonesimulator10.0
 
-script: 'sh scripts/ci.sh'
+script: 
+  - rvm get head # https://github.com/travis-ci/travis-ci/issues/6307
+  - 'sh scripts/ci.sh'

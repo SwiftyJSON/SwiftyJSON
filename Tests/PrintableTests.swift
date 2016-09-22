@@ -56,20 +56,20 @@ class PrintableTests: XCTestCase {
     
     func testArray() {
         let json:JSON = [1,2,"4",5,"6"]
-        var description = json.description.stringByReplacingOccurrencesOfString("\n", withString: "")
-        description = description.stringByReplacingOccurrencesOfString(" ", withString: "")
+        var description = json.description.replacingOccurrences(of: "\n", with: "")
+        description = description.replacingOccurrences(of: " ", with: "")
         XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
-        XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
-        XCTAssertTrue(json.debugDescription.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
+        XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
+        XCTAssertTrue(json.debugDescription.lengthOfBytes(using: String.Encoding.utf8) > 0)
     }
     
     func testDictionary() {
         let json:JSON = ["1":2,"2":"two", "3":3]
-        var debugDescription = json.debugDescription.stringByReplacingOccurrencesOfString("\n", withString: "")
-        debugDescription = debugDescription.stringByReplacingOccurrencesOfString(" ", withString: "")
-        XCTAssertTrue(json.description.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0)
-        XCTAssertTrue(debugDescription.rangeOfString("\"1\":2", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.rangeOfString("\"2\":\"two\"", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
-        XCTAssertTrue(debugDescription.rangeOfString("\"3\":3", options: NSStringCompareOptions.CaseInsensitiveSearch) != nil)
+        var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
+        debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")
+        XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
+        XCTAssertTrue(debugDescription.range(of: "\"1\":2", options: String.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(debugDescription.range(of: "\"2\":\"two\"", options: String.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(debugDescription.range(of: "\"3\":3", options: String.CompareOptions.caseInsensitive) != nil)
     }
 }

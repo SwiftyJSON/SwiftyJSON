@@ -57,14 +57,14 @@ public enum Type :Int{
 public struct JSON {
     
     /**
-    Creates a JSON using the data.
+     Creates a JSON using the data.
 
-    - parameter data:  The NSData used to convert to json. Top level object in data is an NSArray or NSDictionary
-    - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
-    - parameter error: The NSErrorPointer used to return the error. `nil` by default.
+     - parameter data:  The NSData used to convert to json. Top level object in data is an NSArray or NSDictionary
+     - parameter opt:   The JSON serialization reading options. `.AllowFragments` by default.
+     - parameter error: The NSErrorPointer used to return the error. `nil` by default.
 
-    - returns: The created JSON
-    */
+     - returns: The created JSON
+     */
     public init(data:NSData, options opt: NSJSONReadingOptions = .AllowFragments, error: NSErrorPointer = nil) {
         do {
             let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
@@ -79,10 +79,10 @@ public struct JSON {
     
     /**
      Creates a JSON from JSON string
-    - parameter string: Normal json string like '{"a":"b"}'
+     - parameter string: Normal json string like '{"a":"b"}'
 
-    - returns: The created JSON
-    */
+     - returns: The created JSON
+     */
     public static func parse(string:String) -> JSON {
         return string.dataUsingEncoding(NSUTF8StringEncoding)
             .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
@@ -185,7 +185,6 @@ public struct JSON {
     }
 
     /// JSON type
-    
     public var type: Type { get { return _type } }
     
     /// Error in JSON
@@ -369,18 +368,18 @@ extension JSON {
     }
     
     /**
-    Find a json in the complex data structures by using array of Int and/or String as path.
+     Find a json in the complex data structures by using array of Int and/or String as path.
 
-    - parameter path: The target json's path. Example:
+     - parameter path: The target json's path. Example:
 
-    let json = JSON[data]
-    let path = [9,"list","person","name"]
-    let name = json[path]
+     let json = JSON[data]
+     let path = [9,"list","person","name"]
+     let name = json[path]
 
-    The same as: let name = json[9]["list"]["person"]["name"]
+     The same as: let name = json[9]["list"]["person"]["name"]
 
-    - returns: Return a json found by the path or a null json with error
-    */
+     - returns: Return a json found by the path or a null json with error
+     */
     public subscript(path: [JSONSubscriptType]) -> JSON {
         get {
             return path.reduce(self) { $0[sub: $1] }
@@ -401,16 +400,16 @@ extension JSON {
     }
     
     /**
-    Find a json in the complex data structures by using array of Int and/or String as path.
+     Find a json in the complex data structures by using array of Int and/or String as path.
 
-    - parameter path: The target json's path. Example:
+     - parameter path: The target json's path. Example:
 
-    let name = json[9,"list","person","name"]
+     let name = json[9,"list","person","name"]
 
-    The same as: let name = json[9]["list"]["person"]["name"]
+     The same as: let name = json[9]["list"]["person"]["name"]
 
-    - returns: Return a json found by the path or a null json with error
-    */
+     - returns: Return a json found by the path or a null json with error
+     */
     public subscript(path: JSONSubscriptType...) -> JSON {
         get {
             return self[path]
@@ -1239,7 +1238,7 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    
+
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
         return false

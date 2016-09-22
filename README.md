@@ -1,25 +1,25 @@
 #SwiftyJSON
- 
-[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)
+
+[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
 1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
-1. [Requirements](#requirements)
-1. [Integration](#integration)
-1. [Usage](#usage)
-	- [Initialization](#initialization)
-	- [Subscript](#subscript)
-	- [Loop](#loop)
-	- [Error](#error)
-	- [Optional getter](#optional-getter)
-	- [Non-optional getter](#non-optional-getter)
-	- [Setter](#setter)
-	- [Raw object](#raw-object)
-	- [Literal convertibles](#literal-convertibles)
-1. [Work with Alamofire](#work-with-alamofire)
+2. [Requirements](#requirements)
+3. [Integration](#integration)
+4. [Usage](#usage)
+   - [Initialization](#initialization)
+   - [Subscript](#subscript)
+   - [Loop](#loop)
+   - [Error](#error)
+   - [Optional getter](#optional-getter)
+   - [Non-optional getter](#non-optional-getter)
+   - [Setter](#setter)
+   - [Raw object](#raw-object)
+   - [Literal convertibles](#literal-convertibles)
+5. [Work with Alamofire](#work-with-alamofire)
 
-> For Swift3 support, take a look at the [swift3 beta branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift3)
+> For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
@@ -83,12 +83,12 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 ## Requirements
 
 - iOS 7.0+ / OS X 10.9+
-- Xcode 7
+- Xcode 8
 
 ##Integration
 
 ####CocoaPods (iOS 8+, OS X 10.9+)
-You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+You can use [CocoaPods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
 ```ruby
 platform :ios, '8.0'
 use_frameworks!
@@ -115,7 +115,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: "2.3.3" ..< Version.max)
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1,0,0)..<Version(2, .max, .max)),
     ]
 )
 ```
@@ -152,6 +152,12 @@ if let dataFromString = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allow
 //Getting a double from a JSON Array
 let name = json[0].double
 ```
+
+```swift
+//Getting an array of string from a JSON Array
+let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
+```
+
 ```swift
 //Getting a string from a JSON Dictionary
 let name = json["name"].stringValue
@@ -299,7 +305,7 @@ json["id"].int =  1234567890
 json["coordinate"].double =  8766.766
 json["name"].string =  "Jack"
 json.arrayObject = [1,2,3,4]
-json.dictionary = ["name":"Jack", "age":25]
+json.dictionaryObject = ["name":"Jack", "age":25]
 ```
 
 ####Raw object
@@ -321,7 +327,7 @@ if let string = json.rawString() {
     //Do something you want
 }
 ```
-####Existance
+####Existence
 ```swift
 //shows you whether value specified in JSON or not
 if json["name"].isExists()
@@ -386,11 +392,9 @@ SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
 Alamofire.request(.GET, url).validate().responseJSON { response in
     switch response.result {
-    case .Success:
-        if let value = response.result.value {
-          let json = JSON(value)
-          print("JSON: \(json)")
-        }
+    case .Success(let value):
+        let json = JSON(value)
+        print("JSON: \(json)")
     case .Failure(let error):
         print(error)
     }

@@ -171,8 +171,9 @@ public struct JSON {
             case  _ as NSNull:
                 _type = .null
             case let array as [JSON]:
-                _type = .array
-                self.rawArray = array.map { $0.object }
+				_type = .array
+			case nil:
+				_type = .null
             case let array as [Any]:
                 _type = .array
                 self.rawArray = array
@@ -591,13 +592,71 @@ extension JSON: Swift.RawRepresentable {
 
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
     }
+    
+    public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted, maxDepth: Int = 10) -> String? {
+        do {
+            return try _rawString(encoding, options: opt, maxDepth: maxDepth)
+        } catch {
+            print("Could not serialize object to JSON because:", error.localizedDescription)
+            return nil
+        }
+    }
 
-    public func rawString(_ encoding: String.Encoding = String.Encoding.utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
+    private func _rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted, maxDepth: Int = 10) throws -> String? {
+        if (maxDepth < 0) {
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Element too deep. Increase maxDepth and make sure there is no reference loop"])
+        }
         switch self.type {
-        case .array, .dictionary:
+        case .dictionary:
             do {
-                let data = try self.rawData(options: opt)
-                return String(data: data, encoding: encoding)
+                guard let dict = self.object as? [String: Any?] else {
+                    return nil
+                }
+                let body = try dict.keys.map { key throws -> String in
+                    guard let value = dict[key] else {
+                        return "\"\(key)\": null"
+                    }
+                    guard value != nil else {
+                        return "\"\(key)\": null"
+                    }
+
+                    let nestedValue = JSON(value)
+                    guard let nestedString = try nestedValue._rawString(encoding, options: opt, maxDepth: maxDepth - 1) else {
+                        throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
+                    }
+                    if nestedValue.type == .string {
+                        return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+                    } else {
+                        return "\"\(key)\": \(nestedString)"
+                    }
+                }
+
+                return "{\(body.joined(separator: ","))}"
+            } catch _ {
+                return nil
+            }
+        case .array:
+            do {
+                guard let array = self.object as? [Any?] else {
+                    return nil
+                }
+                let body = try array.map { value throws -> String in
+                    guard value != nil else {
+                        return "null"
+                    }
+
+                    let nestedValue = JSON(value)
+                    guard let nestedString = try nestedValue._rawString(encoding, options: opt, maxDepth: maxDepth - 1) else {
+                        throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
+                    }
+                    if nestedValue.type == .string {
+                        return "\"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+                    } else {
+                        return nestedString
+                    }
+                }
+
+                return "[\(body.joined(separator: ","))]"
             } catch _ {
                 return nil
             }

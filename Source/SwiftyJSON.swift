@@ -591,52 +591,79 @@ extension JSON: Swift.RawRepresentable {
         }
 
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
-    }
-    
-    public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted, maxDepth: Int = 10) -> String? {
-        do {
-            return try _rawString(encoding, options: opt, maxDepth: maxDepth)
-        } catch {
-            print("Could not serialize object to JSON because:", error.localizedDescription)
-            return nil
-        }
-    }
+	}
+	
+	public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
+		do {
+			return try _rawString(encoding, options: [.jsonSerialization: opt])
+		} catch {
+			print("Could not serialize object to JSON because:", error.localizedDescription)
+			return nil
+		}
+	}
 
-    private func _rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted, maxDepth: Int = 10) throws -> String? {
-        if (maxDepth < 0) {
-            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Element too deep. Increase maxDepth and make sure there is no reference loop"])
+	public func rawString(options: [writtingOptionsKeys: Any]) -> String? {
+		let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
+		let maxObjectDepth = options[.maxObjextDepth] as? Int ?? 10
+		do {
+			return try _rawString(encoding, options: options, maxObjectDepth: maxObjectDepth)
+		} catch {
+			print("Could not serialize object to JSON because:", error.localizedDescription)
+			return nil
+		}
+	}
+
+	private func _rawString(
+		_ encoding: String.Encoding = .utf8,
+		options: [writtingOptionsKeys: Any],
+		maxObjectDepth: Int = 10
+	) throws -> String? {
+        if (maxObjectDepth < 0) {
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Element too deep. Increase maxObjectDepth and make sure there is no reference loop"])
         }
         switch self.type {
-        case .dictionary:
-            do {
-                guard let dict = self.object as? [String: Any?] else {
-                    return nil
-                }
-                let body = try dict.keys.map { key throws -> String in
-                    guard let value = dict[key] else {
-                        return "\"\(key)\": null"
-                    }
-                    guard value != nil else {
-                        return "\"\(key)\": null"
-                    }
+		case .dictionary:
+			do {
+				if !(options[.castNilToNSNull] as? Bool ?? false) {
+					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
+					let data = try self.rawData(options: jsonOption)
+					return String(data: data, encoding: encoding)
+				}
 
-                    let nestedValue = JSON(value)
-                    guard let nestedString = try nestedValue._rawString(encoding, options: opt, maxDepth: maxDepth - 1) else {
-                        throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
-                    }
-                    if nestedValue.type == .string {
-                        return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
-                    } else {
-                        return "\"\(key)\": \(nestedString)"
-                    }
-                }
+				guard let dict = self.object as? [String: Any?] else {
+					return nil
+				}
+				let body = try dict.keys.map { key throws -> String in
+					guard let value = dict[key] else {
+						return "\"\(key)\": null"
+					}
+					guard value != nil else {
+						return "\"\(key)\": null"
+					}
 
-                return "{\(body.joined(separator: ","))}"
-            } catch _ {
-                return nil
-            }
-        case .array:
+					let nestedValue = JSON(value)
+					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
+						throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
+					}
+					if nestedValue.type == .string {
+						return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+					} else {
+						return "\"\(key)\": \(nestedString)"
+					}
+				}
+
+				return "{\(body.joined(separator: ","))}"
+			} catch _ {
+				return nil
+			}
+		case .array:
             do {
+				if !(options[.castNilToNSNull] as? Bool ?? false) {
+					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
+					let data = try self.rawData(options: jsonOption)
+					return String(data: data, encoding: encoding)
+				}
+
                 guard let array = self.object as? [Any?] else {
                     return nil
                 }
@@ -646,7 +673,7 @@ extension JSON: Swift.RawRepresentable {
                     }
 
                     let nestedValue = JSON(value)
-                    guard let nestedString = try nestedValue._rawString(encoding, options: opt, maxDepth: maxDepth - 1) else {
+                    guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
                         throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
                     }
                     if nestedValue.type == .string {
@@ -1403,4 +1430,11 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     default:
         return lhs.compare(rhs) != .orderedAscending
     }
+}
+
+public enum writtingOptionsKeys {
+	case jsonSerialization
+	case castNilToNSNull
+	case maxObjextDepth
+	case encoding
 }

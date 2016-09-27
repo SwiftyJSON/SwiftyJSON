@@ -478,8 +478,9 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
             return JSON(dictionaryLiteral: initializeElement)
         }
         
-        self.init(elements.reduce([String : Any](minimumCapacity: elements.count)){(dictionary: [String : Any], element:(String, Any)) -> [String : Any] in
-            var d = dictionary
+        var dict = [String : Any](minimumCapacity: elements.count)
+        
+        for element in elements {
             let elementToSet: Any
             if let json = element.1 as? JSON {
                 elementToSet = json.object
@@ -493,9 +494,10 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
             } else {
                 elementToSet = element.1
             }
-            d[element.0] = elementToSet
-            return d
-            } as Any)
+            dict[element.0] = elementToSet
+        }
+        
+        self.init(dict)
     }
 }
 
@@ -626,12 +628,11 @@ extension JSON {
     //Optional [String : JSON]
     public var dictionary: [String : JSON]? {
         if self.type == .dictionary {
-            
-            return self.rawDictionary.reduce([String : JSON]()) { (dictionary: [String : JSON], element: (String, Any)) -> [String : JSON] in
-                var d = dictionary
-                d[element.0] = JSON(element.1)
-                return d
+            var d = [String : JSON](minimumCapacity: rawDictionary.count)
+            for (key, value) in rawDictionary {
+                d[key] = JSON(value)
             }
+            return d
         } else {
             return nil
         }

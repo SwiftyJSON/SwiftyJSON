@@ -386,6 +386,15 @@ json["list",3,"what"] = "that"
 let path = ["list",3,"what"]
 json[path] = "that"
 ```
+```swift
+//With other JSON objects
+let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
+let auth: JSON = [
+  "user": user.object //use user.object instead of just user
+  "apikey": "supersecretapitoken"
+]
+````
+
 ##Work with Alamofire
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:

@@ -34,12 +34,6 @@ public let ErrorWrongType: Int = 901
 public let ErrorNotExist: Int = 500
 public let ErrorInvalidJSON: Int = 490
 
-///Types
-private let trueNumber = NSNumber(value: true)
-private let falseNumber = NSNumber(value: false)
-private let trueObjCType = String(cString: trueNumber.objCType)
-private let falseObjCType = String(cString: falseNumber.objCType)
-
 // MARK: - JSON Type
 
 /**
@@ -56,84 +50,6 @@ public enum Type :Int{
     case dictionary
     case null
     case unknown
-}
-
-// MARK: - NSNumber: Comparable
-extension NSNumber {
-    var isBool:Bool {
-        get {
-            let objCType = String(cString: self.objCType)
-            if (self.compare(trueNumber) == ComparisonResult.orderedSame && objCType == trueObjCType)
-                || (self.compare(falseNumber) == ComparisonResult.orderedSame && objCType == falseObjCType){
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-}
-
-func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
-        return false
-    default:
-        return lhs.compare(rhs) == ComparisonResult.orderedSame
-    }
-}
-
-func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    return !(lhs == rhs)
-}
-
-func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    
-    switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
-        return false
-    default:
-        return lhs.compare(rhs) == ComparisonResult.orderedAscending
-    }
-}
-
-func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    
-    switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
-        return false
-    default:
-        return lhs.compare(rhs) == ComparisonResult.orderedDescending
-    }
-}
-
-func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    
-    switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
-        return false
-    default:
-        return lhs.compare(rhs) != ComparisonResult.orderedDescending
-    }
-}
-
-func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
-    
-    switch (lhs.isBool, rhs.isBool) {
-    case (false, true):
-        return false
-    case (true, false):
-        return false
-    default:
-        return lhs.compare(rhs) != ComparisonResult.orderedAscending
-    }
 }
 
 // MARK: - JSON Base
@@ -579,7 +495,7 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
             }
             d[element.0] = elementToSet
             return d
-        } as Any)
+            } as Any)
     }
 }
 
@@ -896,7 +812,7 @@ extension JSON {
         if let errorValue = error, errorValue.code == ErrorNotExist ||
             errorValue.code == ErrorIndexOutOfBounds ||
             errorValue.code == ErrorWrongType {
-            return false
+                return false
         }
         return true
     }
@@ -1048,7 +964,7 @@ extension JSON {
             if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
             } else {
-                self.object = NSNull()
+                self.object =  NSNull()
             }
         }
     }
@@ -1279,5 +1195,89 @@ public func <(lhs: JSON, rhs: JSON) -> Bool {
         return lhs.rawString < rhs.rawString
     default:
         return false
+    }
+}
+
+private let trueNumber = NSNumber(value: true)
+private let falseNumber = NSNumber(value: false)
+private let trueObjCType = String(cString: trueNumber.objCType)
+private let falseObjCType = String(cString: falseNumber.objCType)
+
+// MARK: - NSNumber: Comparable
+
+extension NSNumber {
+    var isBool:Bool {
+        get {
+            let objCType = String(cString: self.objCType)
+            if (self.compare(trueNumber) == ComparisonResult.orderedSame && objCType == trueObjCType)
+                || (self.compare(falseNumber) == ComparisonResult.orderedSame && objCType == falseObjCType){
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+}
+
+func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == ComparisonResult.orderedSame
+    }
+}
+
+func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    return !(lhs == rhs)
+}
+
+func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == ComparisonResult.orderedAscending
+    }
+}
+
+func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == ComparisonResult.orderedDescending
+    }
+}
+
+func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != ComparisonResult.orderedDescending
+    }
+}
+
+func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != ComparisonResult.orderedAscending
     }
 }

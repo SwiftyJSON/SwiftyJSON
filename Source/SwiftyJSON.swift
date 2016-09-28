@@ -53,7 +53,6 @@ public enum Type :Int{
 }
 
 // MARK: - JSON Base
-
 public struct JSON {
     
     /**
@@ -171,6 +170,9 @@ public struct JSON {
                 self.rawString = string
             case  _ as NSNull:
                 _type = .null
+            case let array as [JSON]:
+                _type = .array
+                self.rawArray = array.map { $0.object }
             case let array as [Any]:
                 _type = .array
                 self.rawArray = array
@@ -460,13 +462,42 @@ extension JSON: Swift.ExpressibleByFloatLiteral {
 }
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
-    
     public init(dictionaryLiteral elements: (String, Any)...) {
-        self.init(elements.reduce([String : Any](minimumCapacity: elements.count)){(dictionary: [String : Any], element:(String, Any)) -> [String : Any] in
-            var d = dictionary
-            d[element.0] = element.1
-            return d
-        } as Any)
+        let array = elements
+        self.init(dictionaryLiteral: array)
+    }
+    
+    public init(dictionaryLiteral elements: [(String, Any)]) {
+        let jsonFromDictionaryLiteral: ([String : Any]) -> JSON = { dictionary in
+            let initializeElement = Array(dictionary.keys).flatMap { key -> (String, Any)? in
+                if let value = dictionary[key] {
+                    return (key, value)
+                }
+                return nil
+            }
+            return JSON(dictionaryLiteral: initializeElement)
+        }
+        
+        var dict = [String : Any](minimumCapacity: elements.count)
+        
+        for element in elements {
+            let elementToSet: Any
+            if let json = element.1 as? JSON {
+                elementToSet = json.object
+            } else if let jsonArray = element.1 as? [JSON] {
+                elementToSet = JSON(jsonArray).object
+            } else if let dictionary = element.1 as? [String : Any] {
+                elementToSet = jsonFromDictionaryLiteral(dictionary).object
+            } else if let dictArray = element.1 as? [[String : Any]] {
+                let jsonArray = dictArray.map { jsonFromDictionaryLiteral($0) }
+                elementToSet = JSON(jsonArray).object
+            } else {
+                elementToSet = element.1
+            }
+            dict[element.0] = elementToSet
+        }
+        
+        self.init(dict)
     }
 }
 
@@ -597,12 +628,11 @@ extension JSON {
     //Optional [String : JSON]
     public var dictionary: [String : JSON]? {
         if self.type == .dictionary {
-            
-            return self.rawDictionary.reduce([String : JSON]()) { (dictionary: [String : JSON], element: (String, Any)) -> [String : JSON] in
-                var d = dictionary
-                d[element.0] = JSON(element.1)
-                return d
+            var d = [String : JSON](minimumCapacity: rawDictionary.count)
+            for (key, value) in rawDictionary {
+                d[key] = JSON(value)
             }
+            return d
         } else {
             return nil
         }

@@ -401,10 +401,10 @@ SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
 Alamofire.request(.GET, url).validate().responseJSON { response in
     switch response.result {
-    case .Success(let value):
+    case .success(let value):
         let json = JSON(value)
         print("JSON: \(json)")
-    case .Failure(let error):
+    case .failure(let error):
         print(error)
     }
 }

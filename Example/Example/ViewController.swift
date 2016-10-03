@@ -29,30 +29,30 @@ class ViewController: UITableViewController {
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.json.type {
-        case Type.Array, Type.Dictionary:
+        case Type.array, Type.dictionary:
             return self.json.count
         default:
             return 1
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("JSONCell", forIndexPath: indexPath) as UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "JSONCell", for: indexPath) as UITableViewCell
             
-        let row = indexPath.row
+        let row = (indexPath as NSIndexPath).row
         
         switch self.json.type {
-        case .Array:
+        case .array:
             cell.textLabel?.text = "\(row)"
             cell.detailTextLabel?.text = self.json.arrayValue.description
-        case .Dictionary:
-            let key: AnyObject = Array(self.json.dictionaryValue.keys)[row]
+        case .dictionary:
+            let key: Any = Array(self.json.dictionaryValue.keys)[row]
             let value = self.json[key as! String]
             cell.textLabel?.text = "\(key)"
             cell.detailTextLabel?.text = value.description
@@ -66,23 +66,23 @@ class ViewController: UITableViewController {
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
 
         var nextController: UIViewController?
-        switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-        case .OrderedSame, .OrderedDescending:
-            nextController = (segue.destinationViewController as! UINavigationController).topViewController
-        case .OrderedAscending:
-            nextController = segue.destinationViewController
+        switch UIDevice.current.systemVersion.compare("8.0.0", options: NSString.CompareOptions.numeric) {
+        case .orderedSame, .orderedDescending:
+            nextController = (segue.destination as! UINavigationController).topViewController
+        case .orderedAscending:
+            nextController = segue.destination
         }
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            let row = indexPath.row
+            let row = (indexPath as NSIndexPath).row
             var nextJson: JSON = JSON.null
             switch self.json.type {
-            case .Array:
+            case .array:
                 nextJson = self.json[row]
-            case .Dictionary where row < self.json.dictionaryValue.count:
+            case .dictionary where row < self.json.dictionaryValue.count:
                 let key = Array(self.json.dictionaryValue.keys)[row]
                 if let value = self.json.dictionary?[key] {
                     nextJson = value

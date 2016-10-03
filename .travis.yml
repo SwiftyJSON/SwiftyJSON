@@ -1,7 +1,24 @@
 language: objective-c
-
-osx_image: xcode7.1
-xcode_sdk: iphonesimulator9.0
-
-script: 'sh scripts/ci.sh'
-
+osx_image: xcode8
+xcode_sdk: iphonesimulator10.0
+env:
+  global:
+  - FRAMEWORK_NAME=SwiftyJSON
+before_install:
+- rvm get head
+- brew update
+- brew outdated carthage || brew upgrade carthage
+before_deploy:
+- carthage build --no-skip-current
+- carthage archive $FRAMEWORK_NAME
+script:
+- sh scripts/ci.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: MufQRIzcHPU5fn9gyXl7kDGaLihN6zGABx9UWqNtkwq0AxV0aYNWys11nrKDIgoZFR+MbQHMoodpZK03yDdCLG03ncnOr3aytLOpI0imuDFWx16sieiVoYmnP5bfNFTN0qqXdfBy0OOsx4wO+F5Pwg5y1TgGYnKpXtEfdIU3Om4=
+  file: SwiftyJSON.framework.zip
+  skip_cleanup: true
+  on:
+    repo: SwiftyJSON/SwiftyJSON
+    tags: true

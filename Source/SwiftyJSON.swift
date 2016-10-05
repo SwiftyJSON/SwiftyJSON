@@ -575,6 +575,14 @@ extension JSON: Swift.RawRepresentable {
             return nil
         }
     }
+    
+    public func rawStringPretty() -> String? {
+        return rawString(options: .PrettyPrinted)
+    }
+    
+    public func rawStringFlat() -> String? {
+        return rawString(options: [])
+    }
 }
 
 // MARK: - Printable, DebugPrintable

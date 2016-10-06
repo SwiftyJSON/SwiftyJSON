@@ -816,7 +816,7 @@ extension JSON: Swift.RawRepresentable {
             throw SwiftyJSONError.errorInvalidJSON("JSON is invalid")
         }
 
-        return try LclJSONSerialization.dataWithJSONObject(self.object, options: opt)
+        return try LclJSONSerialization.data(withJSONObject: self.object, options: opt)
     }
 #else
     public func rawData(options opt: JSONSerialization.WritingOptions = JSONSerialization.WritingOptions(rawValue: 0)) throws -> Data {

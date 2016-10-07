@@ -525,7 +525,7 @@ extension JSON: Swift.ExpressibleByArrayLiteral {
 
 extension JSON: Swift.ExpressibleByNilLiteral {
 
-    @available(*, deprecated, message: "use JSON.null instead. Will be removed in future versions")
+    @available(*, deprecated, message: "https://git.io/vPlHM Use JSON.null if you want to create or compare null value. If you need optional JSON variable use Optional.none instead of nil")
     public init(nilLiteral: ()) {
         self.init(NSNull() as Any)
     }

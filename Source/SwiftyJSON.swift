@@ -400,14 +400,33 @@ extension JSON {
      */
     public subscript(path: [JSONSubscriptType]) -> JSON {
         get {
-            return path.reduce(self) { $0[sub: $1] }
+            return path.reduce(self) { json, type in
+                var value: JSON?
+                doKeypath(type,
+                    subscriptClosure: {
+                        value = json[sub: type]
+                    },
+                    keypathClosure: { components in
+                        value = json[components]
+                    }
+                )
+                return value!
+            }
         }
         set {
             switch path.count {
             case 0:
                 return
             case 1:
-                self[sub:path[0]].object = newValue.object
+                let path = path[0]
+                doKeypath(path,
+                    subscriptClosure: {
+                        self[sub: path].object = newValue.object
+                    },
+                    keypathClosure: { components in
+                        self[components].object = newValue.object
+                    }
+                )
             default:
                 var aPath = path; aPath.remove(at: 0)
                 var nextJSON = self[sub: path[0]]
@@ -1134,6 +1153,27 @@ extension JSON {
 
 //MARK: - Comparable
 extension JSON : Swift.Comparable {}
+
+//MARK: - Keypath
+extension JSON {
+    private func doKeypath(subscriptType: JSONSubscriptType, subscriptClosure: () -> Void, keypathClosure: (components: [JSONSubscriptType]) -> Void) {
+        switch subscriptType.jsonKey {
+        case .Index(_):
+            subscriptClosure()
+        case .Key(let path):
+            let components = path.componentsSeparatedByString(".")
+            if components.count > 1 {
+                let components: [JSONSubscriptType] = components.map { key in
+                    let index = Int(key)
+                    return index != nil ? index! : key
+                }
+                keypathClosure(components: components)
+            } else {
+                subscriptClosure()
+            }
+        }
+    }
+}
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
     

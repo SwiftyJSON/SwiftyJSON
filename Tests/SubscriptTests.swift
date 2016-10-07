@@ -262,4 +262,12 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["user","info","email"], "tom@qq.com")
         XCTAssertEqual(json["user","feeds"], [77323,2313,4545,323])
     }
+    
+    func testKeypath() {
+        var json:JSON = ["user":["id":987654, "info":["name":"jack","email":"jack@gmail.com"], "feeds":[98833,23443,213239,23232]]]
+        XCTAssertEqual(json["user.id"], 987654)
+        XCTAssertEqual(json["user.feeds.1"], 23443)
+        json["user.feeds.2"] = 666
+        XCTAssertEqual(json["user","feeds",2], 666)
+    }
 }

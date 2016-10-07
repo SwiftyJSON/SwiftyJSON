@@ -25,7 +25,7 @@ import SwiftyJSON
 
 class ViewController: UITableViewController {
 
-    var json: JSON = JSON.null
+    var json: JSON = .null
     
     // MARK: - Table view data source
 
@@ -78,7 +78,7 @@ class ViewController: UITableViewController {
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let row = (indexPath as NSIndexPath).row
-            var nextJson: JSON = JSON.null
+            var nextJson: JSON = .null
             switch self.json.type {
             case .array:
                 nextJson = self.json[row]

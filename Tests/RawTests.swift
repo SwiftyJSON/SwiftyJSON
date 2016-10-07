@@ -92,7 +92,7 @@ class RawTests: XCTestCase {
     }
     
     func testNull() {
-        let json:JSON = JSON.null
+        let json:JSON = .null
         print(json.rawString())
         XCTAssertTrue(json.rawString() == "null")
     }

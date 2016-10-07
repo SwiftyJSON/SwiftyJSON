@@ -201,7 +201,7 @@ class BaseTests: XCTestCase {
     func testNullJSON() {
         XCTAssertEqual(JSON(NSNull()).debugDescription,"null")
         
-        let json:JSON = JSON.null
+        let json:JSON = .null
         XCTAssertEqual(json.debugDescription,"null")
         XCTAssertNil(json.error)
         let json1:JSON = JSON(NSNull())

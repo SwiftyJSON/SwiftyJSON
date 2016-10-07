@@ -201,11 +201,11 @@ class BaseTests: XCTestCase {
     func testNullJSON() {
         XCTAssertEqual(JSON(NSNull()).debugDescription,"null")
         
-        let json:JSON = nil
+        let json:JSON = JSON.null
         XCTAssertEqual(json.debugDescription,"null")
         XCTAssertNil(json.error)
         let json1:JSON = JSON(NSNull())
-        if json1 != nil {
+        if json1 != JSON.null {
             XCTFail("json1 should be nil")
         }
     }

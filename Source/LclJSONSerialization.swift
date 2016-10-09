@@ -27,13 +27,24 @@ public class LclJSONSerialization {
     open class func isValidJSONObject(_ obj: Any) -> Bool {
         // TODO: - revisit this once bridging story gets fully figured out
         func isValidJSONObjectInternal(_ obj: Any) -> Bool {
-            // object is Swift.String or NSNull
-            if obj is String || obj is NSNull {
+            // object is Swift.String, NSNull, Int, Bool, or UInt
+            if obj is String || obj is NSNull || obj is Int || obj is Bool || obj is UInt {
                 return true
             }
 
+            // object is a Double and is not NaN or infinity
+            if let number = obj as? Double  {
+	        let invalid = number.isInfinite || number.isNaN
+	        return !invalid
+	    }
+																        // object is a Float and is not NaN or infinity
+            if let number = obj as? Float  {
+                let invalid = number.isInfinite || number.isNaN
+                return !invalid
+            }
+
             // object is NSNumber and is not NaN or infinity
-            if let number = _SwiftValue.store(obj) as? NSNumber {
+            if let number = obj as? NSNumber {
                 let invalid = number.doubleValue.isInfinite || number.doubleValue.isNaN
                 return !invalid
             }
@@ -73,14 +84,14 @@ public class LclJSONSerialization {
     /* Generate JSON data from a Foundation object. If the object will not produce valid JSON then an exception will be thrown. Setting the NSJSONWritingPrettyPrinted option will generate JSON with whitespace designed to make the output more readable. If that option is not set, the most compact possible JSON will be generated. If an error occurs, the error parameter will be set and the return value will be nil. The resulting data is a encoded in UTF-8.
      */
     internal class func _data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions, stream: Bool) throws -> Data {
-        var result = Data()
+        var jsonStr = String()
+        jsonStr.reserveCapacity(5000)
         
         var writer = JSONWriter(
             pretty: opt.contains(.prettyPrinted),
             writer: { (str: String?) in
                 if let str = str {
-                    let count = str.lengthOfBytes(using: .utf8)
-                    result.append(UnsafeRawPointer(str.cString(using: .utf8)!).bindMemory(to: UInt8.self, capacity: count), count: count)
+                    jsonStr.append(str)
                 }
             }
         )
@@ -103,6 +114,8 @@ public class LclJSONSerialization {
             }
         }
         
+        let count = jsonStr.lengthOfBytes(using: .utf8)
+	let result = Data(bytes: UnsafeRawPointer(jsonStr.cString(using: .utf8)!).bindMemory(to: UInt8.self, capacity: count), count: count)
         return result
     }
     open class func data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions = []) throws -> Data {
@@ -138,7 +151,9 @@ private struct JSONWriter {
         
         if let str = obj as? String {
             try serializeString(str)
-        } else if let num = _SwiftValue.store(obj) as? NSNumber {
+        } else if obj is Int || obj is Float || obj is Double || obj is UInt {
+            writer(String(describing: obj))
+	} else if let num = obj as? NSNumber {
             try serializeNumber(num)
         } else if let array = obj as? Array<Any> {
             try serializeArray(array)

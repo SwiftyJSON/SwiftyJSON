@@ -1,0 +1,9 @@
+{
+"type": "sandbox",
+"title": "SwiftyJSON",
+"description": "A sample demonstrating how to use SwiftyJSON",
+"swiftversion": "swift-3.0-RELEASE-ubuntu14.04",
+"giturl": "https://github.com/IBM-Swift/SwiftyJSON-Sample.git",
+"gittag": "0.8.0"
+}
+

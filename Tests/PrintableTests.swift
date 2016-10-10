@@ -46,7 +46,7 @@ class PrintableTests: XCTestCase {
     }
     
     func testNil() {
-        let jsonNil_1:JSON = nil
+        let jsonNil_1:JSON = JSON.null
         XCTAssertEqual(jsonNil_1.description, "null")
         XCTAssertEqual(jsonNil_1.debugDescription, "null")
         let jsonNil_2:JSON = JSON(NSNull())

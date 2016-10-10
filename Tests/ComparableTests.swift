@@ -297,7 +297,7 @@ class ComparableTests: XCTestCase {
     }
 
     func testNil() {
-        let jsonL1:JSON = nil
+        let jsonL1:JSON = JSON.null
         let jsonR1:JSON = JSON(NSNull())
         XCTAssertEqual(jsonL1, jsonR1)
         XCTAssertTrue(jsonL1 != "123")

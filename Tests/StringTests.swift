@@ -47,5 +47,7 @@ class StringTests: XCTestCase {
         let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let json = JSON(urlString)
         XCTAssertEqual(json.URL!, URL(string: encodedURLString!)!, "Wrong unpacked ")
+        let preEscaped = JSON(encodedURLString)
+        XCTAssertEqual(preEscaped.URL!, URL(string: encodedURLString!)!, "Wrong unpacked ")
     }
 }

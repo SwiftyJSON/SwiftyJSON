@@ -440,6 +440,9 @@
 						ProvisioningStyle = Manual;
 						TestTargetID = 2E4FEFDA19575BE100351305;
 					};
+					7236B4EC1BAC14150020529B = {
+						ProvisioningStyle = Automatic;
+					};
 					9C7DFC5A1A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -828,8 +831,9 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -851,8 +855,9 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -998,11 +1003,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-<<<<<<< HEAD
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-=======
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
->>>>>>> Explictily set Prov Style Automatic for watchOS
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1027,11 +1028,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-<<<<<<< HEAD
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-=======
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
->>>>>>> Explictily set Prov Style Automatic for watchOS
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;

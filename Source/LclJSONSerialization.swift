@@ -1,49 +1,43 @@
-/**
- * Copyright IBM Corporation 2016
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- **/
+
+// This source file is part of the Swift.org open source project
+//
+// Copyright (c) 2014 - 2016 Apple Inc. and the Swift project authors
+// Licensed under Apache License v2.0 with Runtime Library Exception
+//
+// See http://swift.org/LICENSE.txt for license information
+// See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+//
 
 #if os(Linux)
 
+import CoreFoundation
 import Foundation
 
-public let LclErrorDomain = "Lcl.Error.Domain"
-
+import Glibc
 
 public class LclJSONSerialization {
-    private static let JSON_WRITE_ERROR = "JSON Write failure."
 
-    private static let FALSE = "false"
-    private static let TRUE = "true"
-    private static let NULL = "null"
-
-
-    public class func isValidJSONObject(_ obj: Any) -> Bool {
+    
+    /* Determines whether the given object can be converted to JSON.
+       Other rules may apply. Calling this method or attempting a conversion are the definitive ways
+       to tell if a given object can be converted to JSON data.
+       - parameter obj: The object to test.
+       - returns: `true` if `obj` can be converted to JSON, otherwise `false`.
+     */
+    open class func isValidJSONObject(_ obj: Any) -> Bool {
         // TODO: - revisit this once bridging story gets fully figured out
         func isValidJSONObjectInternal(_ obj: Any) -> Bool {
-            // object is Swift.String or NSNull
-            if obj is String || obj is Int || obj is Bool || obj is NSNull || obj is UInt {
-              return true
+            // object is Swift.String, NSNull, Int, Bool, or UInt
+            if obj is String || obj is NSNull || obj is Int || obj is Bool || obj is UInt {
+                return true
             }
 
             // object is a Double and is not NaN or infinity
             if let number = obj as? Double  {
-                let invalid = number.isInfinite || number.isNaN
-                return !invalid
-            }
-            
-            // object is a Float and is not NaN or infinity
+	        let invalid = number.isInfinite || number.isNaN
+	        return !invalid
+	    }
+																        // object is a Float and is not NaN or infinity
             if let number = obj as? Float  {
                 let invalid = number.isInfinite || number.isNaN
                 return !invalid
@@ -55,187 +49,255 @@ public class LclJSONSerialization {
                 return !invalid
             }
 
-            let mirror = Mirror(reflecting: obj)
-            if  mirror.displayStyle == .collection  {
-                // object is Swift.Array
-                for element in mirror.children {
-                    guard isValidJSONObjectInternal(element.value) else {
+            // object is Swift.Array
+            if let array = obj as? [Any] {
+                for element in array {
+                    guard isValidJSONObjectInternal(element) else {
                         return false
                     }
                 }
                 return true
             }
-            else if  mirror.displayStyle == .dictionary  {
-                // object is Swift.Dictionary
-                for pair in mirror.children {
-                    let pairMirror = Mirror(reflecting: pair.value)
-                    if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
-                        let generator = pairMirror.children.makeIterator()
-                        if  generator.next()!.value is String {
-                            guard isValidJSONObjectInternal(generator.next()!.value) else {
-                                return false
-                            }
-                        }
-                        else {
-                            // Invalid JSON Object, Key not a String
-                            return false
-                        }
-                    }
-                    else {
-                        // Invalid Dictionary
+
+            // object is Swift.Dictionary
+            if let dictionary = obj as? [String: Any] {
+                for (_, value) in dictionary {
+                    guard isValidJSONObjectInternal(value) else {
                         return false
                     }
                 }
                 return true
             }
-            else {
-                // invalid object
-                return false
-            }
+
+            // invalid object
+            return false
         }
 
         // top level object must be an Swift.Array or Swift.Dictionary
-        let mirror = Mirror(reflecting: obj)
-        guard mirror.displayStyle == .collection || mirror.displayStyle == .dictionary else {
+        guard obj is [Any] || obj is [String: Any] else {
             return false
         }
 
         return isValidJSONObjectInternal(obj)
     }
-
-    public class func dataWithJSONObject(_ obj: Any, options: JSONSerialization.WritingOptions) throws -> Data
-    {
-        var result = Data()
-
-        try writeJson(obj, options: options) { (str: String?) in
-            if  let str = str  {
-                result.append(str.data(using: String.Encoding.utf8) ?? Data())
+    
+    /* Generate JSON data from a Foundation object. If the object will not produce valid JSON then an exception will be thrown. Setting the NSJSONWritingPrettyPrinted option will generate JSON with whitespace designed to make the output more readable. If that option is not set, the most compact possible JSON will be generated. If an error occurs, the error parameter will be set and the return value will be nil. The resulting data is a encoded in UTF-8.
+     */
+    internal class func _data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions, stream: Bool) throws -> Data {
+        var jsonStr = String()
+        jsonStr.reserveCapacity(5000)
+        
+        var writer = JSONWriter(
+            pretty: opt.contains(.prettyPrinted),
+            writer: { (str: String?) in
+                if let str = str {
+                    jsonStr.append(str)
+                }
+            }
+        )
+        
+        if let container = value as? NSArray {
+            try writer.serializeJSON(container._bridgeToSwift())
+        } else if let container = value as? NSDictionary {
+            try writer.serializeJSON(container._bridgeToSwift())
+        } else if let container = value as? Array<Any> {
+            try writer.serializeJSON(container)
+        } else if let container = value as? Dictionary<AnyHashable, Any> {
+            try writer.serializeJSON(container)
+        } else {
+            if stream {
+                throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [
+                    "NSDebugDescription" : "Top-level object was not NSArray or NSDictionary"
+                    ])
+            } else {
+                fatalError("Top-level object was not NSArray or NSDictionary") // This is a fatal error in objective-c too (it is an NSInvalidArgumentException)
             }
         }
-
+        
+        let count = jsonStr.lengthOfBytes(using: .utf8)
+        let bufferLength = count+1 // Allow space for null terminator
+        var utf8: [CChar] = Array<CChar>(repeating: 0, count: bufferLength)
+        if !jsonStr.getCString(&utf8, maxLength: bufferLength, encoding: .utf8) {
+            // throw something?
+        }
+        let rawBytes = UnsafeRawPointer(UnsafePointer(utf8))
+        let result = Data(bytes: rawBytes.bindMemory(to: UInt8.self, capacity: count), count: count)
         return result
     }
-
-    /* Helper function to enable writing to NSData as well as NSStream */
-    private static func writeJson(_ obj: Any, options opt: JSONSerialization.WritingOptions, writer: (String?) -> Void) throws {
-        let prettyPrint = opt.rawValue & JSONSerialization.WritingOptions.prettyPrinted.rawValue  != 0
-        let padding: String? = prettyPrint ? "" : nil
-
-        try writeJsonValue(obj, padding: padding, writer: writer)
+    open class func data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions = []) throws -> Data {
+        return try _data(withJSONObject: value, options: opt, stream: false)
     }
+    
+    
+    /* Write JSON data into a stream. The stream should be opened and configured. The return value is the number of bytes written to the stream, or 0 on error. All other behavior of this method is the same as the dataWithJSONObject:options:error: method.
+     */
+    open class func writeJSONObject(_ obj: Any, toStream stream: OutputStream, options opt: JSONSerialization.WritingOptions) throws -> Int {
+        let jsonData = try _data(withJSONObject: obj, options: opt, stream: true)
+        let count = jsonData.count
+        return jsonData.withUnsafeBytes { (bytePtr) -> Int in
+            return stream.write(bytePtr, maxLength: count)
+        }
+    }
+}
 
-    /* Write out a JSON value (simple value, object, or array) */
-    private static func writeJsonValue(_ obj: Any, padding: String?, writer: (String?) -> Void) throws {
-        if  obj is String  {
-            writer("\"")
-            writer((obj as! String))
-            writer("\"")
-        }
-        else if  obj is Bool  {
-            writer(obj as! Bool ? TRUE : FALSE)
-        }
-        else if  obj is Int || obj is Float || obj is Double || obj is UInt {
+
+//MARK: - JSONSerializer
+private struct JSONWriter {
+    
+    var indent = 0
+    let pretty: Bool
+    let writer: (String?) -> Void
+    
+    init(pretty: Bool = false, writer: @escaping (String?) -> Void) {
+        self.pretty = pretty
+        self.writer = writer
+    }
+    
+    mutating func serializeJSON(_ obj: Any) throws {
+        
+        if let str = obj as? String {
+            try serializeString(str)
+        } else if obj is Int || obj is Float || obj is Double || obj is UInt {
             writer(String(describing: obj))
-        }
-        else if  obj is NSNumber  {
-            writer(JSON.stringFromNumber(obj as! NSNumber))
-        }
-        else if obj is NSNull {
-            writer(NULL)
+	} else if let num = obj as? NSNumber {
+            try serializeNumber(num)
+        } else if let array = obj as? Array<Any> {
+            try serializeArray(array)
+        } else if let dict = obj as? Dictionary<AnyHashable, Any> {
+            try serializeDictionary(dict)
+        } else if let null = obj as? NSNull {
+            try serializeNull(null)
+        } else if let boolVal = obj as? Bool {
+            try serializeNumber(NSNumber(value: boolVal))
         }
         else {
-            let mirror = Mirror(reflecting: obj)
-            if  mirror.displayStyle == .collection  {
-                try writeJsonArray(mirror.children.map { $0.value as Any }, padding: padding, writer: writer)
-            }
-            else if  mirror.displayStyle == .dictionary  {
-                try writeJsonObject(mirror.children.map { $0.value }, padding: padding, writer: writer)
-            }
-            else {
-                print("writeJsonValue: Unsupported type \(type(of: obj))")
-                throw createWriteError("Unsupported data type to be written out as JSON")
-            }
+            throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: ["NSDebugDescription" : "Invalid object cannot be serialized"])
         }
     }
 
-    /* Write out a dictionary as a JSON object */
-    private static func writeJsonObject(_ pairs: Array<Any>, padding: String?, writer: (String?) -> Void) throws {
-        let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
-        let nameValueSeparator = padding != nil ? ": " : ":"
-
-        writer("{")
-
-        var comma = ""
-        let realComma = ","
-        for pair in pairs {
-           let pairMirror = Mirror(reflecting: pair)
-           if  pairMirror.displayStyle == .tuple  &&  pairMirror.children.count == 2 {
-               let generator = pairMirror.children.makeIterator()
-               if  let key = generator.next()!.value as? String {
-                   let value = generator.next()!.value
-                   writer(comma)
-                   comma = realComma
-                   writer(endOfLine)
-                   writer(nestedPadding)
-                   writer("\"")
-                   writer(key)
-                   writer("\"")
-                   writer(nameValueSeparator)
-                   try writeJsonValue(value, padding: nestedPadding, writer: writer)
-               }
-           }
+    func serializeString(_ str: String) throws {
+        writer("\"")
+        for scalar in str.unicodeScalars {
+            switch scalar {
+                case "\"":
+                    writer("\\\"") // U+0022 quotation mark
+                case "\\":
+                    writer("\\\\") // U+005C reverse solidus
+                // U+002F solidus not escaped
+                case "\u{8}":
+                    writer("\\b") // U+0008 backspace
+                case "\u{c}":
+                    writer("\\f") // U+000C form feed
+                case "\n":
+                    writer("\\n") // U+000A line feed
+                case "\r":
+                    writer("\\r") // U+000D carriage return
+                case "\t":
+                    writer("\\t") // U+0009 tab
+                case "\u{0}"..."\u{f}":
+                    writer("\\u000\(String(scalar.value, radix: 16))") // U+0000 to U+000F
+                case "\u{10}"..."\u{1f}":
+                    writer("\\u00\(String(scalar.value, radix: 16))") // U+0010 to U+001F
+                default:
+                    writer(String(scalar))
+            }
         }
-        writer(endOfLine)
-
-        writer(startOfLine)
-        writer("}")
+        writer("\"")
     }
 
-    /* Write out an array as a JSON Array */
-    private static func writeJsonArray(_ obj: Array<Any>, padding: String?, writer: (String?) -> Void) throws {
-        let (nestedPadding, startOfLine, endOfLine) = setupPadding(padding)
+    mutating func serializeNumber(_ num: NSNumber) throws {
+        if num.doubleValue.isInfinite || num.doubleValue.isNaN {
+            throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: ["NSDebugDescription" : "Number cannot be infinity or NaN"])
+        }
+        
+        // Cannot detect type information (e.g. bool) as there is no objCType property on NSNumber in Swift
+        // So, just print the number
+
+        writer(JSON.stringFromNumber(num))
+    }
+
+    mutating func serializeArray(_ array: [Any]) throws {
         writer("[")
-
-        var comma = ""
-        let realComma = ","
-        for value in obj {
-            writer(comma)
-            comma = realComma
-            writer(endOfLine)
-            writer(nestedPadding)
-            try writeJsonValue(value, padding: nestedPadding, writer: writer)
+        if pretty {
+            writer("\n")
+            incAndWriteIndent()
         }
-        writer(endOfLine)
-
-        writer(startOfLine)
+        
+        var first = true
+        for elem in array {
+            if first {
+                first = false
+            } else if pretty {
+                writer(",\n")
+                writeIndent()
+            } else {
+                writer(",")
+            }
+            try serializeJSON(elem)
+        }
+        if pretty {
+            writer("\n")
+            decAndWriteIndent()
+        }
         writer("]")
     }
 
-    /* Setup "padding" to be used in objects and arrays.
-
-       Note: if padding is nil, then all padding, newlines etc., are suppressed
-    */
-    private static func setupPadding(_ padding: String?) -> (String?, String?, String?) {
-        var nestedPadding: String?
-        var startOfLine: String?
-        var endOfLine: String?
-        if  let padding = padding  {
-            nestedPadding = padding + "  "
-            startOfLine = padding
-            endOfLine = "\n"
+    mutating func serializeDictionary(_ dict: Dictionary<AnyHashable, Any>) throws {
+        writer("{")
+        if pretty {
+            writer("\n")
+            incAndWriteIndent()
         }
-        else {
-            nestedPadding = nil
-            startOfLine = nil
-            endOfLine = nil
+        
+        var first = true
+        
+        for (key, value) in dict {
+            if first {
+                first = false
+            } else if pretty {
+                writer(",\n")
+                writeIndent()
+            } else {
+                writer(",")
+            }
+            
+            if key is String {
+                try serializeString(key as! String)
+            } else {
+                throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: ["NSDebugDescription" : "NSDictionary key must be NSString"])
+            }
+            pretty ? writer(": ") : writer(":")
+            try serializeJSON(value)
         }
-        return (nestedPadding, startOfLine, endOfLine)
+        if pretty {
+            writer("\n")
+            decAndWriteIndent()
+        }
+        writer("}")
     }
 
-    private static func createWriteError(_ reason: String) -> NSError {
-        let userInfo: [String: Any] = [NSLocalizedDescriptionKey: JSON_WRITE_ERROR,
-            NSLocalizedFailureReasonErrorKey: reason]
-        return NSError(domain: LclErrorDomain, code: 1, userInfo: userInfo)
+    func serializeNull(_ null: NSNull) throws {
+        writer("null")
+    }
+    
+    let indentAmount = 2
+    
+    mutating func incAndWriteIndent() {
+        indent += indentAmount
+        writeIndent()
+    }
+    
+    mutating func decAndWriteIndent() {
+        indent -= indentAmount
+        writeIndent()
+    }
+    
+    func writeIndent() {
+        for _ in 0..<indent {
+            writer(" ")
+        }
     }
 }
+
+
 #endif

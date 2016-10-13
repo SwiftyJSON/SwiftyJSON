@@ -115,7 +115,13 @@ public class LclJSONSerialization {
         }
         
         let count = jsonStr.lengthOfBytes(using: .utf8)
-	let result = Data(bytes: UnsafeRawPointer(jsonStr.cString(using: .utf8)!).bindMemory(to: UInt8.self, capacity: count), count: count)
+        let bufferLength = count+1 // Allow space for null terminator
+        var utf8: [CChar] = Array<CChar>(repeating: 0, count: bufferLength)
+        if !jsonStr.getCString(&utf8, maxLength: bufferLength, encoding: .utf8) {
+            // throw something?
+        }
+        let rawBytes = UnsafeRawPointer(UnsafePointer(utf8))
+        let result = Data(bytes: rawBytes.bindMemory(to: UInt8.self, capacity: count), count: count)
         return result
     }
     open class func data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions = []) throws -> Data {

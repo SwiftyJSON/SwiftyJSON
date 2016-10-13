@@ -449,6 +449,9 @@
 					A8580F731BCF5C5B00DA927B = {
 						CreatedOnToolsVersion = 7.1;
 					};
+					E4D7CCDE1B9465A700EE7221 = {
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 2E4FEFD519575BE100351305 /* Build configuration list for PBXProject "SwiftyJSON" */;
@@ -995,8 +998,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+<<<<<<< HEAD
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+=======
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+>>>>>>> Explictily set Prov Style Automatic for watchOS
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1019,8 +1027,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+<<<<<<< HEAD
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+=======
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+>>>>>>> Explictily set Prov Style Automatic for watchOS
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

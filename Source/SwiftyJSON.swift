@@ -711,7 +711,9 @@ extension JSON { // : Swift.Bool
             case .number:
                 return self.rawNumber.boolValue
             case .string:
-                return self.rawString.caseInsensitiveCompare("true") == .orderedSame
+                return ["true", "y", "t"].contains() { (truthyString) in
+                    return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
+                }
             default:
                 return false
             }

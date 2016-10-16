@@ -2,10 +2,10 @@
 
 import SwiftyJSON
 
-var testData: NSData?
+var testData: Data?
 
-if let file = NSBundle.mainBundle().pathForResource("SwiftyJSONTests", ofType: "json") {
-    testData = NSData(contentsOfFile: file)
+if let file = Bundle.main.path(forResource: "SwiftyJSONTests", ofType: "json") {
+    testData = try? Data(contentsOf: URL(fileURLWithPath: file))
 } else {
     print("Fail")
 }

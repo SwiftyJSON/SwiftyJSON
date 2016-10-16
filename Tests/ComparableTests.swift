@@ -1,6 +1,6 @@
 //  ComparableTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -297,7 +297,7 @@ class ComparableTests: XCTestCase {
     }
 
     func testNil() {
-        let jsonL1:JSON = nil
+        let jsonL1:JSON = JSON.null
         let jsonR1:JSON = JSON(NSNull())
         XCTAssertEqual(jsonL1, jsonR1)
         XCTAssertTrue(jsonL1 != "123")

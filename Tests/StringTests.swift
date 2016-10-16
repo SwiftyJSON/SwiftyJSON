@@ -1,6 +1,6 @@
 //  StringTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ class StringTests: XCTestCase {
     
     func testURL() {
         let json = JSON("http://github.com")
-        XCTAssertEqual(json.URL!, NSURL(string:"http://github.com")!)
+        XCTAssertEqual(json.URL!, URL(string:"http://github.com")!)
     }
 
     func testURLPercentEscapes() {
@@ -46,6 +46,6 @@ class StringTests: XCTestCase {
         let urlString = "http://examble.com/unencoded" + emDash + "string"
         let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let json = JSON(urlString)
-        XCTAssertEqual(json.URL!, NSURL(string: encodedURLString!)!, "Wrong unpacked ")
+        XCTAssertEqual(json.URL!, URL(string: encodedURLString!)!, "Wrong unpacked ")
     }
 }

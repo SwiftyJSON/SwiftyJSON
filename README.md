@@ -1,6 +1,6 @@
 #SwiftyJSON
 
-[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0+%20%7C%20macOS%2010.10+%20%7C%20tvOS%209.0+%20%7C%20watchOS%202.0+-333333.svg)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
@@ -82,7 +82,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 
 ## Requirements
 
-- iOS 7.0+ / OS X 10.9+
+- iOS 8.0+ | macOS 10.10+ | tvOS 9.0+ | watchOS 2.0+
 - Xcode 8
 
 ##Integration
@@ -287,7 +287,7 @@ let id: Int = json["id"].intValue
 let name: String = json["name"].stringValue
 ```
 ```swift
-//If not a Array or nil, return []
+//If not an Array or nil, return []
 let list: Array<JSON> = json["list"].arrayValue
 ```
 ```swift
@@ -330,7 +330,7 @@ if let string = json.rawString() {
 ####Existence
 ```swift
 //shows you whether value specified in JSON or not
-if json["name"].isExists()
+if json["name"].exists()
 ```
 
 ####Literal convertibles
@@ -386,16 +386,25 @@ json["list",3,"what"] = "that"
 let path = ["list",3,"what"]
 json[path] = "that"
 ```
+```swift
+//With other JSON objects
+let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
+let auth: JSON = [
+  "user": user.object //use user.object instead of just user
+  "apikey": "supersecretapitoken"
+]
+````
+
 ##Work with Alamofire
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 ```swift
 Alamofire.request(.GET, url).validate().responseJSON { response in
     switch response.result {
-    case .Success(let value):
+    case .success(let value):
         let json = JSON(value)
         print("JSON: \(json)")
-    case .Failure(let error):
+    case .failure(let error):
         print(error)
     }
 }

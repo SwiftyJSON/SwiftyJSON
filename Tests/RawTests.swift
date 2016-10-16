@@ -1,6 +1,6 @@
 //  RawTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +92,7 @@ class RawTests: XCTestCase {
     }
     
     func testNull() {
-        let json:JSON = nil
+        let json:JSON = JSON.null
         print(json.rawString())
         XCTAssertTrue(json.rawString() == "null")
     }

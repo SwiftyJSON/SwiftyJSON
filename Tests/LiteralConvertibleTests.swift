@@ -1,6 +1,6 @@
 //  LiteralConvertibleTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -51,12 +51,12 @@ class LiteralConvertibleTests: XCTestCase {
     }
     
     func testNil() {
-        let jsonNil_1:JSON = nil
-        XCTAssert(jsonNil_1 == nil)
+        let jsonNil_1:JSON = JSON.null
+        XCTAssert(jsonNil_1 == JSON.null)
         let jsonNil_2:JSON = JSON(NSNull.self)
-        XCTAssert(jsonNil_2 != nil)
+        XCTAssert(jsonNil_2 != JSON.null)
         let jsonNil_3:JSON = JSON([1:2])
-        XCTAssert(jsonNil_3 != nil)
+        XCTAssert(jsonNil_3 != JSON.null)
     }
     
     func testArray() {

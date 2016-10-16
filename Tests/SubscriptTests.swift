@@ -1,6 +1,6 @@
 //  SubscriptTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -224,7 +224,7 @@ class SubscriptTests: XCTestCase {
         var json:JSON = [[[[["num":1]]]]]
         json[0, 0, 0, 0, "num"] = 2
         XCTAssertEqual(json[[0, 0, 0, 0, "num"]].intValue, 2)
-        json[0, 0, 0, 0, "num"] = nil
+        json[0, 0, 0, 0, "num"] = JSON.null
         XCTAssertEqual(json[0, 0, 0, 0, "num"].null!, NSNull())
         json[0, 0, 0, 0, "num"] = 100.009
         XCTAssertEqual(json[0][0][0][0]["num"].doubleValue, 100.009)

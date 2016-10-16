@@ -1,6 +1,6 @@
 //  PrintableTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2016 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ class PrintableTests: XCTestCase {
     }
     
     func testNil() {
-        let jsonNil_1:JSON = nil
+        let jsonNil_1:JSON = JSON.null
         XCTAssertEqual(jsonNil_1.description, "null")
         XCTAssertEqual(jsonNil_1.debugDescription, "null")
         let jsonNil_2:JSON = JSON(NSNull())

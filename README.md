@@ -34,7 +34,7 @@ The code would look like this:
 
 ```swift
 
-if let statusesArray = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: AnyObject]],
     let user = statusesArray[0]["user"] as? [String: AnyObject],
     let username = user["name"] as? String {
     // Finally we got the username
@@ -48,7 +48,7 @@ Even if we use optional chaining, it would be messy:
 
 ```swift
 
-if let JSONObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [[String: AnyObject]],
+if let JSONObject = try JSONSerialization.jsonObject(with: data,, options: .allowFragments) as? [[String: AnyObject]],
     let username = (JSONObject[0]["user"] as? [String: AnyObject])?["name"] as? String {
         // There's our username
 }
@@ -147,7 +147,7 @@ let json = JSON(data: dataFromNetworking)
 let json = JSON(jsonObject)
 ```
 ```swift
-if let dataFromString = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
     let json = JSON(data: dataFromString)
 }
 ```

@@ -69,12 +69,7 @@ class ViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
 
         var nextController: UIViewController?
-        switch UIDevice.current.systemVersion.compare("8.0.0", options: NSString.CompareOptions.numeric) {
-        case .orderedSame, .orderedDescending:
-            nextController = (segue.destination as! UINavigationController).topViewController
-        case .orderedAscending:
-            nextController = segue.destination
-        }
+        nextController = segue.destination
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let row = (indexPath as NSIndexPath).row

@@ -41,6 +41,21 @@ class StringTests: XCTestCase {
         XCTAssertEqual(json.URL!, URL(string:"http://github.com")!)
     }
 
+    func testBool() {
+        let json = JSON("true")
+        XCTAssertTrue(json.boolValue)
+    }
+
+    func testBoolWithY() {
+        let json = JSON("Y")
+        XCTAssertTrue(json.boolValue)
+    }
+
+    func testBoolWithT() {
+        let json = JSON("T")
+        XCTAssertTrue(json.boolValue)
+    }
+
     func testURLPercentEscapes() {
         let emDash = "\\u2014"
         let urlString = "http://examble.com/unencoded" + emDash + "string"

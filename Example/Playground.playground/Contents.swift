@@ -77,3 +77,22 @@ print(arrayOfString)
 // Getting a string from a JSON Dictionary
 jsonDictionary["country"].stringValue
 
+//Getting a string using a path to the element
+let path: [JSONSubscriptType] = ["users", 1, "info", "name"]
+let feed = jsonArray[path].string
+
+////Just the same
+//let name = json[1]["list"][2]["name"].string
+////Alternatively
+//let name = json[1,"list",2,"name"].string
+//
+//
+//```swift
+////With a hard way
+//let name = json[].string
+//```
+//```swift
+////With a custom way
+//let keys:[SubscriptType] = [1,"list",2,"name"]
+//let name = json[keys].string
+//```

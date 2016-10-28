@@ -29,4 +29,4 @@ before_install:
   - git submodule update --init --remote --merge --recursive
 
 script:
-  - ./Package-Builder/build-package.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR
+  - ./Package-Builder/build-package.sh $TRAVIS_BUILD_DIR

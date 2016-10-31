@@ -1,9 +1,15 @@
 //: Playground - noun: a place where people can play
-
 /*:
- ## Basic setting for playground
+ # SwiftyJSON
+ SwiftyJSON makes it easy to deal with JSON data in Swift.
+ 
+ You must have to build `SwiftyJSON iOS` package for import.
+ */
+/*:
+ ### Basic setting for playground
  */
 import SwiftyJSON
+import Foundation
 
 var jsonData: Data?
 
@@ -18,9 +24,9 @@ let jsonObject = try JSONSerialization.jsonObject(with: jsonData!, options: .all
 let jsonString = String(data: jsonData!, encoding: .utf8)
 
 /*:
- # Usage
+ ## Usage
  
- ## Initialization
+ ### Initialization
  
  */
 import SwiftyJSON
@@ -37,7 +43,7 @@ let dataFromString = jsonString?.data(using: .utf8)
 let json3 = JSON(data: dataFromString!)
 
 /*:
- ## Subscript
+ ### Subscript
  */
 // Example json
 var jsonArray: JSON = [
@@ -78,21 +84,15 @@ print(arrayOfString)
 jsonDictionary["country"].stringValue
 
 //Getting a string using a path to the element
-let path: [JSONSubscriptType] = ["users", 1, "info", "name"]
-let feed = jsonArray[path].string
+let path = ["users", 1, "info", "name"] as [JSONSubscriptType]
+var name = jsonArray["users",1,"info","name"].string
 
-////Just the same
-//let name = json[1]["list"][2]["name"].string
-////Alternatively
-//let name = json[1,"list",2,"name"].string
-//
-//
-//```swift
-////With a hard way
-//let name = json[].string
-//```
-//```swift
-////With a custom way
-//let keys:[SubscriptType] = [1,"list",2,"name"]
-//let name = json[keys].string
-//```
+//With a custom way
+let keys: [JSONSubscriptType] = ["users", 1, "info", "name"]
+name = jsonArray[keys].string
+
+//Just the same
+name = jsonArray["users"][1]["info"]["name"].string
+
+//Alternatively
+name = jsonArray["users",1,"info","name"].string

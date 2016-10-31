@@ -170,7 +170,7 @@ let name = json["name"].stringValue
 ```
 ```swift
 //Getting a string using a path to the element
-let path = [1,"list",2,"name"]
+let path: [JSONSubscriptType] = [1,"list",2,"name"]
 let name = json[path].string
 //Just the same
 let name = json[1]["list"][2]["name"].string
@@ -401,7 +401,7 @@ json["address"] = "L.A." // Add the "address": "L.A." in json
 var json: JSON =  ["name": "Jack", "age": 25, "list": ["a", "b", "c", ["what": "this"]]]
 json["list"][3]["what"] = "that"
 json["list",3,"what"] = "that"
-let path = ["list",3,"what"]
+let path: [JSONSubscriptType] = ["list",3,"what"]
 json[path] = "that"
 ```
 ```swift

@@ -183,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				2E4FEFDD19575BE100351305 /* Source */,
-				2E4FEFEA19575BE100351305 /* Tests */,
+				2E4FEFEA19575BE100351305 /* SwiftyJSONTests */,
 				2E4FEFDC19575BE100351305 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -223,7 +223,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		2E4FEFEA19575BE100351305 /* Tests */ = {
+		2E4FEFEA19575BE100351305 /* SwiftyJSONTests */ = {
 			isa = PBXGroup;
 			children = (
 				A885D1DA19CFCFF0002FD4C3 /* Tests.json */,
@@ -243,7 +243,8 @@
 				A8B66C8D19E52F4200540692 /* ArrayTests.swift */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
-			path = Tests;
+			name = SwiftyJSONTests;
+			path = Tests/SwiftyJSONTests;
 			sourceTree = "<group>";
 		};
 		2E4FEFEB19575BE100351305 /* Supporting Files */ = {
@@ -804,7 +805,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/Info-iOS.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
@@ -818,7 +819,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "Tests/Info-iOS.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
@@ -938,7 +939,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/Info-OSX.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-OSX.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -955,7 +956,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "Tests/Info-OSX.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-OSX.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -971,7 +972,7 @@
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tangplin.SwiftyJSON-tvOS-Tests";
@@ -988,7 +989,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
+				INFOPLIST_FILE = "Tests/SwiftyJSONTests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tangplin.SwiftyJSON-tvOS-Tests";

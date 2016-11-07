@@ -255,6 +255,7 @@
 				A8580F781BCF5C5B00DA927B /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -23,8 +23,15 @@
 import XCTest
 import SwiftyJSON
 
-class ArrayTests: XCTestCase {
-
+final class ArrayTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (ArrayTests) -> () throws -> Void)] {
+		return [
+			("testSingleDimensionalArraysGetter", testSingleDimensionalArraysGetter),
+			("testSingleDimensionalArraysSetter", testSingleDimensionalArraysSetter)
+		]
+	}
+	
     func testSingleDimensionalArraysGetter() {
         let array = ["1","2", "a", "B", "D"]
         let json = JSON(array)

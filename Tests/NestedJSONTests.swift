@@ -9,7 +9,15 @@
 import XCTest
 import SwiftyJSON
 
-class NestedJSONTests: XCTestCase {
+final class NestedJSONTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (NestedJSONTests) -> () throws -> Void)] {
+		return [
+			("testTopLevelNestedJSON", testTopLevelNestedJSON),
+			("testDeeplyNestedJSON", testDeeplyNestedJSON)
+		]
+	}
+	
     let family: JSON = [
         "names" : [
             "Brooke Abigail Matos",

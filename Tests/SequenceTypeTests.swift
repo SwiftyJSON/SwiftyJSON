@@ -24,8 +24,24 @@
 import XCTest
 import SwiftyJSON
 
-class SequenceTypeTests: XCTestCase {
+final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 
+	static var allTests: [(String, (SequenceTypeTests) -> () throws -> Void)] {
+		return [
+			("testJSONFile", testJSONFile),
+			("testArrayAllNumber", testArrayAllNumber),
+			("testArrayAllBool", testArrayAllBool),
+			("testArrayAllString", testArrayAllString),
+			("testArrayWithNull", testArrayWithNull),
+			("testArrayAllDictionary", testArrayAllDictionary),
+			("testDictionaryAllNumber", testDictionaryAllNumber),
+			("testDictionaryAllBool", testDictionaryAllBool),
+			("testDictionaryAllString", testDictionaryAllString),
+			("testDictionaryWithNull", testDictionaryWithNull),
+			("testDictionaryAllArray", testDictionaryAllArray)
+		]
+	}
+	
     func testJSONFile() {
         if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             let testData = try? Data(contentsOf: URL(fileURLWithPath: file))

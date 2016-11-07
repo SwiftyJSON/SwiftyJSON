@@ -23,8 +23,19 @@
 import XCTest
 import SwiftyJSON
 
-class LiteralConvertibleTests: XCTestCase {
+final class LiteralConvertibleTests: XCTestCase, XCTestCaseProvider {
 
+	static var allTests: [(String, (LiteralConvertibleTests) -> () throws -> Void)] {
+		return [
+			("testNumber", testNumber),
+			("testBool", testBool),
+			("testString", testString),
+			("testNil", testNil),
+			("testArray", testArray),
+			("testDictionary", testDictionary)
+		]
+	}
+	
     func testNumber() {
         var json:JSON = 1234567890.876623
         XCTAssertEqual(json.int!, 1234567890)

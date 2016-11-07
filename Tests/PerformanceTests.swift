@@ -23,8 +23,19 @@
 import XCTest
 import SwiftyJSON
 
-class PerformanceTests: XCTestCase {
-
+final class PerformanceTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (PerformanceTests) -> () throws -> Void)] {
+		return [
+			("testInitPerformance", testInitPerformance),
+			("testObjectMethodPerformance", testObjectMethodPerformance),
+			("testArrayMethodPerformance", testArrayMethodPerformance),
+			("testDictionaryMethodPerformance", testDictionaryMethodPerformance),
+			("testRawStringMethodPerformance", testRawStringMethodPerformance),
+			("testLargeDictionaryMethodPerformance", testLargeDictionaryMethodPerformance)
+		]
+	}
+	
     var testData: Data!
     
     override func setUp() {

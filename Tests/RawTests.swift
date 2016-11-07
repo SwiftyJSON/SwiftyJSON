@@ -56,7 +56,6 @@ class RawTests: XCTestCase {
         let string = json.rawString()
         XCTAssertTrue (data != nil)
         XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        print(string!)
     }
     
     func testDictionary() {
@@ -70,30 +69,25 @@ class RawTests: XCTestCase {
         let string = json.rawString()
         XCTAssertTrue (data != nil)
         XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        print(string!)
     }
     
     func testString() {
         let json:JSON = "I'm a json"
-        print(json.rawString())
         XCTAssertTrue(json.rawString() == "I'm a json")
     }
     
     func testNumber() {
         let json:JSON = 123456789.123
-        print(json.rawString())
         XCTAssertTrue(json.rawString() == "123456789.123")
     }
     
     func testBool() {
         let json:JSON = true
-        print(json.rawString())
         XCTAssertTrue(json.rawString() == "true")
     }
     
     func testNull() {
         let json:JSON = JSON.null
-        print(json.rawString())
         XCTAssertTrue(json.rawString() == "null")
     }
 }

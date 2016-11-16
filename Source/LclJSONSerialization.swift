@@ -159,6 +159,8 @@ private struct JSONWriter {
             try serializeString(str)
         } else if obj is Int || obj is Float || obj is Double || obj is UInt {
             writer(String(describing: obj))
+	} else if let boolValue = obj as? Bool {
+            serializeBool(boolValue)
 	} else if let num = obj as? NSNumber {
             try serializeNumber(num)
         } else if let array = obj as? Array<Any> {
@@ -203,6 +205,15 @@ private struct JSONWriter {
             }
         }
         writer("\"")
+    }
+
+    func serializeBool(_ bool: Bool) {
+        switch bool {
+        case true:
+            writer("true")
+        case false:
+            writer("false")
+        }
     }
 
     mutating func serializeNumber(_ num: NSNumber) throws {

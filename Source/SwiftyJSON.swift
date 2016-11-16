@@ -157,9 +157,6 @@ public struct JSON {
         set {
             _error = nil
             switch newValue {
-            case let int8Value as Int8 where type(of: newValue) == Int8.self:
-                _type = .number
-                self.rawNumber = NSNumber(value: Int(int8Value))
             case let number as NSNumber:
                 if number.isBool {
                     _type = .bool
@@ -967,7 +964,7 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                self.object = newValue
+                self.object = NSNumber(value: Int(newValue))
             } else {
                 self.object =  NSNull()
             }
@@ -979,7 +976,7 @@ extension JSON {
             return self.numberValue.int8Value
         }
         set {
-            self.object = newValue
+            self.object = NSNumber(value: Int(newValue))
         }
     }
     

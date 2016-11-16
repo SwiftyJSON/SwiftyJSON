@@ -1005,7 +1005,7 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                self.object = NSNumber(value: newValue)
+                self.object = NSNumber(value: Int(newValue))
             } else {
                 self.object =  NSNull()
             }
@@ -1017,7 +1017,7 @@ extension JSON {
             return self.numberValue.int8Value
         }
         set {
-            self.object = NSNumber(value: newValue)
+            self.object = NSNumber(value: Int(newValue))
         }
     }
 

@@ -192,11 +192,7 @@ class NumberTests: XCTestCase {
         print(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
-        #if (arch(x86_64) || arch(arm64))
-           XCTAssertEqual(json.stringValue, "false")
-        #elseif (arch(i386) || arch(arm))
-            XCTAssertEqual(json.stringValue, "0")
-        #endif
+        XCTAssertEqual(json.stringValue, "0")
         
         
         let n1 = NSNumber(value: 1 as Int8)
@@ -205,11 +201,7 @@ class NumberTests: XCTestCase {
         XCTAssertTrue(json.int8Value == n1.int8Value)
         XCTAssertTrue(json.number! == n1)
         XCTAssertEqual(json.numberValue, n1)
-        #if (arch(x86_64) || arch(arm64))
-            XCTAssertEqual(json.stringValue, "true")
-        #elseif (arch(i386) || arch(arm))
-            XCTAssertEqual(json.stringValue, "1")
-        #endif
+        XCTAssertEqual(json.stringValue, "1")
     }
     
     func testUInt8() {

@@ -33,8 +33,8 @@ Take the Twitter API for example. Say we want to retrieve a user's "name" value 
 The code would look like this:
 
 ```swift
-if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: AnyObject]],
-    let user = statusesArray[0]["user"] as? [String: AnyObject],
+if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
+    let user = statusesArray[0]["user"] as? [String: Any],
     let username = user["name"] as? String {
     // Finally we got the username
 }
@@ -45,8 +45,8 @@ It's not good.
 Even if we use optional chaining, it would be messy:
 
 ```swift
-if let JSONObject = try JSONSerialization.jsonObject(with: data,, options: .allowFragments) as? [[String: AnyObject]],
-    let username = (JSONObject[0]["user"] as? [String: AnyObject])?["name"] as? String {
+if let JSONObject = try JSONSerialization.jsonObject(with: data,, options: .allowFragments) as? [[String: Any]],
+    let username = (JSONObject[0]["user"] as? [String: Any])?["name"] as? String {
         // There's our username
 }
 ```
@@ -340,11 +340,11 @@ json.dictionaryObject = ["name":"Jack", "age":25]
 #### Raw object
 
 ```swift
-let jsonObject: AnyObject = json.object
+let jsonObject: Any = json.object
 ```
 
 ```swift
-if let jsonObject: AnyObject = json.rawValue
+if let jsonObject: Any = json.rawValue
 ```
 
 ```swift

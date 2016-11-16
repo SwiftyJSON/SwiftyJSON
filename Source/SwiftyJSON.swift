@@ -654,7 +654,7 @@ extension JSON {
         }
     }
 
-    //Optional [AnyObject]
+    //Optional [Any]
     public var arrayObject: [Any]? {
         get {
             switch self.type {
@@ -696,7 +696,8 @@ extension JSON {
         return self.dictionary ?? [:]
     }
 
-    //Optional [String : AnyObject]
+    //Optional [String : Any]
+
     public var dictionaryObject: [String : Any]? {
         get {
             switch self.type {

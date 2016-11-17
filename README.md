@@ -442,6 +442,17 @@ let auth: JSON = [
 ]
 ```
 
+## String representation
+There are two options available:
+- use the default Swift one
+- use a custom one that will handle optionals well and represent `nil` as `"null"`:
+```swift
+let data = ["1":2, "2":"two", "3": nil] as [String: Any?]
+let json = JSON(dict)
+let representation = json.rawString(options: [.castNilToNSNull: true])
+// representation is "{\"1\":2,\"2\":\"two\",\"3\":null}", which represents {"1":2,"2":"two","3":null}
+```
+
 ## Work with Alamofire
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:

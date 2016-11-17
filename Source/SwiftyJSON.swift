@@ -123,6 +123,42 @@ public struct JSON {
         }
         self.init(dictionary)
     }
+    
+    /**
+     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added, 
+     present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
+ 
+     - parameter other: The JSON which gets merged into this JSON
+     */
+    public mutating func merge(_ other: JSON) {
+        if self.type == other.type {
+            switch self.type {
+            case .dictionary:
+                for (key, _) in other {
+                    self[key].merge(other[key])
+                }
+            case .array:
+                self = JSON(self.arrayValue + other.arrayValue)
+            default:
+                self = other
+            }
+        } else {
+            self = other
+        }
+    }
+    
+    /**
+     Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
+     present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
+     
+     - parameter other: The JSON which gets merged into this JSON
+     - returns: New merged JSON
+     */
+    public func merged(other: JSON) -> JSON {
+        var merged = self
+        merged.merge(other)
+        return merged
+    }
 
     /// Private object
     fileprivate var rawArray: [Any] = []

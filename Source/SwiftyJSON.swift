@@ -140,12 +140,12 @@ public struct JSON {
     public var object: Any {
         get {
             switch self.type {
-            case .string:
-                return self.rawString
             case .array:
                 return self.rawArray
             case .dictionary:
                 return self.rawDictionary
+            case .string:
+                return self.rawString
             case .number:
                 return self.rawNumber
             case .bool:
@@ -157,15 +157,6 @@ public struct JSON {
         set {
             _error = nil
             switch newValue {
-            case  let string as String:
-                _type = .string
-                self.rawString = string
-            case let array as [Any]:
-                _type = .array
-                self.rawArray = array
-            case let dictionary as [String : Any]:
-                _type = .dictionary
-                self.rawDictionary = dictionary
             case let number as NSNumber:
                 if number.isBool {
                     _type = .bool
@@ -174,12 +165,21 @@ public struct JSON {
                     _type = .number
                     self.rawNumber = number
                 }
-            case _ as [JSON]:
-                _type = .array
+            case  let string as String:
+                _type = .string
+                self.rawString = string
             case  _ as NSNull:
                 _type = .null
-            case nil:
-                _type = .null
+            case _ as [JSON]:
+				_type = .array
+			case nil:
+				_type = .null
+            case let array as [Any]:
+                _type = .array
+                self.rawArray = array
+            case let dictionary as [String : Any]:
+                _type = .dictionary
+                self.rawDictionary = dictionary
             default:
                 _type = .unknown
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])

@@ -170,7 +170,7 @@ public struct JSON {
                 self.rawString = string
             case  _ as NSNull:
                 _type = .null
-            case let array as [JSON]:
+            case _ as [JSON]:
 				_type = .array
 			case nil:
 				_type = .null

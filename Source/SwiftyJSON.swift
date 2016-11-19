@@ -140,12 +140,12 @@ public struct JSON {
     public var object: Any {
         get {
             switch self.type {
+            case .string:
+                return self.rawString
             case .array:
                 return self.rawArray
             case .dictionary:
                 return self.rawDictionary
-            case .string:
-                return self.rawString
             case .number:
                 return self.rawNumber
             case .bool:
@@ -157,6 +157,15 @@ public struct JSON {
         set {
             _error = nil
             switch newValue {
+            case  let string as String:
+                _type = .string
+                self.rawString = string
+            case let array as [Any]:
+                _type = .array
+                self.rawArray = array
+            case let dictionary as [String : Any]:
+                _type = .dictionary
+                self.rawDictionary = dictionary
             case let number as NSNumber:
                 if number.isBool {
                     _type = .bool
@@ -165,21 +174,12 @@ public struct JSON {
                     _type = .number
                     self.rawNumber = number
                 }
-            case  let string as String:
-                _type = .string
-                self.rawString = string
+            case _ as [JSON]:
+                _type = .array
             case  _ as NSNull:
                 _type = .null
-            case _ as [JSON]:
-				_type = .array
-			case nil:
-				_type = .null
-            case let array as [Any]:
-                _type = .array
-                self.rawArray = array
-            case let dictionary as [String : Any]:
-                _type = .dictionary
-                self.rawDictionary = dictionary
+            case nil:
+                _type = .null
             default:
                 _type = .unknown
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
@@ -641,7 +641,7 @@ extension JSON: Swift.RawRepresentable {
 						return "\"\(key)\": null"
 					}
 
-					let nestedValue = JSON(value)
+					let nestedValue = JSON(value!)
 					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
 						throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
 					}
@@ -672,7 +672,7 @@ extension JSON: Swift.RawRepresentable {
                         return "null"
                     }
 
-                    let nestedValue = JSON(value)
+                    let nestedValue = JSON(value!)
                     guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
                         throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
                     }

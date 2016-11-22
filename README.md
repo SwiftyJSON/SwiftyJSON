@@ -17,6 +17,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Setter](#setter)
    - [Raw object](#raw-object)
    - [Literal convertibles](#literal-convertibles)
+   - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
 
 > For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)

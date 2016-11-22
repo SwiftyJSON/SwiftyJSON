@@ -40,7 +40,9 @@
 
 - Allow .number to parse number from string instead of just numberValue [\#219](https://github.com/SwiftyJSON/SwiftyJSON/pull/219) ([yonaskolb](https://github.com/yonaskolb))
 
-- Fixed spelling and grammar mistakes in README.md. Made some swift syntax... [\#214](https://github.com/SwiftyJSON/SwiftyJSON/pull/214) ([pRizz](https://github.com/pRizz))
+- Fixed spelling and grammar mistakes in README.md. Made some swift syntax... [\#214](https://github.com/SwiftyJSON/SwiftyJSON/pull/725) ([danielkiedrowski](https://github.com/danielkiedrowski))
+
+- Added a function to deep merge a JSON object into another JSON object... [\#725](https://github.com/SwiftyJSON/SwiftyJSON/pull/219) ([yonaskolb](https://github.com/yonaskolb))
 
 ## [2.2.0](https://github.com/SwiftyJSON/SwiftyJSON/tree/2.2.0) (2015-04-13)
 

@@ -23,21 +23,39 @@
 import XCTest
 @testable import SwiftyJSON
 
-class BaseTests: XCTestCase {
-
+final class BaseTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (BaseTests) -> () throws -> Void)] {
+		return [
+			("testInit", testInit),
+			("testCompare", testCompare),
+			("testJSONDoesProduceValidWithCorrectKeyPath", testJSONDoesProduceValidWithCorrectKeyPath),
+			("testJSONNumberCompare", testJSONNumberCompare),
+			("testNumberConvertToString", testNumberConvertToString),
+			("testNumberPrint", testNumberPrint),
+			("testNullJSON", testNullJSON),
+			("testExistance", testExistance),
+			("testErrorHandle", testErrorHandle),
+			("testReturnObject", testReturnObject),
+			("testNumberCompare", testNumberCompare)
+		]
+	}
+	
     var testData: Data!
     
     override func setUp() {
         
         super.setUp()
         
-        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
-            self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-        } else {
-            XCTFail("Can't find the test JSON file")
-        }
+		do {
+			self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+		}
+		catch {
+			XCTFail("Failed to read in the test data")
+			exit(1)
+		}
     }
-    
+	
     override func tearDown() {
         super.tearDown()
     }

@@ -23,20 +23,33 @@
 import XCTest
 import SwiftyJSON
 
-class PerformanceTests: XCTestCase {
-
+final class PerformanceTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (PerformanceTests) -> () throws -> Void)] {
+		return [
+			("testInitPerformance", testInitPerformance),
+			("testObjectMethodPerformance", testObjectMethodPerformance),
+			("testArrayMethodPerformance", testArrayMethodPerformance),
+			("testDictionaryMethodPerformance", testDictionaryMethodPerformance),
+			("testRawStringMethodPerformance", testRawStringMethodPerformance),
+			("testLargeDictionaryMethodPerformance", testLargeDictionaryMethodPerformance)
+		]
+	}
+	
     var testData: Data!
     
     override func setUp() {
         super.setUp()
         
-        if let file = Bundle(for:PerformanceTests.self).path(forResource: "Tests", ofType: "json") {
-            self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-        } else {
-            XCTFail("Can't find the test JSON file")
-        }
-    }
-    
+		do {
+			self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+		}
+		catch {
+			XCTFail("Failed to read in the test data")
+			exit(1)
+		}
+	}
+	
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()

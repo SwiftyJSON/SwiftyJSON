@@ -23,8 +23,27 @@
 import XCTest
 import SwiftyJSON
 
-class NumberTests: XCTestCase {
-
+final class NumberTests: XCTestCase, XCTestCaseProvider {
+	
+	static var allTests: [(String, (NumberTests) -> () throws -> Void)] {
+		return [
+			("testNumber", testNumber),
+			("testBool", testBool),
+			("testDouble", testDouble),
+			("testFloat", testFloat),
+			("testInt", testInt),
+			("testUInt", testUInt),
+			("testInt8", testInt8),
+			("testUInt8", testUInt8),
+			("testInt16", testInt16),
+			("testUInt16", testUInt16),
+			("testInt32", testInt32),
+			("testUInt32", testUInt32),
+			("testInt64", testInt64),
+			("testUInt64", testUInt64)
+		]
+	}
+	
     func testNumber() {
         //getter
         var json = JSON(NSNumber(value: 9876543210.123456789))
@@ -103,7 +122,6 @@ class NumberTests: XCTestCase {
         var json = JSON(54321.12345)
         XCTAssertTrue(json.float! == 54321.12345)
         XCTAssertTrue(json.floatValue == 54321.12345)
-        print(json.numberValue.doubleValue)
         XCTAssertEqual(json.numberValue, 54321.12345)
         XCTAssertEqual(json.stringValue, "54321.12345")
         
@@ -189,7 +207,6 @@ class NumberTests: XCTestCase {
         json.int8Value = n0.int8Value
         XCTAssertTrue(json.int8! == n0.int8Value)
         XCTAssertTrue(json.int8Value == n0.int8Value)
-        print(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")
@@ -260,7 +277,6 @@ class NumberTests: XCTestCase {
         json.int16Value = n0.int16Value
         XCTAssertTrue(json.int16! == n0.int16Value)
         XCTAssertTrue(json.int16Value == n0.int16Value)
-        print(json.number)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")

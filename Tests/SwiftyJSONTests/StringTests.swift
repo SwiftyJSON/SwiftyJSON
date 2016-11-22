@@ -23,8 +23,19 @@
 import XCTest
 import SwiftyJSON
 
-class StringTests: XCTestCase {
+final class StringTests: XCTestCase, XCTestCaseProvider {
 
+	static var allTests: [(String, (StringTests) -> () throws -> Void)] {
+		return [
+			("testString", testString),
+			("testURL", testURL),
+			("testBool", testBool),
+			("testBoolWithY", testBoolWithY),
+			("testBoolWithT", testBoolWithT),
+			("testURLPercentEscapes", testURLPercentEscapes)
+		]
+	}
+	
     func testString() {
         //getter
         var json = JSON("abcdefg hijklmn;opqrst.?+_()")

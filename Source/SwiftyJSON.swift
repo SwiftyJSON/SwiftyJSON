@@ -130,12 +130,12 @@ public struct JSON {
  
      - parameter other: The JSON which gets merged into this JSON
      */
-    public mutating func merge(_ other: JSON) {
+    public mutating func merge(with other: JSON) {
         if self.type == other.type {
             switch self.type {
             case .dictionary:
                 for (key, _) in other {
-                    self[key].merge(other[key])
+                    self[key].merge(with: other[key])
                 }
             case .array:
                 self = JSON(self.arrayValue + other.arrayValue)
@@ -154,9 +154,9 @@ public struct JSON {
      - parameter other: The JSON which gets merged into this JSON
      - returns: New merged JSON
      */
-    public func merged(other: JSON) -> JSON {
+    public func merged(with other: JSON) -> JSON {
         var merged = self
-        merged.merge(other)
+        merged.merge(with: other)
         return merged
     }
 

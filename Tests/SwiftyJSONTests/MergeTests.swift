@@ -28,42 +28,42 @@ class JSONTests: XCTestCase {
     func testPrimitiveType() {
         let A = JSON("a")
         let B = JSON("b")
-        XCTAssertEqual(A.merged(other: B), B)
+        XCTAssertEqual(A.merged(with: B), B)
     }
     
     func testMergeEqual() {
         let json = JSON(["a": "A"])
-        XCTAssertEqual(json.merged(other: json), json)
+        XCTAssertEqual(json.merged(with: json), json)
     }
     
     func testMergeUnequalValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["a": "B"])
-        XCTAssertEqual(A.merged(other: B), B)
+        XCTAssertEqual(A.merged(with: B), B)
     }
     
     func testMergeUnequalKeysAndValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["b": "B"])
-        XCTAssertEqual(A.merged(other: B), JSON(["a": "A", "b": "B"]))
+        XCTAssertEqual(A.merged(with: B), JSON(["a": "A", "b": "B"]))
     }
     
     func testMergeFilledAndEmpty() {
         let A = JSON(["a": "A"])
         let B = JSON([:])
-        XCTAssertEqual(A.merged(other: B), A)
+        XCTAssertEqual(A.merged(with: B), A)
     }
     
     func testMergeEmptyAndFilled() {
         let A = JSON([:])
         let B = JSON(["a": "A"])
-        XCTAssertEqual(A.merged(other: B), B)
+        XCTAssertEqual(A.merged(with: B), B)
     }
     
     func testMergeArray() {
         let A = JSON(["a"])
         let B = JSON(["b"])
-        XCTAssertEqual(A.merged(other: B), JSON(["a", "b"]))
+        XCTAssertEqual(A.merged(with: B), JSON(["a", "b"]))
     }
     
     func testMergeNestedJSONs() {
@@ -79,6 +79,6 @@ class JSONTests: XCTestCase {
             ]
         ])
         
-        XCTAssertEqual(A.merged(other: B), B)
+        XCTAssertEqual(A.merged(with: B), B)
     }
 }

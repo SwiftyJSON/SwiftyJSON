@@ -45,7 +45,7 @@ It's not good.
 Even if we use optional chaining, it would be messy:
 
 ```swift
-if let JSONObject = try JSONSerialization.jsonObject(with: data,, options: .allowFragments) as? [[String: Any]],
+if let JSONObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
     let username = (JSONObject[0]["user"] as? [String: Any])?["name"] as? String {
         // There's our username
 }

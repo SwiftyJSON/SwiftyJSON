@@ -47,13 +47,15 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
         
         super.setUp()
         
-        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
-            self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-        } else {
-            XCTFail("Can't find the test JSON file")
-        }
+		do {
+			self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+		}
+		catch {
+			XCTFail("Failed to read in the test data")
+			exit(1)
+		}
     }
-    
+	
     override func tearDown() {
         super.tearDown()
     }

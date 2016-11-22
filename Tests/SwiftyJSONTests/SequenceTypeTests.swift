@@ -28,7 +28,6 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 
 	static var allTests: [(String, (SequenceTypeTests) -> () throws -> Void)] {
 		return [
-			("testJSONFile", testJSONFile),
 			("testArrayAllNumber", testArrayAllNumber),
 			("testArrayAllBool", testArrayAllBool),
 			("testArrayAllString", testArrayAllString),
@@ -38,31 +37,41 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 			("testDictionaryAllBool", testDictionaryAllBool),
 			("testDictionaryAllString", testDictionaryAllString),
 			("testDictionaryWithNull", testDictionaryWithNull),
-			("testDictionaryAllArray", testDictionaryAllArray)
+			("testDictionaryAllArray", testDictionaryAllArray),
+			("testJSONFile", testJSONFile)
 		]
 	}
 	
+	var testData: Data!
+	
+	override func setUp() {
+		super.setUp()
+		
+		do {
+			self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+		}
+		catch {
+			XCTFail("Failed to read in the test data")
+			exit(1)
+		}
+	}
+	
     func testJSONFile() {
-        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
-            let testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-            let json = JSON(data:testData!)
-            for (index, sub) in json {
-                switch (index as NSString).integerValue {
-                case 0:
-                    XCTAssertTrue(sub["id_str"] == "240558470661799936")
-                case 1:
-                    XCTAssertTrue(sub["id_str"] == "240556426106372096")
-                case 2:
-                    XCTAssertTrue(sub["id_str"] == "240539141056638977")
-                default:
-                    continue
-                }
-            }
-        } else {
-            XCTFail("Can't find the test JSON file")
-        }
+		let json = JSON(data:testData!)
+		for (index, sub) in json {
+			switch (index as NSString).integerValue {
+			case 0:
+				XCTAssertTrue(sub["id_str"] == "240558470661799936")
+			case 1:
+				XCTAssertTrue(sub["id_str"] == "240556426106372096")
+			case 2:
+				XCTAssertTrue(sub["id_str"] == "240539141056638977")
+			default:
+				continue
+			}
+		}
     }
-    
+	
     func testArrayAllNumber() {
         var json:JSON = [1,2.0,3.3,123456789,987654321.123456789]
         XCTAssertEqual(json.count, 5)

@@ -170,7 +170,7 @@ public struct JSON {
                 self.rawString = string
             case  _ as NSNull:
                 _type = .null
-            case let array as [JSON]:
+            case _ as [JSON]:
 				_type = .array
 			case nil:
 				_type = .null
@@ -641,7 +641,7 @@ extension JSON: Swift.RawRepresentable {
 						return "\"\(key)\": null"
 					}
 
-					let nestedValue = JSON(value)
+					let nestedValue = JSON(value!)
 					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
 						throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
 					}
@@ -672,7 +672,7 @@ extension JSON: Swift.RawRepresentable {
                         return "null"
                     }
 
-                    let nestedValue = JSON(value)
+                    let nestedValue = JSON(value!)
                     guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
                         throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
                     }

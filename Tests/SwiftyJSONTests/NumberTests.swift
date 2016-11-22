@@ -189,7 +189,7 @@ class NumberTests: XCTestCase {
         json.int8Value = n0.int8Value
         XCTAssertTrue(json.int8! == n0.int8Value)
         XCTAssertTrue(json.int8Value == n0.int8Value)
-        print(json.number)
+        print(json.number!)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")
@@ -260,7 +260,7 @@ class NumberTests: XCTestCase {
         json.int16Value = n0.int16Value
         XCTAssertTrue(json.int16! == n0.int16Value)
         XCTAssertTrue(json.int16Value == n0.int16Value)
-        print(json.number)
+        print(json.number!)
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")

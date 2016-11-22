@@ -33,8 +33,8 @@ Take the Twitter API for example. Say we want to retrieve a user's "name" value 
 The code would look like this:
 
 ```swift
-if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: AnyObject]],
-    let user = statusesArray[0]["user"] as? [String: AnyObject],
+if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
+    let user = statusesArray[0]["user"] as? [String: Any],
     let username = user["name"] as? String {
     // Finally we got the username
 }
@@ -45,8 +45,8 @@ It's not good.
 Even if we use optional chaining, it would be messy:
 
 ```swift
-if let JSONObject = try JSONSerialization.jsonObject(with: data,, options: .allowFragments) as? [[String: AnyObject]],
-    let username = (JSONObject[0]["user"] as? [String: AnyObject])?["name"] as? String {
+if let JSONObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
+    let username = (JSONObject[0]["user"] as? [String: Any])?["name"] as? String {
         // There's our username
 }
 ```
@@ -116,12 +116,12 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1,0,0)..<Version(2, .max, .max)),
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1,0,0)..<Version(3, .max, .max)),
     ]
 )
 ```
 
-Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more infomation checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
+Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more information checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
 
 #### Manually (iOS 7+, OS X 10.9+)
 
@@ -340,11 +340,11 @@ json.dictionaryObject = ["name":"Jack", "age":25]
 #### Raw object
 
 ```swift
-let jsonObject: AnyObject = json.object
+let jsonObject: Any = json.object
 ```
 
 ```swift
-if let jsonObject: AnyObject = json.rawValue
+if let jsonObject: Any = json.rawValue
 ```
 
 ```swift
@@ -440,6 +440,17 @@ let auth: JSON = [
   "user": user.object //use user.object instead of just user
   "apikey": "supersecretapitoken"
 ]
+```
+
+## String representation
+There are two options available:
+- use the default Swift one
+- use a custom one that will handle optionals well and represent `nil` as `"null"`:
+```swift
+let data = ["1":2, "2":"two", "3": nil] as [String: Any?]
+let json = JSON(dict)
+let representation = json.rawString(options: [.castNilToNSNull: true])
+// representation is "{\"1\":2,\"2\":\"two\",\"3\":null}", which represents {"1":2,"2":"two","3":null}
 ```
 
 ## Work with Alamofire

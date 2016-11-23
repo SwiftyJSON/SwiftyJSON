@@ -64,27 +64,32 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    public init(data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) throws {
         do {
-            let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
+            let object: Any = try JSONSerialization.jsonObject(with: data, options: options)
             self.init(object)
-        } catch let aError as NSError {
-            if error != nil {
-                error?.pointee = aError
-            }
-            self.init(NSNull())
+        } catch let error as NSError {
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [
+                NSLocalizedDescriptionKey: "Provided data is not a valid JSON",
+                NSLocalizedFailureReasonErrorKey: "\(error.localizedDescription). \(error.localizedFailureReason)"
+            ])
         }
     }
 
-    /**
-     Creates a JSON from JSON string
-     - parameter string: Normal json string like '{"a":"b"}'
-
-     - returns: The created JSON
-     */
-    public static func parse(_ string:String) -> JSON {
-        return string.data(using: String.Encoding.utf8)
-            .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
+    /// Initializes using a JSON string.
+    ///
+    /// - Parameters:
+    ///   - jsonString: JSON string to parse
+    ///   - encoding: String encoding to use when parsing the provided JSON. Must be one of the following:
+    ///     .utf8, .utf16LittleEndian, .utf16BigEndian, .utf32LittleEndian, .utf32BigEndian
+    ///     as specified in https://developer.apple.com/reference/foundation/jsonserialization/1415493-jsonobject
+    ///   - options: JSON reading options
+    /// - Throws: Throws if the string cannot be converted to raw data, or if it is not a valid JSON string
+    public init(jsonString: String, encoding: String.Encoding = .utf8, options: JSONSerialization.ReadingOptions = .allowFragments) throws {
+        guard let data = jsonString.data(using: encoding) else {
+            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Provided string is not a valid JSON string"])
+        }
+        try self.init(data: data, options: options)
     }
 
     /**

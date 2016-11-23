@@ -45,28 +45,28 @@ class PerformanceTests: XCTestCase {
     func testInitPerformance() {
         self.measure() {
             for _ in 1...100 {
-                let json = JSON(data:self.testData)
-                XCTAssertTrue(json != JSON.null)
+                let json = try? JSON(data:self.testData)
+                XCTAssertNotNil(json)
             }
         }
     }
     
     func testObjectMethodPerformance() {
-        let json = JSON(data:self.testData)
+        let json = try? JSON(data:self.testData)
         self.measure() {
             for _ in 1...100 {
-                let object:Any? = json.object
-                XCTAssertTrue(object != nil)
+                let object:Any? = json?.object
+                XCTAssertNotNil(object)
             }
         }
     }
 
     func testArrayMethodPerformance() {
-        let json = JSON(data:self.testData)
+        let json = try? JSON(data:self.testData)
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{
-                    if let array = json.array {
+                    if let array = json?.array {
                         XCTAssertTrue(array.count > 0)
                     }
                 }
@@ -75,11 +75,11 @@ class PerformanceTests: XCTestCase {
     }
     
     func testDictionaryMethodPerformance() {
-        let json = JSON(data:testData)[0]
+        let json = try? JSON(data:testData)[0]
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{
-                    if let dictionary = json.dictionary {
+                    if let dictionary = json?.dictionary {
                         XCTAssertTrue(dictionary.count > 0)
                     }
                 }
@@ -88,12 +88,12 @@ class PerformanceTests: XCTestCase {
     }
     
     func testRawStringMethodPerformance() {
-        let json = JSON(data:testData)
+        let json = try? JSON(data:testData)
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{
-                    let string = json.rawString()
-                    XCTAssertTrue(string != nil)
+                    let string = json?.rawString()
+                    XCTAssertNotNil(string)
                 }
             }
         }

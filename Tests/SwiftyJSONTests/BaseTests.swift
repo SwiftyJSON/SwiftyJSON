@@ -26,6 +26,7 @@ import XCTest
 class BaseTests: XCTestCase {
 
     var testData: Data!
+    var testString: String!
     
     override func setUp() {
         
@@ -33,6 +34,7 @@ class BaseTests: XCTestCase {
         
         if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
+            self.testString = try? String(contentsOf: URL(fileURLWithPath: file))
         } else {
             XCTFail("Can't find the test JSON file")
         }
@@ -42,8 +44,8 @@ class BaseTests: XCTestCase {
         super.tearDown()
     }
     
-    func testInit() {
-        let json0 = JSON(data:self.testData)
+    func testInitWithData() throws {
+        let json0 = try JSON(data:self.testData)
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")
         XCTAssertEqual(JSON(["1":"2"])["1"].string!, "2")
@@ -51,12 +53,31 @@ class BaseTests: XCTestCase {
         dictionary.setObject(NSNumber(value: 1.0), forKey: "number" as NSString)
         dictionary.setObject(NSNull(), forKey: "null" as NSString)
         _ = JSON(dictionary)
+        
+        let object: Any = try JSONSerialization.jsonObject(with: self.testData, options: [])
+        let json2 = JSON(object)
+        XCTAssertEqual(json0, json2)
+    }
+    
+    func testInitWithJsonString() {
+        
         do {
-            let object: Any = try JSONSerialization.jsonObject(with: self.testData, options: [])
+            let json1 = try JSON(jsonString: testString)
+            let object = try JSONSerialization.jsonObject(with: self.testData, options: [])
             let json2 = JSON(object)
-            XCTAssertEqual(json0, json2)
-        } catch _ {
+            XCTAssertEqual(json1, json2)
+        } catch {
+            XCTFail("Should not throw an error")
         }
+        
+        do {
+            _ = try JSON(jsonString: "{\"foo\":\"bar\"}")
+        } catch {
+            XCTFail("Should not throw an error")
+        }
+        
+        XCTAssertThrowsError(try JSON(jsonString: "{\"foo\":"))
+        XCTAssertThrowsError(try JSON(jsonString: "["))
     }
     
     func testCompare() {
@@ -75,8 +96,8 @@ class BaseTests: XCTestCase {
         XCTAssertNotEqual(JSON(NSNull()), JSON(123))
     }
     
-    func testJSONDoesProduceValidWithCorrectKeyPath() {
-        let json = JSON(data:self.testData)
+    func testJSONDoesProduceValidWithCorrectKeyPath() throws {
+        let json = try JSON(data:self.testData)
         
         let tweets = json
         let tweets_array = json.array
@@ -224,8 +245,8 @@ class BaseTests: XCTestCase {
         XCTAssertFalse(jsonForArray["someValue"].exists())
     }
     
-    func testErrorHandle() {
-        let json = JSON(data:self.testData)
+    func testErrorHandle() throws {
+        let json = try JSON(data: self.testData)
         if let _ = json["wrong-type"].string {
             XCTFail("Should not run into here")
         } else {
@@ -244,8 +265,8 @@ class BaseTests: XCTestCase {
         }
     }
     
-    func testReturnObject() {
-        let json = JSON(data:self.testData)
+    func testReturnObject() throws {
+        let json = try JSON(data: self.testData)
         XCTAssertNotNil(json.object)
     }
         

@@ -840,7 +840,7 @@ extension JSON { // : Swift.Bool
                         return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
                     }
                 } else {
-                    return self.intValue > 0
+                    return self.intValue != 0
                 }
             default:
                 return false

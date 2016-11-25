@@ -835,12 +835,13 @@ extension JSON { // : Swift.Bool
             case .number:
                 return self.rawNumber.boolValue
             case .string:
-                if NSDecimalNumber(string: self.rawString) == NSDecimalNumber.notANumber {
+                let decimal = NSDecimalNumber(string: self.object as? String)
+                if decimal == NSDecimalNumber.notANumber {
                     return ["true", "y", "t"].contains() { (truthyString) in
                         return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
                     }
                 } else {
-                    return self.intValue != 0
+                    return decimal.boolValue
                 }
             default:
                 return false

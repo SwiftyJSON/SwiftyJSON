@@ -61,6 +61,7 @@ class StringTests: XCTestCase {
         XCTAssertFalse(json.boolValue)
         json = JSON("1")
         XCTAssertTrue(json.boolValue)
+        XCTAssertTrue(JSON("-1").boolValue == NSNumber(integerLiteral: -1).boolValue)
     }
 
     func testURLPercentEscapes() {

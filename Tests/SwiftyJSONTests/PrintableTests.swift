@@ -32,7 +32,11 @@ final class PrintableTests: XCTestCase, XCTestCaseProvider {
 			("testString", testString),
 			("testNil", testNil),
 			("testArray", testArray),
-			("testDictionary", testDictionary)
+			("testDictionary", testDictionary),
+			("testArrayWithStrings", testArrayWithStrings),
+			("testArrayWithOptionals", testArrayWithOptionals),
+			("testDictionaryWithStrings", testDictionaryWithStrings),
+			("testDictionaryWithOptionals", testDictionaryWithOptionals)
 		]
 	}
 	

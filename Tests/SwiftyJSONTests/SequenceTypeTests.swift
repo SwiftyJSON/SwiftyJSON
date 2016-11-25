@@ -38,6 +38,7 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 			("testDictionaryAllString", testDictionaryAllString),
 			("testDictionaryWithNull", testDictionaryWithNull),
 			("testDictionaryAllArray", testDictionaryAllArray),
+			("testDictionaryIteratingPerformance", testDictionaryIteratingPerformance),
 			("testJSONFile", testJSONFile)
 		]
 	}

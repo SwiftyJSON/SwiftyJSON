@@ -277,7 +277,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         json.int16Value = n0.int16Value
         XCTAssertTrue(json.int16! == n0.int16Value)
         XCTAssertTrue(json.int16Value == n0.int16Value)
-        XCTAssertTrue(json.number! == n0)
+        XCTAssertEqual(json.number, n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")
         

@@ -86,21 +86,21 @@ final class RawTests: XCTestCase, XCTestCaseProvider {
     
     func testString() {
         let json:JSON = "I'm a json"
-        XCTAssertTrue(json.rawString() == "I'm a json")
+        XCTAssertEqual(json.rawString(), "I'm a json")
     }
     
     func testNumber() {
         let json:JSON = 123456789.123
-        XCTAssertTrue(json.rawString() == "123456789.123")
+        XCTAssertEqual(json.rawString(), "123456789.123")
     }
     
     func testBool() {
         let json:JSON = true
-        XCTAssertTrue(json.rawString() == "true")
+        XCTAssertEqual(json.rawString(), "true")
     }
     
     func testNull() {
         let json:JSON = JSON.null
-        XCTAssertTrue(json.rawString() == "null")
+        XCTAssertEqual(json.rawString(), "null")
     }
 }

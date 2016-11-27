@@ -22,3 +22,6 @@ Pods
 
 #Carthage
 Carthage/Build
+
+#SPM
+.build/

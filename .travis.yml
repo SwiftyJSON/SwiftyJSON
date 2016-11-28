@@ -9,22 +9,22 @@ matrix:
       env: 
         - PLATFORM=macos
       script: 
-        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" clean build-for-testing test | xcpretty
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" clean build-for-testing test | xcpretty
     - os: osx
       env: 
         - PLATFORM=ios
       script: 
-        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" clean build-for-testing test | xcpretty
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" clean build-for-testing test | xcpretty
     - os: osx
       env: 
         - PLATFORM=tvos
       script: 
-        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" clean build-for-testing test | xcpretty
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" clean build-for-testing test | xcpretty
     - os: linux
       dist: trusty
       sudo: required
       install:
-        set -e
-        curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash
+        - curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash
       script:
-        swift build --clean && swift build && swift test
+        - . ~/.swiftenv/init
+        - swift build --clean && swift build && swift test

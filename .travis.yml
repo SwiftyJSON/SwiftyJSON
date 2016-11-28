@@ -1,21 +1,40 @@
-language: objective-c
 osx_image: xcode8
-xcode_sdk: iphonesimulator10.0
+language: generic
 env:
   global:
-  - FRAMEWORK_NAME=SwiftyJSON
+    - FRAMEWORK_NAME=SwiftyJSON
+matrix:
+  include:
+    - os: osx
+      env: 
+        - PLATFORM=macos
+      script: 
+        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=ios
+      script: 
+        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=tvos
+      script: 
+        travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" clean build-for-testing test | xcpretty
+    - os: linux
+      dist: trusty
+      sudo: required
+      install:
+        set -e
+        curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash
+      script:
+        swift build --clean && swift build && swift test
 before_install:
-- rvm get head
-- brew update
-- brew outdated carthage || brew upgrade carthage
+  - rvm get head
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
 before_deploy:
-- carthage build --no-skip-current
-- carthage archive $FRAMEWORK_NAME
-script:
-- set -o pipefail
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" build-for-testing test | xcpretty
+  - carthage build --no-skip-current
+  - carthage archive $FRAMEWORK_NAME
 deploy:
   provider: releases
   api_key:

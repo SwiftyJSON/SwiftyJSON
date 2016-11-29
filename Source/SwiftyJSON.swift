@@ -983,7 +983,12 @@ extension JSON {
             }
         }
         set {
-            self.object = newValue?.absoluteString ?? NSNull()
+#if os(Linux)
+			self.object = newValue?.absoluteString._bridgeToObjectiveC() ?? NSNull()
+#else
+			self.object = newValue?.absoluteString ?? NSNull()
+#endif
+			
         }
     }
 }
@@ -1275,7 +1280,11 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#if os(Linux)
+	    return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+#else
+	    return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#endif
     case (.dictionary, .dictionary):
         return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
     case (.null, .null):
@@ -1295,9 +1304,17 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#if os(Linux)
+	    return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+#else
+	    return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#if os(Linux)
+	    return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+#else
+	    return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#endif
     case (.null, .null):
         return true
     default:
@@ -1315,9 +1332,17 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#if os(Linux)
+		return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+#else
+		return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+#endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#if os(Linux)
+		return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+#else
+		return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#endif
     case (.null, .null):
         return true
     default:

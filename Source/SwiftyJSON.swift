@@ -170,8 +170,9 @@ public struct JSON {
                 self.rawString = string
             case  _ as NSNull:
                 _type = .null
-            case _ as [JSON]:
+            case let jsonArray as [JSON]:
 				_type = .array
+                self.rawArray = jsonArray.map() { return $0.object }
 			case nil:
 				_type = .null
             case let array as [Any]:

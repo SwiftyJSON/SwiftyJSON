@@ -25,6 +25,13 @@ import XCTest
 import SwiftyJSON
 
 class JSONTests: XCTestCase {
+    
+    func testDifferingTypes() {
+        let A = JSON("a")
+        let B = JSON(1)
+        XCTAssertEqual(A.merged(with: B), A)
+    }
+    
     func testPrimitiveType() {
         let A = JSON("a")
         let B = JSON("b")

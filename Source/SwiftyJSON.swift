@@ -131,20 +131,7 @@ public struct JSON {
      - parameter other: The JSON which gets merged into this JSON
      */
     public mutating func merge(with other: JSON) {
-        if self.type == other.type {
-            switch self.type {
-            case .dictionary:
-                for (key, _) in other {
-                    self[key].merge(with: other[key])
-                }
-            case .array:
-                self = JSON(self.arrayValue + other.arrayValue)
-            default:
-                self = other
-            }
-        } else {
-            self = other
-        }
+        self.merge(with: other, typecheck: true)
     }
     
     /**
@@ -156,8 +143,31 @@ public struct JSON {
      */
     public func merged(with other: JSON) -> JSON {
         var merged = self
-        merged.merge(with: other)
+        merged.merge(with: other, typecheck: true)
         return merged
+    }
+    
+    // Private woker function which does the actual merging
+    // Typecheck is set to true for the first recursion level to prevent total override of the source JSON
+    private mutating func merge(with other: JSON, typecheck: Bool) {
+        if self.type == other.type {
+            switch self.type {
+            case .dictionary:
+                for (key, _) in other {
+                    self[key].merge(with: other[key], typecheck: false)
+                }
+            case .array:
+                self = JSON(self.arrayValue + other.arrayValue)
+            default:
+                self = other
+            }
+        } else {
+            if typecheck {
+                print("Couldn't merge, because the JSONs differ in type on top level.")
+            } else {
+                self = other
+            }
+        }
     }
 
     /// Private object

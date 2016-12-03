@@ -68,7 +68,7 @@ public class LclJSONSerialization {
 	
 	/* Generate JSON data from a Foundation object. If the object will not produce valid JSON then an exception will be thrown. Setting the NSJSONWritingPrettyPrinted option will generate JSON with whitespace designed to make the output more readable. If that option is not set, the most compact possible JSON will be generated. If an error occurs, the error parameter will be set and the return value will be nil. The resulting data is a encoded in UTF-8.
 	*/
-	internal class func _data(withJSONObject value: Any, options opt: WritingOptions, stream: Bool) throws -> Data {
+	internal class func _data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions, stream: Bool) throws -> Data {
 		var jsonStr = String()
 		
 		var writer = JSONWriter(
@@ -108,13 +108,13 @@ public class LclJSONSerialization {
 		let result = Data(bytes: rawBytes.bindMemory(to: UInt8.self, capacity: count), count: count)
 		return result
 	}
-	open class func data(withJSONObject value: Any, options opt: WritingOptions = []) throws -> Data {
+	open class func data(withJSONObject value: Any, options opt: JSONSerialization.WritingOptions = []) throws -> Data {
 		return try _data(withJSONObject: value, options: opt, stream: false)
 	}
 	
 	/* Write JSON data into a stream. The stream should be opened and configured. The return value is the number of bytes written to the stream, or 0 on error. All other behavior of this method is the same as the dataWithJSONObject:options:error: method.
 	*/
-	open class func writeJSONObject(_ obj: Any, toStream stream: OutputStream, options opt: WritingOptions) throws -> Int {
+	open class func writeJSONObject(_ obj: Any, toStream stream: OutputStream, options opt: JSONSerialization.WritingOptions) throws -> Int {
 		let jsonData = try _data(withJSONObject: obj, options: opt, stream: true)
 		let count = jsonData.count
 		return jsonData.withUnsafeBytes { (bytePtr) -> Int in

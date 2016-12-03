@@ -17,6 +17,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Setter](#setter)
    - [Raw object](#raw-object)
    - [Literal convertibles](#literal-convertibles)
+   - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
 
 > For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
@@ -440,6 +441,54 @@ let auth: JSON = [
   "user": user.object //use user.object instead of just user
   "apikey": "supersecretapitoken"
 ]
+```
+
+#### Merging
+
+It is possible to merge one JSON into another JSON. Merging a JSON into another JSON adds all non existing values to the original JSON which are only present in the `other` JSON.
+
+If both JSONs contain a value for the same key, _mostly_ this value gets overwritten in the original JSON, but there are two cases where it provides some special treatment:
+
+- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value. 
+- In case of both values being a `JSON.Type.dictionary` both JSON-values are getting merged the same way the encapsulating JSON is merged.
+
+In case, where two fields in a JSON have a different types, the value will get always overwritten.
+
+There are two different fashions for merging: `merge` modifies the original JSON, whereas `merged` works non-destructively on a copy.
+
+```swift
+let original: JSON = [
+    "first_name": "John",
+    "age": 20,
+    "skills": ["Coding", "Reading"],
+    "address": [
+        "street": "Front St",
+        "zip": "12345",
+    ]
+]
+
+let update: JSON = [
+    "last_name": "Doe",
+    "age": 21,
+    "skills": ["Writing"],
+    "address": [
+        "zip": "12342",
+        "city": "New York City"
+    ]
+]
+
+let updated = original.merge(with: update)
+// [
+//     "first_name": "John",
+//     "last_name": "Doe",
+//     "age": 21,
+//     "skills": ["Coding", "Reading", "Writing"],
+//     "address": [
+//         "street": "Front St",
+//         "zip": "12342",
+//         "city": "New York City"
+//     ]
+// ]
 ```
 
 ## String representation

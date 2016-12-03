@@ -29,48 +29,58 @@ class JSONTests: XCTestCase {
     func testDifferingTypes() {
         let A = JSON("a")
         let B = JSON(1)
-        XCTAssertEqual(A.merged(with: B), A)
+        
+        do {
+            _ = try A.merged(with: B)
+            XCTFail()
+        } catch (let error) {
+            let error = error as NSError
+            XCTAssertEqual(error.code, ErrorWrongType)
+            XCTAssertEqual(error.domain, ErrorDomain)
+            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String,
+                           "Couldn't merge, because the JSONs differ in type on top level.")
+        }
     }
     
     func testPrimitiveType() {
         let A = JSON("a")
         let B = JSON("b")
-        XCTAssertEqual(A.merged(with: B), B)
+        XCTAssertEqual(try! A.merged(with: B), B)
     }
     
     func testMergeEqual() {
         let json = JSON(["a": "A"])
-        XCTAssertEqual(json.merged(with: json), json)
+        XCTAssertEqual(try! json.merged(with: json), json)
     }
     
     func testMergeUnequalValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["a": "B"])
-        XCTAssertEqual(A.merged(with: B), B)
+        XCTAssertEqual(try! A.merged(with: B), B)
     }
     
     func testMergeUnequalKeysAndValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["b": "B"])
-        XCTAssertEqual(A.merged(with: B), JSON(["a": "A", "b": "B"]))
+        XCTAssertEqual(try! A.merged(with: B), JSON(["a": "A", "b": "B"]))
     }
     
     func testMergeFilledAndEmpty() {
         let A = JSON(["a": "A"])
         let B = JSON([:])
-        XCTAssertEqual(A.merged(with: B), A)
+        XCTAssertEqual(try! A.merged(with: B), A)
     }
     
     func testMergeEmptyAndFilled() {
         let A = JSON([:])
         let B = JSON(["a": "A"])
-        XCTAssertEqual(A.merged(with: B), B)
+        XCTAssertEqual(try! A.merged(with: B), B)
     }
     
     func testMergeArray() {
         let A = JSON(["a"])
         let B = JSON(["b"])
-        XCTAssertEqual(A.merged(with: B), JSON(["a", "b"]))
+        XCTAssertEqual(try! A.merged(with: B), JSON(["a", "b"]))
     }
     
     func testMergeNestedJSONs() {
@@ -86,6 +96,6 @@ class JSONTests: XCTestCase {
             ]
         ])
         
-        XCTAssertEqual(A.merged(with: B), B)
+        XCTAssertEqual(try! A.merged(with: B), B)
     }
 }

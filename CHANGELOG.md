@@ -32,7 +32,13 @@
 
 - It seems not easy to manipulate an array or dictionary? [\#110](https://github.com/SwiftyJSON/SwiftyJSON/issues/110)
 
+- Document JSON.parse() usage in README [\#459](https://github.com/SwiftyJSON/SwiftyJSON/issues/459)
+
 **Merged pull requests:**
+
+- **Breaking**: Removed `SwiftyJSON.parse` and added `init(jsonString:)`. [\#731](https://github.com/SwiftyJSON/SwiftyJSON/pull/731)
+
+- **Breaking**: `init(data:)` now throws if the data cannot be converted to a proper JSON object. [\#731](https://github.com/SwiftyJSON/SwiftyJSON/pull/731)
 
 - Fix for xcode 6.3..1 issue [\#224](https://github.com/SwiftyJSON/SwiftyJSON/pull/224) ([datomnurdin](https://github.com/datomnurdin))
 

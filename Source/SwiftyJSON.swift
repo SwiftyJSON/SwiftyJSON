@@ -1296,7 +1296,11 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
 	    return lhs.rawArray as NSArray == rhs.rawArray as NSArray
 #endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#if os(Linux)
+	    return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+#else
+	    return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+#endif
     case (.null, .null):
         return true
     default:

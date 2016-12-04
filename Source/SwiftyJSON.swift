@@ -157,6 +157,35 @@ public struct JSON {
         }
         set {
             _error = nil
+			
+#if os(Linux)
+			let (type, value) = self.setObjectHelper(newValue)
+				
+			_type = type
+			switch (type) {
+			case .array:
+				self.rawArray = value as! [Any]
+			case .bool:
+				self.rawBool = value as! Bool
+				if let number = newValue as? NSNumber {
+					self.rawNumber = number
+				}
+				else {
+					self.rawNumber = self.rawBool ? NSNumber(value: 1) : NSNumber(value: 0)
+				}
+			case .dictionary:
+				self.rawDictionary = value as! [String:Any]
+			case .null:
+				break
+			case .number:
+				self.rawNumber = value as! NSNumber
+			case .string:
+				self.rawString = value as! String
+			case .unknown:
+				_error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
+				print("==> error=\(_error). type=\(type(of: newValue))")
+			}
+#else
             switch newValue {
             case let number as NSNumber:
                 if number.isBool {
@@ -185,8 +214,60 @@ public struct JSON {
                 _type = .unknown
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
             }
+#endif
         }
     }
+	
+#if os(Linux)
+	private func setObjectHelper(_ newValue: Any) -> (Type, Any) {
+		var type: Type
+		var value: Any
+	
+		if let bool = newValue as? Bool {
+			type = .bool
+			value = bool
+		} else if let number = newValue as? NSNumber {
+			if number.isBool {
+				type = .bool
+				value = number.boolValue
+			} else {
+				type = .number
+				value = number
+			}
+		} else if let number = newValue as? Double {
+			type = .number
+			value = NSNumber(value: number)
+		} else if let number = newValue as? Int {
+			type = .number
+			value = NSNumber(value: number)
+		} else if let string = newValue as? String {
+			type = .string
+			value = string
+		} else if let string = newValue as? NSString {
+			type = .string
+			value = string._bridgeToSwift()
+		} else if newValue is NSNull {
+			type = .null
+			value = ""
+		} else if let array = newValue as? NSArray {
+			type = .array
+			value = array._bridgeToSwift()
+		} else if let array = newValue as? Array<Any> {
+			type = .array
+			value = array
+		} else if let dictionary = newValue as? NSDictionary {
+			type = .dictionary
+			value = dictionary._bridgeToSwift()
+		} else if let dictionary = newValue as? Dictionary<String, Any> {
+			type = .dictionary
+			value = dictionary
+		} else {
+			type = .unknown
+			value = ""
+		}
+		return (type, value)
+	}
+#endif
 
     /// JSON type
     public var type: Type { get { return _type } }

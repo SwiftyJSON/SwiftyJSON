@@ -8,7 +8,7 @@
 //
 
 #if os(Linux)
-
+import Foundation
 import CoreFoundation
 import Glibc
 
@@ -29,7 +29,7 @@ public class LclJSONSerialization {
 			}
 			
 			// object is NSNumber and is not NaN or infinity
-			if let number = _SwiftValue.store(obj) as? NSNumber {
+			if let number = obj as? NSNumber {
 				let invalid = number.doubleValue.isInfinite || number.doubleValue.isNaN
 				return !invalid
 			}
@@ -134,7 +134,7 @@ private struct JSONWriter {
 		let formatter: CFNumberFormatter
 		formatter = CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(), kCFNumberFormatterNoStyle)
 		CFNumberFormatterSetProperty(formatter, kCFNumberFormatterMaxFractionDigits, NSNumber(value: 15))
-		CFNumberFormatterSetFormat(formatter, "0.###############"._cfObject)
+		CFNumberFormatterSetFormat(formatter, "0.###############" as! CFString)
 		return formatter
 	}()
 	
@@ -150,8 +150,8 @@ private struct JSONWriter {
 			try serializeString(str)
 		case let boolValue as Bool:
 			serializeBool(boolValue)
-		case _ where _SwiftValue.store(obj) is NSNumber:
-			try serializeNumber(_SwiftValue.store(obj) as! NSNumber)
+		case let num as NSNumber:
+			try serializeNumber(num)
 		case let array as Array<Any>:
 			try serializeArray(array)
 		case let dict as Dictionary<AnyHashable, Any>:
@@ -207,12 +207,7 @@ private struct JSONWriter {
 			throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: ["NSDebugDescription" : "Number cannot be infinity or NaN"])
 		}
 		
-		switch num._objCType {
-		case .Bool:
-			serializeBool(num.boolValue)
-		default:
-			writer(_serializationString(for: num))
-		}
+		writer(_serializationString(for: num))
 	}
 	
 	mutating func serializeArray(_ array: [Any]) throws {
@@ -299,7 +294,7 @@ private struct JSONWriter {
 	
 	//[SR-2151] https://bugs.swift.org/browse/SR-2151
 	private mutating func _serializationString(for number: NSNumber) -> String {
-		return CFNumberFormatterCreateStringWithNumber(nil, _numberformatter, number._cfObject)._swiftObject
+		return CFNumberFormatterCreateStringWithNumber(nil, _numberformatter, number as! CFNumber)._swiftObject
 	}
 }
 

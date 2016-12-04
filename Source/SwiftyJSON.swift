@@ -279,6 +279,20 @@ public struct JSON {
     @available(*, unavailable, renamed:"null")
     public static var nullJSON: JSON { get { return null } }
     public static var null: JSON { get { return JSON(NSNull()) } }
+    
+#if os(Linux)
+    internal static func stringFromNumber(_ number: NSNumber) -> String {
+        let type = CFNumberGetType(unsafeBitCast(number, to: CFNumber.self))
+        switch(type) {
+        case kCFNumberFloat32Type:
+        	return String(number.floatValue)
+        case kCFNumberFloat64Type:
+        	return String(number.doubleValue)
+        default:
+        	return String(number.int64Value)
+        }
+    }
+#endif
 }
 
 public enum JSONIndex:Comparable
@@ -782,7 +796,11 @@ extension JSON: Swift.RawRepresentable {
         case .string:
             return self.rawString
         case .number:
+#if os(Linux)
+            return JSON.stringFromNumber(self.rawNumber)
+#else
             return self.rawNumber.stringValue
+#endif
         case .bool:
             return self.rawBool.description
         case .null:
@@ -970,7 +988,11 @@ extension JSON {
             case .string:
                 return self.object as? String ?? ""
             case .number:
+#if os(Linux)
+                return JSON.stringFromNumber(self.object as! NSNumber)
+#else
                 return self.rawNumber.stringValue
+#endif
             case .bool:
                 return (self.object as? Bool).map { String($0) } ?? ""
             default:
@@ -1008,11 +1030,20 @@ extension JSON {
         get {
             switch self.type {
             case .string:
+#if os(Linux)
+    			if let decimal = Double(self.object as! String)  {
+        			return NSNumber(value: decimal)
+    			}
+    			else {  // indicates parse error
+        			return NSNumber(value: 0.0)
+                }
+#else
                 let decimal = NSDecimalNumber(string: self.object as? String)
                 if decimal == NSDecimalNumber.notANumber {  // indicates parse error
                     return NSDecimalNumber.zero
                 }
                 return decimal
+#endif
             case .number:
                 return self.object as? NSNumber ?? NSNumber(value: 0)
             case .bool:

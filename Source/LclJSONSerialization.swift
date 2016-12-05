@@ -207,7 +207,7 @@ private struct JSONWriter {
 			throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: ["NSDebugDescription" : "Number cannot be infinity or NaN"])
 		}
 		
-		writer(_serializationString(for: num))
+		writer(JSON.stringFromNumber(num))
 	}
 	
 	mutating func serializeArray(_ array: [Any]) throws {
@@ -290,11 +290,6 @@ private struct JSONWriter {
 		for _ in 0..<indent {
 			writer(" ")
 		}
-	}
-	
-	//[SR-2151] https://bugs.swift.org/browse/SR-2151
-	private mutating func _serializationString(for number: NSNumber) -> String {
-		return CFNumberFormatterCreateStringWithNumber(nil, _numberformatter, number as! CFNumber)._swiftObject
 	}
 }
 

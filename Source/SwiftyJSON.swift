@@ -760,8 +760,6 @@ extension JSON {
     public var array: [JSON]? {
         get {
             if self.type == .array {
-                print(self.rawArray)
-                print(self.rawArray.map{ JSON($0) })
                 return self.rawArray.map{ JSON($0) }
             } else {
                 return nil

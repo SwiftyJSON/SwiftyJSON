@@ -65,14 +65,11 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments) {
         do {
             let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
             self.init(object)
-        } catch let aError as NSError {
-            if error != nil {
-                error?.pointee = aError
-            }
+        } catch {
             self.init(NSNull())
         }
     }

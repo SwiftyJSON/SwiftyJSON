@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Foundation
 import SwiftyJSON
 
 final class NestedJSONTests: XCTestCase, XCTestCaseProvider {

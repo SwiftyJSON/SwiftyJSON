@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import Foundation
 import SwiftyJSON
 
 final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {

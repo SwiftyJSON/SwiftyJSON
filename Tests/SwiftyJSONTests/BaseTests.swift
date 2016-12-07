@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import Foundation
 @testable import SwiftyJSON
 
 final class BaseTests: XCTestCase, XCTestCaseProvider {

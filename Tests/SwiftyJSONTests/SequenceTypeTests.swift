@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import Foundation
 import SwiftyJSON
 
 final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {

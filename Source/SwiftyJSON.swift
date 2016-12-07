@@ -1104,9 +1104,9 @@ extension JSON {
         }
         set {
 #if os(Linux)
-			self.object = newValue?.absoluteString._bridgeToObjectiveC() ?? NSNull()
+			self.object = newValue?.absoluteString._bridgeToObjectiveC()
 #else
-			self.object = newValue?.absoluteString ?? NSNull()
+			self.object = newValue?.absoluteString as Any
 #endif
 			
         }
@@ -1401,13 +1401,13 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
 #if os(Linux)
-	    return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+	    return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
 #else
 	    return lhs.rawArray as NSArray == rhs.rawArray as NSArray
 #endif
     case (.dictionary, .dictionary):
 #if os(Linux)
-	    return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+	    return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
 #else
 	    return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
 #endif
@@ -1429,13 +1429,13 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
 #if os(Linux)
-	    return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+	    return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
 #else
 	    return lhs.rawArray as NSArray == rhs.rawArray as NSArray
 #endif
     case (.dictionary, .dictionary):
 #if os(Linux)
-	    return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+	    return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
 #else
 	    return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
 #endif
@@ -1457,13 +1457,13 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
 #if os(Linux)
-		return lhs.rawArray._bridgeToObjectiveC() as NSArray == rhs.rawArray._bridgeToObjectiveC() as NSArray
+		return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
 #else
 		return lhs.rawArray as NSArray == rhs.rawArray as NSArray
 #endif
     case (.dictionary, .dictionary):
 #if os(Linux)
-		return lhs.rawDictionary._bridgeToObjectiveC() as NSDictionary == rhs.rawDictionary._bridgeToObjectiveC() as NSDictionary
+		return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
 #else
 		return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
 #endif
@@ -1508,12 +1508,21 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 extension NSNumber {
     var isBool:Bool {
         get {
-            let objCType = String(cString: self.objCType)
-            if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType){
+#if os(Linux)
+    		let type = CFNumberGetType(unsafeBitCast(self, to: CFNumber.self))
+            if type == kCFNumberSInt8Type && (self.compare(trueNumber) == .orderedSame || self.compare(falseNumber) == .orderedSame) {
                 return true
             } else {
                 return false
             }
+#else
+            let objCType = String(cString: self.objCType)
+            if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
+                return true
+            } else {
+                return false
+            }
+#endif
         }
     }
 }

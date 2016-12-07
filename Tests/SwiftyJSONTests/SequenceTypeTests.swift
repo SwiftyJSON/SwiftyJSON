@@ -127,15 +127,15 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
     }
 
     func testArrayWithNull() {
-        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as NSArray)!
+        var json:JSON = JSON(rawValue: ["aoo","bpp", NSNull() ,"zoo"] as [Any?])!
         XCTAssertEqual(json.count, 4)
 
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
-            array.append(sub.object as AnyObject)
+            array.append(sub.object)
             index += 1
         }
         XCTAssertEqual(index, 4)
@@ -148,11 +148,11 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.count, 3)
 
         var index = 0
-        var array = [AnyObject]()
+        var array = [Any]()
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             XCTAssertEqual(i, "\(index)")
-            array.append(sub.object as AnyObject)
+            array.append(sub.object)
             index += 1
         }
         XCTAssertEqual(index, 3)
@@ -219,10 +219,10 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.count, 4)
 
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
-            dictionary[key] = sub.object as AnyObject?
+            dictionary[key] = sub.object
             index += 1
         }
 
@@ -238,10 +238,10 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.count, 3)
 
         var index = 0
-        var dictionary = [String:AnyObject]()
+        var dictionary = [String:Any]()
         for (key, sub) in json {
             XCTAssertEqual(sub, json[key])
-            dictionary[key] = sub.object as AnyObject?
+            dictionary[key] = sub.object
             index += 1
         }
 

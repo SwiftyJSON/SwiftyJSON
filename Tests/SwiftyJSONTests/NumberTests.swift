@@ -363,7 +363,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
     }
 
     func testInt64() {
-        let int64Max = NSNumber(value: INT64_MAX)
+        let int64Max = NSNumber(value: Int64.max)
         var json = JSON(int64Max)
         XCTAssertTrue(json.int64! == int64Max.int64Value)
         XCTAssertTrue(json.int64Value == int64Max.int64Value)
@@ -379,7 +379,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.numberValue, n32767)
         XCTAssertEqual(json.stringValue, "32767")
         
-        let int64Min = NSNumber(value: (INT64_MAX-1) * -1)
+        let int64Min = NSNumber(value: (Int64.max-1) * -1)
         json.int64Value = int64Min.int64Value
         XCTAssertTrue(json.int64! == int64Min.int64Value)
         XCTAssertTrue(json.int64Value == int64Min.int64Value)
@@ -389,7 +389,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
     }
     
     func testUInt64() {
-        let uInt64Max = NSNumber(value: UINT64_MAX)
+        let uInt64Max = NSNumber(value: UInt64.max)
         var json = JSON(uInt64Max)
         XCTAssertTrue(json.uInt64! == uInt64Max.uint64Value)
         XCTAssertTrue(json.uInt64Value == uInt64Max.uint64Value)

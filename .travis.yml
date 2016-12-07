@@ -29,4 +29,4 @@ before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
 
 script:
-  - ./Package-Builder/build-package.sh $TRAVIS_BUILD_DIR
+  - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR

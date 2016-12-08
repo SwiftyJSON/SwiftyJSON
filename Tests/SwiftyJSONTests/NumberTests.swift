@@ -50,12 +50,17 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         var json = JSON(NSNumber(value: 9876543210.123456789))
         XCTAssertEqual(json.number!, 9876543210.123456789)
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
+#if os(Linux)
+        XCTAssertEqual(json.stringValue, "9876543210.12346")
+#else
         XCTAssertEqual(json.stringValue, "9876543210.123457")
-        
+#endif
         json.string = "1000000000000000000000000000.1"
         XCTAssertNil(json.number)
+#if !os(Linux)
+        // https://bugs.swift.org/browse/SR-1464
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
-
+#endif
         json.string = "1e+27"
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000")
         
@@ -101,7 +106,11 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.double!, 9876543210.123456789)
         XCTAssertEqual(json.doubleValue, 9876543210.123456789)
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
+#if os(Linux)
+        XCTAssertEqual(json.stringValue, "9876543210.12346")
+#else
         XCTAssertEqual(json.stringValue, "9876543210.123457")
+#endif
         
         json.double = 2.8765432
         XCTAssertEqual(json.double!, 2.8765432)
@@ -204,7 +213,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.numberValue, nm128)
         XCTAssertEqual(json.stringValue, "-128")
         
-        let n0 = NSNumber(value: 0 as Int8)
+        let n0 = NSNumber(value: 0)
         json.int8Value = n0.int8Value
         XCTAssertTrue(json.int8! == n0.int8Value)
         XCTAssertTrue(json.int8Value == n0.int8Value)
@@ -213,7 +222,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.stringValue, "0")
         
         
-        let n1 = NSNumber(value: 1 as Int8)
+        let n1 = NSNumber(value: 1)
         json.int8Value = n1.int8Value
         XCTAssertTrue(json.int8! == n1.int8Value)
         XCTAssertTrue(json.int8Value == n1.int8Value)
@@ -244,16 +253,22 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.uInt8! == nm0.uint8Value)
         XCTAssertTrue(json.uInt8Value == nm0.uint8Value)
         XCTAssertTrue(json.number! == nm0)
+#if !os(Linux)
+        // type is boolean here instead of number
         XCTAssertEqual(json.numberValue, nm0)
         XCTAssertEqual(json.stringValue, "0")
+#endif
 
         let nm1 = NSNumber(value: 1)
         json.uInt8 = nm1.uint8Value
         XCTAssertTrue(json.uInt8! == nm1.uint8Value)
         XCTAssertTrue(json.uInt8Value == nm1.uint8Value)
         XCTAssertTrue(json.number! == nm1)
+#if !os(Linux)
+        // type is boolean here instead of number
         XCTAssertEqual(json.numberValue, nm1)
         XCTAssertEqual(json.stringValue, "1")
+#endif
     }
 
     func testInt16() {
@@ -337,7 +352,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
     }
     
     func testUInt32() {
-        let n2147483648 = NSNumber(value: 2147483648 as UInt32)
+        let n2147483648 = NSNumber(value: 2147483648)
         var json = JSON(n2147483648)
         XCTAssertTrue(json.uInt32! == n2147483648.uint32Value)
         XCTAssertTrue(json.uInt32Value == n2147483648.uint32Value)
@@ -345,7 +360,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.numberValue, n2147483648)
         XCTAssertEqual(json.stringValue, "2147483648")
         
-        let n32767 = NSNumber(value: 32767 as UInt32)
+        let n32767 = NSNumber(value: 32767)
         json.uInt32 = n32767.uint32Value
         XCTAssertTrue(json.uInt32! == n32767.uint32Value)
         XCTAssertTrue(json.uInt32Value == n32767.uint32Value)
@@ -353,7 +368,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.numberValue, n32767)
         XCTAssertEqual(json.stringValue, "32767")
         
-        let n0 = NSNumber(value: 0 as UInt32)
+        let n0 = NSNumber(value: 0)
         json.uInt32Value = n0.uint32Value
         XCTAssertTrue(json.uInt32! == n0.uint32Value)
         XCTAssertTrue(json.uInt32Value == n0.uint32Value)

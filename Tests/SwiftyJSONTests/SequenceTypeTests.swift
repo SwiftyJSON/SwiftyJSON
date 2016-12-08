@@ -246,6 +246,8 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
         }
 
         XCTAssertEqual(index, 3)
+#if !os(Linux)
+	// Such conversions are not supported on Linux. Last check Swift 3.0.1
         XCTAssertEqual((dictionary["Number"] as! NSArray)[0] as? Int, 1)
         XCTAssertEqual((dictionary["Number"] as! NSArray)[1] as? Double, 2.123456)
         XCTAssertEqual((dictionary["String"] as! NSArray)[0] as? String, "aa")
@@ -253,6 +255,7 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[1] as? String, "766")
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[2] as? NSNull, NSNull())
         XCTAssertEqual((dictionary["Mix"] as! NSArray)[3] as? Double, 655231.9823)
+#endif
     }
 
     func testDictionaryIteratingPerformance() {

@@ -203,8 +203,11 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(JSON(-9.123456789).description,"-9.123456789")
         XCTAssertEqual(JSON(-0.00000000000000001).description,"-1e-17")
         XCTAssertEqual(JSON(-999999999999999999999999.000000000000000000000001).description,"-1e+24")
+        #if !os(Linux)
+        //https://bugs.swift.org/browse/SR-1464?jql=text%20~%20%22NSNumber%22
+        //Removed this #if once bug is fix
         XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue,"-9.999999991999999e+24")
-
+        #endif
         XCTAssertEqual(JSON(Int(Int.max)).description,"\(Int.max)")
         XCTAssertEqual(JSON(NSNumber(value: Int.min)).description,"\(Int.min)")
         XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description,"\(UInt.max)")

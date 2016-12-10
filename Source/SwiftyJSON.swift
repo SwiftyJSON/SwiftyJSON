@@ -64,14 +64,46 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    public init(data: Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
         do {
             let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
-            self.init(object)
+            self.init(jsonObject: object)
         } catch let aError as NSError {
             if error != nil {
                 error?.pointee = aError
             }
+            self.init(jsonObject: NSNull())
+        }
+    }
+
+    /**
+     Creates a JSON object
+     - parameter object: the object
+     - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
+     - returns: the created JSON object
+     */
+    public init(_ object: Any) {
+        switch object {
+        case let object as [JSON] where object.count > 0:
+            self.init(array: object)
+        case let object as [String: JSON] where object.count > 0:
+            self.init(dictionary: object)
+        case let object as Data:
+            self.init(data: object)
+        default:
+            self.init(jsonObject: object)
+        }
+    }
+
+    /**
+     Parses the JSON string into a JSON object
+     - parameter json: the JSON string
+     - returns: the created JSON object
+     */
+    public init(parseJSON jsonString: String) {
+        if let data = jsonString.data(using: .utf8) {
+            self.init(data)
+        } else {
             self.init(NSNull())
         }
     }
@@ -82,8 +114,9 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public static func parse(_ string:String) -> JSON {
-        return string.data(using: String.Encoding.utf8)
+    @available(*, deprecated: 3.2, message: "Use instead `init(parseJSON: )`")
+    public static func parse(json: String) -> JSON {
+        return json.data(using: String.Encoding.utf8)
             .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
     }
 
@@ -94,8 +127,8 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ object: Any) {
-        self.object = object
+    private init(jsonObject: Any) {
+        self.object = jsonObject
     }
 
     /**
@@ -105,8 +138,8 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ jsonArray:[JSON]) {
-        self.init(jsonArray.map { $0.object })
+    private init(array: [JSON]) {
+        self.init(array.map { $0.object })
     }
 
     /**
@@ -116,12 +149,13 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ jsonDictionary:[String: JSON]) {
-        var dictionary = [String: Any](minimumCapacity: jsonDictionary.count)
-        for (key, json) in jsonDictionary {
-            dictionary[key] = json.object
+    private init(dictionary: [String: JSON]) {
+        var newDictionary = [String: Any](minimumCapacity: dictionary.count)
+        for (key, json) in dictionary {
+            newDictionary[key] = json.object
         }
-        self.init(dictionary)
+
+        self.init(newDictionary)
     }
     
     /**
@@ -213,10 +247,10 @@ public struct JSON {
                     _type = .number
                     self.rawNumber = number
                 }
-            case  let string as String:
+            case let string as String:
                 _type = .string
                 self.rawString = string
-            case  _ as NSNull:
+            case _ as NSNull:
                 _type = .null
             case _ as [JSON]:
 				_type = .array

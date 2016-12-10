@@ -100,8 +100,8 @@ public struct JSON {
      - parameter json: the JSON string
      - returns: the created JSON object
      */
-    public init(parseJSON json: String) {
-        if let data = json.data(using: .utf8) {
+    public init(parseJSON jsonString: String) {
+        if let data = jsonString.data(using: .utf8) {
             self.init(data)
         } else {
             self.init(NSNull())

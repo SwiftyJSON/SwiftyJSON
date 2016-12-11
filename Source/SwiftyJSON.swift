@@ -281,16 +281,14 @@ public struct JSON {
     public static var null: JSON { get { return JSON(NSNull()) } }
 }
 
-public enum JSONIndex:Comparable
+public enum Index<T: Any>: Comparable
 {
     case array(Int)
-    case dictionary(DictionaryIndex<String, JSON>)
+    case dictionary(DictionaryIndex<String, T>)
     case null
 
-    static public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
+    static public func ==(lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left == right
         case (.dictionary(let left), .dictionary(let right)):
@@ -301,10 +299,8 @@ public enum JSONIndex:Comparable
         }
     }
 
-    static public func <(lhs: JSONIndex, rhs: JSONIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
+    static public func <(lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left < right
         case (.dictionary(let left), .dictionary(let right)):
@@ -313,44 +309,11 @@ public enum JSONIndex:Comparable
             return false
         }
     }
-
 }
 
-public enum JSONRawIndex: Comparable
-{
-    case array(Int)
-    case dictionary(DictionaryIndex<String, Any>)
-    case null
+public typealias JSONIndex = Index<JSON>
+public typealias JSONRawIndex = Index<Any>
 
-    static public func ==(lhs: JSONRawIndex, rhs: JSONRawIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
-        case (.array(let left), .array(let right)):
-            return left == right
-        case (.dictionary(let left), .dictionary(let right)):
-            return left == right
-        case (.null, .null): return true
-        default:
-            return false
-        }
-    }
-
-    static public func <(lhs: JSONRawIndex, rhs: JSONRawIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
-        case (.array(let left), .array(let right)):
-            return left < right
-        case (.dictionary(let left), .dictionary(let right)):
-            return left < right
-        default:
-            return false
-        }
-    }
-
-
-}
 
 extension JSON: Collection
 {

@@ -1010,7 +1010,7 @@ extension JSON {
 extension JSON {
 
     //Optional URL
-    public var URL: URL? {
+    public var url: URL? {
         get {
             switch self.type {
             case .string:

@@ -31,9 +31,7 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
 			("testNumber", testNumber),
 			("testBool", testBool),
 			("testString", testString),
-			("testNil", testNil),
-			("testArray", testArray),
-			("testDictionary", testDictionary)
+			("testNil", testNil)
 		]
 	}
 	
@@ -47,10 +45,12 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.floatValue == 948394394.347384)
         
         let object: Any = json.rawValue
+#if !os(Linux)
         XCTAssertEqual(object as? Int, 948394394)
         XCTAssertEqual(object as? Double, 948394394.347384)
         XCTAssertTrue(object as! Float == 948394394.347384)
-        XCTAssertEqual(object as? NSNumber, 948394394.347384)
+#endif
+		XCTAssertEqual(object as? NSNumber, 948394394.347384)
     }
     
     func testBool() {
@@ -94,6 +94,8 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
         }
     }
     
+// Conversions from array/dictionary to NSArray/NSDictionary are not allowed
+#if !os(Linux)
     func testArray() {
         let array = [1,2,"3",4102,"5632", "abocde", "!@# $%^&*()"] as NSArray
         if let json:JSON = JSON(rawValue: array) {
@@ -113,4 +115,5 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
         let object: Any = JSON(rawValue: dictionary)!.rawValue
         XCTAssertTrue(dictionary == object as! NSDictionary)
     }
+#endif
 }

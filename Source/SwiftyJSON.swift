@@ -128,9 +128,9 @@ public struct JSON {
     }
 
     /**
-     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added, 
+     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added,
      present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
- 
+
      - parameter other: The JSON which gets merged into this JSON
      - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
      */
@@ -141,7 +141,7 @@ public struct JSON {
     /**
      Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
      present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
-     
+
      - parameter other: The JSON which gets merged into this JSON
      - returns: New merged JSON
      - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
@@ -816,8 +816,8 @@ extension JSON { // : Swift.Bool
             case .number:
                 return self.rawNumber.boolValue
             case .string:
-                return ["true", "y", "t"].contains { (truthyString) in
-                    return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
+                return ["true", "y", "t", "1"].contains {
+                    return self.rawString.caseInsensitiveCompare($0) == .orderedSame
                 }
             default:
                 return false

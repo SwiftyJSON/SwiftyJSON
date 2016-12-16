@@ -42,6 +42,8 @@
 
 - Fixed spelling and grammar mistakes in README.md. Made some swift syntax... [\#214](https://github.com/SwiftyJSON/SwiftyJSON/pull/214) ([pRizz](https://github.com/pRizz))
 
+- Added a function to deep merge a JSON object into another JSON object... [\#725](https://github.com/SwiftyJSON/SwiftyJSON/pull/725) ([danielkiedrowski](https://github.com/danielkiedrowski))
+
 ## [2.2.0](https://github.com/SwiftyJSON/SwiftyJSON/tree/2.2.0) (2015-04-13)
 
 [Full Changelog](https://github.com/SwiftyJSON/SwiftyJSON/compare/2.1.3...2.2.0)

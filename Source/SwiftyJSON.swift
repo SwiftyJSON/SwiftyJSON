@@ -64,14 +64,46 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(data:Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
+    public init(data: Data, options opt: JSONSerialization.ReadingOptions = .allowFragments, error: NSErrorPointer = nil) {
         do {
             let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
-            self.init(object)
+            self.init(jsonObject: object)
         } catch let aError as NSError {
             if error != nil {
                 error?.pointee = aError
             }
+            self.init(jsonObject: NSNull())
+        }
+    }
+
+    /**
+     Creates a JSON object
+     - parameter object: the object
+     - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
+     - returns: the created JSON object
+     */
+    public init(_ object: Any) {
+        switch object {
+        case let object as [JSON] where object.count > 0:
+            self.init(array: object)
+        case let object as [String: JSON] where object.count > 0:
+            self.init(dictionary: object)
+        case let object as Data:
+            self.init(data: object)
+        default:
+            self.init(jsonObject: object)
+        }
+    }
+
+    /**
+     Parses the JSON string into a JSON object
+     - parameter json: the JSON string
+     - returns: the created JSON object
+     */
+    public init(parseJSON jsonString: String) {
+        if let data = jsonString.data(using: .utf8) {
+            self.init(data)
+        } else {
             self.init(NSNull())
         }
     }
@@ -82,8 +114,9 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public static func parse(_ string:String) -> JSON {
-        return string.data(using: String.Encoding.utf8)
+    @available(*, deprecated: 3.2, message: "Use instead `init(parseJSON: )`")
+    public static func parse(json: String) -> JSON {
+        return json.data(using: String.Encoding.utf8)
             .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
     }
 
@@ -94,8 +127,8 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ object: Any) {
-        self.object = object
+    private init(jsonObject: Any) {
+        self.object = jsonObject
     }
 
     /**
@@ -105,8 +138,8 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ jsonArray:[JSON]) {
-        self.init(jsonArray.map { $0.object })
+    private init(array: [JSON]) {
+        self.init(array.map { $0.object })
     }
 
     /**
@@ -116,12 +149,61 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    public init(_ jsonDictionary:[String: JSON]) {
-        var dictionary = [String: Any](minimumCapacity: jsonDictionary.count)
-        for (key, json) in jsonDictionary {
-            dictionary[key] = json.object
+    private init(dictionary: [String: JSON]) {
+        var newDictionary = [String: Any](minimumCapacity: dictionary.count)
+        for (key, json) in dictionary {
+            newDictionary[key] = json.object
         }
-        self.init(dictionary)
+
+        self.init(newDictionary)
+    }
+    
+    /**
+     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added, 
+     present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
+ 
+     - parameter other: The JSON which gets merged into this JSON
+     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+     */
+    public mutating func merge(with other: JSON) throws {
+        try self.merge(with: other, typecheck: true)
+    }
+    
+    /**
+     Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
+     present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
+     
+     - parameter other: The JSON which gets merged into this JSON
+     - returns: New merged JSON
+     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+     */
+    public func merged(with other: JSON) throws -> JSON {
+        var merged = self
+        try merged.merge(with: other, typecheck: true)
+        return merged
+    }
+    
+    // Private woker function which does the actual merging
+    // Typecheck is set to true for the first recursion level to prevent total override of the source JSON
+    private mutating func merge(with other: JSON, typecheck: Bool) throws {
+        if self.type == other.type {
+            switch self.type {
+            case .dictionary:
+                for (key, _) in other {
+                    try self[key].merge(with: other[key], typecheck: false)
+                }
+            case .array:
+                self = JSON(self.arrayValue + other.arrayValue)
+            default:
+                self = other
+            }
+        } else {
+            if typecheck {
+                throw NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Couldn't merge, because the JSONs differ in type on top level."])
+            } else {
+                self = other
+            }
+        }
     }
 
     /// Private object
@@ -165,10 +247,10 @@ public struct JSON {
                     _type = .number
                     self.rawNumber = number
                 }
-            case  let string as String:
+            case let string as String:
                 _type = .string
                 self.rawString = string
-            case  _ as NSNull:
+            case _ as NSNull:
                 _type = .null
             case _ as [JSON]:
 				_type = .array
@@ -199,16 +281,14 @@ public struct JSON {
     public static var null: JSON { get { return JSON(NSNull()) } }
 }
 
-public enum JSONIndex:Comparable
+public enum Index<T: Any>: Comparable
 {
     case array(Int)
-    case dictionary(DictionaryIndex<String, JSON>)
+    case dictionary(DictionaryIndex<String, T>)
     case null
 
-    static public func ==(lhs: JSONIndex, rhs: JSONIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
+    static public func ==(lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left == right
         case (.dictionary(let left), .dictionary(let right)):
@@ -219,10 +299,8 @@ public enum JSONIndex:Comparable
         }
     }
 
-    static public func <(lhs: JSONIndex, rhs: JSONIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
+    static public func <(lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left < right
         case (.dictionary(let left), .dictionary(let right)):
@@ -231,44 +309,11 @@ public enum JSONIndex:Comparable
             return false
         }
     }
-
 }
 
-public enum JSONRawIndex: Comparable
-{
-    case array(Int)
-    case dictionary(DictionaryIndex<String, Any>)
-    case null
+public typealias JSONIndex = Index<JSON>
+public typealias JSONRawIndex = Index<Any>
 
-    static public func ==(lhs: JSONRawIndex, rhs: JSONRawIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
-        case (.array(let left), .array(let right)):
-            return left == right
-        case (.dictionary(let left), .dictionary(let right)):
-            return left == right
-        case (.null, .null): return true
-        default:
-            return false
-        }
-    }
-
-    static public func <(lhs: JSONRawIndex, rhs: JSONRawIndex) -> Bool
-    {
-        switch (lhs, rhs)
-        {
-        case (.array(let left), .array(let right)):
-            return left < right
-        case (.dictionary(let left), .dictionary(let right)):
-            return left < right
-        default:
-            return false
-        }
-    }
-
-
-}
 
 extension JSON: Collection
 {
@@ -965,7 +1010,7 @@ extension JSON {
 extension JSON {
 
     //Optional URL
-    public var URL: URL? {
+    public var url: URL? {
         get {
             switch self.type {
             case .string:

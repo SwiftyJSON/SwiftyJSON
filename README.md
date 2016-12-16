@@ -507,7 +507,7 @@ let representation = json.rawString(options: [.castNilToNSNull: true])
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 
 ```swift
-Alamofire.request(.GET, url).validate().responseJSON { response in
+Alamofire.request(url, method: .get).validate().responseJSON { response in
     switch response.result {
     case .success(let value):
         let json = JSON(value)

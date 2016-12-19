@@ -51,11 +51,21 @@ class BaseTests: XCTestCase {
     override func setUp() {
 
         super.setUp()
+        
+        let sourceFileName = NSString(string: #file)
+        let resourceFilePrefixRange: NSRange
+        let lastSlash = sourceFileName.range(of: "/", options: .backwards)
+        if  lastSlash.location != NSNotFound {
+            resourceFilePrefixRange = NSMakeRange(0, lastSlash.location+1)
+        } else {
+            resourceFilePrefixRange = NSMakeRange(0, sourceFileName.length)
+        }
+        let pathPrefix = sourceFileName.substring(with: resourceFilePrefixRange)
         do {
-            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+            self.testData = try Data(contentsOf: URL(fileURLWithPath: "\(pathPrefix)Tests.json"))
         }
         catch {
-            XCTFail("FAiled to read in the test data")
+            XCTFail("Failed to read in the test data")
             exit(1)
         }
     }

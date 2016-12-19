@@ -52,17 +52,10 @@ class BaseTests: XCTestCase {
 
         super.setUp()
         
-        let sourceFileName = NSString(string: #file)
-        let resourceFilePrefixRange: NSRange
-        let lastSlash = sourceFileName.range(of: "/", options: .backwards)
-        if  lastSlash.location != NSNotFound {
-            resourceFilePrefixRange = NSMakeRange(0, lastSlash.location+1)
-        } else {
-            resourceFilePrefixRange = NSMakeRange(0, sourceFileName.length)
-        }
-        let pathPrefix = sourceFileName.substring(with: resourceFilePrefixRange)
+        var testDataURL = URL(fileURLWithPath: #file)
+        testDataURL.appendPathComponent("../Tests.json")
         do {
-            self.testData = try Data(contentsOf: URL(fileURLWithPath: "\(pathPrefix)Tests.json"))
+            self.testData = try Data(contentsOf: testDataURL.standardized)
         }
         catch {
             XCTFail("Failed to read in the test data")

@@ -47,16 +47,9 @@ class SequenceTypeTests: XCTestCase {
 // END OF GENERATED CODE
     func testJSONFile() {
         do {
-            let sourceFileName = NSString(string: #file)
-            let resourceFilePrefixRange: NSRange
-            let lastSlash = sourceFileName.range(of: "/", options: .backwards)
-            if  lastSlash.location != NSNotFound {
-                resourceFilePrefixRange = NSMakeRange(0, lastSlash.location+1)
-            } else {
-                resourceFilePrefixRange = NSMakeRange(0, sourceFileName.length)
-            }
-            let pathPrefix = sourceFileName.substring(with: resourceFilePrefixRange)
-            let testData = try Data(contentsOf: URL(fileURLWithPath: "\(pathPrefix)Tests.json"))
+            var testDataURL = URL(fileURLWithPath: #file)
+            testDataURL.appendPathComponent("../Tests.json")
+            let testData = try Data(contentsOf: testDataURL.standardized)
             let json = JSON(data:testData)
             var ind = 0
             for (_, sub) in json {

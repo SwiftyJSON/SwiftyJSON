@@ -51,11 +51,14 @@ class BaseTests: XCTestCase {
     override func setUp() {
 
         super.setUp()
+        
+        var testDataURL = URL(fileURLWithPath: #file)
+        testDataURL.appendPathComponent("../Tests.json")
         do {
-            self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
+            self.testData = try Data(contentsOf: testDataURL.standardized)
         }
         catch {
-            XCTFail("FAiled to read in the test data")
+            XCTFail("Failed to read in the test data")
             exit(1)
         }
     }

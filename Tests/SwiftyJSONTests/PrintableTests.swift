@@ -76,7 +76,7 @@ class PrintableTests: XCTestCase {
     func testArrayWithOptionals() {
         let array = [1,2,"4",5,"6",nil] as [Any?]
         let json = JSON(array)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent array")
 			return
 		}
@@ -110,7 +110,7 @@ class PrintableTests: XCTestCase {
     func testDictionaryWithOptionals() {
         let dict = ["1":2, "2":"two", "3": nil] as [String: Any?]
         let json = JSON(dict)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent dictionary")
 			return
 		}

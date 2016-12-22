@@ -115,7 +115,7 @@ public struct JSON {
      - returns: The created JSON
      */
     @available(*, deprecated: 3.2, message: "Use instead `init(parseJSON: )`")
-    public static func parse(json: String) -> JSON {
+    public static func parse(_ json: String) -> JSON {
         return json.data(using: String.Encoding.utf8)
             .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
     }
@@ -127,7 +127,7 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    private init(jsonObject: Any) {
+    fileprivate init(jsonObject: Any) {
         self.object = jsonObject
     }
 
@@ -138,7 +138,7 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    private init(array: [JSON]) {
+    fileprivate init(array: [JSON]) {
         self.init(array.map { $0.object })
     }
 
@@ -149,7 +149,7 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    private init(dictionary: [String: JSON]) {
+    fileprivate init(dictionary: [String: JSON]) {
         var newDictionary = [String: Any](minimumCapacity: dictionary.count)
         for (key, json) in dictionary {
             newDictionary[key] = json.object
@@ -185,7 +185,7 @@ public struct JSON {
     
     // Private woker function which does the actual merging
     // Typecheck is set to true for the first recursion level to prevent total override of the source JSON
-    private mutating func merge(with other: JSON, typecheck: Bool) throws {
+    fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
         if self.type == other.type {
             switch self.type {
             case .dictionary:
@@ -647,7 +647,7 @@ extension JSON: Swift.RawRepresentable {
 		}
 	}
 
-	public func rawString(options: [writtingOptionsKeys: Any]) -> String? {
+	public func rawString(_ options: [writtingOptionsKeys: Any]) -> String? {
 		let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
 		let maxObjectDepth = options[.maxObjextDepth] as? Int ?? 10
 		do {
@@ -658,7 +658,7 @@ extension JSON: Swift.RawRepresentable {
 		}
 	}
 
-	private func _rawString(
+	fileprivate func _rawString(
 		_ encoding: String.Encoding = .utf8,
 		options: [writtingOptionsKeys: Any],
 		maxObjectDepth: Int = 10

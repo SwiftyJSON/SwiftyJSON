@@ -31,7 +31,7 @@ let jsonString = String(data: jsonData!, encoding: .utf8)
  */
 import SwiftyJSON
 
-let json1 = JSON(data: jsonData!)
+let json1 = try? JSON(data: jsonData!)
 /*:
  or
  */
@@ -40,7 +40,7 @@ let json2 = JSON(jsonObject)
  or
  */
 let dataFromString = jsonString?.data(using: .utf8)
-let json3 = JSON(data: dataFromString!)
+let json3 = try? JSON(data: dataFromString!)
 
 /*:
  ### Subscript

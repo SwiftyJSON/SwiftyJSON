@@ -45,14 +45,20 @@ class PerformanceTests: XCTestCase {
     func testInitPerformance() {
         self.measure() {
             for _ in 1...100 {
-                let json = JSON(data:self.testData)
+                guard let json = try? JSON(data: self.testData) else {
+                    XCTFail("Unable to parse testData")
+                    return
+                }
                 XCTAssertTrue(json != JSON.null)
             }
         }
     }
     
     func testObjectMethodPerformance() {
-        let json = JSON(data:self.testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         self.measure() {
             for _ in 1...100 {
                 let object:Any? = json.object
@@ -62,7 +68,10 @@ class PerformanceTests: XCTestCase {
     }
 
     func testArrayMethodPerformance() {
-        let json = JSON(data:self.testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{
@@ -75,7 +84,11 @@ class PerformanceTests: XCTestCase {
     }
     
     func testDictionaryMethodPerformance() {
-        let json = JSON(data:testData)[0]
+        guard let json = try? JSON(data: self.testData)[0] else {
+            XCTFail("Unable to parse testData")
+            return
+        }
+
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{
@@ -88,7 +101,10 @@ class PerformanceTests: XCTestCase {
     }
     
     func testRawStringMethodPerformance() {
-        let json = JSON(data:testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         self.measure() {
             for _ in 1...100 {
                 autoreleasepool{

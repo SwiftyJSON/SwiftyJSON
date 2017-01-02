@@ -43,7 +43,10 @@ class BaseTests: XCTestCase {
     }
     
     func testInit() {
-        let json0 = JSON(data:self.testData)
+        guard let json0 = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")
         XCTAssertEqual(JSON(["1":"2"])["1"].string!, "2")
@@ -76,7 +79,10 @@ class BaseTests: XCTestCase {
     }
     
     func testJSONDoesProduceValidWithCorrectKeyPath() {
-        let json = JSON(data:self.testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         
         let tweets = json
         let tweets_array = json.array
@@ -225,7 +231,10 @@ class BaseTests: XCTestCase {
     }
     
     func testErrorHandle() {
-        let json = JSON(data:self.testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         if let _ = json["wrong-type"].string {
             XCTFail("Should not run into here")
         } else {
@@ -245,11 +254,14 @@ class BaseTests: XCTestCase {
     }
     
     func testReturnObject() {
-        let json = JSON(data:self.testData)
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
         XCTAssertNotNil(json.object)
     }
         
-    func testNumberCompare(){
+    func testNumberCompare() {
         XCTAssertEqual(NSNumber(value: 888332), NSNumber(value:888332))
         XCTAssertNotEqual(NSNumber(value: 888332.1), NSNumber(value:888332))
         XCTAssertLessThan(NSNumber(value: 888332).doubleValue, NSNumber(value:888332.1).doubleValue)
@@ -260,5 +272,16 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(NSNumber(value: true), NSNumber(value:true))
     }
     
-
+    func testErrorThrowing() {
+        let invalidJson = "{\"foo\": 300]"  // deliberately incorrect JSON
+        let invalidData = invalidJson.data(using: .utf8)!
+        
+        do {
+            let _ = try JSON(data: invalidData)
+            XCTFail("Should have thrown error; we should not have gotten here")
+        } catch {
+            // everything is OK
+        }
+    }
+    
 }

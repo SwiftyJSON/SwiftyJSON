@@ -647,7 +647,7 @@ extension JSON: Swift.RawRepresentable {
 		}
 	}
 
-	public func rawString(_ options: [writtingOptionsKeys: Any]) -> String? {
+	public func rawString(_ options: [writingOptionsKeys: Any]) -> String? {
 		let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
 		let maxObjectDepth = options[.maxObjextDepth] as? Int ?? 10
 		do {
@@ -660,7 +660,7 @@ extension JSON: Swift.RawRepresentable {
 
 	fileprivate func _rawString(
 		_ encoding: String.Encoding = .utf8,
-		options: [writtingOptionsKeys: Any],
+		options: [writingOptionsKeys: Any],
 		maxObjectDepth: Int = 10
 	) throws -> String? {
         if (maxObjectDepth < 0) {
@@ -1477,7 +1477,7 @@ func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-public enum writtingOptionsKeys {
+public enum writingOptionsKeys {
 	case jsonSerialization
 	case castNilToNSNull
 	case maxObjextDepth

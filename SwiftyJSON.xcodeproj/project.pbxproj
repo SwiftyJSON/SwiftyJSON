@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		170ECF711E45BFF500FD325C /* NestedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170ECF701E45BFF500FD325C /* NestedTests.swift */; };
 		1B587CC61DDE04770012D8DB /* MergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B587CC41DDE04360012D8DB /* MergeTests.swift */; };
 		1B587CC71DDE04780012D8DB /* MergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B587CC41DDE04360012D8DB /* MergeTests.swift */; };
 		1B587CC81DDE04790012D8DB /* MergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B587CC41DDE04360012D8DB /* MergeTests.swift */; };
@@ -94,6 +95,7 @@
 
 /* Begin PBXFileReference section */
 		030B6CDC1A6E171D00C2D4F1 /* Info-OSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
+		170ECF701E45BFF500FD325C /* NestedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestedTests.swift; sourceTree = "<group>"; };
 		1B587CC41DDE04360012D8DB /* MergeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MergeTests.swift; sourceTree = "<group>"; };
 		2E4FEFDB19575BE100351305 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E4FEFDF19575BE100351305 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				A863BE2719EED46F0092A41F /* RawTests.swift */,
 				A8B66C8B19E51D6500540692 /* DictionaryTests.swift */,
 				A8B66C8D19E52F4200540692 /* ArrayTests.swift */,
+				170ECF701E45BFF500FD325C /* NestedTests.swift */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
 			name = SwiftyJSONTests;
@@ -563,6 +566,7 @@
 				A819C49919E1B10300ADCC3D /* RawRepresentableTests.swift in Sources */,
 				A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */,
 				A863BE2819EED46F0092A41F /* RawTests.swift in Sources */,
+				170ECF711E45BFF500FD325C /* NestedTests.swift in Sources */,
 				A885D1D219CF1EE6002FD4C3 /* BaseTests.swift in Sources */,
 				A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */,
 				A8B66C8C19E51D6500540692 /* DictionaryTests.swift in Sources */,

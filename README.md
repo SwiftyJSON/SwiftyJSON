@@ -19,6 +19,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Literal convertibles](#literal-convertibles)
    - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
+6. [Work with Moya](#work-with-moya)
 
 > For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
 
@@ -516,4 +517,24 @@ Alamofire.request(url, method: .get).validate().responseJSON { response in
         print(error)
     }
 }
+```
+
+
+## Work with Moya
+
+SwiftyJSON parse data to JSON:
+
+```swift
+let provider = MoyaProvider<Backend>()
+provider.request(.showProducts) { result in
+    switch result {
+    case let .success(moyaResponse):
+        let data = moyaResponse.data
+        let json = JSON(data: data) // convert network data to json
+        print(json)
+    case let .failure(error):
+        print("error: \(error)")
+    }
+}
+
 ```

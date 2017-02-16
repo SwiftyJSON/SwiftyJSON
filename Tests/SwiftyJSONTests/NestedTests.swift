@@ -46,7 +46,7 @@ class NestedTests: XCTestCase {
             "inner_json": inner
             ])
         
-        XCTAssertEqual(json2["inner_json"], ["some_field": "12"])
+        XCTAssertEqual(json2["inner_json"].rawValue as! [String : String], ["some_field": "12"])
         
     }
 

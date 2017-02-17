@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		A81D162B1E5743B000C62C5F /* SwiftLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A81D162E1E5743B000C62C5F /* Build configuration list for PBXAggregateTarget "SwiftLint" */;
+			buildPhases = (
+				A81D162F1E5743CE00C62C5F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = SwiftLint;
+			productName = SwiftLint;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1B587CC61DDE04770012D8DB /* MergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B587CC41DDE04360012D8DB /* MergeTests.swift */; };
 		1B587CC71DDE04780012D8DB /* MergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B587CC41DDE04360012D8DB /* MergeTests.swift */; };
@@ -456,6 +470,10 @@
 					9C7DFC641A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
+					A81D162B1E5743B000C62C5F = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 					A8580F731BCF5C5B00DA927B = {
 						CreatedOnToolsVersion = 7.1;
 					};
@@ -483,6 +501,7 @@
 				E4D7CCDE1B9465A700EE7221 /* SwiftyJSON watchOS */,
 				7236B4EC1BAC14150020529B /* SwiftyJSON tvOS */,
 				A8580F731BCF5C5B00DA927B /* SwiftyJSON tvOS Tests */,
+				A81D162B1E5743B000C62C5F /* SwiftLint */,
 			);
 		};
 /* End PBXProject section */
@@ -541,6 +560,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A81D162F1E5743CE00C62C5F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2E4FEFD619575BE100351305 /* Sources */ = {
@@ -991,6 +1026,20 @@
 			};
 			name = Release;
 		};
+		A81D162C1E5743B000C62C5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A81D162D1E5743B000C62C5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A8580F7D1BCF5C5B00DA927B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1136,6 +1185,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A81D162E1E5743B000C62C5F /* Build configuration list for PBXAggregateTarget "SwiftLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A81D162C1E5743B000C62C5F /* Debug */,
+				A81D162D1E5743B000C62C5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		A8580F7C1BCF5C5B00DA927B /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS Tests" */ = {
 			isa = XCConfigurationList;

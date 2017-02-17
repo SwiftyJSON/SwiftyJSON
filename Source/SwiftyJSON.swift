@@ -852,12 +852,31 @@ extension JSON {
 
 extension JSON { // : Swift.Bool
 
+    //Non-Optional bool
+    public var boolValue: Bool {
+        get {
+              if let v = self.bool {
+                return v
+              }
+              return false
+        }
+        set {
+            self.object = newValue
+        }
+    }
+
     //Optional bool
     public var bool: Bool? {
         get {
             switch self.type {
             case .bool:
                 return self.rawBool
+            case .number:
+                return self.rawNumber.boolValue
+            case .string:
+                return ["true", "y", "t", "yes"].contains() { (truthyString) in
+                    return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
+                }
             default:
                 return nil
             }
@@ -870,39 +889,35 @@ extension JSON { // : Swift.Bool
             }
         }
     }
-
-    //Non-optional bool
-    public var boolValue: Bool {
-        get {
-            switch self.type {
-            case .bool:
-                return self.rawBool
-            case .number:
-                return self.rawNumber.boolValue
-            case .string:
-                return ["true", "y", "t"].contains() { (truthyString) in
-                    return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
-                }
-            default:
-                return false
-            }
-        }
-        set {
-            self.object = newValue
-        }
-    }
 }
 
 // MARK: - String
 
 extension JSON {
 
+    //Non-optional string
+    public var stringValue: String {
+        get {
+            if let v = self.string {
+              return v
+            }
+            return ""
+        }
+        set {
+            self.object = NSString(string:newValue)
+        }
+    }
+
     //Optional string
     public var string: String? {
         get {
             switch self.type {
             case .string:
-                return self.object as? String
+                return self.object as? String ?? ""
+            case .number:
+                return self.rawNumber.stringValue
+            case .bool:
+                return (self.object as? Bool).map { String($0) } ?? ""
             default:
                 return nil
             }
@@ -915,36 +930,36 @@ extension JSON {
             }
         }
     }
-
-    //Non-optional string
-    public var stringValue: String {
-        get {
-            switch self.type {
-            case .string:
-                return self.object as? String ?? ""
-            case .number:
-                return self.rawNumber.stringValue
-            case .bool:
-                return (self.object as? Bool).map { String($0) } ?? ""
-            default:
-                return ""
-            }
-        }
-        set {
-            self.object = NSString(string:newValue)
-        }
-    }
 }
 
 // MARK: - Number
 extension JSON {
 
+    //Non-optional number
+    public var numberValue: NSNumber {
+        get {
+            if let v = self.number {
+              return v
+            }
+            return NSNumber(value: 0.0)
+        }
+        set {
+            self.object = newValue
+        }
+    }
+
     //Optional number
     public var number: NSNumber? {
         get {
             switch self.type {
+            case .string:
+                let decimal = NSDecimalNumber(string: self.object as? String)
+                if decimal == NSDecimalNumber.notANumber {  // indicates parse error
+                    return nil
+                }
+                return decimal
             case .number:
-                return self.rawNumber
+                return self.object as? NSNumber ?? NSNumber(value: 0)
             case .bool:
                 return NSNumber(value: self.rawBool ? 1 : 0)
             default:
@@ -953,29 +968,6 @@ extension JSON {
         }
         set {
             self.object = newValue ?? NSNull()
-        }
-    }
-
-    //Non-optional number
-    public var numberValue: NSNumber {
-        get {
-            switch self.type {
-            case .string:
-                let decimal = NSDecimalNumber(string: self.object as? String)
-                if decimal == NSDecimalNumber.notANumber {  // indicates parse error
-                    return NSDecimalNumber.zero
-                }
-                return decimal
-            case .number:
-                return self.object as? NSNumber ?? NSNumber(value: 0)
-            case .bool:
-                return NSNumber(value: self.rawBool ? 1 : 0)
-            default:
-                return NSNumber(value: 0.0)
-            }
-        }
-        set {
-            self.object = newValue
         }
     }
 }

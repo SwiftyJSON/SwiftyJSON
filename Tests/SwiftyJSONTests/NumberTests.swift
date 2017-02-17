@@ -24,7 +24,7 @@ import XCTest
 import SwiftyJSON
 
 class NumberTests: XCTestCase {
-
+    
     func testNumber() {
         //getter
         var json = JSON(NSNumber(value: 9876543210.123456789))
@@ -33,8 +33,12 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.stringValue, "9876543210.123457")
         
         json.string = "1000000000000000000000000000.1"
-        XCTAssertNil(json.number)
+        XCTAssertEqual(json.number!.description, "1000000000000000000000000000.1")
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
+        
+        json.string = "NotANumber"
+        XCTAssertNil(json.number)
+        XCTAssertEqual(json.numberValue, NSNumber(value: 0.0))
 
         json.string = "1e+27"
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000")
@@ -59,6 +63,15 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.boolValue, true)
         XCTAssertEqual(json.numberValue, true as NSNumber)
         XCTAssertEqual(json.stringValue, "true")
+        
+        json = JSON("yes")
+        XCTAssertEqual(json.boolValue, true)
+        
+        json = JSON("t")
+        XCTAssertEqual(json.boolValue, true)
+        
+        json = JSON("y")
+        XCTAssertEqual(json.boolValue, true)
         
         json.bool = false
         XCTAssertEqual(json.bool!, false)

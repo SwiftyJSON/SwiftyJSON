@@ -35,7 +35,7 @@ class StringTests: XCTestCase {
         XCTAssertEqual(json.string!, "12345?67890.@#")
         XCTAssertEqual(json.stringValue, "12345?67890.@#")
     }
-    
+
     func testUrl() {
         let json = JSON("http://github.com")
         XCTAssertEqual(json.url!, URL(string:"http://github.com")!)

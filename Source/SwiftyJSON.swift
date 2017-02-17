@@ -41,7 +41,7 @@ public let ErrorInvalidJSON: Int = 490
 
  See http://www.json.org
  */
-public enum Type :Int{
+public enum Type: Int {
 
     case number
     case string
@@ -117,7 +117,7 @@ public struct JSON {
     @available(*, deprecated: 3.2, message: "Use instead `init(parseJSON: )`")
     public static func parse(_ json: String) -> JSON {
         return json.data(using: String.Encoding.utf8)
-            .flatMap{ JSON(data: $0) } ?? JSON(NSNull())
+            .flatMap { JSON(data: $0) } ?? JSON(NSNull())
     }
 
     /**
@@ -157,7 +157,7 @@ public struct JSON {
 
         self.init(newDictionary)
     }
-    
+
     /**
      Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added, 
      present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
@@ -168,7 +168,7 @@ public struct JSON {
     public mutating func merge(with other: JSON) throws {
         try self.merge(with: other, typecheck: true)
     }
-    
+
     /**
      Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
      present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
@@ -182,7 +182,7 @@ public struct JSON {
         try merged.merge(with: other, typecheck: true)
         return merged
     }
-    
+
     // Private woker function which does the actual merging
     // Typecheck is set to true for the first recursion level to prevent total override of the source JSON
     fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
@@ -216,7 +216,7 @@ public struct JSON {
     /// Private type
     fileprivate var _type: Type = .null
     /// prviate error
-    fileprivate var _error: NSError? = nil
+    fileprivate var _error: NSError?
 
     /// Object in JSON
     public var object: Any {
@@ -281,8 +281,7 @@ public struct JSON {
     public static var null: JSON { get { return JSON(NSNull()) } }
 }
 
-public enum Index<T: Any>: Comparable
-{
+public enum Index<T: Any>: Comparable {
     case array(Int)
     case dictionary(DictionaryIndex<String, T>)
     case null
@@ -314,16 +313,12 @@ public enum Index<T: Any>: Comparable
 public typealias JSONIndex = Index<JSON>
 public typealias JSONRawIndex = Index<Any>
 
-
-extension JSON: Collection
-{
+extension JSON: Collection {
 
     public typealias Index = JSONRawIndex
 
-    public var startIndex: Index
-    {
-        switch type
-        {
+    public var startIndex: Index {
+        switch type {
         case .array:
             return .array(rawArray.startIndex)
         case .dictionary:
@@ -333,10 +328,8 @@ extension JSON: Collection
         }
     }
 
-    public var endIndex: Index
-    {
-        switch type
-        {
+    public var endIndex: Index {
+        switch type {
         case .array:
             return .array(rawArray.endIndex)
         case .dictionary:
@@ -346,10 +339,8 @@ extension JSON: Collection
         }
     }
 
-    public func index(after i: Index) -> Index
-    {
-        switch i
-        {
+    public func index(after i: Index) -> Index {
+        switch i {
         case .array(let idx):
             return .array(rawArray.index(after: idx))
         case .dictionary(let idx):
@@ -360,10 +351,8 @@ extension JSON: Collection
 
     }
 
-    public subscript (position: Index) -> (String, JSON)
-    {
-        switch position
-        {
+    public subscript (position: Index) -> (String, JSON) {
+        switch position {
         case .array(let idx):
             return (String(idx), JSON(self.rawArray[idx]))
         case .dictionary(let idx):
@@ -374,7 +363,6 @@ extension JSON: Collection
         }
     }
 
-
 }
 
 // MARK: - Subscript
@@ -382,24 +370,23 @@ extension JSON: Collection
 /**
  *  To mark both String and Int can be used in subscript.
  */
-public enum JSONKey
-{
+public enum JSONKey {
     case index(Int)
     case key(String)
 }
 
 public protocol JSONSubscriptType {
-    var jsonKey:JSONKey { get }
+    var jsonKey: JSONKey { get }
 }
 
 extension Int: JSONSubscriptType {
-    public var jsonKey:JSONKey {
+    public var jsonKey: JSONKey {
         return JSONKey.index(self)
     }
 }
 
 extension String: JSONSubscriptType {
-    public var jsonKey:JSONKey {
+    public var jsonKey: JSONKey {
         return JSONKey.key(self)
     }
 }
@@ -417,7 +404,7 @@ extension JSON {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
-                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds , userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
+                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
                 return r
             }
         }
@@ -576,7 +563,7 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
             return JSON(dictionaryLiteral: initializeElement)
         }
 
-        var dict = [String : Any](minimumCapacity: elements.count)
+        var dict = [String: Any](minimumCapacity: elements.count)
 
         for element in elements {
             let elementToSet: Any
@@ -637,7 +624,7 @@ extension JSON: Swift.RawRepresentable {
 
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
 	}
-	
+
 	public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
 		do {
 			return try _rawString(encoding, options: [.jsonSerialization: opt])
@@ -771,7 +758,7 @@ extension JSON {
     public var array: [JSON]? {
         get {
             if self.type == .array {
-                return self.rawArray.map{ JSON($0) }
+                return self.rawArray.map { JSON($0) }
             } else {
                 return nil
             }
@@ -812,7 +799,7 @@ extension JSON {
     //Optional [String : JSON]
     public var dictionary: [String : JSON]? {
         if self.type == .dictionary {
-            var d = [String : JSON](minimumCapacity: rawDictionary.count)
+            var d = [String: JSON](minimumCapacity: rawDictionary.count)
             for (key, value) in rawDictionary {
                 d[key] = JSON(value)
             }
@@ -880,7 +867,7 @@ extension JSON { // : Swift.Bool
             case .number:
                 return self.rawNumber.boolValue
             case .string:
-                return ["true", "y", "t"].contains() { (truthyString) in
+                return ["true", "y", "t"].contains { (truthyString) in
                     return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
                 }
             default:
@@ -980,7 +967,7 @@ extension JSON {
     }
 }
 
-//MARK: - Null
+// MARK: - Null
 extension JSON {
 
     public var null: NSNull? {
@@ -996,7 +983,7 @@ extension JSON {
             self.object = NSNull()
         }
     }
-    public func exists() -> Bool{
+    public func exists() -> Bool {
         if let errorValue = error, errorValue.code == ErrorNotExist ||
             errorValue.code == ErrorIndexOutOfBounds ||
             errorValue.code == ErrorWrongType {
@@ -1006,7 +993,7 @@ extension JSON {
     }
 }
 
-//MARK: - URL
+// MARK: - URL
 extension JSON {
 
     //Optional URL
@@ -1081,19 +1068,14 @@ extension JSON {
         }
     }
 
-    public var int: Int?
-    {
-        get
-        {
+    public var int: Int? {
+        get {
             return self.number?.intValue
         }
-        set
-        {
-            if let newValue = newValue
-            {
+        set {
+            if let newValue = newValue {
                 self.object = NSNumber(value: newValue)
-            } else
-            {
+            } else {
                 self.object = NSNull()
             }
         }
@@ -1307,7 +1289,7 @@ extension JSON {
     }
 }
 
-//MARK: - Comparable
+// MARK: - Comparable
 extension JSON : Swift.Comparable {}
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
@@ -1402,10 +1384,10 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
-    var isBool:Bool {
+    var isBool: Bool {
         get {
             let objCType = String(cString: self.objCType)
-            if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType){
+            if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
                 return true
             } else {
                 return false

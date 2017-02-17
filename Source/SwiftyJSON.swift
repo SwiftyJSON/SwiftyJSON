@@ -256,11 +256,11 @@ private func unwrap(_ object: Any) -> Any {
     case let array as [Any]:
         return array.map(unwrap)
     case let dictionary as [String : Any]:
-        var unwrapedDic = dictionary
+        var unwrappedDic = dictionary
         for (k, v) in dictionary {
-            unwrapedDic[k] = unwrap(v)
+            unwrappedDic[k] = unwrap(v)
         }
-        return unwrapedDic
+        return unwrappedDic
     default:
         return object
     }

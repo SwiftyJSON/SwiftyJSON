@@ -7,7 +7,6 @@ disabled_rules:
   - line_length
   - type_body_length
   - implicit_getter
-  - operator_whitespace
   - cyclomatic_complexity
   - function_body_length
   - control_statement

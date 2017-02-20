@@ -286,7 +286,7 @@ public enum Index<T: Any>: Comparable {
     case dictionary(DictionaryIndex<String, T>)
     case null
 
-    static public func ==(lhs: Index, rhs: Index) -> Bool {
+    static public func == (lhs: Index, rhs: Index) -> Bool {
         switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left == right
@@ -298,7 +298,7 @@ public enum Index<T: Any>: Comparable {
         }
     }
 
-    static public func <(lhs: Index, rhs: Index) -> Bool {
+    static public func < (lhs: Index, rhs: Index) -> Bool {
         switch (lhs, rhs) {
         case (.array(let left), .array(let right)):
             return left < right
@@ -1292,7 +1292,7 @@ extension JSON {
 // MARK: - Comparable
 extension JSON : Swift.Comparable {}
 
-public func ==(lhs: JSON, rhs: JSON) -> Bool {
+public func == (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
     case (.number, .number):
@@ -1312,7 +1312,7 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func <=(lhs: JSON, rhs: JSON) -> Bool {
+public func <= (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
     case (.number, .number):
@@ -1332,7 +1332,7 @@ public func <=(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func >=(lhs: JSON, rhs: JSON) -> Bool {
+public func >= (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
     case (.number, .number):
@@ -1352,7 +1352,7 @@ public func >=(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func >(lhs: JSON, rhs: JSON) -> Bool {
+public func > (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
     case (.number, .number):
@@ -1364,7 +1364,7 @@ public func >(lhs: JSON, rhs: JSON) -> Bool {
     }
 }
 
-public func <(lhs: JSON, rhs: JSON) -> Bool {
+public func < (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
     case (.number, .number):
@@ -1396,7 +1396,7 @@ extension NSNumber {
     }
 }
 
-func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func == (lhs: NSNumber, rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
         return false
@@ -1407,11 +1407,11 @@ func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func != (lhs: NSNumber, rhs: NSNumber) -> Bool {
     return !(lhs == rhs)
 }
 
-func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1423,7 +1423,7 @@ func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func > (lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1435,7 +1435,7 @@ func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func <= (lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):
@@ -1447,7 +1447,7 @@ func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+func >= (lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true):

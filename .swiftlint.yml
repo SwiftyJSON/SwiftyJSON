@@ -6,7 +6,6 @@ disabled_rules:
   - file_length
   - line_length
   - type_body_length
-  - implicit_getter
   - cyclomatic_complexity
   - function_body_length
   - control_statement

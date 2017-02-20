@@ -270,15 +270,15 @@ public struct JSON {
     }
 
     /// JSON type
-    public var type: Type { get { return _type } }
+    public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { get { return self._error } }
+    public var error: NSError? { return self._error }
 
     /// The static null JSON
     @available(*, unavailable, renamed:"null")
-    public static var nullJSON: JSON { get { return null } }
-    public static var null: JSON { get { return JSON(NSNull()) } }
+    public static var nullJSON: JSON { return null }
+    public static var null: JSON { return JSON(NSNull()) }
 }
 
 public enum Index<T: Any>: Comparable {
@@ -756,20 +756,16 @@ extension JSON {
 
     //Optional [JSON]
     public var array: [JSON]? {
-        get {
-            if self.type == .array {
-                return self.rawArray.map { JSON($0) }
-            } else {
-                return nil
-            }
+        if self.type == .array {
+            return self.rawArray.map { JSON($0) }
+        } else {
+            return nil
         }
     }
 
     //Non-optional [JSON]
     public var arrayValue: [JSON] {
-        get {
-            return self.array ?? []
-        }
+        return self.array ?? []
     }
 
     //Optional [Any]
@@ -1385,13 +1381,11 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 
 extension NSNumber {
     var isBool: Bool {
-        get {
-            let objCType = String(cString: self.objCType)
-            if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
-                return true
-            } else {
-                return false
-            }
+        let objCType = String(cString: self.objCType)
+        if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
+            return true
+        } else {
+            return false
         }
     }
 }

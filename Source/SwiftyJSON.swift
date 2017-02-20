@@ -650,7 +650,7 @@ extension JSON: Swift.RawRepresentable {
 		options: [writingOptionsKeys: Any],
 		maxObjectDepth: Int = 10
 	) throws -> String? {
-        if (maxObjectDepth < 0) {
+        if maxObjectDepth < 0 {
             throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Element too deep. Increase maxObjectDepth and make sure there is no reference loop"])
         }
         switch self.type {

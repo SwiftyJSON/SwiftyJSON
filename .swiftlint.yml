@@ -8,4 +8,3 @@ disabled_rules:
   - type_body_length
   - cyclomatic_complexity
   - function_body_length
-  - control_statement

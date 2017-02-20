@@ -54,18 +54,18 @@ class NestedJSONTests: XCTestCase {
         XCTAssertEqual(json["c"]["aa"].string, "11")
     }
     
-    func testNextedJSON() {
-        let inner = JSON.init([
+    func testNestedJSON() {
+        let inner = JSON([
             "some_field": "1" + "2",
             ])
-        let json = JSON.init([
+        let json = JSON([
             "outer_field": "1" + "2",
             "inner_json": inner
             ])
         XCTAssertEqual(json["inner_json"], ["some_field": "12"])
         
         let foo = "foo"
-        let json2 = JSON.init([
+        let json2 = JSON([
             "outer_field": foo,
             "inner_json": inner
             ])

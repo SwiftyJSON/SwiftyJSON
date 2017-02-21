@@ -53,6 +53,9 @@
 		A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */; };
 		A819C4A119E37FC600ADCC3D /* PrintableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819C4A019E37FC600ADCC3D /* PrintableTests.swift */; };
 		A81CBA0B1BCF6B0200A649A2 /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
+		A830A6951E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A830A6941E5B2DD8001D7F6D /* MutabilityTests.swift */; };
+		A830A6961E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A830A6941E5B2DD8001D7F6D /* MutabilityTests.swift */; };
+		A830A6971E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A830A6941E5B2DD8001D7F6D /* MutabilityTests.swift */; };
 		A8491E1E19CD6DAE00CCFAE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		A8580F791BCF5C5B00DA927B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7236B4F61BAC14150020529B /* SwiftyJSON.framework */; };
 		A8580F801BCF69A000DA927B /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86BAA0D19EBC32B009EAAEB /* PerformanceTests.swift */; };
@@ -124,6 +127,7 @@
 		A819C49E19E2EE5B00ADCC3D /* SubscriptTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptTests.swift; sourceTree = "<group>"; };
 		A819C4A019E37FC600ADCC3D /* PrintableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintableTests.swift; sourceTree = "<group>"; };
 		A82A1C0D19D922DC009A653D /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		A830A6941E5B2DD8001D7F6D /* MutabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutabilityTests.swift; sourceTree = "<group>"; };
 		A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		A8580F741BCF5C5B00DA927B /* SwiftyJSON tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftyJSON tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8580F781BCF5C5B00DA927B /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
@@ -259,6 +263,7 @@
 				A87080E719E439DA00CDE086 /* NumberTests.swift */,
 				A863BE2719EED46F0092A41F /* RawTests.swift */,
 				A8B66C8B19E51D6500540692 /* DictionaryTests.swift */,
+				A830A6941E5B2DD8001D7F6D /* MutabilityTests.swift */,
 				A8B66C8D19E52F4200540692 /* ArrayTests.swift */,
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
@@ -597,6 +602,7 @@
 				A86BAA0E19EBC32B009EAAEB /* PerformanceTests.swift in Sources */,
 				A819C49919E1B10300ADCC3D /* RawRepresentableTests.swift in Sources */,
 				A819C49F19E2EE5B00ADCC3D /* SubscriptTests.swift in Sources */,
+				A830A6951E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */,
 				A863BE2819EED46F0092A41F /* RawTests.swift in Sources */,
 				A885D1D219CF1EE6002FD4C3 /* BaseTests.swift in Sources */,
 				A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */,
@@ -635,6 +641,7 @@
 				9C459F021A9103C1008C9A41 /* NumberTests.swift in Sources */,
 				9C459EFF1A9103C1008C9A41 /* RawRepresentableTests.swift in Sources */,
 				9C459EFA1A9103C1008C9A41 /* BaseTests.swift in Sources */,
+				A830A6961E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */,
 				9C459F041A9103C1008C9A41 /* DictionaryTests.swift in Sources */,
 				9C459EF91A9103C1008C9A41 /* PerformanceTests.swift in Sources */,
 				9C459EFE1A9103C1008C9A41 /* LiteralConvertibleTests.swift in Sources */,
@@ -657,6 +664,7 @@
 				A8580F821BCF69A000DA927B /* SequenceTypeTests.swift in Sources */,
 				A8580F831BCF69A000DA927B /* PrintableTests.swift in Sources */,
 				A8580F841BCF69A000DA927B /* SubscriptTests.swift in Sources */,
+				A830A6971E5B2DD8001D7F6D /* MutabilityTests.swift in Sources */,
 				A8580F851BCF69A000DA927B /* LiteralConvertibleTests.swift in Sources */,
 				A8580F861BCF69A000DA927B /* RawRepresentableTests.swift in Sources */,
 				A8580F871BCF69A000DA927B /* ComparableTests.swift in Sources */,

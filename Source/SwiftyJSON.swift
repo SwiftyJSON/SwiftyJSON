@@ -84,10 +84,6 @@ public struct JSON {
      */
     public init(_ object: Any) {
         switch object {
-        case let object as [JSON] where object.count > 0:
-            self.init(array: object)
-        case let object as [String: JSON] where object.count > 0:
-            self.init(dictionary: object)
         case let object as Data:
             self.init(data: object)
         default:
@@ -129,33 +125,6 @@ public struct JSON {
      */
     fileprivate init(jsonObject: Any) {
         self.object = jsonObject
-    }
-
-    /**
-     Creates a JSON from a [JSON]
-
-     - parameter jsonArray: A Swift array of JSON objects
-
-     - returns: The created JSON
-     */
-    fileprivate init(array: [JSON]) {
-        self.init(array.map { $0.object })
-    }
-
-    /**
-     Creates a JSON from a [String: JSON]
-
-     - parameter jsonDictionary: A Swift dictionary of JSON objects
-
-     - returns: The created JSON
-     */
-    fileprivate init(dictionary: [String: JSON]) {
-        var newDictionary = [String: Any](minimumCapacity: dictionary.count)
-        for (key, json) in dictionary {
-            newDictionary[key] = json.object
-        }
-
-        self.init(newDictionary)
     }
 
     /**
@@ -238,7 +207,7 @@ public struct JSON {
         }
         set {
             _error = nil
-            switch newValue {
+            switch unwrap(newValue) {
             case let number as NSNumber:
                 if number.isBool {
                     _type = .bool
@@ -252,10 +221,8 @@ public struct JSON {
                 self.rawString = string
             case _ as NSNull:
                 _type = .null
-            case _ as [JSON]:
-				_type = .array
-			case nil:
-				_type = .null
+            case nil:
+                _type = .null
             case let array as [Any]:
                 _type = .array
                 self.rawArray = array
@@ -279,6 +246,24 @@ public struct JSON {
     @available(*, unavailable, renamed:"null")
     public static var nullJSON: JSON { return null }
     public static var null: JSON { return JSON(NSNull()) }
+}
+
+// unwrap nested JSON
+private func unwrap(_ object: Any) -> Any {
+    switch object {
+    case let json as JSON:
+        return unwrap(json.object)
+    case let array as [Any]:
+        return array.map(unwrap)
+    case let dictionary as [String : Any]:
+        var unwrappedDic = dictionary
+        for (k, v) in dictionary {
+            unwrappedDic[k] = unwrap(v)
+        }
+        return unwrappedDic
+    default:
+        return object
+    }
 }
 
 public enum Index<T: Any>: Comparable {
@@ -313,7 +298,7 @@ public enum Index<T: Any>: Comparable {
 public typealias JSONIndex = Index<JSON>
 public typealias JSONRawIndex = Index<Any>
 
-extension JSON: Collection {
+extension JSON: Swift.Collection {
 
     public typealias Index = JSONRawIndex
 
@@ -348,7 +333,6 @@ extension JSON: Collection {
         default:
             return .null
         }
-
     }
 
     public subscript (position: Index) -> (String, JSON) {
@@ -362,7 +346,6 @@ extension JSON: Collection {
             return ("", JSON.null)
         }
     }
-
 }
 
 // MARK: - Subscript
@@ -548,41 +531,11 @@ extension JSON: Swift.ExpressibleByFloatLiteral {
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, Any)...) {
-        let array = elements
-        self.init(dictionaryLiteral: array)
-    }
-
-    public init(dictionaryLiteral elements: [(String, Any)]) {
-        let jsonFromDictionaryLiteral: ([String : Any]) -> JSON = { dictionary in
-            let initializeElement = Array(dictionary.keys).flatMap { key -> (String, Any)? in
-                if let value = dictionary[key] {
-                    return (key, value)
-                }
-                return nil
-            }
-            return JSON(dictionaryLiteral: initializeElement)
+        var dictionary = [String : Any](minimumCapacity: elements.count)
+        for (k, v) in elements {
+            dictionary[k] = v
         }
-
-        var dict = [String: Any](minimumCapacity: elements.count)
-
-        for element in elements {
-            let elementToSet: Any
-            if let json = element.1 as? JSON {
-                elementToSet = json.object
-            } else if let jsonArray = element.1 as? [JSON] {
-                elementToSet = JSON(jsonArray).object
-            } else if let dictionary = element.1 as? [String : Any] {
-                elementToSet = jsonFromDictionaryLiteral(dictionary).object
-            } else if let dictArray = element.1 as? [[String : Any]] {
-                let jsonArray = dictArray.map { jsonFromDictionaryLiteral($0) }
-                elementToSet = JSON(jsonArray).object
-            } else {
-                elementToSet = element.1
-            }
-            dict[element.0] = elementToSet
-        }
-
-        self.init(dict)
+        self.init(dictionary as Any)
     }
 }
 

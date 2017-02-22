@@ -1,6 +1,6 @@
 //  PrintableTests.swift
 //
-//  Copyright (c) 2014 - 2016 Pinglin Tang
+//  Copyright (c) 2014 - 2017 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,7 @@ class PrintableTests: XCTestCase {
     func testArrayWithOptionals() {
         let array = [1,2,"4",5,"6",nil] as [Any?]
         let json = JSON(array)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent array")
 			return
 		}
@@ -110,7 +110,7 @@ class PrintableTests: XCTestCase {
     func testDictionaryWithOptionals() {
         let dict = ["1":2, "2":"two", "3": nil] as [String: Any?]
         let json = JSON(dict)
-		guard var description = json.rawString(options: [.castNilToNSNull: true]) else {
+		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent dictionary")
 			return
 		}

@@ -1,6 +1,6 @@
 //  BaseTests.swift
 //
-//  Copyright (c) 2014 - 2016 Ruoyu Fu, Pinglin Tang
+//  Copyright (c) 2014 - 2017 Ruoyu Fu, Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -120,13 +120,13 @@ class BaseTests: XCTestCase {
 
         let user = json[0]["user"]
         let user_name = user["name"].string
-        let user_profile_image_url = user["profile_image_url"].URL
+        let user_profile_image_url = user["profile_image_url"].url
         XCTAssert(user_name == "OAuth Dancer")
         XCTAssert(user_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
 
         let user_dictionary = json[0]["user"].dictionary
         let user_dictionary_name = user_dictionary?["name"]?.string
-        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.URL
+        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.url
         XCTAssert(user_dictionary_name == "OAuth Dancer")
         XCTAssert(user_dictionary_name_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
     }

@@ -1247,6 +1247,86 @@ extension JSON {
     }
 }
 
+//MARK: - Requirement Error Definition
+public enum RequirementError : ErrorType {
+    case MissingValue
+    case WrongValueType
+}
+
+//MARK: - Throwable Accessors
+extension JSON {
+    
+    public func requiredString() throws -> String {
+        switch self.type {
+        case .String:
+            return self.stringValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
+    public func requiredInt() throws -> Int {
+        switch self.type {
+        case .Number:
+            return self.intValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
+    public func requiredFloat() throws -> Float {
+        switch self.type {
+        case .Number:
+            return self.floatValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
+    public func requiredArray() throws -> [JSON] {
+        switch self.type {
+        case .Array:
+            return self.arrayValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
+    public func requiredDictionary() throws -> [String : JSON] {
+        switch self.type {
+        case .Dictionary:
+            return self.dictionaryValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
+    public func requiredURL() throws -> NSURL {
+        switch self.type {
+        case .String:
+            if let url = self.URL {
+                return url
+            } else {
+                throw RequirementError.WrongValueType
+            }
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+}
+
 //MARK: - Comparable
 extension JSON : Swift.Comparable {}
 

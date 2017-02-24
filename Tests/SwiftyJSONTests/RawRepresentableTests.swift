@@ -90,15 +90,24 @@ class RawRepresentableTests: XCTestCase {
         
         let object: Any = JSON(rawValue: array)!.rawValue
         XCTAssertTrue(array == object as! NSArray)
-    }
-    
-    func testDictionary() {
-        let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]] as NSDictionary
-        if let json:JSON = JSON(rawValue: dictionary) {
-            XCTAssertEqual(json, JSON(dictionary))
-        }
+	}
+	
+	func testDictionary() {
+		let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]] as NSDictionary
+		if let json:JSON = JSON(rawValue: dictionary) {
+			XCTAssertEqual(json, JSON(dictionary))
+		}
 
-        let object: Any = JSON(rawValue: dictionary)!.rawValue
-        XCTAssertTrue(dictionary == object as! NSDictionary)
-    }
+		let object: Any = JSON(rawValue: dictionary)!.rawValue
+		XCTAssertTrue(dictionary == object as! NSDictionary)
+	}
+
+	func testJson() {
+		let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"], "foo": []] as NSDictionary
+		let json = JSON(dictionary)
+
+		let dict2 = ["json": json, "baa": "boo"] as [String: Any?]
+		let object: Any = JSON(rawValue: dict2)!["json"].rawValue
+		XCTAssertTrue(dictionary == object as! NSDictionary)
+	}
 }

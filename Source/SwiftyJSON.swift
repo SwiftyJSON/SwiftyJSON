@@ -182,6 +182,7 @@ public struct JSON {
     fileprivate var rawNumber: NSNumber = 0
     fileprivate var rawNull: NSNull = NSNull()
     fileprivate var rawBool: Bool = false
+	fileprivate var rawJSON: Any? = nil
     /// Private type
     fileprivate var _type: Type = .null
     /// prviate error
@@ -190,6 +191,9 @@ public struct JSON {
     /// Object in JSON
     public var object: Any {
         get {
+			if let json = rawJSON as? JSON {
+				return json.object
+			}
             switch self.type {
             case .array:
                 return self.rawArray
@@ -229,6 +233,9 @@ public struct JSON {
             case let dictionary as [String : Any]:
                 _type = .dictionary
                 self.rawDictionary = dictionary
+			case let json as JSON:
+				_type = json._type
+				self.rawJSON = json
             default:
                 _type = .unknown
                 _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])

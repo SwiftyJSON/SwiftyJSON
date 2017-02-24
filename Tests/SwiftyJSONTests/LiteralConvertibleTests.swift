@@ -26,7 +26,7 @@ import SwiftyJSON
 class LiteralConvertibleTests: XCTestCase {
 
     func testNumber() {
-        var json:JSON = 1234567890.876623
+        var json: JSON = 1234567890.876623
         XCTAssertEqual(json.int!, 1234567890)
         XCTAssertEqual(json.intValue, 1234567890)
         XCTAssertEqual(json.double!, 1234567890.876623)
@@ -34,40 +34,40 @@ class LiteralConvertibleTests: XCTestCase {
         XCTAssertTrue(json.float! == 1234567890.876623)
         XCTAssertTrue(json.floatValue == 1234567890.876623)
     }
-    
+
     func testBool() {
-        var jsonTrue:JSON = true
+        var jsonTrue: JSON = true
         XCTAssertEqual(jsonTrue.bool!, true)
         XCTAssertEqual(jsonTrue.boolValue, true)
-        var jsonFalse:JSON = false
+        var jsonFalse: JSON = false
         XCTAssertEqual(jsonFalse.bool!, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
     }
 
     func testString() {
-        var json:JSON = "abcd efg, HIJK;LMn"
+        var json: JSON = "abcd efg, HIJK;LMn"
         XCTAssertEqual(json.string!, "abcd efg, HIJK;LMn")
         XCTAssertEqual(json.stringValue, "abcd efg, HIJK;LMn")
     }
-    
+
     func testNil() {
-        let jsonNil_1:JSON = JSON.null
+        let jsonNil_1: JSON = JSON.null
         XCTAssert(jsonNil_1 == JSON.null)
-        let jsonNil_2:JSON = JSON(NSNull.self)
+        let jsonNil_2: JSON = JSON(NSNull.self)
         XCTAssert(jsonNil_2 != JSON.null)
-        let jsonNil_3:JSON = JSON([1:2])
+        let jsonNil_3: JSON = JSON([1: 2])
         XCTAssert(jsonNil_3 != JSON.null)
     }
-    
+
     func testArray() {
-        let json:JSON = [1,2,"4",5,"6"]
-        XCTAssertEqual(json.array!, [1,2,"4",5,"6"])
-        XCTAssertEqual(json.arrayValue, [1,2,"4",5,"6"])
+        let json: JSON = [1, 2, "4", 5, "6"]
+        XCTAssertEqual(json.array!, [1, 2, "4", 5, "6"])
+        XCTAssertEqual(json.arrayValue, [1, 2, "4", 5, "6"])
     }
-    
+
     func testDictionary() {
-        let json:JSON = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]]
-        XCTAssertEqual(json.dictionary!, ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]])
-        XCTAssertEqual(json.dictionaryValue, ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]])
+        let json: JSON = ["1": 2, "2": 2, "three": 3, "list": ["aa", "bb", "dd"]]
+        XCTAssertEqual(json.dictionary!, ["1": 2, "2": 2, "three": 3, "list": ["aa", "bb", "dd"]])
+        XCTAssertEqual(json.dictionaryValue, ["1": 2, "2": 2, "three": 3, "list": ["aa", "bb", "dd"]])
     }
 }

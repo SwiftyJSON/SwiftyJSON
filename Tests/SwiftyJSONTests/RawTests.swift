@@ -92,4 +92,18 @@ class RawTests: XCTestCase {
         let json: JSON = JSON.null
         XCTAssertEqual(json.rawString(), "null")
     }
+	
+	func testNestedJSON() {
+		let inner: JSON = ["name": "john doe"]
+		let json: JSON = ["level": 1337, "user": inner]
+		let data: Data?
+		do {
+			data = try json.rawData()
+		} catch _ {
+			data = nil
+		}
+		let string = json.rawString()
+		XCTAssertNotNil(data)
+		XCTAssertNotNil(string)
+	}
 }

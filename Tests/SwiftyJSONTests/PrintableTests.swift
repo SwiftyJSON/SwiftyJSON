@@ -123,7 +123,7 @@ class PrintableTests: XCTestCase {
 	}
 	
 	func testJson() {
-		let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"], "foo": []] as NSDictionary
+		let dictionary = ["1": 2,"2": 2,"three": 3,"list": ["aa", "bb", "dd"], "foo": []] as NSDictionary
 		let json = JSON(dictionary)
 		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent dictionary")

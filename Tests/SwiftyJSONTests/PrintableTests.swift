@@ -117,11 +117,20 @@ class PrintableTests: XCTestCase {
 		description = description.replacingOccurrences(of: "\n", with: "")
         description = description.replacingOccurrences(of: " ", with: "")
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        XCTAssertTrue(description.range(of: "\"1\":2", options: NSString.CompareOptions.caseInsensitive) != nil)
-        XCTAssertTrue(description.range(of: "\"2\":\"two\"", options: NSString.CompareOptions.caseInsensitive) != nil)
-        XCTAssertTrue(description.range(of: "\"3\":null", options: NSString.CompareOptions.caseInsensitive) != nil)
+        XCTAssertTrue(description.range(
+            of: "\"1\":2",
+            options: NSString.CompareOptions.caseInsensitive) != nil
+        )
+        XCTAssertTrue(description.range(
+            of: "\"2\":\"two\"",
+            options: NSString.CompareOptions.caseInsensitive) != nil
+        )
+        XCTAssertTrue(description.range(
+            of: "\"3\":null",
+            options: NSString.CompareOptions.caseInsensitive) != nil
+        )
 	}
-	
+
 	func testJson() {
 		let dictionary = ["1": 2,"2": 2,"three": 3,"list": ["aa", "bb", "dd"], "foo": []] as NSDictionary
 		let json = JSON(dictionary)
@@ -141,7 +150,13 @@ class PrintableTests: XCTestCase {
 		}
 		description2 = description2.replacingOccurrences(of: "\n", with: "")
 		description2 = description2.replacingOccurrences(of: " ", with: "")
-		XCTAssertTrue(description2.range(of: "\"json\":{", options: NSString.CompareOptions.caseInsensitive) != nil)
-		XCTAssertTrue(description2.range(of: description, options: NSString.CompareOptions.caseInsensitive) != nil)
+		XCTAssertTrue(description2.range(
+            of: "\"json\":{",
+            options: NSString.CompareOptions.caseInsensitive
+        ) != nil)
+		XCTAssertTrue(description2.range(
+            of: description,
+            options: NSString.CompareOptions.caseInsensitive
+        ) != nil)
 	}
 }

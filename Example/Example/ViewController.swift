@@ -32,7 +32,7 @@ class ViewController: UITableViewController {
 	override func viewDidLoad() {
 		self.title = "SwiftyJSON(\(json.type))"
 	}
-	
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

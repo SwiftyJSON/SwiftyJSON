@@ -531,7 +531,7 @@ extension JSON: Swift.ExpressibleByFloatLiteral {
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, Any)...) {
-        var dictionary = [String : Any](minimumCapacity: elements.count)
+        var dictionary = [String: Any](minimumCapacity: elements.count)
         for (k, v) in elements {
             dictionary[k] = v
         }

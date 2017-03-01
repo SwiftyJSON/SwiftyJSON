@@ -24,7 +24,7 @@ import XCTest
 import SwiftyJSON
 
 class MutabilityTest: XCTestCase {
-    
+
     func testDictionaryJSONMutability() {
         let dictionary: [String: Any] = [
             "string": "STRING",
@@ -32,72 +32,72 @@ class MutabilityTest: XCTestCase {
             "bool": true,
             "empty": ["nothing"]
         ]
-        
+
         var json = JSON(dictionary)
         XCTAssertEqual(json["string"], "STRING")
         XCTAssertEqual(json["number"], 9823.212)
         XCTAssertEqual(json["bool"], true)
         XCTAssertEqual(json["empty"], ["nothing"])
-        
+
         json["string"] = "muted"
         XCTAssertEqual(json["string"], "muted")
-        
+
         json["number"] = 9999.0
         XCTAssertEqual(json["number"], 9999.0)
-        
+
         json["bool"] = false
         XCTAssertEqual(json["bool"], false)
-        
+
         json["empty"] = []
         XCTAssertEqual(json["empty"], [])
-        
+
         json["new"] = JSON(["foo": "bar"])
         XCTAssertEqual(json["new"], ["foo": "bar"])
     }
-    
+
     func testArrayJSONMutability() {
         let array: [Any] = ["1", "2", 3, true, []]
-        
+
         var json = JSON(array)
         XCTAssertEqual(json[0], "1")
         XCTAssertEqual(json[1], "2")
         XCTAssertEqual(json[2], 3)
         XCTAssertEqual(json[3], true)
         XCTAssertEqual(json[4], [])
-        
+
         json[0] = false
         XCTAssertEqual(json[0], false)
-        
+
         json[1] = 2
         XCTAssertEqual(json[1], 2)
-        
+
         json[2] = "3"
         XCTAssertEqual(json[2], "3")
-        
+
         json[3] = [:]
         XCTAssertEqual(json[3], [:])
-        
+
         json[4] = [1, 2]
         XCTAssertEqual(json[4], [1, 2])
     }
-    
+
     func testValueMutability() {
         var intArray = JSON([0, 1, 2])
         intArray[0] = JSON(55)
         XCTAssertEqual(intArray[0], 55)
         XCTAssertEqual(intArray[0].intValue, 55)
-    	
+
         var dictionary = JSON(["foo": "bar"])
         dictionary["foo"] = JSON("foo")
         XCTAssertEqual(dictionary["foo"], "foo")
         XCTAssertEqual(dictionary["foo"].stringValue, "foo")
-        
+
         var number = JSON(1)
         number = JSON("111")
         XCTAssertEqual(number, "111")
         XCTAssertEqual(number.intValue, 111)
         XCTAssertEqual(number.stringValue, "111")
-        
+
         var boolean = JSON(true)
         boolean = JSON(false)
         XCTAssertEqual(boolean, false)

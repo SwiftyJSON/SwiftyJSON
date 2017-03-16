@@ -85,7 +85,7 @@ class SequenceTypeTests: XCTestCase {
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             let ind: Int? = index
-            XCTAssertEqual(i, "\(ind)")
+            XCTAssertEqual(i, "\(String(describing: ind))")
             array.append(sub.number!)
             index += 1
         }
@@ -102,7 +102,7 @@ class SequenceTypeTests: XCTestCase {
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             let ind: Int? = index
-            XCTAssertEqual(i, "\(ind)")
+            XCTAssertEqual(i, "\(String(describing: ind))")
             array.append(sub.bool!)
             index += 1
         }
@@ -119,7 +119,7 @@ class SequenceTypeTests: XCTestCase {
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             let ind: Int? = index
-            XCTAssertEqual(i, "\(ind)")
+            XCTAssertEqual(i, "\(String(describing: ind))")
             array.append(sub.string!)
             index += 1
         }
@@ -142,7 +142,7 @@ class SequenceTypeTests: XCTestCase {
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             let ind: Int? = index
-            XCTAssertEqual(i, "\(ind)")
+            XCTAssertEqual(i, "\(String(describing: ind))")
             array.append(sub.object)
             index += 1
         }
@@ -162,7 +162,7 @@ class SequenceTypeTests: XCTestCase {
         for (i, sub) in json {
             XCTAssertEqual(sub, json[index])
             let ind: Int? = index
-            XCTAssertEqual(i, "\(ind)")
+            XCTAssertEqual(i, "\(String(describing: ind))")
             array.append(sub.object)
             index += 1
         }

@@ -189,7 +189,7 @@ public struct JSON {
                     self.rawString = value as! String
                 case .unknown:
                     _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
-                    print("==> error=\(_error). type=\(type(of: newValue))")
+                    print("==> error=\(String(describing: _error)). type=\(type(of: newValue))")
             }
 #else
             if  type(of: newValue) == Bool.self {
@@ -694,7 +694,27 @@ extension JSON {
 }
 
 // MARK: - LiteralConvertible
-extension JSON: Swift.StringLiteralConvertible {
+
+//TODO: Remove this after we remove support for Swift 3.0.2
+#if swift(>=3.1)
+    typealias ExpressibleByStringLiteralType = ExpressibleByStringLiteral
+    typealias ExpressibleByIntegerLiteralType = ExpressibleByIntegerLiteral
+    typealias ExpressibleByBooleanLiteralType = ExpressibleByBooleanLiteral
+    typealias ExpressibleByFloatLiteralType = ExpressibleByFloatLiteral
+    typealias ExpressibleByDictionaryLiteralType = ExpressibleByDictionaryLiteral
+    typealias ExpressibleByArrayLiteralType = ExpressibleByArrayLiteral
+    typealias ExpressibleByNilLiteralType = ExpressibleByNilLiteral
+#else
+    typealias ExpressibleByStringLiteralType = Swift.StringLiteralConvertible
+    typealias ExpressibleByIntegerLiteralType = Swift.IntegerLiteralConvertible
+    typealias ExpressibleByBooleanLiteralType = Swift.BooleanLiteralConvertible
+    typealias ExpressibleByFloatLiteralType = Swift.FloatLiteralConvertible
+    typealias ExpressibleByDictionaryLiteralType = Swift.DictionaryLiteralConvertible
+    typealias ExpressibleByArrayLiteralType = Swift.ArrayLiteralConvertible
+    typealias ExpressibleByNilLiteralType = Swift.NilLiteralConvertible
+#endif
+
+extension JSON: ExpressibleByStringLiteralType {
 
     public init(stringLiteral value: StringLiteralType) {
         self.init(value as Any)
@@ -709,28 +729,28 @@ extension JSON: Swift.StringLiteralConvertible {
     }
 }
 
-extension JSON: Swift.IntegerLiteralConvertible {
+extension JSON: ExpressibleByIntegerLiteralType {
 
     public init(integerLiteral value: IntegerLiteralType) {
         self.init(value as Any)
     }
 }
 
-extension JSON: Swift.BooleanLiteralConvertible {
+extension JSON: ExpressibleByBooleanLiteralType {
 
     public init(booleanLiteral value: BooleanLiteralType) {
         self.init(value as Any)
     }
 }
 
-extension JSON: Swift.FloatLiteralConvertible {
+extension JSON: ExpressibleByFloatLiteralType {
 
     public init(floatLiteral value: FloatLiteralType) {
         self.init(value as Any)
     }
 }
 
-extension JSON: Swift.DictionaryLiteralConvertible {
+extension JSON: ExpressibleByDictionaryLiteralType {
 
     public init(dictionaryLiteral elements: (String, Any)...) {
         self.init(elements.reduce([String : Any](minimumCapacity: elements.count)){(dictionary: [String : Any], element:(String, Any)) -> [String : Any] in
@@ -741,14 +761,14 @@ extension JSON: Swift.DictionaryLiteralConvertible {
     }
 }
 
-extension JSON: Swift.ArrayLiteralConvertible {
+extension JSON: ExpressibleByArrayLiteralType {
 
     public init(arrayLiteral elements: Any...) {
         self.init(elements as Any)
     }
 }
 
-extension JSON: Swift.NilLiteralConvertible {
+extension JSON: ExpressibleByNilLiteralType {
 
     public init(nilLiteral: ()) {
         self.init(NSNull() as Any)

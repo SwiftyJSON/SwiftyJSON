@@ -184,7 +184,7 @@ public struct JSON {
     fileprivate var rawBool: Bool = false
     /// Private type
     fileprivate var _type: Type = .null
-    /// prviate error
+    /// Private error
     fileprivate var _error: NSError?
 
     /// Object in JSON

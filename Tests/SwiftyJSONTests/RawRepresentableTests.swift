@@ -31,7 +31,9 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
 			("testNumber", testNumber),
 			("testBool", testBool),
 			("testString", testString),
-			("testNil", testNil)
+			("testNil", testNil),
+			("testArray", testArray),
+			("testDictionary", testDictionary)
 		]
 	}
 	

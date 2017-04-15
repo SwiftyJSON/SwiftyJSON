@@ -97,8 +97,8 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
     }
     
 // Conversions from array/dictionary to NSArray/NSDictionary are not allowed
-#if !os(Linux)
     func testArray() {
+#if !os(Linux)
         let array = [1,2,"3",4102,"5632", "abocde", "!@# $%^&*()"] as NSArray
         if let json:JSON = JSON(rawValue: array) {
             XCTAssertEqual(json, JSON(array))
@@ -106,9 +106,11 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
         
         let object: Any = JSON(rawValue: array)!.rawValue
         XCTAssertTrue(array == object as! NSArray)
+#endif
     }
     
     func testDictionary() {
+#if !os(Linux)
         let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]] as NSDictionary
         if let json:JSON = JSON(rawValue: dictionary) {
             XCTAssertEqual(json, JSON(dictionary))
@@ -116,6 +118,6 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
 
         let object: Any = JSON(rawValue: dictionary)!.rawValue
         XCTAssertTrue(dictionary == object as! NSDictionary)
-    }
 #endif
+    }
 }

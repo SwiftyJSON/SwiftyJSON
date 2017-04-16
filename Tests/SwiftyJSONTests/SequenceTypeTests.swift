@@ -29,7 +29,10 @@ class SequenceTypeTests: XCTestCase {
     func testJSONFile() {
         if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
             let testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-            let json = JSON(data:testData!)
+            guard let json = try? JSON(data: testData!) else {
+                XCTFail("Unable to parse the data")
+                return
+            }
             for (index, sub) in json {
                 switch (index as NSString).integerValue {
                 case 0:

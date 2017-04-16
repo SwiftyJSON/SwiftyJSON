@@ -226,13 +226,13 @@ class BaseTests: XCTestCase {
 
     func testErrorHandle() {
         let json = JSON(data:self.testData)
-        if let _ = json["wrong-type"].string {
+        if json["wrong-type"].string != nil {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
         }
 
-        if let _ = json[0]["not-exist"].string {
+        if json[0]["not-exist"].string != nil {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json[0]["not-exist"].error!.code, SwiftyJSON.ErrorNotExist)

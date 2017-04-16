@@ -59,7 +59,7 @@ class PerformanceTests: XCTestCase {
             XCTFail("Unable to parse testData")
             return
         }
-        self.measure() {
+        self.measure {
             for _ in 1...100 {
                 let object:Any? = json.object
                 XCTAssertTrue(object != nil)
@@ -72,7 +72,7 @@ class PerformanceTests: XCTestCase {
             XCTFail("Unable to parse testData")
             return
         }
-        self.measure() {
+        self.measure {
             for _ in 1...100 {
                 autoreleasepool {
                     if let array = json.array {
@@ -88,8 +88,7 @@ class PerformanceTests: XCTestCase {
             XCTFail("Unable to parse testData")
             return
         }
-
-        self.measure() {
+        self.measure {
             for _ in 1...100 {
                 autoreleasepool {
                     if let dictionary = json.dictionary {
@@ -105,7 +104,7 @@ class PerformanceTests: XCTestCase {
             XCTFail("Unable to parse testData")
             return
         }
-        self.measure() {
+        self.measure {
             for _ in 1...100 {
                 autoreleasepool {
                     let string = json.rawString()

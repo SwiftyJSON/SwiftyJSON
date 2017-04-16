@@ -236,7 +236,7 @@ class BaseTests: XCTestCase {
             XCTFail("Unable to parse testData")
             return
         }
-        if let _ = json["wrong-type"].string {
+        if json["wrong-type"].string != nil {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
@@ -276,9 +276,8 @@ class BaseTests: XCTestCase {
     func testErrorThrowing() {
         let invalidJson = "{\"foo\": 300]"  // deliberately incorrect JSON
         let invalidData = invalidJson.data(using: .utf8)!
-        
         do {
-            let _ = try JSON(data: invalidData)
+            _ = try JSON(data: invalidData)
             XCTFail("Should have thrown error; we should not have gotten here")
         } catch {
             // everything is OK

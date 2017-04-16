@@ -1,27 +1,30 @@
-language: objective-c
 osx_image: xcode8
-xcode_sdk: iphonesimulator10.0
+language: generic
 env:
   global:
-  - FRAMEWORK_NAME=SwiftyJSON
-before_install:
-- rvm get head
-- brew update
-- brew outdated carthage || brew upgrade carthage
-before_deploy:
-- carthage build --no-skip-current
-- carthage archive $FRAMEWORK_NAME
-script:
-- set -o pipefail
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" build-for-testing test | xcpretty
-deploy:
-  provider: releases
-  api_key:
-    secure: MufQRIzcHPU5fn9gyXl7kDGaLihN6zGABx9UWqNtkwq0AxV0aYNWys11nrKDIgoZFR+MbQHMoodpZK03yDdCLG03ncnOr3aytLOpI0imuDFWx16sieiVoYmnP5bfNFTN0qqXdfBy0OOsx4wO+F5Pwg5y1TgGYnKpXtEfdIU3Om4=
-  file: SwiftyJSON.framework.zip
-  skip_cleanup: true
-  on:
-    repo: SwiftyJSON/SwiftyJSON
-    tags: true
+    - FRAMEWORK_NAME=SwiftyJSON
+matrix:
+  include:
+    - os: osx
+      env: 
+        - PLATFORM=macos
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=ios
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=tvos
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" clean build-for-testing test | xcpretty
+    - os: linux
+      dist: trusty
+      sudo: required
+      install:
+        - curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash
+      script:
+        - . ~/.swiftenv/init
+        - swift build --clean && swift build && swift test

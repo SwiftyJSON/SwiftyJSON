@@ -1,6 +1,6 @@
 //  StringTests.swift
 //
-//  Copyright (c) 2014 - 2016 Pinglin Tang
+//  Copyright (c) 2014 - 2017 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import Foundation
 import SwiftyJSON
 
 final class StringTests: XCTestCase, XCTestCaseProvider {
@@ -28,14 +29,14 @@ final class StringTests: XCTestCase, XCTestCaseProvider {
 	static var allTests: [(String, (StringTests) -> () throws -> Void)] {
 		return [
 			("testString", testString),
-			("testURL", testURL),
+			("testURL", testUrl),
 			("testBool", testBool),
 			("testBoolWithY", testBoolWithY),
 			("testBoolWithT", testBoolWithT),
-			("testURLPercentEscapes", testURLPercentEscapes)
+			("testURLPercentEscapes", testUrlPercentEscapes)
 		]
 	}
-	
+
     func testString() {
         //getter
         var json = JSON("abcdefg hijklmn;opqrst.?+_()")
@@ -46,10 +47,10 @@ final class StringTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(json.string!, "12345?67890.@#")
         XCTAssertEqual(json.stringValue, "12345?67890.@#")
     }
-    
-    func testURL() {
+
+    func testUrl() {
         let json = JSON("http://github.com")
-        XCTAssertEqual(json.URL!, URL(string:"http://github.com")!)
+        XCTAssertEqual(json.url!, URL(string:"http://github.com")!)
     }
 
     func testBool() {
@@ -67,15 +68,15 @@ final class StringTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.boolValue)
     }
 
-    func testURLPercentEscapes() {
+    func testUrlPercentEscapes() {
         let emDash = "\\u2014"
         let urlString = "http://examble.com/unencoded" + emDash + "string"
         guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
             return XCTFail("Couldn't encode URL string \(urlString)")
         }
         let json = JSON(urlString)
-        XCTAssertEqual(json.URL!, URL(string: encodedURLString)!, "Wrong unpacked ")
+        XCTAssertEqual(json.url!, URL(string: encodedURLString)!, "Wrong unpacked ")
         let preEscaped = JSON(encodedURLString)
-        XCTAssertEqual(preEscaped.URL!, URL(string: encodedURLString)!, "Wrong unpacked ")
+        XCTAssertEqual(preEscaped.url!, URL(string: encodedURLString)!, "Wrong unpacked ")
     }
 }

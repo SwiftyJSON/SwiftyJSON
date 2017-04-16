@@ -26,8 +26,12 @@ import SwiftyJSON
 class ViewController: UITableViewController {
 
     var json: JSON = JSON.null
-    
+
     // MARK: - Table view data source
+
+	override func viewDidLoad() {
+		self.title = "SwiftyJSON(\(json.type))"
+	}
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -44,9 +48,9 @@ class ViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "JSONCell", for: indexPath) as UITableViewCell
-            
+
         let row = (indexPath as NSIndexPath).row
-        
+
         switch self.json.type {
         case .array:
             cell.textLabel?.text = "\(row)"
@@ -60,7 +64,7 @@ class ViewController: UITableViewController {
             cell.textLabel?.text = ""
             cell.detailTextLabel?.text = self.json.description
         }
-        
+
         return cell
     }
 
@@ -70,7 +74,7 @@ class ViewController: UITableViewController {
 
         var nextController: UIViewController?
         nextController = segue.destination
-        
+
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let row = (indexPath as NSIndexPath).row
             var nextJson: JSON = JSON.null

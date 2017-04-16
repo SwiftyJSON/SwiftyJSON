@@ -1,0 +1,13 @@
+The PR should summarize what was changed and why. Here are some questions to
+help you if you're not sure:
+
+ - What behavior was changed?
+ - What code was refactored / updated to support this change?
+ - What issues are related to this PR? Or why was this change introduced?
+
+Checklist - While not every PR needs it, new features should consider this list:
+
+ - [ ] Does this have tests?
+ - [ ] Does this have documentation?
+ - [ ] Does this break the public API (Requires major version bump)?
+ - [ ] Is this a new feature (Requires minor version bump)?

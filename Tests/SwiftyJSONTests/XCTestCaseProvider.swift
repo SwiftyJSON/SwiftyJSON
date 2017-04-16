@@ -24,7 +24,7 @@ public protocol XCTestCaseProvider: XCTestCaseProviderStatic, XCTestCaseNameProv
 
 extension XCTestCaseProvider where Self: XCTestCaseProviderStatic {
     var allTestNames: [String] {
-        return type(of: self).allTests.map({ name, test in
+        return type(of: self).allTests.map({ name, _ in
             return name
         })
     }

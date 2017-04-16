@@ -1,0 +1,10 @@
+disabled_rules:
+  - force_cast
+  - force_try
+  - variable_name
+  - type_name
+  - file_length
+  - line_length
+  - type_body_length
+  - cyclomatic_complexity
+  - function_body_length

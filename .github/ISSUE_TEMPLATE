@@ -1,0 +1,33 @@
+### What did you do?
+
+Please replace this with what you did.
+
+### What did you expect to happen?
+
+Please replace this with what you expected to happen.
+
+### What actually happened instead?
+
+Please replace this with what happened instead.
+
+### Environment
+
+List the software versions you're using:
+
+ - SwiftyJSON: *?.?.?*
+ - Xcode Version: *?.? (????)* (Open Xcode; In menubar: Xcode > About Xcode)
+ - Swift Version: *?.?* (Open Xcode Preferences; Components > Toolchains. If none, use `Xcode Default`.)
+
+Please also mention which package manager you used and its version. Delete the
+other package managers in this list:
+
+ - Cocoapods: *?.?.?* (Use `pod --version` in Terminal)
+ - Carthage: *?.?* (Use `carthage version` in Terminal)
+ - Swift Package Manager *?.?.? (swiftpm-???)* (Use `swift build --version` in Terminal)
+
+### Project that demonstrates the issue
+
+Please link to a project we can download that reproduces the issue. Feel free
+to delete this section if it's not relevant to the issue (eg - feature request).
+
+The project should be [short, self-contained, and correct example](http://sscce.org/).

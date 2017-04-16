@@ -85,7 +85,7 @@ jsonDictionary["country"].stringValue
 
 //Getting a string using a path to the element
 let path = ["users", 1, "info", "name"] as [JSONSubscriptType]
-var name = jsonArray["users",1,"info","name"].string
+var name = jsonArray["users", 1, "info", "name"].string
 
 //With a custom way
 let keys: [JSONSubscriptType] = ["users", 1, "info", "name"]
@@ -95,4 +95,4 @@ name = jsonArray[keys].string
 name = jsonArray["users"][1]["info"]["name"].string
 
 //Alternatively
-name = jsonArray["users",1,"info","name"].string
+name = jsonArray["users", 1, "info", "name"].string

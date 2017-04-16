@@ -27,13 +27,13 @@ import SwiftyJSON
 #if os(Linux)
     // autoreleasepool is Objective-C feature
     //TODO check what is its equivalent in Swift on Linux
-    func autoreleasepool(callback:() -> ()) {
+    func autoreleasepool(callback:() -> Void) {
         callback()
     }
 #endif
 
 final class PerformanceTests: XCTestCase, XCTestCaseProvider {
-	
+
 	static var allTests: [(String, (PerformanceTests) -> () throws -> Void)] {
 		return [
 			("testInitPerformance", testInitPerformance),
@@ -44,7 +44,7 @@ final class PerformanceTests: XCTestCase, XCTestCaseProvider {
 			("testLargeDictionaryMethodPerformance", testLargeDictionaryMethodPerformance)
 		]
 	}
-	
+
     var testData: Data!
 
     override func setUp() {

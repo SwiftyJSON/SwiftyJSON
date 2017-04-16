@@ -43,12 +43,12 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 			("testJSONFile", testJSONFile)
 		]
 	}
-	
+
 	var testData: Data!
-	
+
 	override func setUp() {
 		super.setUp()
-		
+
 		do {
 			#if os(Linux)
 				self.testData = try Data(contentsOf: URL(fileURLWithPath: "Tests/SwiftyJSONTests/Tests.json"))
@@ -56,12 +56,11 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 				let file = Bundle(for:SequenceTypeTests.self).path(forResource: "Tests", ofType: "json")
 				self.testData = try Data(contentsOf: URL(fileURLWithPath: file!))
 			#endif
-		}
-		catch {
+		} catch {
 			XCTFail("Failed to read in the test data")
 		}
 	}
-	
+
     func testJSONFile() {
 		let json = JSON(data:testData!)
 		for (index, sub) in json {
@@ -77,7 +76,7 @@ final class SequenceTypeTests: XCTestCase, XCTestCaseProvider {
 			}
 		}
     }
-	
+
     func testArrayAllNumber() {
         var json: JSON = [1, 2.0, 3.3, 123456789, 987654321.123456789]
         XCTAssertEqual(json.count, 5)

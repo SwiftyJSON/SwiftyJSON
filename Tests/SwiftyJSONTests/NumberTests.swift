@@ -25,7 +25,7 @@ import Foundation
 import SwiftyJSON
 
 final class NumberTests: XCTestCase, XCTestCaseProvider {
-	
+
 	static var allTests: [(String, (NumberTests) -> () throws -> Void)] {
 		return [
 			("testNumber", testNumber),
@@ -44,7 +44,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
 			("testUInt64", testUInt64)
 		]
 	}
-	
+
     func testNumber() {
         //getter
         var json = JSON(NSNumber(value: 9876543210.123456789))
@@ -211,7 +211,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.number! == nm128)
         XCTAssertEqual(json.numberValue, nm128)
         XCTAssertEqual(json.stringValue, "-128")
-        
+
         let n0 = NSNumber(value: 0)
         json.int8Value = n0.int8Value
         XCTAssertTrue(json.int8! == n0.int8Value)
@@ -219,7 +219,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.number! == n0)
         XCTAssertEqual(json.numberValue, n0)
         XCTAssertEqual(json.stringValue, "0")
-        
+
         let n1 = NSNumber(value: 1)
         json.int8Value = n1.int8Value
         XCTAssertTrue(json.int8! == n1.int8Value)
@@ -357,7 +357,7 @@ final class NumberTests: XCTestCase, XCTestCaseProvider {
         XCTAssertTrue(json.number! == n2147483648)
         XCTAssertEqual(json.numberValue, n2147483648)
         XCTAssertEqual(json.stringValue, "2147483648")
-        
+
         let n32767 = NSNumber(value: 32767)
         json.uInt32 = n32767.uint32Value
         XCTAssertTrue(json.uInt32! == n32767.uint32Value)

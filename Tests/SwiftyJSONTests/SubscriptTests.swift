@@ -46,7 +46,7 @@ final class SubscriptTests: XCTestCase, XCTestCaseProvider {
 			("testMultilevelSetter2", testMultilevelSetter2)
 		]
 	}
-	
+
     func testArrayAllNumber() {
         var json: JSON = [1, 2.0, 3.3, 123456789, 987654321.123456789]
         XCTAssertTrue(json == [1, 2.0, 3.3, 123456789, 987654321.123456789])

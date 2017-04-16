@@ -24,14 +24,14 @@ import XCTest
 import SwiftyJSON
 
 final class DictionaryTests: XCTestCase, XCTestCaseProvider {
-	
+
 	static var allTests: [(String, (DictionaryTests) -> () throws -> Void)] {
 		return [
 			("testGetter", testGetter),
 			("testSetter", testSetter)
 		]
 	}
-	
+
     func testGetter() {
         let dictionary = ["number": 9823.212, "name": "NAME", "list": [1234, 4.212], "object": ["sub_number": 877.2323, "sub_name": "sub_name"], "bool": true] as [String : Any]
         let json = JSON(dictionary)

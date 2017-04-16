@@ -25,7 +25,7 @@ import Foundation
 @testable import SwiftyJSON
 
 final class BaseTests: XCTestCase, XCTestCaseProvider {
-	
+
 	static var allTests: [(String, (BaseTests) -> () throws -> Void)] {
 		return [
 			("testInit", testInit),
@@ -41,7 +41,7 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
 			("testNumberCompare", testNumberCompare)
 		]
 	}
-	
+
     var testData: Data!
 
     override func setUp() {
@@ -54,12 +54,11 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
 				let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json")
 				self.testData = try Data(contentsOf: URL(fileURLWithPath: file!))
 			#endif
-		}
-		catch {
+		} catch {
 			XCTFail("Failed to read in the test data")
 		}
     }
-        
+
     override func tearDown() {
         super.tearDown()
     }
@@ -195,33 +194,33 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
         XCTAssertEqual(JSON(2147483647).description, "2147483647")
         #endif
 
-        XCTAssertEqual(JSON(-1).description,"-1")
-        XCTAssertEqual(JSON(-934834834).description,"-934834834")
-        XCTAssertEqual(JSON(-2147483648).description,"-2147483648")
+        XCTAssertEqual(JSON(-1).description, "-1")
+        XCTAssertEqual(JSON(-934834834).description, "-934834834")
+        XCTAssertEqual(JSON(-2147483648).description, "-2147483648")
 
-        XCTAssertEqual(JSON(1.5555).description,"1.5555")
-        XCTAssertEqual(JSON(-9.123456789).description,"-9.123456789")
-        XCTAssertEqual(JSON(-0.00000000000000001).description,"-1e-17")
-        XCTAssertEqual(JSON(-999999999999999999999999.000000000000000000000001).description,"-1e+24")
+        XCTAssertEqual(JSON(1.5555).description, "1.5555")
+        XCTAssertEqual(JSON(-9.123456789).description, "-9.123456789")
+        XCTAssertEqual(JSON(-0.00000000000000001).description, "-1e-17")
+        XCTAssertEqual(JSON(-999999999999999999999999.000000000000000000000001).description, "-1e+24")
         #if !os(Linux)
         //https://bugs.swift.org/browse/SR-1464?jql=text%20~%20%22NSNumber%22
         //Removed this #if once bug is fix
-        XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue,"-9.999999991999999e+24")
+        XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue, "-9.999999991999999e+24")
         #endif
-        XCTAssertEqual(JSON(Int(Int.max)).description,"\(Int.max)")
-        XCTAssertEqual(JSON(NSNumber(value: Int.min)).description,"\(Int.min)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description,"\(UInt.max)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
-        XCTAssertEqual(JSON(NSNumber(value: Int64.max)).description,"\(Int64.max)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
+        XCTAssertEqual(JSON(Int(Int.max)).description, "\(Int.max)")
+        XCTAssertEqual(JSON(NSNumber(value: Int.min)).description, "\(Int.min)")
+        XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description, "\(UInt.max)")
+        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description, "\(UInt64.max)")
+        XCTAssertEqual(JSON(NSNumber(value: Int64.max)).description, "\(Int64.max)")
+        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description, "\(UInt64.max)")
 
-        XCTAssertEqual(JSON(Double.infinity).description,"inf")
-        XCTAssertEqual(JSON(-Double.infinity).description,"-inf")
-        XCTAssertEqual(JSON(Double.nan).description,"nan")
-        
-        XCTAssertEqual(JSON(1.0/0.0).description,"inf")
-        XCTAssertEqual(JSON(-1.0/0.0).description,"-inf")
-        XCTAssertEqual(JSON(0.0/0.0).description,"nan")
+        XCTAssertEqual(JSON(Double.infinity).description, "inf")
+        XCTAssertEqual(JSON(-Double.infinity).description, "-inf")
+        XCTAssertEqual(JSON(Double.nan).description, "nan")
+
+        XCTAssertEqual(JSON(1.0/0.0).description, "inf")
+        XCTAssertEqual(JSON(-1.0/0.0).description, "-inf")
+        XCTAssertEqual(JSON(0.0/0.0).description, "nan")
     }
 
     func testNullJSON() {
@@ -252,13 +251,13 @@ final class BaseTests: XCTestCase, XCTestCaseProvider {
 
     func testErrorHandle() {
         let json = JSON(data:self.testData)
-        if let _ = json["wrong-type"].string {
+        if json["wrong-type"].string != nil {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json["wrong-type"].error!.code, SwiftyJSON.ErrorWrongType)
         }
 
-        if let _ = json[0]["not-exist"].string {
+        if json[0]["not-exist"].string != nil {
             XCTFail("Should not run into here")
         } else {
             XCTAssertEqual(json[0]["not-exist"].error!.code, SwiftyJSON.ErrorNotExist)

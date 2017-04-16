@@ -25,7 +25,7 @@ import Foundation
 import SwiftyJSON
 
 final class PrintableTests: XCTestCase, XCTestCaseProvider {
-	
+
 	static var allTests: [(String, (PrintableTests) -> () throws -> Void)] {
 		return [
 			("testNumber", testNumber),
@@ -40,9 +40,9 @@ final class PrintableTests: XCTestCase, XCTestCaseProvider {
 			("testDictionaryWithOptionals", testDictionaryWithOptionals)
 		]
 	}
-	
+
     func testNumber() {
-        let json:JSON = 1234567890.876623
+        let json: JSON = 1234567890.876623
 #if os(Linux)
 		XCTAssertEqual(json.description, "1234567890.87662")
         XCTAssertEqual(json.debugDescription, "1234567890.87662")

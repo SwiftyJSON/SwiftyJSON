@@ -36,7 +36,7 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
 			("testDictionary", testDictionary)
 		]
 	}
-	
+
     func testNumber() {
         var json: JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
         XCTAssertEqual(json.int!, 948394394)
@@ -91,11 +91,11 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
     }
 
     func testNil() {
-        if let _ = JSON(rawValue: NSObject()) {
+        if JSON(rawValue: NSObject()) != nil {
             XCTFail("Should not run into here")
         }
     }
-    
+
 // Conversions from array/dictionary to NSArray/NSDictionary are not allowed
     func testArray() {
 #if !os(Linux)
@@ -111,8 +111,8 @@ final class RawRepresentableTests: XCTestCase, XCTestCaseProvider {
 
     func testDictionary() {
 #if !os(Linux)
-        let dictionary = ["1":2,"2":2,"three":3,"list":["aa","bb","dd"]] as NSDictionary
-        if let json:JSON = JSON(rawValue: dictionary) {
+        let dictionary = ["1": 2, "2": 2, "three": 3, "list": ["aa", "bb", "dd"]] as NSDictionary
+        if let json: JSON = JSON(rawValue: dictionary) {
             XCTAssertEqual(json, JSON(dictionary))
         }
 

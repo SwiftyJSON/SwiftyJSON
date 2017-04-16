@@ -36,7 +36,7 @@ final class LiteralConvertibleTests: XCTestCase, XCTestCaseProvider {
 			("testDictionary", testDictionary)
 		]
 	}
-	
+
     func testNumber() {
         var json: JSON = 1234567890.876623
         XCTAssertEqual(json.int!, 1234567890)

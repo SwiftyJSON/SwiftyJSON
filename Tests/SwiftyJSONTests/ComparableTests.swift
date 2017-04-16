@@ -51,7 +51,7 @@ final class ComparableTests: XCTestCase, XCTestCaseProvider {
 			("testDictionary", testDictionary)
 		]
 	}
-	
+
     func testNumberEqual() {
         let jsonL1: JSON = 1234567890.876623
         let jsonR1: JSON = JSON(1234567890.876623)

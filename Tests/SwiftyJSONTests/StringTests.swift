@@ -36,7 +36,7 @@ final class StringTests: XCTestCase, XCTestCaseProvider {
 			("testURLPercentEscapes", testUrlPercentEscapes)
 		]
 	}
-	
+
     func testString() {
         //getter
         var json = JSON("abcdefg hijklmn;opqrst.?+_()")

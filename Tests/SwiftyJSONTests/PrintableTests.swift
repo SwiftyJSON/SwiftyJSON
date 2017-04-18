@@ -25,37 +25,37 @@ import SwiftyJSON
 
 class PrintableTests: XCTestCase {
     func testNumber() {
-        let json:JSON = 1234567890.876623
+        let json: JSON = 1234567890.876623
         XCTAssertEqual(json.description, "1234567890.876623")
         XCTAssertEqual(json.debugDescription, "1234567890.876623")
     }
-    
+
     func testBool() {
-        let jsonTrue:JSON = true
+        let jsonTrue: JSON = true
         XCTAssertEqual(jsonTrue.description, "true")
         XCTAssertEqual(jsonTrue.debugDescription, "true")
-        let jsonFalse:JSON = false
+        let jsonFalse: JSON = false
         XCTAssertEqual(jsonFalse.description, "false")
         XCTAssertEqual(jsonFalse.debugDescription, "false")
     }
-    
+
     func testString() {
-        let json:JSON = "abcd efg, HIJK;LMn"
+        let json: JSON = "abcd efg, HIJK;LMn"
         XCTAssertEqual(json.description, "abcd efg, HIJK;LMn")
         XCTAssertEqual(json.debugDescription, "abcd efg, HIJK;LMn")
     }
-    
+
     func testNil() {
-        let jsonNil_1:JSON = JSON.null
+        let jsonNil_1: JSON = JSON.null
         XCTAssertEqual(jsonNil_1.description, "null")
         XCTAssertEqual(jsonNil_1.debugDescription, "null")
-        let jsonNil_2:JSON = JSON(NSNull())
+        let jsonNil_2: JSON = JSON(NSNull())
         XCTAssertEqual(jsonNil_2.description, "null")
         XCTAssertEqual(jsonNil_2.debugDescription, "null")
     }
-    
+
     func testArray() {
-        let json:JSON = [1,2,"4",5,"6"]
+        let json: JSON = [1, 2, "4", 5, "6"]
         var description = json.description.replacingOccurrences(of: "\n", with: "")
         description = description.replacingOccurrences(of: " ", with: "")
         XCTAssertEqual(description, "[1,2,\"4\",5,\"6\"]")
@@ -74,7 +74,7 @@ class PrintableTests: XCTestCase {
     }
 
     func testArrayWithOptionals() {
-        let array = [1,2,"4",5,"6",nil] as [Any?]
+        let array = [1, 2, "4", 5, "6", nil] as [Any?]
         let json = JSON(array)
 		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent array")
@@ -86,9 +86,9 @@ class PrintableTests: XCTestCase {
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
         XCTAssertTrue(json.debugDescription.lengthOfBytes(using: String.Encoding.utf8) > 0)
     }
-    
+
     func testDictionary() {
-        let json:JSON = ["1":2,"2":"two", "3":3]
+        let json: JSON = ["1": 2, "2": "two", "3": 3]
         var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
         debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")
         XCTAssertTrue(json.description.lengthOfBytes(using: String.Encoding.utf8) > 0)
@@ -98,7 +98,7 @@ class PrintableTests: XCTestCase {
     }
 
     func testDictionaryWithStrings() {
-        let dict = ["foo":"{\"bar\":123}"] as [String : Any]
+        let dict = ["foo": "{\"bar\":123}"] as [String : Any]
         let json = JSON(dict)
         var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
         debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")
@@ -108,7 +108,7 @@ class PrintableTests: XCTestCase {
     }
 
     func testDictionaryWithOptionals() {
-        let dict = ["1":2, "2":"two", "3": nil] as [String: Any?]
+        let dict = ["1": 2, "2": "two", "3": nil] as [String: Any?]
         let json = JSON(dict)
 		guard var description = json.rawString([.castNilToNSNull: true]) else {
 			XCTFail("could not represent dictionary")

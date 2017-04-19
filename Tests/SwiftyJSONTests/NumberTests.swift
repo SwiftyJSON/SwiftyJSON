@@ -35,7 +35,7 @@ class NumberTests: XCTestCase {
         json.string = "1000000000000000000000000000.1"
         XCTAssertEqual(json.number!.description, "1000000000000000000000000000.1")
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
-        
+
         json.string = "NotANumber"
         XCTAssertNil(json.number)
         XCTAssertEqual(json.numberValue, NSNumber(value: 0.0))
@@ -63,20 +63,16 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.boolValue, true)
         XCTAssertEqual(json.numberValue, true as NSNumber)
         XCTAssertEqual(json.stringValue, "true")
-<<<<<<< HEAD
-        
+
         json = JSON("yes")
         XCTAssertEqual(json.boolValue, true)
-        
+
         json = JSON("t")
         XCTAssertEqual(json.boolValue, true)
-        
+
         json = JSON("y")
         XCTAssertEqual(json.boolValue, true)
-        
-=======
 
->>>>>>> master
         json.bool = false
         XCTAssertEqual(json.bool!, false)
         XCTAssertEqual(json.boolValue, false)

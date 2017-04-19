@@ -60,7 +60,7 @@ class StringTests: XCTestCase {
         let json = JSON("Yes")
         XCTAssertTrue(json.boolValue)
     }
-    
+
     func testBoolWithTrue() {
         let json = JSON("True")
         XCTAssertTrue(json.boolValue)

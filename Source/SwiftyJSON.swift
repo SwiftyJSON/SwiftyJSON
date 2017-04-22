@@ -25,14 +25,53 @@ import Foundation
 // MARK: - Error
 
 ///Error domain
+@available(*, deprecated, message: "Use the `SwiftyJSONError.errorDomain` instead")
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
 ///Error code
+@available(*, deprecated, message: "Use the `SwiftyJSONError.unsupportedType` instead")
 public let ErrorUnsupportedType: Int = 999
+@available(*, deprecated, message: "Use the `SwiftyJSONError.indexOutOfBounds` instead")
 public let ErrorIndexOutOfBounds: Int = 900
+@available(*, deprecated, message: "Use the `SwiftyJSONError.wrongType` instead")
 public let ErrorWrongType: Int = 901
+@available(*, deprecated, message: "Use the `SwiftyJSONError.notExist` instead")
 public let ErrorNotExist: Int = 500
+@available(*, deprecated, message: "Use the `SwiftyJSONError.invalidJSON` instead")
 public let ErrorInvalidJSON: Int = 490
+
+public enum SwiftyJSONError: Int, Swift.Error {
+    case unsupportedType = 999
+    case indexOutOfBounds = 900
+    case elementTooDeep = 902
+    case wrongType = 901
+    case notExist = 500
+    case invalidJSON = 490
+}
+
+extension SwiftyJSONError: CustomNSError {
+
+    public static var errorDomain: String { return "com.swiftyjson.SwiftyJSON" }
+
+    public var errorCode: Int { return self.rawValue }
+
+    public var errorUserInfo: [String : String] {
+        switch self {
+        case .unsupportedType:
+            return [NSLocalizedDescriptionKey: "It is a unsupported type."]
+        case .indexOutOfBounds:
+            return [NSLocalizedDescriptionKey: "Array Index is out of bounds."]
+        case .wrongType:
+            return [NSLocalizedDescriptionKey: "Couldn't merge, because the JSONs differ in type on top level."]
+        case .notExist:
+            return [NSLocalizedDescriptionKey: "Dictionary key does not exist."]
+        case .invalidJSON:
+            return [NSLocalizedDescriptionKey: "JSON is invalid."]
+        case .elementTooDeep:
+            return [NSLocalizedDescriptionKey: "Element too deep. Increase maxObjectDepth and make sure there is no reference loop."]
+        }
+    }
+}
 
 // MARK: - JSON Type
 
@@ -60,7 +99,6 @@ public struct JSON {
 
      - parameter data:  The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
      - parameter opt:   The JSON serialization reading options. `[]` by default.
-     - parameter error: The NSErrorPointer used to return the error. `nil` by default.
 
      - returns: The created JSON
      */
@@ -107,7 +145,7 @@ public struct JSON {
 
      - returns: The created JSON
      */
-    @available(*, deprecated: 3.2, message: "Use instead `init(parseJSON: )`")
+    @available(*, deprecated, message: "Use instead `init(parseJSON: )`")
     public static func parse(_ json: String) -> JSON {
         return json.data(using: String.Encoding.utf8)
             .flatMap { try? JSON(data: $0) } ?? JSON(NSNull())
@@ -165,7 +203,7 @@ public struct JSON {
             }
         } else {
             if typecheck {
-                throw NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Couldn't merge, because the JSONs differ in type on top level."])
+                throw SwiftyJSONError.wrongType
             } else {
                 self = other
             }
@@ -182,7 +220,7 @@ public struct JSON {
     /// Private type
     fileprivate var _type: Type = .null
     /// Private error
-    fileprivate var _error: NSError?
+    fileprivate var _error: SwiftyJSONError?
 
     /// Object in JSON
     public var object: Any {
@@ -228,7 +266,7 @@ public struct JSON {
                 self.rawDictionary = dictionary
             default:
                 _type = .unknown
-                _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
+                _error = .unsupportedType
             }
         }
     }
@@ -237,7 +275,7 @@ public struct JSON {
     public var type: Type { return _type }
 
     /// Error in JSON
-    public var error: NSError? { return self._error }
+    public var error: SwiftyJSONError? { return _error }
 
     /// The static null JSON
     @available(*, unavailable, renamed:"null")
@@ -378,13 +416,13 @@ extension JSON {
         get {
             if self.type != .array {
                 var r = JSON.null
-                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] failure, It is not an array"])
+                r._error = self._error ?? SwiftyJSONError.wrongType
                 return r
             } else if index >= 0 && index < self.rawArray.count {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
-                r._error = NSError(domain: ErrorDomain, code:ErrorIndexOutOfBounds, userInfo: [NSLocalizedDescriptionKey: "Array[\(index)] is out of bounds"])
+                r._error = SwiftyJSONError.indexOutOfBounds
                 return r
             }
         }
@@ -405,10 +443,10 @@ extension JSON {
                 if let o = self.rawDictionary[key] {
                     r = JSON(o)
                 } else {
-                    r._error = NSError(domain: ErrorDomain, code: ErrorNotExist, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] does not exist"])
+                    r._error = SwiftyJSONError.notExist
                 }
             } else {
-                r._error = self._error ?? NSError(domain: ErrorDomain, code: ErrorWrongType, userInfo: [NSLocalizedDescriptionKey: "Dictionary[\"\(key)\"] failure, It is not an dictionary"])
+                r._error = self._error ?? SwiftyJSONError.wrongType
             }
             return r
         }
@@ -569,7 +607,7 @@ extension JSON: Swift.RawRepresentable {
 
     public func rawData(options opt: JSONSerialization.WritingOptions = JSONSerialization.WritingOptions(rawValue: 0)) throws -> Data {
         guard JSONSerialization.isValidJSONObject(self.object) else {
-            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "JSON is invalid"])
+            throw SwiftyJSONError.invalidJSON
         }
 
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
@@ -595,13 +633,9 @@ extension JSON: Swift.RawRepresentable {
 		}
 	}
 
-	fileprivate func _rawString(
-		_ encoding: String.Encoding = .utf8,
-		options: [writingOptionsKeys: Any],
-		maxObjectDepth: Int = 10
-	) throws -> String? {
+	fileprivate func _rawString(_ encoding: String.Encoding = .utf8, options: [writingOptionsKeys: Any], maxObjectDepth: Int = 10) throws -> String? {
         if maxObjectDepth < 0 {
-            throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Element too deep. Increase maxObjectDepth and make sure there is no reference loop"])
+            throw SwiftyJSONError.invalidJSON
         }
         switch self.type {
 		case .dictionary:
@@ -625,7 +659,7 @@ extension JSON: Swift.RawRepresentable {
 
 					let nestedValue = JSON(unwrappedValue)
 					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
-						throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
+						throw SwiftyJSONError.elementTooDeep
 					}
 					if nestedValue.type == .string {
 						return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
@@ -656,7 +690,7 @@ extension JSON: Swift.RawRepresentable {
 
                     let nestedValue = JSON(unwrappedValue)
                     guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
-                        throw NSError(domain: ErrorDomain, code: ErrorInvalidJSON, userInfo: [NSLocalizedDescriptionKey: "Could not serialize nested JSON"])
+                        throw SwiftyJSONError.invalidJSON
                     }
                     if nestedValue.type == .string {
                         return "\"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
@@ -930,10 +964,8 @@ extension JSON {
         }
     }
     public func exists() -> Bool {
-        if let errorValue = error, errorValue.code == ErrorNotExist ||
-            errorValue.code == ErrorIndexOutOfBounds ||
-            errorValue.code == ErrorWrongType {
-                return false
+        if let errorValue = error, (400...1000).contains(errorValue.errorCode) {
+            return false
         }
         return true
     }

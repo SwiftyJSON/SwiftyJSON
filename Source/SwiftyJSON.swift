@@ -55,7 +55,7 @@ extension SwiftyJSONError: CustomNSError {
 
     public var errorCode: Int { return self.rawValue }
 
-    public var errorUserInfo: [String : String] {
+    public var errorUserInfo: [String : Any] {
         switch self {
         case .unsupportedType:
             return [NSLocalizedDescriptionKey: "It is a unsupported type."]

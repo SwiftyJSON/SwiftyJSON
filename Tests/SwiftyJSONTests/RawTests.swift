@@ -40,9 +40,9 @@ class RawTests: XCTestCase {
         let json: JSON = "...<nonsense>xyz</nonsense>"
         do {
             _ = try json.rawData()
-        } catch let error as NSError {
-            XCTAssertEqual(error.code, ErrorInvalidJSON)
-        }
+        } catch let error as SwiftyJSONError {
+            XCTAssertEqual(error, SwiftyJSONError.invalidJSON)
+        } catch _ {}
     }
 
     func testArray() {

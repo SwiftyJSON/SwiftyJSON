@@ -33,13 +33,11 @@ class JSONTests: XCTestCase {
         do {
             _ = try A.merged(with: B)
             XCTFail()
-        } catch (let error) {
-            let error = error as NSError
-            XCTAssertEqual(error.code, ErrorWrongType)
-            XCTAssertEqual(error.domain, ErrorDomain)
-            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String,
-                           "Couldn't merge, because the JSONs differ in type on top level.")
-        }
+        } catch let error as SwiftyJSONError {
+            XCTAssertEqual(error.errorCode, SwiftyJSONError.wrongType.rawValue)
+            XCTAssertEqual(type(of: error).errorDomain, SwiftyJSONError.errorDomain)
+            XCTAssertEqual(error.errorUserInfo as! [String: String], [NSLocalizedDescriptionKey: "Couldn't merge, because the JSONs differ in type on top level."])
+        } catch _ {}
     }
 
     func testPrimitiveType() {

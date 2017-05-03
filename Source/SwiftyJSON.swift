@@ -266,7 +266,7 @@ public struct JSON {
                 self.rawDictionary = dictionary
             default:
                 _type = .unknown
-                _error = .unsupportedType
+                _error = SwiftyJSONError.unsupportedType
             }
         }
     }

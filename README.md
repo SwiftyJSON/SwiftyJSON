@@ -213,11 +213,18 @@ for (index,subJson):(String, JSON) in json {
 
 #### Error
 
+##### SwiftyJSON 4.x
+
+SwiftyJSON 4.x introduces an enum type called `SwiftyJSONError`, which includes `unsupportedType`, `indexOutOfBounds`, `elementTooDeep`, `wrongType`, `notExist` and `invalidJSON`, at the same time, `ErrorDomain` are being replaced by `SwiftyJSONError.errorDomain`. 
+Note: Those old error types are deprecated in SwiftyJSON 4.x and will be removed in the future release.
+
+##### SwiftyJSON 3.x
+
 Use a subscript to get/set a value in an Array or Dictionary
 
 If the JSON is:
 *  an array, the app may crash with "index out-of-bounds."
-*  a dictionary, it will be assigned `nil` without a reason.
+*  a dictionary, it will be assigned to `nil` without a reason.
 *  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
 
 This will never happen in SwiftyJSON.

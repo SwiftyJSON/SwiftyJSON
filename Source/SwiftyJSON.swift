@@ -732,6 +732,51 @@ extension JSON: Swift.CustomStringConvertible, Swift.CustomDebugStringConvertibl
     public var debugDescription: String {
         return description
     }
+    
+    public var rawJSONString: String {
+        
+        if let value = self.object as? NSNumber {
+            if String.fromCString(value.objCType) == "c" {
+                return "\(value.boolValue)"
+            } else {
+                return "\(value)"
+            }
+        }
+        else if let value = self.object as? NSString {
+            let jsonAbleString = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.CaseInsensitiveSearch, range:NSMakeRange(0, value.length))
+            return "\"\(jsonAbleString)\""
+        }
+        else if let value = self.object as? NSNull {
+            return "null"
+        }
+        else if let array = self.object as? NSArray {
+            var arrayString = ""
+            for (index, value) in enumerate(array) {
+                if index != array.count - 1 {
+                    arrayString += "\(JSON(value).rawJSONString),"
+                }else{
+                    arrayString += "\(JSON(value).rawJSONString)"
+                }
+            }
+            return "[\(arrayString)]"
+        }
+        else if let object = self.object as? NSDictionary {
+            var objectString = ""
+            var (index, count) = (0, object.count)
+            for (key, value) in object {
+                if index != count - 1 {
+                    objectString += "\"\(key)\":\(JSON(value).rawJSONString),"
+                } else {
+                    objectString += "\"\(key)\":\(JSON(value).rawJSONString)"
+                }
+                index += 1
+            }
+            return "{\(objectString)}"
+        }
+        else {//if let error = obj as? NSError {
+            return "INVALID_JSON_VALUE"
+            }
+    }
 }
 
 // MARK: - Array

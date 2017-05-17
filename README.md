@@ -118,7 +118,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1,0,0)..<Version(3, .max, .max)),
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1, 0, 0)..<Version(3, .max, .max)),
     ]
 )
 ```
@@ -215,7 +215,7 @@ for (index,subJson):(String, JSON) in json {
 
 ##### SwiftyJSON 4.x
 
-SwiftyJSON 4.x introduces an enum type called `SwiftyJSONError`, which includes `unsupportedType`, `indexOutOfBounds`, `elementTooDeep`, `wrongType`, `notExist` and `invalidJSON`, at the same time, `ErrorDomain` are being replaced by `SwiftyJSONError.errorDomain`. 
+SwiftyJSON 4.x introduces an enum type called `SwiftyJSONError`, which includes `unsupportedType`, `indexOutOfBounds`, `elementTooDeep`, `wrongType`, `notExist` and `invalidJSON`, at the same time, `ErrorDomain` are being replaced by `SwiftyJSONError.errorDomain`.
 Note: Those old error types are deprecated in SwiftyJSON 4.x and will be removed in the future release.
 
 ##### SwiftyJSON 3.x
@@ -457,7 +457,7 @@ It is possible to merge one JSON into another JSON. Merging a JSON into another 
 
 If both JSONs contain a value for the same key, _mostly_ this value gets overwritten in the original JSON, but there are two cases where it provides some special treatment:
 
-- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value. 
+- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value.
 - In case of both values being a `JSON.Type.dictionary` both JSON-values are getting merged the same way the encapsulating JSON is merged.
 
 In case, where two fields in a JSON have a different types, the value will get always overwritten.

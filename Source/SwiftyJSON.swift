@@ -258,6 +258,9 @@ public struct JSON {
                 _type = .null
             case nil:
                 _type = .null
+            case let jsonArray as [JSON]:
+                _type = .array
+                self.rawArray = jsonArray.map() { return $0.object }
             case let array as [Any]:
                 _type = .array
                 self.rawArray = array

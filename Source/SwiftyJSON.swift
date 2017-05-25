@@ -217,10 +217,10 @@ public struct JSON {
     fileprivate var rawNumber: NSNumber = 0
     fileprivate var rawNull: NSNull = NSNull()
     fileprivate var rawBool: Bool = false
-    
+
     /// JSON type, fileprivate setter
     public fileprivate(set) var type: Type = .null
-    
+
     /// Error in JSON, fileprivate setter
     public fileprivate(set) var error: SwiftyJSONError?
 

@@ -1362,7 +1362,7 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
-    var isBool: Bool {
+    fileprivate var isBool: Bool {
         let objCType = String(cString: self.objCType)
         if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
             return true

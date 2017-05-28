@@ -141,7 +141,7 @@ import SwiftyJSON
 ```
 
 ```swift
-let json = JSON(data: dataFromNetworking)
+let json = JSON(data: dataFromNetworking)    // dataFromNetworking is an NSData object that stores your JSON info
 ```
 
 ```swift

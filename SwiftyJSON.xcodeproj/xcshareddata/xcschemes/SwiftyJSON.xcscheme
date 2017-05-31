@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7236B4EC1BAC14150020529B"
+               BlueprintIdentifier = "2E4FEFDA19575BE100351305"
                BuildableName = "SwiftyJSON.framework"
-               BlueprintName = "SwiftyJSON tvOS"
+               BlueprintName = "SwiftyJSON"
+               ReferencedContainer = "container:SwiftyJSON.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2E4FEFE519575BE100351305"
+               BuildableName = "SwiftyJSON Tests.xctest"
+               BlueprintName = "SwiftyJSON Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A8580F731BCF5C5B00DA927B"
-               BuildableName = "SwiftyJSON tvOS Tests.xctest"
-               BlueprintName = "SwiftyJSON tvOS Tests"
+               BlueprintIdentifier = "2E4FEFE519575BE100351305"
+               BuildableName = "SwiftyJSON Tests.xctest"
+               BlueprintName = "SwiftyJSON Tests"
                ReferencedContainer = "container:SwiftyJSON.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +56,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7236B4EC1BAC14150020529B"
+            BlueprintIdentifier = "2E4FEFDA19575BE100351305"
             BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON tvOS"
+            BlueprintName = "SwiftyJSON"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +78,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7236B4EC1BAC14150020529B"
+            BlueprintIdentifier = "2E4FEFDA19575BE100351305"
             BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON tvOS"
+            BlueprintName = "SwiftyJSON"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +96,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7236B4EC1BAC14150020529B"
+            BlueprintIdentifier = "2E4FEFDA19575BE100351305"
             BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON tvOS"
+            BlueprintName = "SwiftyJSON"
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

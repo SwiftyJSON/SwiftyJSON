@@ -424,7 +424,7 @@ extension JSON {
         }
         set {
             if self.type == .array {
-                if self.rawArray.count > index && newValue.error == nil {
+                if index >= 0 && index < self.rawArray.count && newValue.error == nil {
                     self.rawArray[index] = newValue.object
                 }
             }

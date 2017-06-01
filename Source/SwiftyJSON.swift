@@ -418,7 +418,7 @@ extension JSON {
                 var r = JSON.null
                 r._error = self._error ?? SwiftyJSONError.wrongType
                 return r
-            } else if index >= 0 && index < self.rawArray.count {
+            } else if self.rawArray.indices.contains(index) {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
@@ -427,10 +427,10 @@ extension JSON {
             }
         }
         set {
-            if self.type == .array {
-                if self.rawArray.count > index && newValue.error == nil {
-                    self.rawArray[index] = newValue.object
-                }
+            if self.type == .array &&
+                self.rawArray.indices.contains(index) &&
+                newValue.error == nil {
+                self.rawArray[index] = newValue.object
             }
         }
     }

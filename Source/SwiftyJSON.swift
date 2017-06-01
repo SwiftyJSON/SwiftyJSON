@@ -217,10 +217,12 @@ public struct JSON {
     fileprivate var rawNumber: NSNumber = 0
     fileprivate var rawNull: NSNull = NSNull()
     fileprivate var rawBool: Bool = false
-    /// Private type
-    fileprivate var _type: Type = .null
-    /// Private error
-    fileprivate var _error: SwiftyJSONError?
+
+    /// JSON type, fileprivate setter
+    public fileprivate(set) var type: Type = .null
+
+    /// Error in JSON, fileprivate setter
+    public fileprivate(set) var error: SwiftyJSONError?
 
     /// Object in JSON
     public var object: Any {
@@ -241,41 +243,35 @@ public struct JSON {
             }
         }
         set {
-            _error = nil
+            error = nil
             switch unwrap(newValue) {
             case let number as NSNumber:
                 if number.isBool {
-                    _type = .bool
+                    type = .bool
                     self.rawBool = number.boolValue
                 } else {
-                    _type = .number
+                    type = .number
                     self.rawNumber = number
                 }
             case let string as String:
-                _type = .string
+                type = .string
                 self.rawString = string
             case _ as NSNull:
-                _type = .null
+                type = .null
             case nil:
-                _type = .null
+                type = .null
             case let array as [Any]:
-                _type = .array
+                type = .array
                 self.rawArray = array
             case let dictionary as [String : Any]:
-                _type = .dictionary
+                type = .dictionary
                 self.rawDictionary = dictionary
             default:
-                _type = .unknown
-                _error = SwiftyJSONError.unsupportedType
+                type = .unknown
+                error = SwiftyJSONError.unsupportedType
             }
         }
     }
-
-    /// JSON type
-    public var type: Type { return _type }
-
-    /// Error in JSON
-    public var error: SwiftyJSONError? { return _error }
 
     /// The static null JSON
     @available(*, unavailable, renamed:"null")
@@ -416,13 +412,13 @@ extension JSON {
         get {
             if self.type != .array {
                 var r = JSON.null
-                r._error = self._error ?? SwiftyJSONError.wrongType
+                r.error = self.error ?? SwiftyJSONError.wrongType
                 return r
             } else if index >= 0 && index < self.rawArray.count {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
-                r._error = SwiftyJSONError.indexOutOfBounds
+                r.error = SwiftyJSONError.indexOutOfBounds
                 return r
             }
         }
@@ -443,10 +439,10 @@ extension JSON {
                 if let o = self.rawDictionary[key] {
                     r = JSON(o)
                 } else {
-                    r._error = SwiftyJSONError.notExist
+                    r.error = SwiftyJSONError.notExist
                 }
             } else {
-                r._error = self._error ?? SwiftyJSONError.wrongType
+                r.error = self.error ?? SwiftyJSONError.wrongType
             }
             return r
         }

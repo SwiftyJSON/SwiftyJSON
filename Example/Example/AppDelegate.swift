@@ -29,14 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+
         let navigationController = self.window?.rootViewController as! UINavigationController
         let viewController = navigationController.topViewController as! ViewController
-        
+
         if let file = Bundle.main.path(forResource: "SwiftyJSONTests", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: file))
-                let json = JSON(data: data)
+                let json = try JSON(data: data)
                 viewController.json = json
             } catch {
                 viewController.json = JSON.null
@@ -44,8 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             viewController.json = JSON.null
         }
-        
+
         return true
     }
 }
-

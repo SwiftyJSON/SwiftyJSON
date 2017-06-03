@@ -25,77 +25,75 @@ import XCTest
 import SwiftyJSON
 
 class JSONTests: XCTestCase {
-    
+
     func testDifferingTypes() {
         let A = JSON("a")
         let B = JSON(1)
-        
+
         do {
             _ = try A.merged(with: B)
             XCTFail()
-        } catch (let error) {
-            let error = error as NSError
-            XCTAssertEqual(error.code, ErrorWrongType)
-            XCTAssertEqual(error.domain, ErrorDomain)
-            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String,
-                           "Couldn't merge, because the JSONs differ in type on top level.")
-        }
+        } catch let error as SwiftyJSONError {
+            XCTAssertEqual(error.errorCode, SwiftyJSONError.wrongType.rawValue)
+            XCTAssertEqual(type(of: error).errorDomain, SwiftyJSONError.errorDomain)
+            XCTAssertEqual(error.errorUserInfo as! [String: String], [NSLocalizedDescriptionKey: "Couldn't merge, because the JSONs differ in type on top level."])
+        } catch _ {}
     }
-    
+
     func testPrimitiveType() {
         let A = JSON("a")
         let B = JSON("b")
         XCTAssertEqual(try! A.merged(with: B), B)
     }
-    
+
     func testMergeEqual() {
         let json = JSON(["a": "A"])
         XCTAssertEqual(try! json.merged(with: json), json)
     }
-    
+
     func testMergeUnequalValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["a": "B"])
         XCTAssertEqual(try! A.merged(with: B), B)
     }
-    
+
     func testMergeUnequalKeysAndValues() {
         let A = JSON(["a": "A"])
         let B = JSON(["b": "B"])
         XCTAssertEqual(try! A.merged(with: B), JSON(["a": "A", "b": "B"]))
     }
-    
+
     func testMergeFilledAndEmpty() {
         let A = JSON(["a": "A"])
         let B = JSON([:])
         XCTAssertEqual(try! A.merged(with: B), A)
     }
-    
+
     func testMergeEmptyAndFilled() {
         let A = JSON([:])
         let B = JSON(["a": "A"])
         XCTAssertEqual(try! A.merged(with: B), B)
     }
-    
+
     func testMergeArray() {
         let A = JSON(["a"])
         let B = JSON(["b"])
         XCTAssertEqual(try! A.merged(with: B), JSON(["a", "b"]))
     }
-    
+
     func testMergeNestedJSONs() {
         let A = JSON([
             "nested": [
                 "A": "a"
             ]
         ])
-        
+
         let B = JSON([
             "nested": [
                 "A": "b"
             ]
         ])
-        
+
         XCTAssertEqual(try! A.merged(with: B), B)
     }
 }

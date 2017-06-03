@@ -19,7 +19,7 @@ if let file = Bundle.main.path(forResource: "SwiftyJSONTests", ofType: "json") {
     print("Fail")
 }
 
-let jsonObject = try JSONSerialization.jsonObject(with: jsonData!, options: .allowFragments) as? [[String: AnyObject]]
+let jsonObject = try JSONSerialization.jsonObject(with: jsonData!, options: .allowFragments)
 
 let jsonString = String(data: jsonData!, encoding: .utf8)
 
@@ -127,14 +127,14 @@ let errorJson = JSON(["name", "age"])
 if let name = errorJson[999].string {
 	//Do something you want
 } else {
-	print(errorJson[999].error) // "Array[999] is out of bounds"
+	print(errorJson[999].error as Any) // "Array[999] is out of bounds"
 }
 
 let errorJson2 = JSON(["name":"Jack", "age": 25])
 if let name = errorJson2["address"].string {
 	//Do something you want
 } else {
-	print(errorJson2["address"].error) // "Dictionary["address"] does not exist"
+	print(errorJson2["address"].error as Any) // "Dictionary["address"] does not exist"
 }
 
 let errorJson3 = JSON(12345)
@@ -142,12 +142,12 @@ if let age = errorJson3[0].string {
 	//Do something you want
 } else {
 	print(errorJson3[0])       // "Array[0] failure, It is not an array"
-	print(errorJson3[0].error) // "Array[0] failure, It is not an array"
+	print(errorJson3[0].error as Any) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
 	//Do something you want
 } else {
 	print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-	print(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+	print(json["name"].error as Any) // "Dictionary[\"name"] failure, It is not an dictionary"
 }

@@ -58,7 +58,7 @@ extension SwiftyJSONError: CustomNSError {
     public var errorUserInfo: [String : Any] {
         switch self {
         case .unsupportedType:
-            return [NSLocalizedDescriptionKey: "It is a unsupported type."]
+            return [NSLocalizedDescriptionKey: "It is an unsupported type."]
         case .indexOutOfBounds:
             return [NSLocalizedDescriptionKey: "Array Index is out of bounds."]
         case .wrongType:
@@ -407,14 +407,14 @@ extension String: JSONSubscriptType {
 
 extension JSON {
 
-    /// If `type` is `.Array`, return json whose object is `array[index]`, otherwise return null json with error.
+    /// If `type` is `.array`, return json whose object is `array[index]`, otherwise return null json with error.
     fileprivate subscript(index index: Int) -> JSON {
         get {
             if self.type != .array {
                 var r = JSON.null
                 r.error = self.error ?? SwiftyJSONError.wrongType
                 return r
-            } else if index >= 0 && index < self.rawArray.count {
+            } else if self.rawArray.indices.contains(index) {
                 return JSON(self.rawArray[index])
             } else {
                 var r = JSON.null
@@ -423,15 +423,15 @@ extension JSON {
             }
         }
         set {
-            if self.type == .array {
-                if self.rawArray.count > index && newValue.error == nil {
-                    self.rawArray[index] = newValue.object
-                }
+            if self.type == .array &&
+                self.rawArray.indices.contains(index) &&
+                newValue.error == nil {
+                self.rawArray[index] = newValue.object
             }
         }
     }
 
-    /// If `type` is `.Dictionary`, return json whose object is `dictionary[key]` , otherwise return null json with error.
+    /// If `type` is `.dictionary`, return json whose object is `dictionary[key]` , otherwise return null json with error.
     fileprivate subscript(key key: String) -> JSON {
         get {
             var r = JSON.null

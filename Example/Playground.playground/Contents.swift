@@ -80,7 +80,7 @@ json["users"][0]["info"]["name"].stringValue
 
 // Getting a string using a path to the element
 let path = ["users", 1, "info", "name"] as [JSONSubscriptType]
-var name = json["users",1,"info","name"].string
+var name = json["users", 1, "info", "name"].string
 
 // With a custom way
 let keys: [JSONSubscriptType] = ["users", 1, "info", "name"]
@@ -90,13 +90,13 @@ name = json[keys].string
 name = json["users"][1]["info"]["name"].string
 
 // Alternatively
-name = json["users",1,"info","name"].string
+name = json["users", 1, "info", "name"].string
 
 /*:
  ### Loop
  */
 // If json is .Dictionary
-for (key,subJson):(String, JSON) in json {
+for (key, subJson):(String, JSON) in json {
 	//Do something you want
 //	print(subJson)
 }
@@ -104,7 +104,7 @@ for (key,subJson):(String, JSON) in json {
 /*The first element is always a String, even if the JSON is an Array*/
 //If json is .Array
 //The `index` is 0..<json.count's string value
-for (index,subJson):(String, JSON) in json["array"] {
+for (index, subJson):(String, JSON) in json["array"] {
 	//Do something you want
 	print("\(index): \(subJson)")
 }
@@ -134,7 +134,7 @@ if let name = errorJson[999].string {
 	print(errorJson[999].error!) // "Array[999] is out of bounds"
 }
 
-let errorJson2 = JSON(["name":"Jack", "age": 25])
+let errorJson2 = JSON(["name": "Jack", "age": 25])
 if let name = errorJson2["address"].string {
 	//Do something you want
 } else {
@@ -168,7 +168,7 @@ let jsonOG: JSON = JSON([
 		"name": "jack",
 		"email": "jack@gmail.com",
 		"is_translator": true
-	],
+	]
 ])
 
 //NSNumber
@@ -216,7 +216,7 @@ let jsonNOG: JSON = JSON([
 		"favourites_count": 8,
 		"email": "jack@gmail.com",
 		"is_translator": true
-	],
+	]
 ])
 
 //If not a Number or nil, return 0
@@ -228,11 +228,11 @@ let nameNOG: String = jsonNOG["name"].stringValue
 print(nameNOG)
 
 //If not an Array or nil, return []
-let listNOG: Array<JSON> = jsonNOG["list"].arrayValue
+let listNOG: Array = jsonNOG["list"].arrayValue
 print(listNOG)
 
 //If not a Dictionary or nil, return [:]
-let userNOG: Dictionary<String, JSON> = jsonNOG["user"].dictionaryValue
+let userNOG: Dictionary = jsonNOG["user"].dictionaryValue
 print(userNOG)
 
 

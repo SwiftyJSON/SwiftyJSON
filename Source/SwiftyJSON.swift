@@ -700,7 +700,7 @@ extension JSON: Swift.RawRepresentable {
                 return nil
             }
         case .string:
-            return self.rawString
+            return "\"\(self.rawString)\""
         case .number:
             return self.rawNumber.stringValue
         case .bool:

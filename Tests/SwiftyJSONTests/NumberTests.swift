@@ -148,12 +148,12 @@ class NumberTests: XCTestCase {
         json.float = 23231.65
         XCTAssertTrue(json.float! == 23231.65)
         XCTAssertTrue(json.floatValue == 23231.65)
-        XCTAssertEqualWithAccuracy(Double(json.numberValue), 23231.65, accuracy: 0.001)
+        XCTAssertEqualWithAccuracy(json.numberValue.doubleValue, 23231.65, accuracy: 0.001)
         
         json.floatValue = -98766.23
         XCTAssertEqual(json.float!, -98766.23)
         XCTAssertEqual(json.floatValue, -98766.23)
-        XCTAssertEqualWithAccuracy(Double(json.numberValue), -98766.23, accuracy: 0.05)
+        XCTAssertEqualWithAccuracy(json.numberValue.doubleValue, -98766.23, accuracy: 0.05)
     }
     
     func testInt() {

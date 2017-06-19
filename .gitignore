@@ -1,5 +1,6 @@
 # Xcode
 .DS_Store
+SwiftyJSON.xcodeproj
 */build/*
 *.pbxuser
 !default.pbxuser

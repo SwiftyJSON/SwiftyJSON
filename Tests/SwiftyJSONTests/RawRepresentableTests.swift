@@ -27,7 +27,7 @@ import Foundation
 
 class RawRepresentableTests: XCTestCase {
 
-// GENERATED: allTests required for Swift 3.0
+    // GENERATED: allTests required for Swift 3.0
     static var allTests : [(String, (RawRepresentableTests) -> () throws -> Void)] {
         return [
             ("testNumber", testNumber),
@@ -36,7 +36,7 @@ class RawRepresentableTests: XCTestCase {
             ("testNil", testNil),
         ]
     }
-// END OF GENERATED CODE
+    // END OF GENERATED CODE
 
     func testNumber() {
         var json:JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
@@ -51,9 +51,9 @@ class RawRepresentableTests: XCTestCase {
 
         #if !os(Linux)
             // NSNumber to Int, Double and Float conversion doesn't work on Linux
-            XCTAssertEqual(object as? Int, 948394394)
+            XCTAssertEqual((object as! NSNumber).intValue, 948394394)
             XCTAssertEqual(object as? Double, 948394394.347384)
-            XCTAssertTrue(object as! Float == 948394394.347384)
+            XCTAssertEqual((object as! NSNumber).floatValue, 948394394.347384)
         #endif
         XCTAssertEqual(object as? NSNumber, 948394394.347384)
     }
@@ -72,16 +72,16 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(objectTrue as? Bool, true)
 
         #if !os(Linux)
-        // Bool to NSNumber conversion doesn't work on Linux
-        XCTAssertEqual(objectTrue as? NSNumber, NSNumber(value: true))
+            // Bool to NSNumber conversion doesn't work on Linux
+            XCTAssertEqual(objectTrue as? NSNumber, NSNumber(value: true))
         #endif
 
         let objectFalse = jsonFalse.rawValue
         XCTAssertEqual(objectFalse as? Bool, false)
-        
+
         #if !os(Linux)
-        // Bool to NSNumber conversion doesn't work on Linux
-        XCTAssertEqual(objectFalse as? NSNumber, NSNumber(value: false))
+            // Bool to NSNumber conversion doesn't work on Linux
+            XCTAssertEqual(objectFalse as? NSNumber, NSNumber(value: false))
         #endif
     }
 
@@ -111,8 +111,8 @@ class RawRepresentableTests: XCTestCase {
     }
 
     #if !os(Linux)
-        // the following tests are not relevant to Linux
-        // you cannot convert array/dictionary of value types to NSArray/NSDictionary
+    // the following tests are not relevant to Linux
+    // you cannot convert array/dictionary of value types to NSArray/NSDictionary
     func testArray() {
         let array = [1,2,"3",4102,"5632", "abocde", "!@# $%^&*()"] as NSArray
         if let json:JSON = JSON(rawValue: array) {
@@ -128,7 +128,7 @@ class RawRepresentableTests: XCTestCase {
         if let json:JSON = JSON(rawValue: dictionary) {
             XCTAssertEqual(json, JSON(dictionary))
         }
-
+        
         let object = JSON(rawValue: dictionary)!.rawValue
         XCTAssertTrue(dictionary == object as! NSDictionary)
     }

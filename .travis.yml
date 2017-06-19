@@ -1,5 +1,3 @@
-# Travis CI build file for Kitura sample app.
-# Kitura runs on OS X and Linux (Ubuntu).
 # See the following URLs for further details on Travis CI
 # https://docs.travis-ci.com/user/customizing-the-build/
 # https://docs.travis-ci.com/user/docker/
@@ -24,14 +22,14 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      env: SWIFT_VERSION=3.0.2
+      env: SWIFT_SNAPSHOT=4.0-DEVELOPMENT-SNAPSHOT-2017-06-11-a
     - os: osx
       osx_image: xcode8.3
       sudo: required
+      env: SWIFT_SNAPSHOT=4.0-DEVELOPMENT-SNAPSHOT-2017-06-11-a
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
-  - test -n "$SWIFT_VERSION" && echo "$SWIFT_VERSION" > .swift-version || echo "SWIFT_VERSION not set, using $(cat .swift-version)"
 
 script:
   - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR

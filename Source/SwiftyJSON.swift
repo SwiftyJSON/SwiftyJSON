@@ -192,7 +192,7 @@ public struct JSON {
                     print("==> error=\(String(describing: _error)). type=\(type(of: newValue))")
             }
 #else
-            if  type(of: newValue) == Bool.self {
+            if  Swift.type(of: newValue) == Bool.self {
                 _type = .bool
                 self.rawBool = newValue as! Bool
             }

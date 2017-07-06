@@ -1006,12 +1006,10 @@ extension JSON {
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
-                    
                 case 13:
                     //For Time in milliseconds
                     return Date(timeIntervalSince1970: date/1000)
                 default: return nil
-                    
                 }
                 
             case .string:
@@ -1019,11 +1017,9 @@ extension JSON {
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
-                    
                 case 13:
                     //For Time in milliseconds
                     return Date(timeIntervalSince1970: date/1000)
-                    
                 default: return nil
                 }
             default:
@@ -1033,7 +1029,6 @@ extension JSON {
         set {
             self.object = newValue ?? Date()
         }
-        
     }
     
     //NON-Optional TIME
@@ -1045,26 +1040,20 @@ extension JSON {
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
-                    
-                case 13:
-                    //For Time in milliseconds
-                    return Date(timeIntervalSince1970: date/1000)                    
-                default: return Date()
-                }
-                
-            case .string:
-                let date:Double = Double(self.rawString)!
-                
-                switch ceil(log10(date)) {
-                case 10:
-                    return Date(timeIntervalSince1970: date)
-                    
                 case 13:
                     //For Time in milliseconds
                     return Date(timeIntervalSince1970: date/1000)
-                    
                 default: return Date()
-                    
+                }
+            case .string:
+                let date:Double = Double(self.rawString)!
+                switch ceil(log10(date)) {
+                case 10:
+                    return Date(timeIntervalSince1970: date)
+                case 13:
+                    //For Time in milliseconds
+                    return Date(timeIntervalSince1970: date/1000)
+                default: return Date()
                 }
             default:
                 return Date()

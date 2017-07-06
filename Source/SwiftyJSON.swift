@@ -1003,7 +1003,6 @@ extension JSON {
             switch self.type {
             case .number:
                 let date:Double = self.rawNumber.doubleValue
-                
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
@@ -1011,14 +1010,12 @@ extension JSON {
                 case 13:
                     //For Time in milliseconds
                     return Date(timeIntervalSince1970: date/1000)
-                    
                 default: return nil
                     
                 }
                 
             case .string:
                 let date:Double = Double(self.rawString)!
-                
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
@@ -1028,7 +1025,6 @@ extension JSON {
                     return Date(timeIntervalSince1970: date/1000)
                     
                 default: return nil
-                    
                 }
             default:
                 return nil
@@ -1046,17 +1042,14 @@ extension JSON {
             switch self.type {
             case .number:
                 let date:Double = self.rawNumber.doubleValue
-                
                 switch ceil(log10(date)) {
                 case 10:
                     return Date(timeIntervalSince1970: date)
                     
                 case 13:
                     //For Time in milliseconds
-                    return Date(timeIntervalSince1970: date/1000)
-                    
+                    return Date(timeIntervalSince1970: date/1000)                    
                 default: return Date()
-                    
                 }
                 
             case .string:

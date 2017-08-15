@@ -5,7 +5,7 @@ env:
   global:
   - FRAMEWORK_NAME=SwiftyJSON
 before_install:
-- rvm get head
+- rvm get stable
 - brew update
 - brew outdated carthage || brew upgrade carthage
 before_deploy:

@@ -25,7 +25,7 @@ import SwiftyJSON
 
 class MutabilityTest: XCTestCase {
 
-    func testDictionaryJSONMutability() {
+    func testDictionaryMutability() {
         let dictionary: [String: Any] = [
             "string": "STRING",
             "number": 9823.212,
@@ -55,7 +55,7 @@ class MutabilityTest: XCTestCase {
         XCTAssertEqual(json["new"], ["foo": "bar"])
     }
 
-    func testArrayJSONMutability() {
+    func testArrayMutability() {
         let array: [Any] = ["1", "2", 3, true, []]
 
         var json = JSON(array)
@@ -102,5 +102,39 @@ class MutabilityTest: XCTestCase {
         boolean = JSON(false)
         XCTAssertEqual(boolean, false)
         XCTAssertEqual(boolean.boolValue, false)
+    }
+    
+    func testArrayRemovability() {
+        let array = ["Test", "Test2", "Test3"]
+        var json = JSON(array)
+        
+        json.arrayObject?.removeFirst()
+        XCTAssertEqual(false, json.arrayValue.isEmpty)
+        XCTAssertEqual(json.arrayValue, ["Test2", "Test3"])
+        
+        json.arrayObject?.removeLast()
+        XCTAssertEqual(false, json.arrayValue.isEmpty)
+        XCTAssertEqual(json.arrayValue, ["Test2"])
+        
+        json.arrayObject?.removeAll()
+        XCTAssertEqual(true, json.arrayValue.isEmpty)
+        XCTAssertEqual(JSON([]), json)
+    }
+    
+    func testDictionaryRemovability() {
+        let dictionary: [String : Any] = ["key1": "Value1", "key2": 2, "key3": true]
+        var json = JSON(dictionary)
+        
+        json.dictionaryObject?.removeValue(forKey: "key1")
+        XCTAssertEqual(false, json.dictionaryValue.isEmpty)
+        XCTAssertEqual(json.dictionaryValue, ["key2": 2, "key3": true])
+        
+        json.dictionaryObject?.removeValue(forKey: "key3")
+        XCTAssertEqual(false, json.dictionaryValue.isEmpty)
+        XCTAssertEqual(json.dictionaryValue, ["key2": 2])
+        
+        json.dictionaryObject?.removeAll()
+        XCTAssertEqual(true, json.dictionaryValue.isEmpty)
+        XCTAssertEqual(json.dictionaryValue, [:])
     }
 }

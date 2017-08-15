@@ -23,7 +23,7 @@
 import Foundation
 
 // MARK: - Error
-
+// swiftlint:disable line_length
 ///Error domain
 @available(*, deprecated, message: "ErrorDomain is deprecated. Use `SwiftyJSONError.errorDomain` instead.", renamed: "SwiftyJSONError.errorDomain")
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"

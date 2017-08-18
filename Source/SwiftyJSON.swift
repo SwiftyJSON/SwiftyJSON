@@ -29,15 +29,15 @@ import Foundation
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
 ///Error code
-@available(*, deprecated, message: "ErrorUnsupportedType is deprecated. Use `SwiftyJSONError.ErrorUnsupportedType` instead.", renamed: "SwiftyJSONError.ErrorUnsupportedType")
+@available(*, deprecated, message: "ErrorUnsupportedType is deprecated. Use `SwiftyJSONError.unsupportedType` instead.", renamed: "SwiftyJSONError.unsupportedType")
 public let ErrorUnsupportedType: Int = 999
-@available(*, deprecated, message: "ErrorIndexOutOfBounds is deprecated. Use `SwiftyJSONError.ErrorIndexOutOfBounds` instead.", renamed: "SwiftyJSONError.ErrorIndexOutOfBounds")
+@available(*, deprecated, message: "ErrorIndexOutOfBounds is deprecated. Use `SwiftyJSONError.indexOutOfBounds` instead.", renamed: "SwiftyJSONError.indexOutOfBounds")
 public let ErrorIndexOutOfBounds: Int = 900
-@available(*, deprecated, message: "ErrorWrongType is deprecated. Use `SwiftyJSONError.ErrorWrongType` instead.", renamed: "SwiftyJSONError.ErrorWrongType")
+@available(*, deprecated, message: "ErrorWrongType is deprecated. Use `SwiftyJSONError.wrongType` instead.", renamed: "SwiftyJSONError.wrongType")
 public let ErrorWrongType: Int = 901
-@available(*, deprecated, message: "ErrorNotExist is deprecated. Use `SwiftyJSONError.ErrorNotExist` instead.", renamed: "SwiftyJSONError.ErrorNotExist")
+@available(*, deprecated, message: "ErrorNotExist is deprecated. Use `SwiftyJSONError.notExist` instead.", renamed: "SwiftyJSONError.notExist")
 public let ErrorNotExist: Int = 500
-@available(*, deprecated, message: "ErrorInvalidJSON is deprecated. Use `SwiftyJSONError.ErrorInvalidJSON` instead.", renamed: "SwiftyJSONError.ErrorInvalidJSON")
+@available(*, deprecated, message: "ErrorInvalidJSON is deprecated. Use `SwiftyJSONError.invalidJSON` instead.", renamed: "SwiftyJSONError.invalidJSON")
 public let ErrorInvalidJSON: Int = 490
 
 public enum SwiftyJSONError: Int, Swift.Error {

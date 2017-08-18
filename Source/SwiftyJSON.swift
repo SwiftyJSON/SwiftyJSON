@@ -92,6 +92,7 @@ public enum Type: Int {
 }
 
 // MARK: - JSON Base
+
 public struct JSON {
 
 	/**
@@ -912,6 +913,7 @@ extension JSON {
 }
 
 // MARK: - Number
+
 extension JSON {
 
     //Optional number
@@ -956,6 +958,7 @@ extension JSON {
 }
 
 // MARK: - Null
+
 extension JSON {
 
     public var null: NSNull? {
@@ -980,6 +983,7 @@ extension JSON {
 }
 
 // MARK: - URL
+
 extension JSON {
 
     //Optional URL
@@ -1276,6 +1280,7 @@ extension JSON {
 }
 
 // MARK: - Comparable
+
 extension JSON : Swift.Comparable {}
 
 public func == (lhs: JSON, rhs: JSON) -> Bool {

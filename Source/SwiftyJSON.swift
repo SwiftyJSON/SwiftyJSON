@@ -23,21 +23,21 @@
 import Foundation
 
 // MARK: - Error
-
+// swiftlint:disable line_length
 ///Error domain
-@available(*, deprecated, message: "Use the `SwiftyJSONError.errorDomain` instead")
+@available(*, deprecated, message: "ErrorDomain is deprecated. Use `SwiftyJSONError.errorDomain` instead.", renamed: "SwiftyJSONError.errorDomain")
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
 ///Error code
-@available(*, deprecated, message: "Use the `SwiftyJSONError.unsupportedType` instead")
+@available(*, deprecated, message: "ErrorUnsupportedType is deprecated. Use `SwiftyJSONError.ErrorUnsupportedType` instead.", renamed: "SwiftyJSONError.ErrorUnsupportedType")
 public let ErrorUnsupportedType: Int = 999
-@available(*, deprecated, message: "Use the `SwiftyJSONError.indexOutOfBounds` instead")
+@available(*, deprecated, message: "ErrorIndexOutOfBounds is deprecated. Use `SwiftyJSONError.ErrorIndexOutOfBounds` instead.", renamed: "SwiftyJSONError.ErrorIndexOutOfBounds")
 public let ErrorIndexOutOfBounds: Int = 900
-@available(*, deprecated, message: "Use the `SwiftyJSONError.wrongType` instead")
+@available(*, deprecated, message: "ErrorWrongType is deprecated. Use `SwiftyJSONError.ErrorWrongType` instead.", renamed: "SwiftyJSONError.ErrorWrongType")
 public let ErrorWrongType: Int = 901
-@available(*, deprecated, message: "Use the `SwiftyJSONError.notExist` instead")
+@available(*, deprecated, message: "ErrorNotExist is deprecated. Use `SwiftyJSONError.ErrorNotExist` instead.", renamed: "SwiftyJSONError.ErrorNotExist")
 public let ErrorNotExist: Int = 500
-@available(*, deprecated, message: "Use the `SwiftyJSONError.invalidJSON` instead")
+@available(*, deprecated, message: "ErrorInvalidJSON is deprecated. Use `SwiftyJSONError.ErrorInvalidJSON` instead.", renamed: "SwiftyJSONError.ErrorInvalidJSON")
 public let ErrorInvalidJSON: Int = 490
 
 public enum SwiftyJSONError: Int, Swift.Error {
@@ -1358,7 +1358,7 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
-    var isBool: Bool {
+    fileprivate var isBool: Bool {
         let objCType = String(cString: self.objCType)
         if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
             return true

@@ -234,7 +234,7 @@ let json = JSON(["name", "age"])
 if let name = json[999].string {
     //Do something you want
 } else {
-    print(json[999].error) // "Array[999] is out of bounds"
+    print(json[999].error!) // "Array[999] is out of bounds"
 }
 ```
 
@@ -243,7 +243,7 @@ let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
     //Do something you want
 } else {
-    print(json["address"].error) // "Dictionary["address"] does not exist"
+    print(json["address"].error!) // "Dictionary["address"] does not exist"
 }
 ```
 
@@ -253,14 +253,14 @@ if let age = json[0].string {
     //Do something you want
 } else {
     print(json[0])       // "Array[0] failure, It is not an array"
-    print(json[0].error) // "Array[0] failure, It is not an array"
+    print(json[0].error!) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
     //Do something you want
 } else {
     print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-    print(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"].error!) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
 ```
 
@@ -272,7 +272,7 @@ if let id = json["user"]["favourites_count"].number {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["favourites_count"].error)
+   print(json["user"]["favourites_count"].error!)
 }
 ```
 
@@ -282,7 +282,7 @@ if let id = json["user"]["name"].string {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["name"])
+   print(json["user"]["name"].error!)
 }
 ```
 
@@ -292,7 +292,7 @@ if let id = json["user"]["is_translator"].bool {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["is_translator"])
+   print(json["user"]["is_translator"].error!)
 }
 ```
 
@@ -302,7 +302,7 @@ if let id = json["user"]["id"].int {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["id"])
+   print(json["user"]["id"].error!)
 }
 ...
 ```

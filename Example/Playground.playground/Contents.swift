@@ -235,5 +235,31 @@ print(listNOG)
 let userNOG: Dictionary = jsonNOG["user"].dictionaryValue
 print(userNOG)
 
+/*:
+### Setter
+*/
 
+var jsonSetter: JSON = JSON([
+	"id": 987654,
+	"name": "jack",
+	"array": [0, 2, 4, 6, 8],
+	"double": 3513.352,
+	"dictionary": [
+		"name": "Jack",
+		"sex": "man"
+	],
+	"user": [
+		"favourites_count": 8,
+		"email": "jack@gmail.com",
+		"is_translator": true
+	]
+])
 
+jsonSetter["name"] = JSON("new-name")
+jsonSetter["array"][0] = JSON(1)
+
+jsonSetter["id"].int = 123456
+jsonSetter["double"].double = 123456.789
+jsonSetter["name"].string = "Jeff"
+jsonSetter.arrayObject = [1, 2, 3, 4]
+jsonSetter.dictionaryObject = ["name": "Jeff", "age": 20]

@@ -30,16 +30,12 @@ class ViewController: UITableViewController {
     // MARK: - Table view data source
 
 	override func viewDidLoad() {
-		self.title = "SwiftyJSON(\(json.type))"
+		title = "SwiftyJSON(\(json.type))"
 	}
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.json.type {
-        case Type.array, Type.dictionary:
+        case .array, .dictionary:
             return self.json.count
         default:
             return 1
@@ -49,7 +45,7 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "JSONCell", for: indexPath) as UITableViewCell
 
-        let row = (indexPath as NSIndexPath).row
+        let row = indexPath.row
 
         switch self.json.type {
         case .array:
@@ -76,7 +72,7 @@ class ViewController: UITableViewController {
         nextController = segue.destination
 
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            let row = (indexPath as NSIndexPath).row
+            let row = indexPath.row
             var nextJson: JSON = JSON.null
             switch self.json.type {
             case .array:

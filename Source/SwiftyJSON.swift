@@ -23,21 +23,21 @@
 import Foundation
 
 // MARK: - Error
-
+// swiftlint:disable line_length
 ///Error domain
-@available(*, deprecated, message: "Use the `SwiftyJSONError.errorDomain` instead")
+@available(*, deprecated, message: "ErrorDomain is deprecated. Use `SwiftyJSONError.errorDomain` instead.", renamed: "SwiftyJSONError.errorDomain")
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
 ///Error code
-@available(*, deprecated, message: "Use the `SwiftyJSONError.unsupportedType` instead")
+@available(*, deprecated, message: "ErrorUnsupportedType is deprecated. Use `SwiftyJSONError.unsupportedType` instead.", renamed: "SwiftyJSONError.unsupportedType")
 public let ErrorUnsupportedType: Int = 999
-@available(*, deprecated, message: "Use the `SwiftyJSONError.indexOutOfBounds` instead")
+@available(*, deprecated, message: "ErrorIndexOutOfBounds is deprecated. Use `SwiftyJSONError.indexOutOfBounds` instead.", renamed: "SwiftyJSONError.indexOutOfBounds")
 public let ErrorIndexOutOfBounds: Int = 900
-@available(*, deprecated, message: "Use the `SwiftyJSONError.wrongType` instead")
+@available(*, deprecated, message: "ErrorWrongType is deprecated. Use `SwiftyJSONError.wrongType` instead.", renamed: "SwiftyJSONError.wrongType")
 public let ErrorWrongType: Int = 901
-@available(*, deprecated, message: "Use the `SwiftyJSONError.notExist` instead")
+@available(*, deprecated, message: "ErrorNotExist is deprecated. Use `SwiftyJSONError.notExist` instead.", renamed: "SwiftyJSONError.notExist")
 public let ErrorNotExist: Int = 500
-@available(*, deprecated, message: "Use the `SwiftyJSONError.invalidJSON` instead")
+@available(*, deprecated, message: "ErrorInvalidJSON is deprecated. Use `SwiftyJSONError.invalidJSON` instead.", renamed: "SwiftyJSONError.invalidJSON")
 public let ErrorInvalidJSON: Int = 490
 
 public enum SwiftyJSONError: Int, Swift.Error {
@@ -76,43 +76,45 @@ extension SwiftyJSONError: CustomNSError {
 // MARK: - JSON Type
 
 /**
- JSON's type definitions.
+JSON's type definitions.
 
- See http://www.json.org
- */
+See http://www.json.org
+*/
 public enum Type: Int {
-
-    case number
-    case string
-    case bool
-    case array
-    case dictionary
-    case null
-    case unknown
+	case number
+	case string
+	case bool
+	case array
+	case dictionary
+	case null
+	case unknown
 }
 
 // MARK: - JSON Base
+
 public struct JSON {
 
-    /**
-     Creates a JSON using the data.
-
-     - parameter data:  The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
-     - parameter opt:   The JSON serialization reading options. `[]` by default.
-
-     - returns: The created JSON
-     */
+	/**
+	 Creates a JSON using the data.
+	
+	 - parameter data: The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
+	 - parameter opt: The JSON serialization reading options. `[]` by default.
+	
+	 - returns: The created JSON
+	 */
     public init(data: Data, options opt: JSONSerialization.ReadingOptions = []) throws {
         let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
         self.init(jsonObject: object)
     }
 
     /**
-     Creates a JSON object
-     - parameter object: the object
-     - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
-     - returns: the created JSON object
-     */
+	 Creates a JSON object
+	 - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
+	
+	 - parameter object: the object
+
+	 - returns: the created JSON object
+	 */
     public init(_ object: Any) {
         switch object {
         case let object as Data:
@@ -126,61 +128,67 @@ public struct JSON {
         }
     }
 
-    /**
-     Parses the JSON string into a JSON object
-     - parameter json: the JSON string
-     - returns: the created JSON object
-     */
-    public init(parseJSON jsonString: String) {
-        if let data = jsonString.data(using: .utf8) {
-            self.init(data)
-        } else {
-            self.init(NSNull())
-        }
-    }
+	/**
+	 Parses the JSON string into a JSON object
+	
+	 - parameter json: the JSON string
+	
+	 - returns: the created JSON object
+	*/
+	public init(parseJSON jsonString: String) {
+		if let data = jsonString.data(using: .utf8) {
+			self.init(data)
+		} else {
+			self.init(NSNull())
+		}
+	}
 
-    /**
-     Creates a JSON from JSON string
-     - parameter string: Normal json string like '{"a":"b"}'
-
-     - returns: The created JSON
-     */
+	/**
+	 Creates a JSON from JSON string
+	
+	 - parameter json: Normal json string like '{"a":"b"}'
+	
+	 - returns: The created JSON
+	 */
     @available(*, deprecated, message: "Use instead `init(parseJSON: )`")
     public static func parse(_ json: String) -> JSON {
         return json.data(using: String.Encoding.utf8)
             .flatMap { try? JSON(data: $0) } ?? JSON(NSNull())
     }
 
-    /**
-     Creates a JSON using the object.
-
-     - parameter object:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.
-
-     - returns: The created JSON
-     */
+	/**
+	 Creates a JSON using the object.
+	
+	 - parameter jsonObject:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.
+	
+	 - returns: The created JSON
+	 */
     fileprivate init(jsonObject: Any) {
         self.object = jsonObject
     }
 
-    /**
-     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added, 
-     present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
+	/**
+	 Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added,
+	 present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
  
-     - parameter other: The JSON which gets merged into this JSON
-     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
-     */
+	 - parameter other: The JSON which gets merged into this JSON
+	
+	 - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+	 */
     public mutating func merge(with other: JSON) throws {
         try self.merge(with: other, typecheck: true)
     }
 
-    /**
-     Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
-     present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
-     
-     - parameter other: The JSON which gets merged into this JSON
-     - returns: New merged JSON
-     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
-     */
+	/**
+	 Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
+	 present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
+	
+	 - parameter other: The JSON which gets merged into this JSON
+	
+	 - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+	
+	 - returns: New merged JSON
+	 */
     public func merged(with other: JSON) throws -> JSON {
         var merged = self
         try merged.merge(with: other, typecheck: true)
@@ -469,19 +477,23 @@ extension JSON {
         }
     }
 
-    /**
-     Find a json in the complex data structures by using array of Int and/or String as path.
-
-     - parameter path: The target json's path. Example:
-
-     let json = JSON[data]
-     let path = [9,"list","person","name"]
-     let name = json[path]
-
-     The same as: let name = json[9]["list"]["person"]["name"]
-
-     - returns: Return a json found by the path or a null json with error
-     */
+	/**
+	 Find a json in the complex data structures by using array of Int and/or String as path.
+	
+	 Example:
+	
+	 ```
+	 let json = JSON[data]
+	 let path = [9,"list","person","name"]
+	 let name = json[path]
+	 ```
+	
+	 The same as: let name = json[9]["list"]["person"]["name"]
+	
+	 - parameter path: The target json's path.
+	
+	 - returns: Return a json found by the path or a null json with error
+	 */
     public subscript(path: [JSONSubscriptType]) -> JSON {
         get {
             return path.reduce(self) { $0[sub: $1] }
@@ -900,6 +912,7 @@ extension JSON {
 }
 
 // MARK: - Number
+
 extension JSON {
 
     //Optional number
@@ -944,6 +957,7 @@ extension JSON {
 }
 
 // MARK: - Null
+
 extension JSON {
 
     public var null: NSNull? {
@@ -968,6 +982,7 @@ extension JSON {
 }
 
 // MARK: - URL
+
 extension JSON {
 
     //Optional URL
@@ -1264,6 +1279,7 @@ extension JSON {
 }
 
 // MARK: - Comparable
+
 extension JSON : Swift.Comparable {}
 
 public func == (lhs: JSON, rhs: JSON) -> Bool {

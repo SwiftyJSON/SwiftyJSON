@@ -1,5 +1,4 @@
-//
-//  JSONTests.swift
+//  MergeTests.swift
 //
 //  Created by Daniel Kiedrowski on 17.11.16.
 //
@@ -24,7 +23,7 @@
 import XCTest
 import SwiftyJSON
 
-class JSONTests: XCTestCase {
+class MergeTests: XCTestCase {
 
     func testDifferingTypes() {
         let A = JSON("a")

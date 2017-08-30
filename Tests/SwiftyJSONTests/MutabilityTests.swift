@@ -1,4 +1,4 @@
-//  DictionaryTests.swift
+//  MutabilityTests.swift
 //
 //  Copyright (c) 2014 - 2017 Zigii Wong
 //
@@ -23,7 +23,7 @@
 import XCTest
 import SwiftyJSON
 
-class MutabilityTest: XCTestCase {
+class MutabilityTests: XCTestCase {
 
     func testDictionaryMutability() {
         let dictionary: [String: Any] = [

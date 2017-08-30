@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-@testable import SwiftyJSON
+import SwiftyJSON
 
 class BaseTests: XCTestCase {
 
@@ -260,17 +260,6 @@ class BaseTests: XCTestCase {
             return
         }
         XCTAssertNotNil(json.object)
-    }
-
-    func testNumberCompare() {
-        XCTAssertEqual(NSNumber(value: 888332), NSNumber(value:888332))
-        XCTAssertNotEqual(NSNumber(value: 888332.1), NSNumber(value:888332))
-        XCTAssertLessThan(NSNumber(value: 888332).doubleValue, NSNumber(value:888332.1).doubleValue)
-        XCTAssertGreaterThan(NSNumber(value: 888332.1).doubleValue, NSNumber(value:888332).doubleValue)
-        XCTAssertFalse(NSNumber(value: 1) == NSNumber(value:true))
-        XCTAssertFalse(NSNumber(value: 0) == NSNumber(value:false))
-        XCTAssertEqual(NSNumber(value: false), NSNumber(value:false))
-        XCTAssertEqual(NSNumber(value: true), NSNumber(value:true))
     }
 
     func testErrorThrowing() {

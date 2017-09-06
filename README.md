@@ -349,24 +349,29 @@ json.dictionaryObject = ["name":"Jack", "age":25]
 #### Raw object
 
 ```swift
-let jsonObject: Any = json.object
+let rawObject: Any = json.object
 ```
 
 ```swift
-if let jsonObject: Any = json.rawValue
+let rawValue: Any = json.rawValue
 ```
 
 ```swift
 //convert the JSON to raw NSData
-if let data = json.rawData() {
-    //Do something you want
+do {
+	let rawData = try json.rawData()
+  //Do something you want
+} catch {
+	print("Error \(error)")
 }
 ```
 
 ```swift
 //convert the JSON to a raw String
-if let string = json.rawString() {
-    //Do something you want
+if let rawString = json.rawString() {
+  //Do something you want
+} else {
+	print("json.rawString is nil")
 }
 ```
 

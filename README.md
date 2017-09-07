@@ -1,6 +1,5 @@
 # SwiftyJSON [中文介绍](http://tangplin.github.io/swiftyjson/)
 
-[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
 
@@ -77,28 +76,9 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 
 ## Requirements
 
-- iOS 7.0+ / OS X 10.9+
-- Xcode 7
+Swift 3
 
 ## Integration
-
-#### CocoaPods (iOS 8+, OS X 10.9+)
-You can use [Cocoapods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
-```ruby
-platform :ios, '8.0'
-use_frameworks!
-
-target 'MyApp' do
-	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
-end
-```
-Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
-
-#### Carthage (iOS 8+, OS X 10.9+)
-You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
-```
-github "SwiftyJSON/SwiftyJSON"
-```
 
 #### Swift Package Manager
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
@@ -113,16 +93,6 @@ let package = Package(
     ]
 )
 ```
-
-Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more infomation checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
-
-#### Manually (iOS 7+, OS X 10.9+)
-
-To use this library in your project manually you may:  
-
-1. for Projects, just drag SwiftyJSON.swift to the project tree
-2. for Workspaces, include the whole SwiftyJSON.xcodeproj
-
 ## Usage
 
 #### Initialization

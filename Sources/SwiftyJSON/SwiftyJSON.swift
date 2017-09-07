@@ -189,7 +189,7 @@ public struct JSON {
                     self.rawString = value as! String
                 case .unknown:
                     _error = NSError(domain: ErrorDomain, code: ErrorUnsupportedType, userInfo: [NSLocalizedDescriptionKey: "It is a unsupported type"])
-                    print("==> error=\(String(describing: _error)). type=\(type(of: newValue))")
+                    print("==> error=\(String(describing: _error)). type=\(Swift.type(of: newValue))")
                 }
             #else
                 if  Swift.type(of: newValue) == Bool.self {

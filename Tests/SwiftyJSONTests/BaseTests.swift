@@ -27,7 +27,7 @@ import Foundation
 
 class BaseTests: XCTestCase {
 
-// GENERATED: allTests required for Swift 3.0
+    // GENERATED: allTests required for Swift 3.0
     static var allTests : [(String, (BaseTests) -> () throws -> Void)] {
         return [
             ("testInit", testInit),
@@ -44,7 +44,7 @@ class BaseTests: XCTestCase {
             ("testNumberCompare", testNumberCompare),
         ]
     }
-// END OF GENERATED CODE
+    // END OF GENERATED CODE
 
     var testData: Data!
 
@@ -209,9 +209,9 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(JSON(1).description,"1")
         XCTAssertEqual(JSON(22).description,"22")
         #if (arch(x86_64) || arch(arm64))
-        XCTAssertEqual(JSON(9.22337203685478E18).description,"9.22337203685478e+18")
+            XCTAssertEqual(JSON(9.22337203685478E18).description,"9.22337203685478e+18")
         #elseif (arch(i386) || arch(arm))
-        XCTAssertEqual(JSON(2147483647).description,"2147483647")
+            XCTAssertEqual(JSON(2147483647).description,"2147483647")
         #endif
         XCTAssertEqual(JSON(-1).description,"-1")
         XCTAssertEqual(JSON(-934834834).description,"-934834834")
@@ -225,7 +225,7 @@ class BaseTests: XCTestCase {
         #if !os(Linux)
             // blocked by defect https://bugs.swift.org/browse/SR-1464?jql=text%20~%20%22NSNumber%22
             //TODO: remove ifdef once the defect is resolved
-        XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue,"-9.999999991999999e+24")
+            XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue,"-9.999999991999999e+24")
         #endif
 
         XCTAssertEqual(JSON(NSNumber(value:Int.max)).description,"\(Int.max)")
@@ -236,9 +236,9 @@ class BaseTests: XCTestCase {
             // blocked by defect https://bugs.swift.org/browse/SR-1464?jql=text%20~%20%22NSNumber%22
             //TODO: remove ifdef once the defect is resolved
             
-        XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description,"\(UInt.max)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
+            XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description,"\(UInt.max)")
+            XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
+            XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description,"\(UInt64.max)")
         #endif
 
         XCTAssertEqual(JSON(Double.infinity as Any).description,"inf")
@@ -300,8 +300,13 @@ class BaseTests: XCTestCase {
         XCTAssertNotEqual(NSNumber(value: 888332.1), NSNumber(value:888332))
         XCTAssertLessThan(NSNumber(value: 888332).doubleValue, NSNumber(value:888332.1).doubleValue)
         XCTAssertGreaterThan(NSNumber(value: 888332.1).doubleValue, NSNumber(value:888332).doubleValue)
-        XCTAssertFalse(NSNumber(value: 1) == NSNumber(value:true))
-        XCTAssertFalse(NSNumber(value: 0) == NSNumber(value:false))
+
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertFalse(NSNumber(value: 1) == NSNumber(value:true))
+            XCTAssertFalse(NSNumber(value: 0) == NSNumber(value:false))
+        #endif
+
         XCTAssertEqual(NSNumber(value: false), NSNumber(value:false))
         XCTAssertEqual(NSNumber(value: true), NSNumber(value:true))
     }

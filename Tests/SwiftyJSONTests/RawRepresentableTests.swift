@@ -61,7 +61,11 @@ class RawRepresentableTests: XCTestCase {
     func testBool() {
         var jsonTrue:JSON = JSON(rawValue: true as NSNumber)!
 
-        XCTAssertEqual(jsonTrue.bool!, true)
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertEqual(jsonTrue.bool, true)
+        #endif
+
         XCTAssertEqual(jsonTrue.boolValue, true)
 
         var jsonFalse:JSON = JSON(rawValue: false)!
@@ -69,7 +73,11 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(jsonFalse.boolValue, false)
 
         let objectTrue = jsonTrue.rawValue
-        XCTAssertEqual(objectTrue as? Bool, true)
+
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertEqual(objectTrue as? Bool, true)
+        #endif
 
         #if !os(Linux)
             // Bool to NSNumber conversion doesn't work on Linux

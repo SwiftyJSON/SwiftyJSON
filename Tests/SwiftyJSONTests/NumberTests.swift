@@ -90,13 +90,21 @@ class NumberTests: XCTestCase {
         var json = JSON(true)
         XCTAssertEqual(json.bool!, true)
         XCTAssertEqual(json.boolValue, true)
-        XCTAssertEqual(json.numberValue, true as NSNumber)
+
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertEqual(json.numberValue, true as NSNumber)
+        #endif
         XCTAssertEqual(json.stringValue, "true")
 
         json.bool = false
         XCTAssertEqual(json.bool!, false)
         XCTAssertEqual(json.boolValue, false)
-        XCTAssertEqual(json.numberValue, false as NSNumber)
+
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertEqual(json.numberValue, false as NSNumber)
+        #endif
 
         json.bool = nil
         XCTAssertTrue(json.bool == nil)
@@ -106,7 +114,11 @@ class NumberTests: XCTestCase {
         json.boolValue = true
         XCTAssertEqual(json.bool!, true)
         XCTAssertEqual(json.boolValue, true)
-        XCTAssertEqual(json.numberValue, true as NSNumber)
+
+        // Blocked by https://bugs.swift.org/browse/SR-5803
+        #if !(os(Linux) && swift(>=3.2))
+            XCTAssertEqual(json.numberValue, true as NSNumber)
+        #endif
     }
 
     func testDouble() {
@@ -245,7 +257,10 @@ class NumberTests: XCTestCase {
 
         XCTAssertEqual(json.numberValue, n0)
         #if (arch(x86_64) || arch(arm64))
-            XCTAssertEqual(json.stringValue, "false")
+            // Blocked by https://bugs.swift.org/browse/SR-5803
+            #if !(os(Linux) && swift(>=3.2))
+                XCTAssertEqual(json.stringValue, "false")
+            #endif
         #elseif (arch(i386) || arch(arm))
             XCTAssertEqual(json.stringValue, "0")
         #endif
@@ -261,7 +276,10 @@ class NumberTests: XCTestCase {
 
         XCTAssertEqual(json.numberValue, n1)
         #if (arch(x86_64) || arch(arm64))
-            XCTAssertEqual(json.stringValue, "true")
+            // Blocked by https://bugs.swift.org/browse/SR-5803
+            #if !(os(Linux) && swift(>=3.2))
+                XCTAssertEqual(json.stringValue, "true")
+            #endif
         #elseif (arch(i386) || arch(arm))
             XCTAssertEqual(json.stringValue, "1")
         #endif

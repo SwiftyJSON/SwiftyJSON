@@ -123,7 +123,7 @@ class SubscriptTests: XCTestCase {
     func testDictionaryAllBool() {
         var json: JSON = ["t": true, "f": false, "false": false, "tr": true, "true": true, "yes": true, "1": true]
         XCTAssertTrue(json["1"] == true)
-        XCTAssertTrue(json["yes"] == true);
+        XCTAssertTrue(json["yes"] == true)
         XCTAssertTrue(json["t"] == true)
         XCTAssertTrue(json["f"] == false)
         XCTAssertTrue(json["false"] == false)

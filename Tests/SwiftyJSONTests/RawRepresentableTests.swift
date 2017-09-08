@@ -31,13 +31,15 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertEqual(json.intValue, 948394394)
         XCTAssertEqual(json.double!, 948394394.347384)
         XCTAssertEqual(json.doubleValue, 948394394.347384)
-        XCTAssertTrue(json.float! == 948394394.347384)
-        XCTAssertTrue(json.floatValue == 948394394.347384)
+        XCTAssertEqual(json.float!, 948394394.347384)
+        XCTAssertEqual(json.floatValue, 948394394.347384)
 
         let object: Any = json.rawValue
-        XCTAssertEqual(object as? Int, 948394394)
+        if let int = object as? Int {
+            XCTAssertEqual(int, 948394394)
+        }
         XCTAssertEqual(object as? Double, 948394394.347384)
-        XCTAssertTrue(object as! Float == 948394394.347384)
+        XCTAssertEqual(object as? Float, 948394394.347384)
         XCTAssertEqual(object as? NSNumber, 948394394.347384)
     }
 

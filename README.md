@@ -143,10 +143,12 @@ import SwiftyJSON
 ```swift
 let json = JSON(data: dataFromNetworking)
 ```
+Or
 
 ```swift
 let json = JSON(jsonObject)
 ```
+Or
 
 ```swift
 if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
@@ -510,7 +512,7 @@ let representation = json.rawString(options: [.castNilToNSNull: true])
 // representation is "{\"1\":2,\"2\":\"two\",\"3\":null}", which represents {"1":2,"2":"two","3":null}
 ```
 
-## Work with Alamofire
+## Work with [Alamofire](https://github.com/Alamofire/Alamofire)
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 
@@ -526,8 +528,12 @@ Alamofire.request(url, method: .get).validate().responseJSON { response in
 }
 ```
 
+We also provide an extension of Alamofire for serializing NSData to SwiftyJSON's JSON.
 
-## Work with Moya
+See: [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON)
+
+
+## Work with [Moya](https://github.com/Moya/Moya)
 
 SwiftyJSON parse data to JSON:
 

@@ -855,7 +855,7 @@ extension JSON { // : Swift.Bool
             case .number:
                 return self.rawNumber.boolValue
             case .string:
-                return ["true", "y", "t"].contains { (truthyString) in
+                return ["true", "y", "t", "1", "yes"].contains { (truthyString) in
                     return self.rawString.caseInsensitiveCompare(truthyString) == .orderedSame
                 }
             default:
@@ -1008,6 +1008,78 @@ extension JSON {
         }
     }
 }
+
+// MARK: - UNIX TIMESTAMP
+extension JSON {
+    
+    //Optional TIME
+    public var date: Date? {
+        get {
+            switch self.type {
+            case .number:
+                let date:Double = self.rawNumber.doubleValue
+                switch ceil(log10(date)) {
+                case 10:
+                    return Date(timeIntervalSince1970: date)
+                case 13:
+                    //For Time in milliseconds
+                    return Date(timeIntervalSince1970: date/1000)
+                default: return nil
+                }
+                
+            case .string:
+                let date:Double = Double(self.rawString)!
+                switch ceil(log10(date)) {
+                case 10:
+                    return Date(timeIntervalSince1970: date)
+                case 13:
+                    //For Time in milliseconds
+                    return Date(timeIntervalSince1970: date/1000)
+                default: return nil
+                }
+            default:
+                return nil
+            }
+        }
+        set {
+            self.object = newValue ?? Date()
+        }
+    }
+    
+    //NON-Optional TIME
+    public var dateValue: Date {
+        get {
+            switch self.type {
+            case .number:
+                let date:Double = self.rawNumber.doubleValue
+                switch ceil(log10(date)) {
+                case 10:
+                    return Date(timeIntervalSince1970: date)
+                case 13:
+                    //For Time in milliseconds
+                    return Date(timeIntervalSince1970: date/1000)
+                default: return Date()
+                }
+            case .string:
+                let date:Double = Double(self.rawString)!
+                switch ceil(log10(date)) {
+                case 10:
+                    return Date(timeIntervalSince1970: date)
+                case 13:
+                    //For Time in milliseconds
+                    return Date(timeIntervalSince1970: date/1000)
+                default: return Date()
+                }
+            default:
+                return Date()
+            }
+        }
+        set {
+            self.object = newValue
+        }
+    }
+}
+
 
 // MARK: - Int, Double, Float, Int8, Int16, Int32, Int64
 

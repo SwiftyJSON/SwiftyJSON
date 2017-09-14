@@ -31,7 +31,6 @@ class MergeTests: XCTestCase {
 
         do {
             _ = try A.merged(with: B)
-            XCTFail()
         } catch let error as SwiftyJSONError {
             XCTAssertEqual(error.errorCode, SwiftyJSONError.wrongType.rawValue)
             XCTAssertEqual(type(of: error).errorDomain, SwiftyJSONError.errorDomain)

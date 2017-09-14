@@ -55,10 +55,10 @@ class MutabilityTests: XCTestCase {
 
         json["new"] = JSON(["foo": "bar"])
         XCTAssertEqual(json["new"], ["foo": "bar"])
-        
+
         json["foo"]["bar"] = JSON([])
         XCTAssertEqual(json["foo"]["bar"], [])
-        
+
         json["bar"]["foo"] = JSON(["2": "b"])
         XCTAssertEqual(json["bar"]["foo"], ["2": "b"])
     }

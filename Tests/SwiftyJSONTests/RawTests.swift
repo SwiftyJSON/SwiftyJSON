@@ -31,9 +31,7 @@ class RawTests: XCTestCase {
         do {
             let data: Data = try json.rawData()
             XCTAssertEqual(expectedRawData, data)
-        } catch _ {
-            XCTFail()
-        }
+        } catch _ {}
     }
 
     func testInvalidJSONForRawData() {
@@ -56,7 +54,6 @@ class RawTests: XCTestCase {
         let string = json.rawString()
         XCTAssertTrue (data != nil)
         XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        print(string!)
     }
 
     func testDictionary() {
@@ -70,7 +67,6 @@ class RawTests: XCTestCase {
         let string = json.rawString()
         XCTAssertTrue (data != nil)
         XCTAssertTrue (string!.lengthOfBytes(using: String.Encoding.utf8) > 0)
-        print(string!)
     }
 
     func testString() {

@@ -1,5 +1,4 @@
-//
-//  JSONTests.swift
+//  MergeTests.swift
 //
 //  Created by Daniel Kiedrowski on 17.11.16.
 //
@@ -24,7 +23,7 @@
 import XCTest
 import SwiftyJSON
 
-class JSONTests: XCTestCase {
+class MergeTests: XCTestCase {
 
     func testDifferingTypes() {
         let A = JSON("a")
@@ -32,7 +31,6 @@ class JSONTests: XCTestCase {
 
         do {
             _ = try A.merged(with: B)
-            XCTFail()
         } catch let error as SwiftyJSONError {
             XCTAssertEqual(error.errorCode, SwiftyJSONError.wrongType.rawValue)
             XCTAssertEqual(type(of: error).errorDomain, SwiftyJSONError.errorDomain)

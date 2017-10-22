@@ -1,4 +1,4 @@
-//  DictionaryTests.swift
+//  MutabilityTests.swift
 //
 //  Copyright (c) 2014 - 2017 Zigii Wong
 //
@@ -23,14 +23,16 @@
 import XCTest
 import SwiftyJSON
 
-class MutabilityTest: XCTestCase {
+class MutabilityTests: XCTestCase {
 
     func testDictionaryMutability() {
         let dictionary: [String: Any] = [
             "string": "STRING",
             "number": 9823.212,
             "bool": true,
-            "empty": ["nothing"]
+            "empty": ["nothing"],
+            "foo": ["bar": ["1"]],
+            "bar": ["foo": ["1": "a"]]
         ]
 
         var json = JSON(dictionary)
@@ -53,6 +55,12 @@ class MutabilityTest: XCTestCase {
 
         json["new"] = JSON(["foo": "bar"])
         XCTAssertEqual(json["new"], ["foo": "bar"])
+
+        json["foo"]["bar"] = JSON([])
+        XCTAssertEqual(json["foo"]["bar"], [])
+
+        json["bar"]["foo"] = JSON(["2": "b"])
+        XCTAssertEqual(json["bar"]["foo"], ["2": "b"])
     }
 
     func testArrayMutability() {

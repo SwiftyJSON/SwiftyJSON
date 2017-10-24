@@ -319,13 +319,13 @@ let jsonLiteralBool: JSON =  true
 let jsonLiteralFloat: JSON =  2.8765
 
 // DictionaryLiteralConvertible
-let jsonLiteralDictionary: JSON =  ["I":"am", "a":"json"]
+let jsonLiteralDictionary: JSON =  ["I": "am", "a": "json"]
 
 // ArrayLiteralConvertible
 let jsonLiteralArray: JSON =  ["I", "am", "a", "json"]
 
 // With subscript in array
-var jsonSubscriptArray: JSON =  [1,2,3]
+var jsonSubscriptArray: JSON =  [1, 2, 3]
 jsonSubscriptArray[0] = 100
 jsonSubscriptArray[1] = 200
 jsonSubscriptArray[2] = 300
@@ -340,13 +340,13 @@ jsonSubscriptDictionary["address"] = "L.A" // Add the "address": "L.A." in json
 // Array & Dictionary
 var jsonArrayDictionary: JSON =  ["name": "Jack", "age": 25, "list": ["a", "b", "c", ["what": "this"]]]
 jsonArrayDictionary["list"][3]["what"] = "that"
-jsonArrayDictionary["list",3,"what"] = "that"
+jsonArrayDictionary["list", 3, "what"] = "that"
 
-let arrayDictionarypath: [JSONSubscriptType] = ["list",3,"what"]
+let arrayDictionarypath: [JSONSubscriptType] = ["list", 3, "what"]
 jsonArrayDictionary[arrayDictionarypath] = "that"
 
 // With other JSON objects
-let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
+let user: JSON = ["username": "Steve", "password": "supersecurepassword"]
 let auth: JSON = [
 	"user": user.object, //use user.object instead of just user
 	"apikey": "supersecretapitoken"
@@ -372,7 +372,7 @@ var original: JSON = [
 	"skills": ["Coding", "Reading"],
 	"address": [
 		"street": "Front St",
-		"zip": "12345",
+		"zip": "12345"
 	]
 ]
 
@@ -408,7 +408,7 @@ There are two options available:
 - use a custom one that will handle optionals well and represent nil as "null":
 */
 
-let stringRepresentationDict = ["1":2, "2":"two", "3": nil] as [String: Any?]
+let stringRepresentationDict = ["1": 2, "2": "two", "3": nil] as [String: Any?]
 let stringRepresentionJson: JSON = JSON(stringRepresentationDict)
 let representation = stringRepresentionJson.rawString([.castNilToNSNull: true])
 print(representation!)

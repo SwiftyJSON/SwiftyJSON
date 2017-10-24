@@ -448,7 +448,7 @@ json[path] = "that"
 // With other JSON objects
 let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
 let auth: JSON = [
-  "user": user.object //use user.object instead of just user
+  "user": user.object, // use user.object instead of just user
   "apikey": "supersecretapitoken"
 ]
 ```

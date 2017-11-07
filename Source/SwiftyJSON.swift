@@ -292,7 +292,7 @@ public struct JSON {
     public static var null: JSON { return JSON(NSNull()) }
 }
 
-// unwrap nested JSON
+/// Private method to unwarp an object recursively
 private func unwrap(_ object: Any) -> Any {
     switch object {
     case let json as JSON:
@@ -510,7 +510,8 @@ extension JSON {
             case 1:
                 self[sub:path[0]].object = newValue.object
             default:
-                var aPath = path; aPath.remove(at: 0)
+                var aPath = path
+                aPath.remove(at: 0)
                 var nextJSON = self[sub: path[0]]
                 nextJSON[aPath] = newValue
                 self[sub: path[0]] = nextJSON
@@ -647,9 +648,7 @@ extension JSON: Swift.RawRepresentable {
 	}
 
 	fileprivate func _rawString(_ encoding: String.Encoding = .utf8, options: [writingOptionsKeys: Any], maxObjectDepth: Int = 10) throws -> String? {
-        if maxObjectDepth < 0 {
-            throw SwiftyJSONError.invalidJSON
-        }
+        guard maxObjectDepth > 0 else { throw SwiftyJSONError.invalidJSON }
         switch self.type {
 		case .dictionary:
 			do {

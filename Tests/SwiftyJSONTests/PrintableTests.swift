@@ -98,7 +98,7 @@ class PrintableTests: XCTestCase {
     }
 
     func testDictionaryWithStrings() {
-        let dict = ["foo": "{\"bar\":123}"] as [String : Any]
+        let dict = ["foo": "{\"bar\":123}"] as [String: Any]
         let json = JSON(dict)
         var debugDescription = json.debugDescription.replacingOccurrences(of: "\n", with: "")
         debugDescription = debugDescription.replacingOccurrences(of: " ", with: "")

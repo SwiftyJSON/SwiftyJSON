@@ -130,7 +130,7 @@ class MutabilityTests: XCTestCase {
     }
 
     func testDictionaryRemovability() {
-        let dictionary: [String : Any] = ["key1": "Value1", "key2": 2, "key3": true]
+        let dictionary: [String: Any] = ["key1": "Value1", "key2": 2, "key3": true]
         var json = JSON(dictionary)
 
         json.dictionaryObject?.removeValue(forKey: "key1")

@@ -24,11 +24,11 @@ import Foundation
 
 // MARK: - Error
 // swiftlint:disable line_length
-///Error domain
+/// Error domain
 @available(*, deprecated, message: "ErrorDomain is deprecated. Use `SwiftyJSONError.errorDomain` instead.", renamed: "SwiftyJSONError.errorDomain")
 public let ErrorDomain: String = "SwiftyJSONErrorDomain"
 
-///Error code
+/// Error code
 @available(*, deprecated, message: "ErrorUnsupportedType is deprecated. Use `SwiftyJSONError.unsupportedType` instead.", renamed: "SwiftyJSONError.unsupportedType")
 public let ErrorUnsupportedType: Int = 999
 @available(*, deprecated, message: "ErrorIndexOutOfBounds is deprecated. Use `SwiftyJSONError.indexOutOfBounds` instead.", renamed: "SwiftyJSONError.indexOutOfBounds")
@@ -51,10 +51,13 @@ public enum SwiftyJSONError: Int, Swift.Error {
 
 extension SwiftyJSONError: CustomNSError {
 
+    /// return the error domain of SwiftyJSONError
     public static var errorDomain: String { return "com.swiftyjson.SwiftyJSON" }
 
+    /// return the error code of SwiftyJSONError
     public var errorCode: Int { return self.rawValue }
 
+    /// return the userInfo of SwiftyJSONError
     public var errorUserInfo: [String : Any] {
         switch self {
         case .unsupportedType:
@@ -195,9 +198,11 @@ public struct JSON {
         return merged
     }
 
-    // Private woker function which does the actual merging
-    // Typecheck is set to true for the first recursion level to prevent total override of the source JSON
-    fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
+    /**
+     Private woker function which does the actual merging
+     Typecheck is set to true for the first recursion level to prevent total override of the source JSON
+ 	*/
+ 	fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
         if self.type == other.type {
             switch self.type {
             case .dictionary:

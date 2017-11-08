@@ -85,7 +85,7 @@ if let userName = json[999999]["wrong_key"]["wrong_name"].string {
 
 #### CocoaPods (iOS 8+, OS X 10.9+)
 
-You can use [CocoaPods](http://cocoapods.org/) to install `SwiftyJSON`by adding it to your `Podfile`:
+You can use [CocoaPods](http://cocoapods.org/) to install `SwiftyJSON` by adding it to your `Podfile`:
 
 ```ruby
 platform :ios, '8.0'
@@ -159,37 +159,37 @@ if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: fals
 #### Subscript
 
 ```swift
-//Getting a double from a JSON Array
+// Getting a double from a JSON Array
 let name = json[0].double
 ```
 
 ```swift
-//Getting an array of string from a JSON Array
+// Getting an array of string from a JSON Array
 let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
 ```
 
 ```swift
-//Getting a string from a JSON Dictionary
+// Getting a string from a JSON Dictionary
 let name = json["name"].stringValue
 ```
 
 ```swift
-//Getting a string using a path to the element
+// Getting a string using a path to the element
 let path: [JSONSubscriptType] = [1,"list",2,"name"]
 let name = json[path].string
-//Just the same
+// Just the same
 let name = json[1]["list"][2]["name"].string
-//Alternatively
+// Alternatively
 let name = json[1,"list",2,"name"].string
 ```
 
 ```swift
-//With a hard way
+// With a hard way
 let name = json[].string
 ```
 
 ```swift
-//With a custom way
+// With a custom way
 let keys:[SubscriptType] = [1,"list",2,"name"]
 let name = json[keys].string
 ```
@@ -197,19 +197,19 @@ let name = json[keys].string
 #### Loop
 
 ```swift
-//If json is .Dictionary
+// If json is .Dictionary
 for (key,subJson):(String, JSON) in json {
-   //Do something you want
+   // Do something you want
 }
 ```
 
 *The first element is always a String, even if the JSON is an Array*
 
 ```swift
-//If json is .Array
-//The `index` is 0..<json.count's string value
+// If json is .Array
+// The `index` is 0..<json.count's string value
 for (index,subJson):(String, JSON) in json {
-    //Do something you want
+    // Do something you want
 }
 ```
 
@@ -234,7 +234,7 @@ This will never happen in SwiftyJSON.
 ```swift
 let json = JSON(["name", "age"])
 if let name = json[999].string {
-    //Do something you want
+    // Do something you want
 } else {
     print(json[999].error!) // "Array[999] is out of bounds"
 }
@@ -243,7 +243,7 @@ if let name = json[999].string {
 ```swift
 let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
-    //Do something you want
+    // Do something you want
 } else {
     print(json["address"].error!) // "Dictionary["address"] does not exist"
 }
@@ -252,14 +252,14 @@ if let name = json["address"].string {
 ```swift
 let json = JSON(12345)
 if let age = json[0].string {
-    //Do something you want
+    // Do something you want
 } else {
     print(json[0])       // "Array[0] failure, It is not an array"
     print(json[0].error!) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
-    //Do something you want
+    // Do something you want
 } else {
     print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
     print(json["name"].error!) // "Dictionary[\"name"] failure, It is not an dictionary"
@@ -269,41 +269,41 @@ if let name = json["name"].string {
 #### Optional getter
 
 ```swift
-//NSNumber
+// NSNumber
 if let id = json["user"]["favourites_count"].number {
-   //Do something you want
+   // Do something you want
 } else {
-   //Print the error
+   // Print the error
    print(json["user"]["favourites_count"].error!)
 }
 ```
 
 ```swift
-//String
+// String
 if let id = json["user"]["name"].string {
-   //Do something you want
+   // Do something you want
 } else {
-   //Print the error
+   // Print the error
    print(json["user"]["name"].error!)
 }
 ```
 
 ```swift
-//Bool
+// Bool
 if let id = json["user"]["is_translator"].bool {
-   //Do something you want
+   // Do something you want
 } else {
-   //Print the error
+   // Print the error
    print(json["user"]["is_translator"].error!)
 }
 ```
 
 ```swift
-//Int
+// Int
 if let id = json["user"]["id"].int {
-   //Do something you want
+   // Do something you want
 } else {
-   //Print the error
+   // Print the error
    print(json["user"]["id"].error!)
 }
 ...
@@ -314,22 +314,22 @@ if let id = json["user"]["id"].int {
 Non-optional getter is named `xxxValue`
 
 ```swift
-//If not a Number or nil, return 0
+// If not a Number or nil, return 0
 let id: Int = json["id"].intValue
 ```
 
 ```swift
-//If not a String or nil, return ""
+// If not a String or nil, return ""
 let name: String = json["name"].stringValue
 ```
 
 ```swift
-//If not an Array or nil, return []
+// If not an Array or nil, return []
 let list: Array<JSON> = json["list"].arrayValue
 ```
 
 ```swift
-//If not a Dictionary or nil, return [:]
+// If not a Dictionary or nil, return [:]
 let user: Dictionary<String, JSON> = json["user"].dictionaryValue
 ```
 
@@ -351,31 +351,36 @@ json.dictionaryObject = ["name":"Jack", "age":25]
 #### Raw object
 
 ```swift
-let jsonObject: Any = json.object
+let rawObject: Any = json.object
 ```
 
 ```swift
-if let jsonObject: Any = json.rawValue
+let rawValue: Any = json.rawValue
 ```
 
 ```swift
 //convert the JSON to raw NSData
-if let data = json.rawData() {
-    //Do something you want
+do {
+	let rawData = try json.rawData()
+  //Do something you want
+} catch {
+	print("Error \(error)")
 }
 ```
 
 ```swift
 //convert the JSON to a raw String
-if let string = json.rawString() {
-    //Do something you want
+if let rawString = json.rawString() {
+  //Do something you want
+} else {
+	print("json.rawString is nil")
 }
 ```
 
 #### Existence
 
 ```swift
-//shows you whether value specified in JSON or not
+// shows you whether value specified in JSON or not
 if json["name"].exists()
 ```
 
@@ -384,59 +389,54 @@ if json["name"].exists()
 For more info about literal convertibles: [Swift Literal Convertibles](http://nshipster.com/swift-literal-convertible/)
 
 ```swift
-//StringLiteralConvertible
+// StringLiteralConvertible
 let json: JSON = "I'm a json"
 ```
 
 ```swift
-//IntegerLiteralConvertible
+/ /IntegerLiteralConvertible
 let json: JSON =  12345
 ```
 
 ```swift
-//BooleanLiteralConvertible
+// BooleanLiteralConvertible
 let json: JSON =  true
 ```
 
 ```swift
-//FloatLiteralConvertible
+// FloatLiteralConvertible
 let json: JSON =  2.8765
 ```
 
 ```swift
-//DictionaryLiteralConvertible
+// DictionaryLiteralConvertible
 let json: JSON =  ["I":"am", "a":"json"]
 ```
 
 ```swift
-//ArrayLiteralConvertible
+// ArrayLiteralConvertible
 let json: JSON =  ["I", "am", "a", "json"]
 ```
 
 ```swift
-//NilLiteralConvertible
-let json: JSON =  nil
-```
-
-```swift
-//With subscript in array
+// With subscript in array
 var json: JSON =  [1,2,3]
 json[0] = 100
 json[1] = 200
 json[2] = 300
-json[999] = 300 //Don't worry, nothing will happen
+json[999] = 300 // Don't worry, nothing will happen
 ```
 
 ```swift
-//With subscript in dictionary
+// With subscript in dictionary
 var json: JSON =  ["name": "Jack", "age": 25]
 json["name"] = "Mike"
-json["age"] = "25" //It's OK to set String
+json["age"] = "25" // It's OK to set String
 json["address"] = "L.A." // Add the "address": "L.A." in json
 ```
 
 ```swift
-//Array & Dictionary
+// Array & Dictionary
 var json: JSON =  ["name": "Jack", "age": 25, "list": ["a", "b", "c", ["what": "this"]]]
 json["list"][3]["what"] = "that"
 json["list",3,"what"] = "that"
@@ -445,10 +445,10 @@ json[path] = "that"
 ```
 
 ```swift
-//With other JSON objects
+// With other JSON objects
 let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
 let auth: JSON = [
-  "user": user.object //use user.object instead of just user
+  "user": user.object, // use user.object instead of just user
   "apikey": "supersecretapitoken"
 ]
 ```

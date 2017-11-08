@@ -163,7 +163,7 @@ class SubscriptTests: XCTestCase {
 
     func testDictionaryAllArray() {
         //Swift bug: [1, 2.01,3.09] is convert to [1, 2, 3] (Array<Int>)
-        let json: JSON = JSON ([[NSNumber(value:1), NSNumber(value:2.123456), NSNumber(value:123456789)], ["aa", "bbb", "cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json: JSON = JSON ([[NSNumber(value: 1), NSNumber(value: 2.123456), NSNumber(value: 123456789)], ["aa", "bbb", "cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
         XCTAssertTrue(json[0] == [1, 2.123456, 123456789])
         XCTAssertEqual(json[0][1].double!, 2.123456)
         XCTAssertTrue(json[0][2] == 123456789)
@@ -180,7 +180,7 @@ class SubscriptTests: XCTestCase {
     }
 
     func testOutOfBounds() {
-        let json: JSON = JSON ([[NSNumber(value:1), NSNumber(value:2.123456), NSNumber(value:123456789)], ["aa", "bbb", "cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
+        let json: JSON = JSON ([[NSNumber(value: 1), NSNumber(value: 2.123456), NSNumber(value: 123456789)], ["aa", "bbb", "cccc"], [true, "766", NSNull(), 655231.9823]] as NSArray)
         XCTAssertEqual(json[9], JSON.null)
         XCTAssertEqual(json[-2].error, SwiftyJSONError.indexOutOfBounds)
         XCTAssertEqual(json[6].error, SwiftyJSONError.indexOutOfBounds)

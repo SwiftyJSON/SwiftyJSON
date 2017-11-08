@@ -31,7 +31,7 @@ class BaseTests: XCTestCase {
 
         super.setUp()
 
-        if let file = Bundle(for:BaseTests.self).path(forResource: "Tests", ofType: "json") {
+        if let file = Bundle(for: BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         } else {
             XCTFail("Can't find the test JSON file")
@@ -65,7 +65,7 @@ class BaseTests: XCTestCase {
     func testCompare() {
         XCTAssertNotEqual(JSON("32.1234567890"), JSON(32.1234567890))
         let veryLargeNumber: UInt64 = 9876543210987654321
-        XCTAssertNotEqual(JSON("9876543210987654321"), JSON(NSNumber(value:veryLargeNumber)))
+        XCTAssertNotEqual(JSON("9876543210987654321"), JSON(NSNumber(value: veryLargeNumber)))
         XCTAssertNotEqual(JSON("9876543210987654321.12345678901234567890"), JSON(9876543210987654321.12345678901234567890))
         XCTAssertEqual(JSON("😊"), JSON("😊"))
         XCTAssertNotEqual(JSON("😱"), JSON("😁"))

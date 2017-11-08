@@ -21,8 +21,6 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
 
-> For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
-
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
 
@@ -92,7 +90,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-	pod 'SwiftyJSON'
+    pod 'SwiftyJSON'
 end
 ```
 

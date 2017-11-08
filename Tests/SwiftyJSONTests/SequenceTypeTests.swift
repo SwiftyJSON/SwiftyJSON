@@ -127,11 +127,11 @@ class SequenceTypeTests: XCTestCase {
             index += 1
         }
         XCTAssertEqual(index, 3)
-        XCTAssertEqual((array[0] as! [String : Int])["1"]!, 1)
-        XCTAssertEqual((array[0] as! [String : Int])["2"]!, 2)
-        XCTAssertEqual((array[1] as! [String : String])["a"]!, "A")
-        XCTAssertEqual((array[1] as! [String : String])["b"]!, "B")
-        XCTAssertEqual((array[2] as! [String : NSNull])["null"]!, NSNull())
+        XCTAssertEqual((array[0] as! [String: Int])["1"]!, 1)
+        XCTAssertEqual((array[0] as! [String: Int])["2"]!, 2)
+        XCTAssertEqual((array[1] as! [String: String])["a"]!, "A")
+        XCTAssertEqual((array[1] as! [String: String])["b"]!, "B")
+        XCTAssertEqual((array[2] as! [String: NSNull])["null"]!, NSNull())
     }
 
     func testDictionaryAllNumber() {

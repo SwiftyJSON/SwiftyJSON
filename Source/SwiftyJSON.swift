@@ -55,7 +55,7 @@ extension SwiftyJSONError: CustomNSError {
 
     public var errorCode: Int { return self.rawValue }
 
-    public var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String: Any] {
         switch self {
         case .unsupportedType:
             return [NSLocalizedDescriptionKey: "It is an unsupported type."]
@@ -220,7 +220,7 @@ public struct JSON {
 
     /// Private object
     fileprivate var rawArray: [Any] = []
-    fileprivate var rawDictionary: [String : Any] = [:]
+    fileprivate var rawDictionary: [String: Any] = [:]
     fileprivate var rawString: String = ""
     fileprivate var rawNumber: NSNumber = 0
     fileprivate var rawNull: NSNull = NSNull()
@@ -271,7 +271,7 @@ public struct JSON {
             case let array as [Any]:
                 type = .array
                 self.rawArray = array
-            case let dictionary as [String : Any]:
+            case let dictionary as [String: Any]:
                 type = .dictionary
                 self.rawDictionary = dictionary
             default:
@@ -294,7 +294,7 @@ private func unwrap(_ object: Any) -> Any {
         return unwrap(json.object)
     case let array as [Any]:
         return array.map(unwrap)
-    case let dictionary as [String : Any]:
+    case let dictionary as [String: Any]:
         var unwrappedDic = dictionary
         for (k, v) in dictionary {
             unwrappedDic[k] = unwrap(v)
@@ -784,8 +784,8 @@ extension JSON {
 
 extension JSON {
 
-    //Optional [String : JSON]
-    public var dictionary: [String : JSON]? {
+    //Optional [String: JSON]
+    public var dictionary: [String: JSON]? {
         if self.type == .dictionary {
             var d = [String: JSON](minimumCapacity: rawDictionary.count)
             for (key, value) in rawDictionary {
@@ -797,14 +797,14 @@ extension JSON {
         }
     }
 
-    //Non-optional [String : JSON]
-    public var dictionaryValue: [String : JSON] {
+    //Non-optional [String: JSON]
+    public var dictionaryValue: [String: JSON] {
         return self.dictionary ?? [:]
     }
 
-    //Optional [String : Any]
+    //Optional [String: Any]
 
-    public var dictionaryObject: [String : Any]? {
+    public var dictionaryObject: [String: Any]? {
         get {
             switch self.type {
             case .dictionary:

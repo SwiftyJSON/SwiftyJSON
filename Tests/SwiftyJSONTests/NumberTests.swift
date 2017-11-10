@@ -97,6 +97,12 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.boolValue, false)
         XCTAssertEqual(json.doubleValue, 0.0)
         XCTAssertEqual(json.numberValue, 0)
+        
+        json = "9876543210.123456789"
+        XCTAssertEqual(json.double!, 9876543210.123456789)
+        XCTAssertEqual(json.doubleValue, 9876543210.123456789)
+        XCTAssertEqual(json.numberValue, 9876543210.123456789)
+        XCTAssertEqual(json.stringValue, "9876543210.123456789")
     }
 
     func testFloat() {

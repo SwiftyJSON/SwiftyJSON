@@ -33,10 +33,17 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.stringValue, "9876543210.123457")
 
         json.string = "1000000000000000000000000000.1"
-        XCTAssertNil(json.number)
+        XCTAssertEqual(json.number!.description, "1000000000000000000000000000.1" )
+        XCTAssertEqual(json.number!, 1000000000000000000000000000.1 )
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000.1")
-
+        XCTAssertEqual(json.numberValue, 1000000000000000000000000000.1)
+        
+        json.string = "swift"
+        XCTAssertNil(json.number)
+        XCTAssertEqual(json.numberValue, 0)
+        
         json.string = "1e+27"
+        XCTAssertEqual(json.number!.description, "1000000000000000000000000000")
         XCTAssertEqual(json.numberValue.description, "1000000000000000000000000000")
 
         //setter
@@ -97,6 +104,12 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.boolValue, false)
         XCTAssertEqual(json.doubleValue, 0.0)
         XCTAssertEqual(json.numberValue, 0)
+        
+        json = "9876543210.123456789"
+        XCTAssertEqual(json.double!, 9876543210.123456789)
+        XCTAssertEqual(json.doubleValue, 9876543210.123456789)
+        XCTAssertEqual(json.numberValue, 9876543210.123456789)
+        XCTAssertEqual(json.stringValue, "9876543210.123456789")
     }
 
     func testFloat() {

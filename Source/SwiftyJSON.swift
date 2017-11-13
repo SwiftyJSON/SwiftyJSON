@@ -1468,4 +1468,9 @@ extension JSON {
             self.doubleValue = double
         }
     }
+    public func dateString(format: String = "yyyy-MM-dd HH:mm:Ss") -> String {
+        let df = DateFormatter()
+        df.dateFormat = format
+        return df.string(from: self.date)
+    }
 }

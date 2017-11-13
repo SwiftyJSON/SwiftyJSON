@@ -1455,3 +1455,17 @@ public enum writingOptionsKeys {
 	case maxObjextDepth
 	case encoding
 }
+
+// MARK: - Date
+
+extension JSON {
+    public var date: Date {
+        get {
+            return Date(timeIntervalSince1970: self.doubleValue)
+        }
+        set {
+            let double: Double = newValue.timeIntervalSince1970
+            self.doubleValue = double
+        }
+    }
+}

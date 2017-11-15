@@ -1069,7 +1069,7 @@ extension JSON {
         get {
             if let num = self.number as? NSDecimalNumber {
                 let returnInt = num.intValue
-                if num.isEqual(returnInt){
+                if num.isEqual(returnInt) {
                     return returnInt
                 }
                 return nil

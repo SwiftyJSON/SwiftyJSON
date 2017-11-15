@@ -114,7 +114,6 @@ class NumberTests: XCTestCase {
         json.string = "swift"
         XCTAssertNil(json.double)
         XCTAssertEqual(json.doubleValue, 0)
-
     }
 
     func testFloat() {
@@ -143,7 +142,6 @@ class NumberTests: XCTestCase {
         json.string = "swift"
         XCTAssertNil(json.float)
         XCTAssertEqual(json.floatValue, 0)
-
     }
 
     func testInt() {

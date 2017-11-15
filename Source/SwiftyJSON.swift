@@ -1067,6 +1067,13 @@ extension JSON {
 
     public var int: Int? {
         get {
+            if let num = self.number as? NSDecimalNumber {
+                let returnInt = num.intValue
+                if num.isEqual(returnInt){
+                    return returnInt
+                }
+                return nil
+            }
             return self.number?.intValue
         }
         set {
@@ -1080,6 +1087,13 @@ extension JSON {
 
     public var intValue: Int {
         get {
+            if let num = self.numberValue as? NSDecimalNumber {
+                let returnInt = num.intValue
+                if num.isEqual(returnInt) {
+                    return returnInt
+                }
+                return 0
+            }
             return self.numberValue.intValue
         }
         set {

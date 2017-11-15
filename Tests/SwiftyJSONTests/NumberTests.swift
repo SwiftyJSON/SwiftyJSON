@@ -110,6 +110,11 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.doubleValue, 9876543210.123456789)
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
         XCTAssertEqual(json.stringValue, "9876543210.123456789")
+        
+        json.string = "swift"
+        XCTAssertNil(json.double)
+        XCTAssertEqual(json.doubleValue, 0)
+
     }
 
     func testFloat() {
@@ -128,6 +133,17 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.float!, -98766.23)
         XCTAssertEqual(json.floatValue, -98766.23)
         XCTAssertEqual(json.numberValue, NSNumber(value: -98766.23))
+        
+        json = "9876543210.123456789"
+        XCTAssertEqual(json.float!, 9876543210.123456789)
+        XCTAssertEqual(json.floatValue, 9876543210.123456789)
+        XCTAssertEqual(json.numberValue, 9876543210.123456789)
+        XCTAssertEqual(json.stringValue, "9876543210.123456789")
+        
+        json.string = "swift"
+        XCTAssertNil(json.float)
+        XCTAssertEqual(json.floatValue, 0)
+
     }
 
     func testInt() {
@@ -153,6 +169,20 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.int!, 98765421)
         XCTAssertEqual(json.intValue, 98765421)
         XCTAssertEqual(json.numberValue, NSNumber(value: 98765421))
+        
+        json = "9876543210"
+        XCTAssertEqual(json.int!, 9876543210)
+        XCTAssertEqual(json.intValue, 9876543210)
+        XCTAssertEqual(json.numberValue, 9876543210)
+        XCTAssertEqual(json.stringValue, "9876543210")
+        
+        json = "3.14"
+        XCTAssertNil(json.int)
+        XCTAssertEqual(json.intValue, 0)
+        
+        json = "swift"
+        XCTAssertNil(json.int)
+        XCTAssertEqual(json.intValue, 0)
     }
 
     func testUInt() {

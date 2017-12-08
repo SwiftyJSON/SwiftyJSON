@@ -135,12 +135,17 @@ public struct JSON {
 	 Parses the JSON string into a JSON object
 	
 	 - parameter json: the JSON string
+	 - parameter opt: The JSON serialization reading options. `[]` by default.
 	
 	 - returns: the created JSON object
 	*/
-	public init(parseJSON jsonString: String) {
+	public init(parseJSON jsonString: String, options opt: JSONSerialization.ReadingOptions = []) {
 		if let data = jsonString.data(using: .utf8) {
-			self.init(data)
+			do {
+				try self.init(data: data, options: opt)
+			} catch {
+				self.init(NSNull())
+			}
 		} else {
 			self.init(NSNull())
 		}

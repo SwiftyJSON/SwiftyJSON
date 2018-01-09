@@ -545,53 +545,50 @@ extension JSON {
 extension JSON: Swift.ExpressibleByStringLiteral {
 
     public init(stringLiteral value: StringLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 
     public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 
     public init(unicodeScalarLiteral value: StringLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 }
 
 extension JSON: Swift.ExpressibleByIntegerLiteral {
 
     public init(integerLiteral value: IntegerLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 }
 
 extension JSON: Swift.ExpressibleByBooleanLiteral {
 
     public init(booleanLiteral value: BooleanLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 }
 
 extension JSON: Swift.ExpressibleByFloatLiteral {
 
     public init(floatLiteral value: FloatLiteralType) {
-        self.init(value as Any)
+        self.init(value)
     }
 }
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, Any)...) {
-        var dictionary = [String: Any](minimumCapacity: elements.count)
-        for (k, v) in elements {
-            dictionary[k] = v
-        }
-        self.init(dictionary as Any)
+        let dictionary = elements.reduce(into: [String: Any](), { $0[$1.0] = $1.1})
+        self.init(dictionary)
     }
 }
 
 extension JSON: Swift.ExpressibleByArrayLiteral {
 
     public init(arrayLiteral elements: Any...) {
-        self.init(elements as Any)
+        self.init(elements)
     }
 }
 
@@ -776,7 +773,7 @@ extension JSON {
         }
         set {
             if let array = newValue {
-                self.object = array as Any
+                self.object = array
             } else {
                 self.object = NSNull()
             }
@@ -819,7 +816,7 @@ extension JSON {
         }
         set {
             if let v = newValue {
-                self.object = v as Any
+                self.object = v
             } else {
                 self.object = NSNull()
             }
@@ -1454,4 +1451,113 @@ public enum writingOptionsKeys {
 	case castNilToNSNull
 	case maxObjextDepth
 	case encoding
+}
+
+// MARK: - JSON: Codable
+extension JSON: Codable {
+    private static var codableTypes: [Codable.Type] {
+        return [
+            Bool.self,
+            Int.self,
+            Int8.self,
+            Int16.self,
+            Int32.self,
+            Int64.self,
+            UInt.self,
+            UInt8.self,
+            UInt16.self,
+            UInt32.self,
+            UInt64.self,
+            Double.self,
+            String.self,
+            [JSON].self,
+            [String: JSON].self
+        ]
+    }
+    public init(from decoder: Decoder) throws {
+        var object: Any?
+
+        if let container = try? decoder.singleValueContainer(), !container.decodeNil() {
+            for type in JSON.codableTypes {
+                if object != nil {
+                    break
+                }
+                // try to decode value
+                switch type {
+                case let boolType as Bool.Type:
+                    object = try? container.decode(boolType)
+                case let intType as Int.Type:
+                    object = try? container.decode(intType)
+                case let int8Type as Int8.Type:
+                    object = try? container.decode(int8Type)
+                case let int32Type as Int32.Type:
+                    object = try? container.decode(int32Type)
+                case let int64Type as Int64.Type:
+                    object = try? container.decode(int64Type)
+                case let uintType as UInt.Type:
+                    object = try? container.decode(uintType)
+                case let uint8Type as UInt8.Type:
+                    object = try? container.decode(uint8Type)
+                case let uint16Type as UInt16.Type:
+                    object = try? container.decode(uint16Type)
+                case let uint32Type as UInt32.Type:
+                    object = try? container.decode(uint32Type)
+                case let uint64Type as UInt64.Type:
+                    object = try? container.decode(uint64Type)
+                case let doubleType as Double.Type:
+                    object = try? container.decode(doubleType)
+                case let stringType as String.Type:
+                    object = try? container.decode(stringType)
+                case let jsonValueArrayType as [JSON].Type:
+                    object = try? container.decode(jsonValueArrayType)
+                case let jsonValueDictType as [String: JSON].Type:
+                    object = try? container.decode(jsonValueDictType)
+                default:
+                    break
+                }
+            }
+        }
+        self.init(object ?? NSNull())
+    }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        if object is NSNull {
+            try container.encodeNil()
+            return
+        }
+        switch object {
+        case let intValue as Int:
+            try container.encode(intValue)
+        case let int8Value as Int8:
+            try container.encode(int8Value)
+        case let int32Value as Int32:
+            try container.encode(int32Value)
+        case let int64Value as Int64:
+            try container.encode(int64Value)
+        case let uintValue as UInt:
+            try container.encode(uintValue)
+        case let uint8Value as UInt8:
+            try container.encode(uint8Value)
+        case let uint16Value as UInt16:
+            try container.encode(uint16Value)
+        case let uint32Value as UInt32:
+            try container.encode(uint32Value)
+        case let uint64Value as UInt64:
+            try container.encode(uint64Value)
+        case let doubleValue as Double:
+            try container.encode(doubleValue)
+        case let boolValue as Bool:
+            try container.encode(boolValue)
+        case let stringValue as String:
+            try container.encode(stringValue)
+        case is [Any]:
+            let jsonValueArray = array ?? []
+            try container.encode(jsonValueArray)
+        case is [String: Any]:
+            let jsonValueDictValue = dictionary ?? [:]
+            try container.encode(jsonValueDictValue)
+        default:
+            break
+        }
+    }
 }

@@ -28,13 +28,13 @@ public enum SwiftyJSONError: Int, Swift.Error {
 }
 
 extension SwiftyJSONError: CustomNSError {
-
+    
     /// return the error domain of SwiftyJSONError
     public static var errorDomain: String { return "com.swiftyjson.SwiftyJSON" }
-
+    
     /// return the error code of SwiftyJSONError
     public var errorCode: Int { return self.rawValue }
-
+    
     /// return the userInfo of SwiftyJSONError
     public var errorUserInfo: [String: Any] {
         switch self {
@@ -53,3 +53,4 @@ extension SwiftyJSONError: CustomNSError {
         }
     }
 }
+

@@ -1459,18 +1459,29 @@ public enum writingOptionsKeys {
 // MARK: - Date
 
 extension JSON {
-    public var date: Date {
+    public var date: Date? {
         get {
-            return Date(timeIntervalSince1970: self.doubleValue)
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+            return df.date(from: self.stringValue)
         }
         set {
-            let double: Double = newValue.timeIntervalSince1970
-            self.doubleValue = double
+            if let nv = newValue {
+                let df = DateFormatter()
+                df.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+                self.stringValue = df.string(from: nv)
+            } else {
+                self.string = nil
+            }
         }
     }
-    public func dateString(format: String = "yyyy-MM-dd HH:mm:Ss") -> String {
+    public func dateString(format: String = "yyyy-MM-dd HH:mm:ss") -> String? {
+        guard let date = self.date else {
+            return nil
+        }
+        
         let df = DateFormatter()
         df.dateFormat = format
-        return df.string(from: self.date)
+        return df.string(from: date)
     }
 }

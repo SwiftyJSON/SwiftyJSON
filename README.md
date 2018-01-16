@@ -188,7 +188,7 @@ let name = json[].string
 
 ```swift
 // With a custom way
-let keys:[SubscriptType] = [1,"list",2,"name"]
+let keys:[JSONSubscriptType] = [1,"list",2,"name"]
 let name = json[keys].string
 ```
 

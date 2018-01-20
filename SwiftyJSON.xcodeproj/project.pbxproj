@@ -81,6 +81,10 @@
 		A885D1DC19CFCFF0002FD4C3 /* Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = A885D1DA19CFCFF0002FD4C3 /* Tests.json */; };
 		A8B66C8C19E51D6500540692 /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8B19E51D6500540692 /* DictionaryTests.swift */; };
 		A8B66C8E19E52F4200540692 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B66C8D19E52F4200540692 /* ArrayTests.swift */; };
+		D0A2CC3F2005B4160053C381 /* SwiftyJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */; };
+		D0A2CC412005B4160053C381 /* SwiftyJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */; };
+		D0A2CC432005B4160053C381 /* SwiftyJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */; };
+		D0A2CC442005B4160053C381 /* SwiftyJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */; };
 		E4D7CCE01B9465A700EE7221 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */; };
 		E4D7CCE31B9465A700EE7221 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4FEFE019575BE100351305 /* SwiftyJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -141,6 +145,8 @@
 		A885D1DA19CFCFF0002FD4C3 /* Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tests.json; sourceTree = "<group>"; };
 		A8B66C8B19E51D6500540692 /* DictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTests.swift; sourceTree = "<group>"; };
 		A8B66C8D19E52F4200540692 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
+		D0A2CC3D2005B4160053C381 /* SwiftLint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftLint-Bridging-Header.h"; sourceTree = "<group>"; };
+		D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSONError.swift; sourceTree = "<group>"; };
 		E4D7CCE81B9465A700EE7221 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D7CCE91B9465A800EE7221 /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-watchOS.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -227,9 +233,11 @@
 		2E4FEFDD19575BE100351305 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D0A2CC3E2005B4160053C381 /* SwiftyJSONError.swift */,
 				2E4FEFE019575BE100351305 /* SwiftyJSON.h */,
 				A8491E1D19CD6DAE00CCFAE6 /* SwiftyJSON.swift */,
 				2E4FEFDE19575BE100351305 /* Supporting Files */,
+				D0A2CC3D2005B4160053C381 /* SwiftLint-Bridging-Header.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -452,7 +460,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 				TargetAttributes = {
 					2E4FEFDA19575BE100351305 = {
 						CreatedOnToolsVersion = 6.0;
@@ -477,6 +485,7 @@
 					};
 					A81D162B1E5743B000C62C5F = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					A8580F731BCF5C5B00DA927B = {
@@ -587,6 +596,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A2CC3F2005B4160053C381 /* SwiftyJSONError.swift in Sources */,
 				A8491E1E19CD6DAE00CCFAE6 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,6 +628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A2CC442005B4160053C381 /* SwiftyJSONError.swift in Sources */,
 				7236B4EE1BAC14150020529B /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -626,6 +637,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A2CC412005B4160053C381 /* SwiftyJSONError.swift in Sources */,
 				9C459EF51A910361008C9A41 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -680,6 +692,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A2CC432005B4160053C381 /* SwiftyJSONError.swift in Sources */,
 				E4D7CCE01B9465A700EE7221 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1053,16 +1066,24 @@
 		A81D162C1E5743B000C62C5F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.13;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/SwiftLint-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		A81D162D1E5743B000C62C5F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.13;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/SwiftLint-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

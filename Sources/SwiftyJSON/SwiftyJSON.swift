@@ -408,7 +408,7 @@ extension JSON : Collection, Sequence {
     }
 }
 
-public struct JSONIndex: _Incrementable, Equatable, Comparable {
+public struct JSONIndex: Equatable, Comparable {
     let arrayIndex: Array<Any>.Index?
     let dictionaryIndex: DictionaryIndex<String, Any>?
     let type: Type

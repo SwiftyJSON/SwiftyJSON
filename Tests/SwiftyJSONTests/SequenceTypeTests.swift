@@ -22,13 +22,16 @@
 
 import XCTest
 import SwiftyJSON
+import Foundation
 
 class SequenceTypeTests: XCTestCase {
 
     func testJSONFile() {
-        if let file = Bundle(for: BaseTests.self).path(forResource: "Tests", ofType: "json") {
-            let testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-            guard let json = try? JSON(data: testData!) else {
+        var testDataURL = URL(fileURLWithPath: #file)
+        testDataURL.appendPathComponent("../Tests.json")
+        do {
+            let testData = try Data(contentsOf: testDataURL.standardized)
+            guard let json = try? JSON(data: testData) else {
                 XCTFail("Unable to parse the data")
                 return
             }
@@ -44,8 +47,9 @@ class SequenceTypeTests: XCTestCase {
                     continue
                 }
             }
-        } else {
-            XCTFail("Can't find the test JSON file")
+        } catch {
+            XCTFail("Failed to read in the test data")
+            exit(1)
         }
     }
 

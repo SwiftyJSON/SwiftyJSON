@@ -277,3 +277,19 @@ class BaseTests: XCTestCase {
         }
     }
 }
+
+extension BaseTests {
+    public static let allTests = [
+        ("testInit", testInit),
+        ("testCompare", testCompare),
+        ("testJSONDoesProduceValidWithCorrectKeyPath", testJSONDoesProduceValidWithCorrectKeyPath),
+        ("testJSONNumberCompare", testJSONNumberCompare),
+        ("testNumberConvertToString", testNumberConvertToString),
+        ("testNumberPrint", testNumberPrint),
+        ("testNullJSON", testNullJSON),
+        ("testExistance", testExistance),
+        ("testErrorHandle", testErrorHandle),
+        ("testReturnObject", testReturnObject),
+        ("testErrorThrowing", testErrorThrowing)
+    ]
+}

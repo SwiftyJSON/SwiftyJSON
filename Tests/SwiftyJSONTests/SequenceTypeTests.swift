@@ -242,3 +242,20 @@ class SequenceTypeTests: XCTestCase {
         }
     }
 }
+
+extension SequenceTypeTests {
+    public static let allTests = [
+        ("testJSONFile", testJSONFile),
+        ("testArrayAllNumber", testArrayAllNumber),
+        ("testArrayAllBool", testArrayAllBool),
+        ("testArrayAllString", testArrayAllString),
+        ("testArrayWithNull", testArrayWithNull),
+        ("testArrayAllDictionary", testArrayAllDictionary),
+        ("testDictionaryAllNumber", testDictionaryAllNumber),
+        ("testDictionaryAllBool", testDictionaryAllBool),
+        ("testDictionaryAllString", testDictionaryAllString),
+        ("testDictionaryWithNull", testDictionaryWithNull),
+        ("testDictionaryAllArray", testDictionaryAllArray),
+        ("testDictionaryIteratingPerformance", testDictionaryIteratingPerformance)
+    ]
+}

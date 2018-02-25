@@ -86,3 +86,13 @@ class NestedJSONTests: XCTestCase {
         XCTAssertEqual(json2["inner_json"].rawValue as! [String: String], ["some_field": "12"])
     }
 }
+
+extension NestedJSONTests {
+    public static let allTests = [
+        ("testTopLevelNestedJSON", testTopLevelNestedJSON),
+        ("testDeeplyNestedJSON", testDeeplyNestedJSON),
+        ("testArrayJSON", testArrayJSON),
+        ("testDictionaryJSON", testDictionaryJSON),
+        ("testNestedJSON", testNestedJSON)
+    ]
+}

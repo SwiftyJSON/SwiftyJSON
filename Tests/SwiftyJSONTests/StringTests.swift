@@ -68,3 +68,14 @@ class StringTests: XCTestCase {
         XCTAssertEqual(preEscaped.url!, URL(string: encodedURLString)!, "Wrong unpacked ")
     }
 }
+
+extension StringTests {
+    public static let allTests = [
+        ("testString", testString),
+        ("testUrl", testUrl),
+        ("testBool", testBool),
+        ("testBoolWithY", testBoolWithY),
+        ("testBoolWithT", testBoolWithT),
+        ("testUrlPercentEscapes", testUrlPercentEscapes)
+    ]
+}

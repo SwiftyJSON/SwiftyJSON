@@ -103,3 +103,17 @@ class RawTests: XCTestCase {
         XCTAssertNotNil(string)
     }
 }
+
+extension RawTests {
+    public static let allTests = [
+        ("testRawData", testRawData),
+        ("testInvalidJSONForRawData", testInvalidJSONForRawData),
+        ("testArray", testArray),
+        ("testDictionary", testDictionary),
+        ("testString", testString),
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testNull", testNull),
+        ("testNestedJSON", testNestedJSON)
+    ]
+}

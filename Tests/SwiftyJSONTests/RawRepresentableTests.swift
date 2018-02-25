@@ -104,3 +104,14 @@ class RawRepresentableTests: XCTestCase {
         XCTAssertTrue(dictionary == object as! NSDictionary)
     }
 }
+
+extension RawRepresentableTests {
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil),
+        ("testArray", testArray),
+        ("testDictionary", testDictionary)
+    ]
+}

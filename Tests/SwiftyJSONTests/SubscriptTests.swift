@@ -265,3 +265,24 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["user", "feeds"], [77323, 2313, 4545, 323])
     }
 }
+
+extension SubscriptTests {
+    public static let allTests = [
+        ("testArrayAllNumber", testArrayAllNumber),
+        ("testArrayAllBool", testArrayAllBool),
+        ("testArrayAllString", testArrayAllString),
+        ("testArrayWithNull", testArrayWithNull),
+        ("testArrayAllDictionary", testArrayAllDictionary),
+        ("testDictionaryAllNumber", testDictionaryAllNumber),
+        ("testDictionaryAllBool", testDictionaryAllBool),
+        ("testDictionaryAllString", testDictionaryAllString),
+        ("testDictionaryWithNull", testDictionaryWithNull),
+        ("testDictionaryAllArray", testDictionaryAllArray),
+        ("testOutOfBounds", testOutOfBounds),
+        ("testErrorWrongType", testErrorWrongType),
+        ("testErrorNotExist", testErrorNotExist),
+        ("testMultilevelGetter", testMultilevelGetter),
+        ("testMultilevelSetter1", testMultilevelSetter1),
+        ("testMultilevelSetter2", testMultilevelSetter2)
+    ]
+}

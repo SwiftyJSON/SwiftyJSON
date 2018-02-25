@@ -146,3 +146,13 @@ class MutabilityTests: XCTestCase {
         XCTAssertEqual(json.dictionaryValue, [:])
     }
 }
+
+extension MutabilityTests {
+    public static let allTests = [
+        ("testDictionaryMutability", testDictionaryMutability),
+        ("testArrayMutability", testArrayMutability),
+        ("testValueMutability", testValueMutability),
+        ("testArrayRemovability", testArrayRemovability),
+        ("testDictionaryRemovability", testDictionaryRemovability)
+    ]
+}

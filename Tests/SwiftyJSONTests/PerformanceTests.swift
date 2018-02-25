@@ -139,3 +139,14 @@ class PerformanceTests: XCTestCase {
         }
     }
 }
+
+extension PerformanceTests {
+    public static let allTests = [
+        ("testInitPerformance", testInitPerformance),
+        ("testObjectMethodPerformance", testObjectMethodPerformance),
+        ("testArrayMethodPerformance", testArrayMethodPerformance),
+        ("testDictionaryMethodPerformance", testDictionaryMethodPerformance),
+        ("testRawStringMethodPerformance", testRawStringMethodPerformance),
+        ("testLargeDictionaryMethodPerformance", testLargeDictionaryMethodPerformance)
+    ]
+}

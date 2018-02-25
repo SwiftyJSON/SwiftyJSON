@@ -122,3 +122,18 @@ class PrintableTests: XCTestCase {
         XCTAssertTrue(description.range(of: "\"3\":null", options: NSString.CompareOptions.caseInsensitive) != nil)
     }
 }
+
+extension PrintableTests {
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil),
+        ("testArray", testArray),
+        ("testArrayWithStrings", testArrayWithStrings),
+        ("testArrayWithOptionals", testArrayWithOptionals),
+        ("testDictionary", testDictionary),
+        ("testDictionaryWithStrings", testDictionaryWithStrings),
+        ("testDictionaryWithOptionals", testDictionaryWithOptionals)
+    ]
+}

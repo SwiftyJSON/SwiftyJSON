@@ -95,3 +95,17 @@ class MergeTests: XCTestCase {
         XCTAssertEqual(try! A.merged(with: B), B)
     }
 }
+
+extension MergeTests {
+    public static let allTests = [
+        ("testDifferingTypes", testDifferingTypes),
+        ("testPrimitiveType", testPrimitiveType),
+        ("testMergeEqual", testMergeEqual),
+        ("testMergeUnequalValues", testMergeUnequalValues),
+        ("testMergeUnequalKeysAndValues", testMergeUnequalKeysAndValues),
+        ("testMergeFilledAndEmpty", testMergeFilledAndEmpty),
+        ("testMergeEmptyAndFilled", testMergeEmptyAndFilled),
+        ("testMergeArray", testMergeArray),
+        ("testMergeNestedJSONs", testMergeNestedJSONs)
+    ]
+}

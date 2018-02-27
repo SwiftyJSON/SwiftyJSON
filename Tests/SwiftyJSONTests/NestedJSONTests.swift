@@ -70,10 +70,10 @@ class NestedJSONTests: XCTestCase {
 
     func testNestedJSON() {
         let inner = JSON([
-            "some_field": "1" + "2"
+            "some_field": "12"
             ])
         let json = JSON([
-            "outer_field": "1" + "2",
+            "outer_field": "12",
             "inner_json": inner
             ])
         XCTAssertEqual(json["inner_json"], ["some_field": "12"])

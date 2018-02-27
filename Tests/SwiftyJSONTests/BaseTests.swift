@@ -47,10 +47,7 @@ class BaseTests: XCTestCase {
     }
 
     func testInit() {
-        guard let json0 = try? JSON(data: self.testData) else {
-            XCTFail("Unable to parse testData")
-            return
-        }
+        let json0 = try! JSON(data: self.testData)
         XCTAssertEqual(json0.array!.count, 3)
         XCTAssertEqual(JSON("123").description, "123")
         XCTAssertEqual(JSON(["1": "2"])["1"].string!, "2")
@@ -83,11 +80,7 @@ class BaseTests: XCTestCase {
     }
 
     func testJSONDoesProduceValidWithCorrectKeyPath() {
-
-        guard let json = try? JSON(data: self.testData) else {
-            XCTFail("Unable to parse testData")
-            return
-        }
+        let json = try! JSON(data: self.testData)
 
         let tweets = json
         let tweets_array = json.array
@@ -105,7 +98,7 @@ class BaseTests: XCTestCase {
         let tweets_1_coordinates_coordinates = tweets_1_coordinates["coordinates"]
         let tweets_1_coordinates_coordinates_point_0_double = tweets_1_coordinates_coordinates[0].double
         let tweets_1_coordinates_coordinates_point_1_float = tweets_1_coordinates_coordinates[1].float
-        let new_tweets_1_coordinates_coordinates = JSON([-122.25831, 37.871609] as NSArray)
+        let new_tweets_1_coordinates_coordinates = JSON([-122.25831, 37.871609])
         XCTAssertEqual(tweets_1_coordinates_coordinates, new_tweets_1_coordinates_coordinates)
         XCTAssertEqual(tweets_1_coordinates_coordinates_point_0_double!, -122.25831)
         XCTAssertTrue(tweets_1_coordinates_coordinates_point_1_float! == 37.871609)
@@ -131,15 +124,15 @@ class BaseTests: XCTestCase {
 
         let user = json[0]["user"]
         let user_name = user["name"].string
-        let user_profile_image_url = user["profile_image_url"].url
+        let user_profile_image_url = user["profile_image_url"].string
         XCTAssert(user_name == "OAuth Dancer")
-        XCTAssert(user_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
+        XCTAssert(user_profile_image_url == "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg")
 
         let user_dictionary = json[0]["user"].dictionary
         let user_dictionary_name = user_dictionary?["name"]?.string
-        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.url
+        let user_dictionary_name_profile_image_url = user_dictionary?["profile_image_url"]?.string
         XCTAssert(user_dictionary_name == "OAuth Dancer")
-        XCTAssert(user_dictionary_name_profile_image_url == URL(string: "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg"))
+        XCTAssert(user_dictionary_name_profile_image_url == "http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg")
     }
 
     func testJSONNumberCompare() {
@@ -191,15 +184,17 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(JSON(-9.123456789).description, "-9.123456789")
         XCTAssertEqual(JSON(-0.00000000000000001).description, "-1e-17")
         XCTAssertEqual(JSON(-999999999999999999999999.000000000000000000000001).description, "-1e+24")
+        #if !os(Linux)
         XCTAssertEqual(JSON(-9999999991999999999999999.88888883433343439438493483483943948341).stringValue, "-9.999999991999999e+24")
+        #endif
 
         XCTAssertEqual(JSON(Int(Int.max)).description, "\(Int.max)")
         XCTAssertEqual(JSON(NSNumber(value: Int.min)).description, "\(Int.min)")
+        XCTAssertEqual(JSON(NSNumber(value: Int64.max)).description, "\(Int64.max)")
+        #if !os(Linux)
         XCTAssertEqual(JSON(NSNumber(value: UInt.max)).description, "\(UInt.max)")
         XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description, "\(UInt64.max)")
-        XCTAssertEqual(JSON(NSNumber(value: Int64.max)).description, "\(Int64.max)")
-        XCTAssertEqual(JSON(NSNumber(value: UInt64.max)).description, "\(UInt64.max)")
-
+        #endif
         XCTAssertEqual(JSON(Double.infinity).description, "inf")
         XCTAssertEqual(JSON(-Double.infinity).description, "-inf")
         XCTAssertEqual(JSON(Double.nan).description, "nan")

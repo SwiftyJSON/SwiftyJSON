@@ -24,6 +24,13 @@ import XCTest
 import SwiftyJSON
 import Foundation
 
+#if os(Linux)
+    // autoreleasepool is Objective-C feature
+    func autoreleasepool(callback:() -> Void) {
+        callback()
+    }
+#endif
+
 class PerformanceTests: XCTestCase {
 
     var testData: Data!

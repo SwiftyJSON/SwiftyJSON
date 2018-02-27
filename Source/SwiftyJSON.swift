@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import CoreFoundation
 
 // MARK: - Error
 // swiftlint:disable line_length
@@ -256,33 +257,60 @@ public struct JSON {
             }
         }
         set {
-            error = nil
-            switch unwrap(newValue) {
-            case let number as NSNumber:
-                if number.isBool {
-                    type = .bool
-                    self.rawBool = number.boolValue
-                } else {
-                    type = .number
-                    self.rawNumber = number
+            #if os(Linux)
+                let (type, value) = self.setObjectHelper(unwrap(newValue))
+                self.type = type
+                switch type {
+                case .array:
+                    self.rawArray = value as! [Any]
+                case .bool:
+                    self.rawBool = value as! Bool
+                    if let number = newValue as? NSNumber {
+                        self.rawNumber = number
+                    } else {
+                        self.rawNumber = self.rawBool ? NSNumber(value: 1) : NSNumber(value: 0)
+                    }
+                case .dictionary:
+                    self.rawDictionary = value as! [String: Any]
+                case .null:
+                    break
+                case .number:
+                    self.rawNumber = value as! NSNumber
+                case .string:
+                    self.rawString = value as! String
+                case .unknown:
+
+                    error = SwiftyJSONError.unsupportedType
                 }
-            case let string as String:
-                type = .string
-                self.rawString = string
-            case _ as NSNull:
-                type = .null
-            case nil:
-                type = .null
-            case let array as [Any]:
-                type = .array
-                self.rawArray = array
-            case let dictionary as [String: Any]:
-                type = .dictionary
-                self.rawDictionary = dictionary
-            default:
-                type = .unknown
-                error = SwiftyJSONError.unsupportedType
-            }
+            #else
+                error = nil
+                switch unwrap(newValue) {
+                case let number as NSNumber:
+                    if number.isBool {
+                        type = .bool
+                        self.rawBool = number.boolValue
+                    } else {
+                        type = .number
+                        self.rawNumber = number
+                    }
+                case let string as String:
+                    type = .string
+                    self.rawString = string
+                case _ as NSNull:
+                    type = .null
+                case nil:
+                    type = .null
+                case let array as [Any]:
+                    type = .array
+                    self.rawArray = array
+                case let dictionary as [String: Any]:
+                    type = .dictionary
+                    self.rawDictionary = dictionary
+                default:
+                    type = .unknown
+                    error = SwiftyJSONError.unsupportedType
+                }
+            #endif
         }
     }
 
@@ -290,6 +318,68 @@ public struct JSON {
     @available(*, unavailable, renamed:"null")
     public static var nullJSON: JSON { return null }
     public static var null: JSON { return JSON(NSNull()) }
+
+#if os(Linux)
+    fileprivate static func stringFromNumber(_ number: NSNumber) -> String {
+    	let type = CFNumberGetType(unsafeBitCast(number, to: CFNumber.self))
+    	switch type {
+    	case kCFNumberFloat32Type:
+        	return String(number.floatValue)
+    	case kCFNumberFloat64Type:
+        	return String(number.doubleValue)
+    	default:
+        	return String(number.int64Value)
+    	}
+    }
+
+    func setObjectHelper(_ newValue: Any) -> (Type, Any) {
+    	var type: Type
+    	var value: Any
+        if let bool = newValue as? Bool {
+        	type = .bool
+        	value = bool
+        } else if let number = newValue as? NSNumber {
+        	if number.isBool {
+        		type = .bool
+        		value = number.boolValue
+        	} else {
+        		type = .number
+        		value = number
+        	}
+        } else if let number = newValue as? Double {
+        	type = .number
+        	value = NSNumber(value: number)
+        } else if let number = newValue as? Int {
+        	type = .number
+        	value = NSNumber(value: number)
+        } else if let string = newValue as? String {
+        	type = .string
+        	value = string
+        } else if let string = newValue as? NSString {
+        	type = .string
+        	value = string._bridgeToSwift()
+        } else if let array = newValue as? NSArray {
+        	type = .array
+        	value = array._bridgeToSwift()
+        } else if let array = newValue as? [Any] {
+        	type = .array
+        	value = array
+        } else if let dictionary = newValue as? NSDictionary {
+        	type = .dictionary
+        	value = dictionary._bridgeToSwift()
+    	} else if let dictionary = newValue as? [String: Any] {
+        	type = .dictionary
+        	value = dictionary
+    	} else if newValue is NSNull {
+    		type = .null
+    		value = ""
+    	} else {
+        	type = .unknown
+        	value = ""
+        }
+        return (type, value)
+    }
+#endif
 }
 
 /// Private method to unwarp an object recursively
@@ -460,7 +550,7 @@ extension JSON {
             return r
         }
         set {
-            if self.type == .dictionary && newValue.error == nil {
+            if self.type == .dictionary {
                 self.rawDictionary[key] = newValue.object
             }
         }
@@ -627,14 +717,38 @@ extension JSON: Swift.RawRepresentable {
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
 	}
 
-	public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
-		do {
-			return try _rawString(encoding, options: [.jsonSerialization: opt])
-		} catch {
-			print("Could not serialize object to JSON because:", error.localizedDescription)
-			return nil
-		}
-	}
+    #if os(Linux)
+    public func rawString(encoding: String.Encoding = String.Encoding.utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
+        switch self.type {
+        case .array, .dictionary:
+        	do {
+        		let data = try self.rawData(options: opt)
+        		return String(data: data, encoding: encoding)
+        	} catch _ {
+        		return nil
+        	}
+        case .string:
+        	return self.rawString
+        case .number:
+        	return JSON.stringFromNumber(self.rawNumber)
+        case .bool:
+        	return self.rawBool.description
+        case .null:
+        	return "null"
+        default:
+        	return nil
+        }
+    }
+    #else
+    public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
+        do {
+            return try _rawString(encoding, options: [.jsonSerialization: opt])
+        } catch {
+            print("Could not serialize object to JSON because:", error.localizedDescription)
+            return nil
+        }
+    }
+    #endif
 
 	public func rawString(_ options: [writingOptionsKeys: Any]) -> String? {
 		let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
@@ -1294,9 +1408,17 @@ public func == (lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #if os(Linux)
+            return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
+        #else
+            return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #if os(Linux)
+            return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
+        #else
+            return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #endif
     case (.null, .null):
         return true
     default:
@@ -1314,9 +1436,17 @@ public func <= (lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #if os(Linux)
+            return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
+        #else
+            return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #if os(Linux)
+            return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
+        #else
+            return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #endif
     case (.null, .null):
         return true
     default:
@@ -1334,9 +1464,17 @@ public func >= (lhs: JSON, rhs: JSON) -> Bool {
     case (.bool, .bool):
         return lhs.rawBool == rhs.rawBool
     case (.array, .array):
-        return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #if os(Linux)
+            return lhs.rawArray._bridgeToObjectiveC() == rhs.rawArray._bridgeToObjectiveC()
+        #else
+            return lhs.rawArray as NSArray == rhs.rawArray as NSArray
+        #endif
     case (.dictionary, .dictionary):
-        return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #if os(Linux)
+            return lhs.rawDictionary._bridgeToObjectiveC() == rhs.rawDictionary._bridgeToObjectiveC()
+        #else
+            return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
+        #endif
     case (.null, .null):
         return true
     default:

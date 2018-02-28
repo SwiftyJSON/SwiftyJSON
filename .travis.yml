@@ -23,8 +23,10 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
+      env:
+        - SWIFT_VERSION=4.0
+        - SWIFT_VERSION=4.0.3
       install:
-        - curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash
+        - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
       script:
-        - . ~/.swiftenv/init
         - swift build && swift test

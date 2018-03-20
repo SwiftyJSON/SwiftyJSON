@@ -16,14 +16,22 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      env: SWIFT_SNAPSHOT=4.0
+      env: SWIFT_SNAPSHOT=4.0.3
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.1-DEVELOPMENT-SNAPSHOT-2018-02-26-a
     - os: osx
       osx_image: xcode8.3
       sudo: required
     - os: osx
       osx_image: xcode9
       sudo: required
-      env: SWIFT_SNAPSHOT=4.0
+      env: SWIFT_SNAPSHOT=4.0.3
+    - os: osx
+      osx_image: xcode9.3beta
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.1-DEVELOPMENT-SNAPSHOT-2018-02-26-a
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git

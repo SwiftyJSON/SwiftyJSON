@@ -467,7 +467,12 @@ class NumberTests: XCTestCase {
         XCTAssertTrue(json.uInt64Value == uInt64Max.uint64Value)
         XCTAssertTrue(json.number! == uInt64Max)
         XCTAssertEqual(json.numberValue, uInt64Max)
+#if !os(Linux)
+        // Fails on Linux from Swift 4.0.3 after SCLF was fixed to correctly Stringify UInt values
+        // greater than Int64.max - see https://github.com/apple/swift-corelibs-foundation/pull/1196
+        // We have decided not to fix this in SwiftyJSON for now (see IBM-Swift/SwiftyJSON#40)
         XCTAssertEqual(json.stringValue, uInt64Max.stringValue)
+#endif
 
         let n32767 = NSNumber(value: 32767)
         json.int64 = n32767.int64Value

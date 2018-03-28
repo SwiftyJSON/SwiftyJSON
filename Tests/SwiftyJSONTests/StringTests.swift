@@ -56,6 +56,16 @@ class StringTests: XCTestCase {
         XCTAssertTrue(json.boolValue)
     }
 
+    func testBoolWithYes() {
+        let json = JSON("Yes")
+        XCTAssertTrue(json.boolValue)
+    }
+
+    func testBoolWith1() {
+        let json = JSON("1")
+        XCTAssertTrue(json.boolValue)
+    }
+
     func testUrlPercentEscapes() {
         let emDash = "\\u2014"
         let urlString = "http://examble.com/unencoded" + emDash + "string"

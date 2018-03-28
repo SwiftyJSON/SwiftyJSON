@@ -47,6 +47,7 @@ public enum SwiftyJSONError: Int, Swift.Error {
     case wrongType = 901
     case notExist = 500
     case invalidJSON = 490
+    case someParsingError = 1
 }
 
 extension SwiftyJSONError: CustomNSError {
@@ -72,6 +73,8 @@ extension SwiftyJSONError: CustomNSError {
             return [NSLocalizedDescriptionKey: "JSON is invalid."]
         case .elementTooDeep:
             return [NSLocalizedDescriptionKey: "Element too deep. Increase maxObjectDepth and make sure there is no reference loop."]
+        case .someParsingError:
+            return [NSLocalizedDescriptionKey: "Some parsing error"]
         }
     }
 }
@@ -1454,4 +1457,94 @@ public enum writingOptionsKeys {
 	case castNilToNSNull
 	case maxObjextDepth
 	case encoding
+}
+
+// MARK: -
+
+public protocol JSONMaterializableType {
+    
+    static var implementation: (JSON, () -> Error) throws -> Self { get }
+}
+
+extension Bool: JSONMaterializableType {
+    
+    public static var implementation: (JSON, () -> Error) throws -> Bool {
+        return { (json: JSON, factory: () -> Error) throws -> Bool in
+            if case .some(let bool) = json.bool {
+                return bool
+            }
+            throw factory()
+        }
+    }
+}
+
+extension Double: JSONMaterializableType {
+    
+    public static var implementation: (JSON, () -> Error) throws -> Double {
+        return { (json: JSON, factory: () -> Error) throws -> Double in
+            if case .some(let double) = json.double {
+                return double
+            }
+            throw factory()
+        }
+    }
+}
+
+extension Int: JSONMaterializableType {
+    
+    public static var implementation: (JSON, () -> Error) throws -> Int {
+        return { (json: JSON, factory: () -> Error) throws -> Int in
+            if case .some(let int) = json.int {
+                return int
+            }
+            throw factory()
+        }
+    }
+}
+
+extension String: JSONMaterializableType {
+    
+    public static var implementation: (JSON, () -> Error) throws -> String {
+        return { (json: JSON, factory: () -> Error) throws -> String in
+            if case .some(let string) = json.string {
+                return string
+            }
+            throw factory()
+        }
+    }
+}
+
+// might include file/line where the parsing error occured
+private func factoryError(file: String, line: Int) -> () -> Error {
+    return { SwiftyJSONError.someParsingError }
+}
+
+public extension JSON {
+    
+    func materialize<T>(file: String = #file, line: Int = #line) -> T? where T: JSONMaterializableType {
+        return try? T.implementation(self, factoryError(file: file, line: line))
+    }
+    
+    func materialize<T>(file: String = #file, line: Int = #line) throws -> [T] where T: JSONMaterializableType {
+        switch array {
+        case .some(let array):
+            return try array.map({ try T.implementation($0, factoryError(file: file, line: line)) })
+        default:
+            throw factoryError(file: file, line: line)()
+        }
+    }
+    
+    func materialize<T>(file: String = #file, line: Int = #line) throws -> T where T: JSONMaterializableType {
+        return try T.implementation(self, factoryError(file: file, line: line))
+    }
+    
+    func materialize<T>(file: String = #file, line: Int = #line) throws -> T where T: RawRepresentable, T.RawValue: JSONMaterializableType {
+        let rawValue: T.RawValue = try materialize(file: file, line: line)
+        switch T(rawValue: rawValue) {
+        case .some(let value):
+            return value
+        default:
+            throw factoryError(file: file, line: line)()
+        }
+    }
 }

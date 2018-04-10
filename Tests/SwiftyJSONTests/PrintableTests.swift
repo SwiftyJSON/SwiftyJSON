@@ -26,8 +26,13 @@ import SwiftyJSON
 class PrintableTests: XCTestCase {
     func testNumber() {
         let json: JSON = 1234567890.876623
-        XCTAssertEqual(json.description, "1234567890.876623")
-        XCTAssertEqual(json.debugDescription, "1234567890.876623")
+        #if os(Linux)
+            XCTAssertEqual(json.description, "1234567890.87662")
+            XCTAssertEqual(json.debugDescription, "1234567890.87662")
+        #else
+            XCTAssertEqual(json.description, "1234567890.876623")
+            XCTAssertEqual(json.debugDescription, "1234567890.876623")
+        #endif
     }
 
     func testBool() {
@@ -121,4 +126,19 @@ class PrintableTests: XCTestCase {
         XCTAssertTrue(description.range(of: "\"2\":\"two\"", options: NSString.CompareOptions.caseInsensitive) != nil)
         XCTAssertTrue(description.range(of: "\"3\":null", options: NSString.CompareOptions.caseInsensitive) != nil)
     }
+}
+
+extension PrintableTests {
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil),
+        ("testArray", testArray),
+        ("testArrayWithStrings", testArrayWithStrings),
+        ("testArrayWithOptionals", testArrayWithOptionals),
+        ("testDictionary", testDictionary),
+        ("testDictionaryWithStrings", testDictionaryWithStrings),
+        ("testDictionaryWithOptionals", testDictionaryWithOptionals)
+    ]
 }

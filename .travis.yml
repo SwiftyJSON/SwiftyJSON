@@ -1,8 +1,32 @@
-language: objective-c
 osx_image: xcode9
-xcode_sdk: iphonesimulator10.0
-script:
-- set -o pipefail
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON macOS" build-for-testing test | xcpretty
-- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" build-for-testing test | xcpretty
+language: generic
+env:
+  global:
+    - FRAMEWORK_NAME=SwiftyJSON
+matrix:
+  include:
+    - os: osx
+      env: 
+        - PLATFORM=macos
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON OSX" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=ios
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" clean build-for-testing test | xcpretty
+    - os: osx
+      env: 
+        - PLATFORM=tvos
+      script: 
+        - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV 1080p" clean build-for-testing test | xcpretty
+    - os: linux
+      dist: trusty
+      sudo: required
+      env:
+        - SWIFT_VERSION=4.0
+        - SWIFT_VERSION=4.0.3
+      install:
+        - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+      script:
+        - swift build && swift test

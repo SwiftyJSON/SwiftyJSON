@@ -38,8 +38,10 @@ class RawRepresentableTests: XCTestCase {
         if let int = object as? Int {
             XCTAssertEqual(int, 948394394)
         }
+        #if !os(Linux)
         XCTAssertEqual(object as? Double, 948394394.347384)
         XCTAssertEqual(object as? Float, 948394394.347384)
+        #endif
         XCTAssertEqual(object as? NSNumber, 948394394.347384)
     }
 
@@ -84,6 +86,7 @@ class RawRepresentableTests: XCTestCase {
         }
     }
 
+    #if !os(Linux)
     func testArray() {
         let array = [1, 2, "3", 4102, "5632", "abocde", "!@# $%^&*()"] as NSArray
         if let json: JSON = JSON(rawValue: array) {
@@ -103,4 +106,25 @@ class RawRepresentableTests: XCTestCase {
         let object: Any = JSON(rawValue: dictionary)!.rawValue
         XCTAssertTrue(dictionary == object as! NSDictionary)
     }
+    #endif
+}
+
+extension RawRepresentableTests {
+    #if os(Linux)
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil)
+    ]
+    #else
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil),
+        ("testArray", testArray),
+        ("testDictionary", testDictionary)
+    ]
+    #endif
 }

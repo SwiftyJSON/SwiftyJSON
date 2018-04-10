@@ -71,3 +71,14 @@ class LiteralConvertibleTests: XCTestCase {
         XCTAssertEqual(json.dictionaryValue, ["1": 2, "2": 2, "three": 3, "list": ["aa", "bb", "dd"]])
     }
 }
+
+extension LiteralConvertibleTests {
+    public static let allTests = [
+        ("testNumber", testNumber),
+        ("testBool", testBool),
+        ("testString", testString),
+        ("testNil", testNil),
+        ("testArray", testArray),
+        ("testDictionary", testDictionary)
+    ]
+}

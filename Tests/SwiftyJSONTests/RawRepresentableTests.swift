@@ -39,7 +39,9 @@ class RawRepresentableTests: XCTestCase {
             XCTAssertEqual(int, 948394394)
         }
         XCTAssertEqual(object as? Double, 948394394.347384)
-        XCTAssertEqual(object as? Float, 948394394.347384)
+        if let float = object as? Float {
+            XCTAssertEqual(float, 948394394.347384)
+        }
         XCTAssertEqual(object as? NSNumber, 948394394.347384)
     }
 

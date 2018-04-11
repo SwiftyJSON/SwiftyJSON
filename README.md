@@ -28,7 +28,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 
 Swift is very strict about types. But although explicit typing is good for saving us from mistakes, it becomes painful when dealing with JSON and other areas that are, by nature, implicit about types.
 
-Take the Twitter API for example. Say we want to retrieve a user's "name" value of some tweet in Swift (according to Twitter's API https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-home_timeline).
+Take the Twitter API for example. Say we want to retrieve a user's "name" value of some tweet in Swift (according to [Twitter's API](https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-home_timeline)).
 
 The code would look like this:
 
@@ -90,38 +90,36 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'SwiftyJSON'
+    pod 'SwiftyJSON', '~> 4.0'
 end
 ```
-
-Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 8.0:
-
 
 #### Carthage (iOS 8+, OS X 10.9+)
 
 You can use [Carthage](https://github.com/Carthage/Carthage) to install `SwiftyJSON` by adding it to your `Cartfile`:
 
 ```
-github "SwiftyJSON/SwiftyJSON"
+github "SwiftyJSON/SwiftyJSON" ~> 4.0
 ```
+
+If you use Carthage to build your dependencies, make sure you have added `SwiftyJSON.framework` to the "Linked Frameworks and Libraries" section of your target, and have included them in your Carthage framework copying build phase.
 
 #### Swift Package Manager
 
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
 
 ```swift
+// swift-tools-version:4.0
 import PackageDescription
 
 let package = Package(
     name: "YOUR_PROJECT_NAME",
-    targets: [],
     dependencies: [
-        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1, 0, 0)..<Version(3, .max, .max)),
+        .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
     ]
 )
 ```
-
-Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more information checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
+Then run `swift build` whenever you get prepared.
 
 #### Manually (iOS 7+, OS X 10.9+)
 

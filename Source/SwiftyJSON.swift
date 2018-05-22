@@ -977,7 +977,7 @@ extension JSON {
 
     //Optional object
     public func decode<T: Decodable>(_ decodableType: T.Type) -> T? {
-        guard let data =  try? self.rawData() else { return nil }
+        guard let data = try? self.rawData() else { return nil }
         return try? JSONDecoder().decode(decodableType, from: data)
     }
 }

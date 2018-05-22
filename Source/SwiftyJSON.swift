@@ -974,7 +974,7 @@ extension JSON {
 // MARK: - Decodable Object
 
 extension JSON {
-    
+
     //Optional object
     public func decode<T: Decodable>(_ decodableType: T.Type) -> T? {
         guard let data =  try? self.rawData() else { return nil }

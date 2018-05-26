@@ -977,11 +977,15 @@ extension JSON {
                 // Check for existing percent escapes first to prevent double-escaping of % character
                 if let _ = self.rawString.range(of: "%[0-9A-Fa-f]{2}", options: .regularExpression, range: nil, locale: nil) {
                     return Foundation.URL(string: self.rawString)
-                } else if let encodedString_ = self.rawString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
-                    // We have to use `Foundation.URL` otherwise it conflicts with the variable name.
-                    return Foundation.URL(string: encodedString_)
-                } else {
-                    return nil
+                }else {
+                    var charSet = CharacterSet.urlQueryAllowed
+                    charSet.insert(charactersIn: "#")
+                    if let encodedString_ = self.rawString.addingPercentEncoding(withAllowedCharacters: charSet) {
+                        // We have to use `Foundation.URL` otherwise it conflicts with the variable name.
+                        return Foundation.URL(string: encodedString_)
+                    } else {
+                        return nil
+                    }
                 }
             default:
                 return nil

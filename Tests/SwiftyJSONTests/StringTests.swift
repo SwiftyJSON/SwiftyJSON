@@ -39,6 +39,9 @@ class StringTests: XCTestCase {
     func testURL() {
         let json = JSON("http://github.com")
         XCTAssertEqual(json.URL!, URL(string:"http://github.com")!)
+        
+        let json2 = JSON("http://github.com#location")
+        XCTAssertEqual(json2.url!, URL(string: "http://github.com#location"))
     }
 
     func testBool() {

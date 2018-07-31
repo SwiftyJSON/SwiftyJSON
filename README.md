@@ -8,18 +8,19 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
 2. [Requirements](#requirements)
 3. [Integration](#integration)
 4. [Usage](#usage)
-   - [Initialization](#initialization)
-   - [Subscript](#subscript)
-   - [Loop](#loop)
-   - [Error](#error)
-   - [Optional getter](#optional-getter)
-   - [Non-optional getter](#non-optional-getter)
-   - [Setter](#setter)
-   - [Raw object](#raw-object)
-   - [Literal convertibles](#literal-convertibles)
-   - [Merging](#merging)
+- [Initialization](#initialization)
+- [Subscript](#subscript)
+- [Loop](#loop)
+- [Error](#error)
+- [Optional getter](#optional-getter)
+- [Non-optional getter](#non-optional-getter)
+- [Setter](#setter)
+- [Raw object](#raw-object)
+- [Literal convertibles](#literal-convertibles)
+- [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
+7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
@@ -34,9 +35,9 @@ The code would look like this:
 
 ```swift
 if let statusesArray = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
-    let user = statusesArray[0]["user"] as? [String: Any],
-    let username = user["name"] as? String {
-    // Finally we got the username
+let user = statusesArray[0]["user"] as? [String: Any],
+let username = user["name"] as? String {
+// Finally we got the username
 }
 ```
 
@@ -46,8 +47,8 @@ Even if we use optional chaining, it would be messy:
 
 ```swift
 if let JSONObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [[String: Any]],
-    let username = (JSONObject[0]["user"] as? [String: Any])?["name"] as? String {
-        // There's our username
+let username = (JSONObject[0]["user"] as? [String: Any])?["name"] as? String {
+// There's our username
 }
 ```
 
@@ -58,7 +59,7 @@ With SwiftyJSON all you have to do is:
 ```swift
 let json = JSON(data: dataFromNetworking)
 if let userName = json[0]["user"]["name"].string {
-  //Now you got your value
+//Now you got your value
 }
 ```
 
@@ -67,10 +68,10 @@ And don't worry about the Optional Wrapping thing. It's done for you automatical
 ```swift
 let json = JSON(data: dataFromNetworking)
 if let userName = json[999999]["wrong_key"]["wrong_name"].string {
-    //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
+//Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
-    //Print the error
-    print(json[999999]["wrong_key"]["wrong_name"])
+//Print the error
+print(json[999999]["wrong_key"]["wrong_name"])
 }
 ```
 
@@ -90,7 +91,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'SwiftyJSON', '~> 4.0'
+pod 'SwiftyJSON', '~> 4.0'
 end
 ```
 
@@ -113,17 +114,17 @@ You can use [The Swift Package Manager](https://swift.org/package-manager) to in
 import PackageDescription
 
 let package = Package(
-    name: "YOUR_PROJECT_NAME",
-    dependencies: [
-        .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
-    ]
+name: "YOUR_PROJECT_NAME",
+dependencies: [
+.package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
+]
 )
 ```
 Then run `swift build` whenever you get prepared.
 
 #### Manually (iOS 7+, OS X 10.9+)
 
-To use this library in your project manually you may:  
+To use this library in your project manually you may:
 
 1. for Projects, just drag SwiftyJSON.swift to the project tree
 2. for Workspaces, include the whole SwiftyJSON.xcodeproj
@@ -148,7 +149,7 @@ Or
 
 ```swift
 if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
-    let json = JSON(data: dataFromString)
+let json = JSON(data: dataFromString)
 }
 ```
 
@@ -195,7 +196,7 @@ let name = json[keys].string
 ```swift
 // If json is .Dictionary
 for (key,subJson):(String, JSON) in json {
-   // Do something you want
+// Do something you want
 }
 ```
 
@@ -205,7 +206,7 @@ for (key,subJson):(String, JSON) in json {
 // If json is .Array
 // The `index` is 0..<json.count's string value
 for (index,subJson):(String, JSON) in json {
-    // Do something you want
+// Do something you want
 }
 ```
 
@@ -230,35 +231,35 @@ This will never happen in SwiftyJSON.
 ```swift
 let json = JSON(["name", "age"])
 if let name = json[999].string {
-    // Do something you want
+// Do something you want
 } else {
-    print(json[999].error!) // "Array[999] is out of bounds"
+print(json[999].error!) // "Array[999] is out of bounds"
 }
 ```
 
 ```swift
 let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
-    // Do something you want
+// Do something you want
 } else {
-    print(json["address"].error!) // "Dictionary["address"] does not exist"
+print(json["address"].error!) // "Dictionary["address"] does not exist"
 }
 ```
 
 ```swift
 let json = JSON(12345)
 if let age = json[0].string {
-    // Do something you want
+// Do something you want
 } else {
-    print(json[0])       // "Array[0] failure, It is not an array"
-    print(json[0].error!) // "Array[0] failure, It is not an array"
+print(json[0])       // "Array[0] failure, It is not an array"
+print(json[0].error!) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
-    // Do something you want
+// Do something you want
 } else {
-    print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-    print(json["name"].error!) // "Dictionary[\"name"] failure, It is not an dictionary"
+print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
+print(json["name"].error!) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
 ```
 
@@ -267,40 +268,40 @@ if let name = json["name"].string {
 ```swift
 // NSNumber
 if let id = json["user"]["favourites_count"].number {
-   // Do something you want
+// Do something you want
 } else {
-   // Print the error
-   print(json["user"]["favourites_count"].error!)
+// Print the error
+print(json["user"]["favourites_count"].error!)
 }
 ```
 
 ```swift
 // String
 if let id = json["user"]["name"].string {
-   // Do something you want
+// Do something you want
 } else {
-   // Print the error
-   print(json["user"]["name"].error!)
+// Print the error
+print(json["user"]["name"].error!)
 }
 ```
 
 ```swift
 // Bool
 if let id = json["user"]["is_translator"].bool {
-   // Do something you want
+// Do something you want
 } else {
-   // Print the error
-   print(json["user"]["is_translator"].error!)
+// Print the error
+print(json["user"]["is_translator"].error!)
 }
 ```
 
 ```swift
 // Int
 if let id = json["user"]["id"].int {
-   // Do something you want
+// Do something you want
 } else {
-   // Print the error
-   print(json["user"]["id"].error!)
+// Print the error
+print(json["user"]["id"].error!)
 }
 ...
 ```
@@ -357,19 +358,19 @@ let rawValue: Any = json.rawValue
 ```swift
 //convert the JSON to raw NSData
 do {
-	let rawData = try json.rawData()
-  //Do something you want
+let rawData = try json.rawData()
+//Do something you want
 } catch {
-	print("Error \(error)")
+print("Error \(error)")
 }
 ```
 
 ```swift
 //convert the JSON to a raw String
 if let rawString = json.rawString() {
-  //Do something you want
+//Do something you want
 } else {
-	print("json.rawString is nil")
+print("json.rawString is nil")
 }
 ```
 
@@ -444,8 +445,8 @@ json[path] = "that"
 // With other JSON objects
 let user: JSON = ["username" : "Steve", "password": "supersecurepassword"]
 let auth: JSON = [
-  "user": user.object, // use user.object instead of just user
-  "apikey": "supersecretapitoken"
+"user": user.object, // use user.object instead of just user
+"apikey": "supersecretapitoken"
 ]
 ```
 
@@ -464,23 +465,23 @@ There are two different fashions for merging: `merge` modifies the original JSON
 
 ```swift
 let original: JSON = [
-    "first_name": "John",
-    "age": 20,
-    "skills": ["Coding", "Reading"],
-    "address": [
-        "street": "Front St",
-        "zip": "12345",
-    ]
+"first_name": "John",
+"age": 20,
+"skills": ["Coding", "Reading"],
+"address": [
+"street": "Front St",
+"zip": "12345",
+]
 ]
 
 let update: JSON = [
-    "last_name": "Doe",
-    "age": 21,
-    "skills": ["Writing"],
-    "address": [
-        "zip": "12342",
-        "city": "New York City"
-    ]
+"last_name": "Doe",
+"age": 21,
+"skills": ["Writing"],
+"address": [
+"zip": "12342",
+"city": "New York City"
+]
 ]
 
 let updated = original.merge(with: update)
@@ -514,13 +515,13 @@ SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 
 ```swift
 Alamofire.request(url, method: .get).validate().responseJSON { response in
-    switch response.result {
-    case .success(let value):
-        let json = JSON(value)
-        print("JSON: \(json)")
-    case .failure(let error):
-        print(error)
-    }
+switch response.result {
+case .success(let value):
+let json = JSON(value)
+print("JSON: \(json)")
+case .failure(let error):
+print(error)
+}
 }
 ```
 
@@ -536,14 +537,20 @@ SwiftyJSON parse data to JSON:
 ```swift
 let provider = MoyaProvider<Backend>()
 provider.request(.showProducts) { result in
-    switch result {
-    case let .success(moyaResponse):
-        let data = moyaResponse.data
-        let json = JSON(data: data) // convert network data to json
-        print(json)
-    case let .failure(error):
-        print("error: \(error)")
-    }
+switch result {
+case let .success(moyaResponse):
+let data = moyaResponse.data
+let json = JSON(data: data) // convert network data to json
+print(json)
+case let .failure(error):
+print("error: \(error)")
+}
 }
 
 ```
+
+## SwiftyJSON Model Generator
+Tools to generate SwiftyJSON Models
+- [jsoncafe.com](jsoncafe.com)   //online tool
+- [jsonexport](https://github.com/Ahmed-Ali/JSONExport) //Offline tool
+

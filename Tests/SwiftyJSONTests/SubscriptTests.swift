@@ -214,6 +214,47 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["Type"]["Value"].error, SwiftyJSONError.notExist)
         XCTAssertEqual(json["Type", "Value"].error, SwiftyJSONError.notExist)
     }
+    func testDictionaryDynamicLookupString() {
+        var json: JSON = JSON(rawValue: ["a": "aoo", "bb": "bpp", "z": "zoo"] as NSDictionary)!
+        XCTAssertTrue(json.a == "aoo")
+        XCTAssertEqual(json.bb, JSON("bpp"))
+        XCTAssertTrue(json.z == "zoo")
+        
+        json.bb = "update"
+        XCTAssertTrue(json.a == "aoo")
+        XCTAssertTrue(json.bb == "update")
+        XCTAssertTrue(json.z == "zoo")
+    }
+    func testMultilevelDynamicLookUpGetter() {
+        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad", "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
+        XCTAssertEqual(json["user", "id"], 987654)
+        XCTAssertEqual(json["user", "info", "name"], "farshad")
+        XCTAssertEqual(json["user", "info", "email"], "farshadjahanmanesh@gmail.com")
+        XCTAssertEqual(json["user", "feeds"], [98833, 23443, 213239, 23232])
+    }
+    func testMultilevelDynamicLookUpSetter() {
+        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad", "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
+        json.user.info.name = "jim"
+        XCTAssertEqual(json.user.id, 987654)
+        XCTAssertEqual(json.user.info.name, "jim")
+        XCTAssertEqual(json.user.info.email, "farshadjahanmanesh@gmail.com")
+        XCTAssertEqual(json.user.feeds, [98833, 23443, 213239, 23232])
+        json.user.info.email = "jim@hotmail.com"
+        XCTAssertEqual(json.user.id, 987654)
+        XCTAssertEqual(json.user.info.name, "jim")
+        XCTAssertEqual(json.user.info.email, "jim@hotmail.com")
+        XCTAssertEqual(json.user.feeds, [98833, 23443, 213239, 23232])
+        json.user.info = ["name": "tom", "email": "tom@qq.com"]
+        XCTAssertEqual(json.user.id, 987654)
+        XCTAssertEqual(json.user.info.name, "tom")
+        XCTAssertEqual(json.user.info.email, "tom@qq.com")
+        XCTAssertEqual(json.user.feeds, [98833, 23443, 213239, 23232])
+        json.user.feeds = [77323, 2313, 4545, 323]
+        XCTAssertEqual(json.user.id, 987654)
+        XCTAssertEqual(json.user.info.name, "tom")
+        XCTAssertEqual(json.user.info.email, "tom@qq.com")
+        XCTAssertEqual(json.user.feeds, [77323, 2313, 4545, 323])
+    }
 
     func testMultilevelGetter() {
         let json: JSON = [[[[["one": 1]]]]]

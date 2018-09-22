@@ -219,21 +219,22 @@ class SubscriptTests: XCTestCase {
         XCTAssertTrue(json.a == "aoo")
         XCTAssertEqual(json.bb, JSON("bpp"))
         XCTAssertTrue(json.z == "zoo")
-        
         json.bb = "update"
         XCTAssertTrue(json.a == "aoo")
         XCTAssertTrue(json.bb == "update")
         XCTAssertTrue(json.z == "zoo")
     }
     func testMultilevelDynamicLookUpGetter() {
-        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad", "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
+        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad",
+                                "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
         XCTAssertEqual(json["user", "id"], 987654)
         XCTAssertEqual(json["user", "info", "name"], "farshad")
         XCTAssertEqual(json["user", "info", "email"], "farshadjahanmanesh@gmail.com")
         XCTAssertEqual(json["user", "feeds"], [98833, 23443, 213239, 23232])
     }
     func testMultilevelDynamicLookUpSetter() {
-        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad", "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
+        var json: JSON = ["user": ["id": 987654, "info": ["name": "farshad",
+                                "email": "farshadjahanmanesh@gmail.com"], "feeds": [98833, 23443, 213239, 23232]]]
         json.user.info.name = "jim"
         XCTAssertEqual(json.user.id, 987654)
         XCTAssertEqual(json.user.info.name, "jim")

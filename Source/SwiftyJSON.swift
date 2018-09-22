@@ -562,7 +562,6 @@ extension JSON {
             self[sub:member] = newValue
         }
     }
-
 }
 
 // MARK: - LiteralConvertible

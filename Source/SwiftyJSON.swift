@@ -881,6 +881,12 @@ extension JSON {
     public var number: NSNumber? {
         get {
             switch self.type {
+            case .string:
+                let decimal: NSDecimalNumber? = NSDecimalNumber(string: self.object as? String)
+                if decimal == NSDecimalNumber.notANumber {  // indicates parse error
+                    return nil
+                }
+                return decimal
             case .number:
                 return self.rawNumber
             case .bool:
@@ -1021,6 +1027,13 @@ extension JSON {
 
     public var int: Int? {
         get {
+            if let num = self.number as? NSDecimalNumber {
+                let returnInt = num.intValue
+                if num.isEqual(returnInt) {
+                    return returnInt
+                }
+                return nil
+            }
             return self.number?.intValue
         }
         set {
@@ -1034,6 +1047,13 @@ extension JSON {
 
     public var intValue: Int {
         get {
+            if let num = self.numberValue as? NSDecimalNumber {
+                let returnInt = num.intValue
+                if num.isEqual(returnInt) {
+                    return returnInt
+                }
+                return 0
+            }
             return self.numberValue.intValue
         }
         set {

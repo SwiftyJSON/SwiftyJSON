@@ -127,7 +127,7 @@ class PerformanceTests: XCTestCase {
         self.measure {
             autoreleasepool {
                 if let dictionary = json.dictionary {
-                    XCTAssertTrue(dictionary.count > 0)
+                    XCTAssertTrue(dictionary.count == 100001)
                 } else {
                     XCTFail("dictionary should not be nil")
                 }

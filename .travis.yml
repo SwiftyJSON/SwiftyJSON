@@ -1,6 +1,6 @@
 language: objective-c
-osx_image: xcode9.3
-xcode_sdk: iphonesimulator10.0
+osx_image: xcode10
+xcode_sdk: iphonesimulator12.0
 script:
 - set -o pipefail
 - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" build-for-testing test | xcpretty

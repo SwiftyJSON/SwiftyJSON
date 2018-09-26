@@ -1,8 +1,14 @@
 # SwiftyJSON
 
-[![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0+%20%7C%20macOS%2010.10+%20%7C%20tvOS%209.0+%20%7C%20watchOS%202.0+-333333.svg)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/SwiftyJSON.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%208.0%20%7C%20macOS%2010.10%20%7C%20tvOS%209.0%20%7C%20watchOS%203.0-F28D00.svg)
 
 SwiftyJSON makes it easy to deal with JSON data in Swift.
+
+Platform | Build Status
+---------| --------------| 
+*OS      | [![Travis CI](https://travis-ci.org/SwiftyJSON/SwiftyJSON.svg?branch=master)](https://travis-ci.org/SwiftyJSON/SwiftyJSON)    | 
+[Linux](https://github.com/IBM-Swift/SwiftyJSON)      | [![Build Status](https://travis-ci.org/IBM-Swift/SwiftyJSON.svg?branch=master)](https://travis-ci.org/IBM-Swift/SwiftyJSON)     | 
+
 
 1. [Why is the typical JSON handling in Swift NOT good](#why-is-the-typical-json-handling-in-swift-not-good)
 2. [Requirements](#requirements)

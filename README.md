@@ -20,6 +20,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
+7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
 
 > [中文介绍](http://tangplin.github.io/swiftyjson/)
 
@@ -547,3 +548,8 @@ provider.request(.showProducts) { result in
 }
 
 ```
+
+## SwiftyJSON Model Generator
+Tools to generate SwiftyJSON Models
+* [JSON Cafe](http://www.jsoncafe.com/)
+* [JSON Export](https://github.com/Ahmed-Ali/JSONExport)

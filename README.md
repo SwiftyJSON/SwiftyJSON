@@ -551,5 +551,5 @@ provider.request(.showProducts) { result in
 
 ## SwiftyJSON Model Generator
 Tools to generate SwiftyJSON Models
-* [JSON Cafe.com](http://www.jsoncafe.com/)
+* [JSON Cafe](http://www.jsoncafe.com/)
 * [JSON Export](https://github.com/Ahmed-Ali/JSONExport)

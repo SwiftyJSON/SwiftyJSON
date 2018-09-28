@@ -12,6 +12,6 @@ let package = Package(
                     path: "Source"),
             .testTarget(name: "SwiftyJSONTests",
                     dependencies: ["SwiftyJSON"],
-                    path: "Tests"),
+                    path: "Tests")
         ]
 )

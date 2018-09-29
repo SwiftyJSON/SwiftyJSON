@@ -37,8 +37,8 @@ class DynamicMemberLookupTests: XCTestCase {
     }
 
     func testMultilevelDynamicLookUpSetterAndGetter() {
-        var json: JSON = ["user": ["id": 987654, "info":
-            ["name": "farshad","email": "sam@gmail.com"],
+        var json: JSON = ["user": ["id": 987654,
+                                   "info":["name": "farshad","email": "sam@gmail.com"],
                                    "feeds": [98833, 23443, 213239, 23232]]]
         json.user.info.name = "jim"
         XCTAssertEqual(json.user.id, 987654)

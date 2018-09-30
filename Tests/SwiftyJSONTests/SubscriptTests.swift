@@ -214,7 +214,7 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["Type"]["Value"].error, SwiftyJSONError.notExist)
         XCTAssertEqual(json["Type", "Value"].error, SwiftyJSONError.notExist)
     }
-
+    
     func testMultilevelGetter() {
         let json: JSON = [[[[["one": 1]]]]]
         XCTAssertEqual(json[[0, 0, 0, 0, "one"]].int!, 1)

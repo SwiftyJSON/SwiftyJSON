@@ -13,14 +13,18 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-    - os: linux
-      dist: trusty
-      sudo: required
       env: SWIFT_SNAPSHOT=4.0.3
     - os: linux
       dist: trusty
       sudo: required
-      env: SWIFT_SNAPSHOT=4.2
+      env: SWIFT_SNAPSHOT=4.1
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
+      osx_image: xcode9.2
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.0.3
     - os: osx
       osx_image: xcode9.4
       sudo: required

@@ -55,7 +55,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
         // Number of fraction digits differs on OSX and Linux,
         // issue https://github.com/IBM-Swift/SwiftRuntime/issues/183
-        #if os(Linux)
+        #if (os(Linux) && !swift(>=4.2))
             XCTAssertEqual(json.stringValue, "9876543210.12346")
         #else
             XCTAssertEqual(json.stringValue, "9876543210.123457")
@@ -128,7 +128,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.numberValue, 9876543210.123456789)
         // Number of fraction digits differs on OSX and Linux,
         // issue https://github.com/IBM-Swift/SwiftRuntime/issues/183
-        #if os(Linux)
+        #if (os(Linux) && !swift(>=4.2))
             XCTAssertEqual(json.stringValue, "9876543210.12346")
         #else
             XCTAssertEqual(json.stringValue, "9876543210.123457")

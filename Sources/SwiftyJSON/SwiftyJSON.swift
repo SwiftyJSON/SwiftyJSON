@@ -237,7 +237,13 @@ public struct JSON {
     var type: Type
     var value: Any
 
-    if let bool = newValue as? Bool {
+    if let number = newValue as? Int {
+        type = .number
+        value = NSNumber(value: number)
+    } else if let number = newValue as? Double {
+        type = .number
+        value = NSNumber(value: number)
+    } else if let bool = newValue as? Bool {
     type = .bool
     value = bool
     } else if let number = newValue as? NSNumber {
@@ -248,13 +254,7 @@ public struct JSON {
     type = .number
     value = number
     }
-    } else if let number = newValue as? Double {
-    type = .number
-    value = NSNumber(value: number)
-    } else if let number = newValue as? Int {
-    type = .number
-    value = NSNumber(value: number)
-    } else if let string = newValue as? String {
+    } else  if let string = newValue as? String {
     type = .string
     value = string
     } else if let string = newValue as? NSString {

@@ -12,11 +12,10 @@ matrix:
       dist: trusty
       sudo: required
       env: SWIFT_SNAPSHOT=4.0.3
-# Tests fail on Swift 4.2 on Linux.
-#    - os: linux
-#      dist: trusty
-#      sudo: required
-#      env: DOCKER_IMAGE=ubuntu:16.04 SWIFT_SNAPSHOT=4.2.1
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: DOCKER_IMAGE=ubuntu:16.04 SWIFT_SNAPSHOT=4.2.1
 #    - os: linux
 #      dist: trusty
 #      sudo: required

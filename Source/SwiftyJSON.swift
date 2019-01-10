@@ -79,6 +79,7 @@ public enum Type: Int {
 
 // MARK: - JSON Base
 
+@dynamicMemberLookup
 public struct JSON {
 
 	/**
@@ -507,6 +508,26 @@ extension JSON {
         }
         set {
             self[path] = newValue
+        }
+    }
+    
+    /**
+     Find a json in the complex data structures by String as key.
+     
+     - parameter path: The target json's path. Example:
+     
+     let name = json.list.person.name
+     
+     The same as: let name = json["list"]["person"]["name"]
+     
+     - returns: Return a json found by the key or a null json with error
+     */
+    public subscript(dynamicMember member: String) -> JSON {
+        get {
+            return self[member]
+        }
+        set {
+            self[member] = newValue
         }
     }
 }

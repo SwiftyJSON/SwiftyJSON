@@ -73,11 +73,12 @@ And don't worry about the Optional Wrapping thing. It's done for you automatical
 
 ```swift
 let json = JSON(data: dataFromNetworking)
-if let userName = json[999999]["wrong_key"]["wrong_name"].string {
+let result = json[999999]["wrong_key"]["wrong_name"].string
+if let userName = result {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error
-    print(json[999999]["wrong_key"]["wrong_name"])
+    print(result)
 }
 ```
 
@@ -168,7 +169,7 @@ let name = json[0].double
 
 ```swift
 // Getting an array of string from a JSON Array
-let arrayNames =  json["users"].arrayValue.map({$0["name"].stringValue})
+let arrayNames =  json["users"].arrayValue.map {$0["name"].stringValue}
 ```
 
 ```swift

@@ -73,12 +73,12 @@ And don't worry about the Optional Wrapping thing. It's done for you automatical
 
 ```swift
 let json = JSON(data: dataFromNetworking)
-let result = json[999999]["wrong_key"]["wrong_name"].string
-if let userName = result {
+let result = json[999999]["wrong_key"]["wrong_name"]
+if let userName = result.string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
 } else {
     //Print the error
-    print(result)
+    print(result.error)
 }
 ```
 

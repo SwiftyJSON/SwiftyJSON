@@ -9,6 +9,6 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(name: "SwiftyJSON", dependencies: []),
-        .testTarget(name: "SwiftJSONTests"),
+        .testTarget(name: "SwiftJSONTests", dependencies: ["SwiftyJSON"]),
     ]
 )

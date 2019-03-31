@@ -31,6 +31,8 @@ class BaseTests: XCTestCase {
 
         super.setUp()
 
+//        let file = "./Tests/Tes/Tests.json"
+//        self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         if let file = Bundle(for: BaseTests.self).path(forResource: "Tests", ofType: "json") {
             self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
         } else {

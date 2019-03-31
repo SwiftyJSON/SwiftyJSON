@@ -115,6 +115,22 @@ public struct JSON {
         }
     }
 
+    /**
+     Parses the object confirming to Encodable protocol into a JSON object using JSONEncoder
+     
+     - parameter encodable: the object confirming to Encodable protocol
+     
+     - returns: the created JSON object
+     */
+    public init<T: Encodable>(parseEncodable encodable: T) {
+        do {
+            let data = try JSONEncoder().encode(encodable)
+            try self.init(data: data)
+        } catch {
+            self.init(NSNull())
+        }
+    }
+
 	/**
 	 Parses the JSON string into a JSON object
 	
@@ -915,6 +931,17 @@ extension JSON {
         set {
             self.object = newValue
         }
+    }
+}
+
+// MARK: - Decodable Object
+
+extension JSON {
+
+    //Optional object
+    public func decode<T: Decodable>(_ decodableType: T.Type) -> T? {
+        guard let data = try? self.rawData() else { return nil }
+        return try? JSONDecoder().decode(decodableType, from: data)
     }
 }
 

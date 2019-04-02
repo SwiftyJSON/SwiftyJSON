@@ -29,7 +29,6 @@ let jsonString = String(data: jsonData!, encoding: .utf8)
 ### Initialization
 
 */
-import SwiftyJSON
 
 let json1 = try? JSON(data: jsonData!)
 /*:

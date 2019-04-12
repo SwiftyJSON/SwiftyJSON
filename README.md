@@ -471,7 +471,7 @@ In case, where two fields in a JSON have a different types, the value will get a
 There are two different fashions for merging: `merge` modifies the original JSON, whereas `merged` works non-destructively on a copy.
 
 ```swift
-let original: JSON = [
+var original: JSON = [
     "first_name": "John",
     "age": 20,
     "skills": ["Coding", "Reading"],
@@ -491,7 +491,9 @@ let update: JSON = [
     ]
 ]
 
-let updated = original.merge(with: update)
+try original.merge(with: update)
+let updated = try original.merged(with: update)
+
 // [
 //     "first_name": "John",
 //     "last_name": "Doe",

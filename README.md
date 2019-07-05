@@ -512,7 +512,7 @@ There are two options available:
 ```swift
 let dict = ["1":2, "2":"two", "3": nil] as [String: Any?]
 let json = JSON(dict)
-let representation = json.rawString(options: [.castNilToNSNull: true])
+let representation = json.rawString([.castNilToNSNull: true])
 // representation is "{\"1\":2,\"2\":\"two\",\"3\":null}", which represents {"1":2,"2":"two","3":null}
 ```
 

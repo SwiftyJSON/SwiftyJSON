@@ -163,6 +163,8 @@ class BaseTests: XCTestCase {
             break
         }
 
+#if !swift(>=5.0)
+// Invalid as of Swift 5, as dictionary order is not predictable
         let index = 0
         let keys = Array(json[1].dictionaryObject!.keys)
         for (aKey, aJson) in json[1] {
@@ -170,6 +172,7 @@ class BaseTests: XCTestCase {
             XCTAssertEqual(aJson, json[1][keys[index]])
             break
         }
+#endif
     }
 
     func testJSONNumberCompare() {
@@ -195,10 +198,16 @@ class BaseTests: XCTestCase {
         XCTAssertEqual(JSON(999.9823).stringValue, "999.9823")
         XCTAssertEqual(JSON(true).number!.stringValue, "1")
         XCTAssertEqual(JSON(false).number!.stringValue, "0")
-        XCTAssertEqual(JSON("hello").numberValue.stringValue, "0")
-        XCTAssertEqual(JSON(NSNull()).numberValue.stringValue, "0")
-        XCTAssertEqual(JSON(["a","b","c","d"]).numberValue.stringValue, "0")
-        XCTAssertEqual(JSON(["a":"b","c":"d"]).numberValue.stringValue, "0")
+        #if os(Linux) && swift(>=4.2)
+            // https://github.com/apple/swift-corelibs-foundation/pull/1724
+            let expectedValue = "0.0"
+        #else
+            let expectedValue = "0"
+        #endif
+        XCTAssertEqual(JSON("hello").numberValue.stringValue, expectedValue)
+        XCTAssertEqual(JSON(NSNull()).numberValue.stringValue, expectedValue)
+        XCTAssertEqual(JSON(["a","b","c","d"]).numberValue.stringValue, expectedValue)
+        XCTAssertEqual(JSON(["a":"b","c":"d"]).numberValue.stringValue, expectedValue)
     }
 
     func testNumberPrint(){

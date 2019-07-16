@@ -1598,7 +1598,9 @@ func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
 func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
     return !(lhs == rhs)
 }
-
+#if os(Linux) && swift(>=5.1)
+// TODO: why must this be excluded, only on Linux, with Swift 5.1?
+#else
 func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
@@ -1610,7 +1612,7 @@ func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
         return lhs.compare(rhs) == ComparisonResult.orderedAscending
     }
 }
-
+#endif
 func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {

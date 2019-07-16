@@ -39,7 +39,7 @@ class RawRepresentableTests: XCTestCase {
     // END OF GENERATED CODE
 
     func testNumber() {
-        var json:JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
+        let json:JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
         XCTAssertEqual(json.int!, 948394394)
         XCTAssertEqual(json.intValue, 948394394)
         XCTAssertEqual(json.double!, 948394394.347384)
@@ -59,7 +59,7 @@ class RawRepresentableTests: XCTestCase {
     }
 
     func testBool() {
-        var jsonTrue:JSON = JSON(rawValue: true as NSNumber)!
+        let jsonTrue:JSON = JSON(rawValue: true as NSNumber)!
 
         // Blocked by https://bugs.swift.org/browse/SR-5803
         #if !(os(Linux) && swift(>=3.2))
@@ -68,7 +68,7 @@ class RawRepresentableTests: XCTestCase {
 
         XCTAssertEqual(jsonTrue.boolValue, true)
 
-        var jsonFalse:JSON = JSON(rawValue: false)!
+        let jsonFalse:JSON = JSON(rawValue: false)!
         XCTAssertEqual(jsonFalse.bool!, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
 

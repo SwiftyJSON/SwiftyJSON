@@ -367,7 +367,7 @@ let rawValue: Any = json.rawValue
 do {
 	let rawData = try json.rawData()
   //Do something you want
-} catch {
+} catch let error {
 	print("Error \(error)")
 }
 ```

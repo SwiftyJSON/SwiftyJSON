@@ -231,7 +231,7 @@ Use a subscript to get/set a value in an Array or Dictionary
 If the JSON is:
 *  an array, the app may crash with "index out-of-bounds."
 *  a dictionary, it will be assigned to `nil` without a reason.
-*  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
+*  not an array or a dictionary, the app may crash with an "unrecognized selector" exception.
 
 This will never happen in SwiftyJSON.
 

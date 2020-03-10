@@ -28,8 +28,6 @@ Platform | Build Status
 6. [Work with Moya](#work-with-moya)
 7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
 
-> [中文介绍](http://tangplin.github.io/swiftyjson/)
-
 
 ## Why is the typical JSON handling in Swift NOT good?
 

@@ -324,6 +324,24 @@ public enum Index<T: Any>: Comparable {
         default:                                              return false
         }
     }
+    
+    static public func <= (lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
+        case (.array(let left), .array(let right)):           return left <= right
+        case (.dictionary(let left), .dictionary(let right)): return left <= right
+        case (.null, .null):                                  return true
+        default:                                              return false
+        }
+    }
+    
+    static public func >= (lhs: Index, rhs: Index) -> Bool {
+        switch (lhs, rhs) {
+        case (.array(let left), .array(let right)):           return left >= right
+        case (.dictionary(let left), .dictionary(let right)): return left >= right
+        case (.null, .null):                                  return true
+        default:                                              return false
+        }
+    }
 }
 
 public typealias JSONIndex = Index<JSON>

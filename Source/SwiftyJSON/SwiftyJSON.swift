@@ -222,13 +222,13 @@ public struct JSON {
     /// JSON type, fileprivate setter
     public var type: Type {
         switch content {
-        case .array: return .array
-        case .bool: return .bool
-        case .dictionary: return .dictionary
-        case .null: return .null
-        case .number: return .number
-        case .string: return .string
-        case .unknown: return .unknown
+        case .array:        return .array
+        case .bool:         return .bool
+        case .dictionary:   return .dictionary
+        case .null:         return .null
+        case .number:       return .number
+        case .string:       return .string
+        case .unknown:      return .unknown
         }
     }
     fileprivate var content: Content
@@ -240,12 +240,12 @@ public struct JSON {
     public var object: Any {
         get {
             switch content {
-            case .array(let rawArray): return rawArray
-            case .dictionary(let rawDictionary): return rawDictionary
-            case .string(let rawString): return rawString
-            case .number(let rawNumber): return rawNumber
-            case .bool(let rawBool): return rawBool
-            case .null, .unknown: return NSNull()
+            case .array(let rawArray):              return rawArray
+            case .dictionary(let rawDictionary):    return rawDictionary
+            case .string(let rawString):            return rawString
+            case .number(let rawNumber):            return rawNumber
+            case .bool(let rawBool):                return rawBool
+            case .null, .unknown:                   return NSNull()
             }
         }
         set {
@@ -339,17 +339,17 @@ extension JSON: Swift.Collection {
 
     public var startIndex: Index {
         switch content {
-        case .array(let rawArray): return .array(rawArray.startIndex)
-        case .dictionary(let rawDictionary): return .dictionary(rawDictionary.startIndex)
-        default:          return .null
+        case .array(let rawArray):              return .array(rawArray.startIndex)
+        case .dictionary(let rawDictionary):    return .dictionary(rawDictionary.startIndex)
+        default:                                return .null
         }
     }
 
     public var endIndex: Index {
         switch content {
-        case .array(let rawArray):      return .array(rawArray.endIndex)
-        case .dictionary(let rawDictionary): return .dictionary(rawDictionary.endIndex)
-        default:          return .null
+        case .array(let rawArray):              return .array(rawArray.endIndex)
+        case .dictionary(let rawDictionary):    return .dictionary(rawDictionary.endIndex)
+        default:                                return .null
         }
     }
 
@@ -497,7 +497,7 @@ extension JSON {
         set {
             switch path.count {
             case 0: return
-            case 1: self[sub:path[0]].object = newValue.object
+            case 1: self[sub: path[0]].object = newValue.object
             default:
                 var aPath = path
                 aPath.remove(at: 0)
@@ -599,7 +599,6 @@ extension JSON: Swift.RawRepresentable {
         guard JSONSerialization.isValidJSONObject(object) else {
             throw SwiftyJSONError.invalidJSON
         }
-
         return try JSONSerialization.data(withJSONObject: object, options: opt)
 	}
 
@@ -691,11 +690,11 @@ extension JSON: Swift.RawRepresentable {
             } catch _ {
                 return nil
             }
-        case .string(let rawString): return rawString
-        case .number(let rawNumber): return rawNumber.stringValue
-        case .bool(let rawBool): return rawBool.description
-        case .null: return "null"
-        case .unknown: return nil
+        case .string(let rawString):    return rawString
+        case .number(let rawNumber):    return rawNumber.stringValue
+        case .bool(let rawBool):        return rawBool.description
+        case .null:                     return "null"
+        case .unknown:                  return nil
         }
     }
 }
@@ -738,9 +737,9 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                self.update(content: .array(newValue), error: nil)
+                update(content: .array(newValue), error: nil)
             } else {
-                self.update(content: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }
@@ -786,8 +785,8 @@ extension JSON { // : Swift.Bool
     public var bool: Bool? {
         get {
             switch content {
-            case .bool(let rawBool): return rawBool
-            default:    return nil
+            case .bool(let rawBool):    return rawBool
+            default:                    return nil
             }
         }
         set {
@@ -803,10 +802,10 @@ extension JSON { // : Swift.Bool
     public var boolValue: Bool {
         get {
             switch content {
-            case .bool(let rawBool): return rawBool
-            case .number(let rawNumber): return rawNumber.boolValue
-            case .string(let rawString): return ["true", "y", "t", "yes", "1"].contains { rawString.caseInsensitiveCompare($0) == .orderedSame }
-            default: return false
+            case .bool(let rawBool):        return rawBool
+            case .number(let rawNumber):    return rawNumber.boolValue
+            case .string(let rawString):    return ["true", "y", "t", "yes", "1"].contains { rawString.caseInsensitiveCompare($0) == .orderedSame }
+            default:                        return false
             }
         }
         set {
@@ -823,13 +822,13 @@ extension JSON {
     public var string: String? {
         get {
             switch content {
-            case .string(let rawString): return rawString
-            default: return nil
+            case .string(let rawString):    return rawString
+            default:                        return nil
             }
         }
         set {
-            if let rawString = newValue {
-                update(content: .string(rawString), error: nil)
+            if let newValue = newValue {
+                update(content: .string(newValue), error: nil)
             } else {
                 update(content: .null, error: nil)
             }
@@ -866,8 +865,8 @@ extension JSON {
             }
         }
         set {
-            if let rawNumber = newValue {
-                update(content: .number(rawNumber), error: nil)
+            if let newValue = newValue {
+                update(content: .number(newValue), error: nil)
             } else {
                 update(content: .null, error: nil)
             }
@@ -1174,57 +1173,57 @@ extension Content: Comparable {
     static func == (lhs: Content, rhs: Content) -> Bool {
 
         switch (lhs, rhs) {
-        case let (.number(l), .number(r)): return l == r
-        case let (.string(l), .string(r)): return l == r
-        case let (.bool(l), .bool(r)): return l == r
-        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
-        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
-        case (.null, .null):     return true
-        default:                 return false
+        case let (.number(l), .number(r)):          return l == r
+        case let (.string(l), .string(r)):          return l == r
+        case let (.bool(l), .bool(r)):              return l == r
+        case let (.array(l), .array(r)):            return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)):  return l as NSDictionary == r as NSDictionary
+        case (.null, .null):                        return true
+        default:                                    return false
         }
     }
 
     static func <= (lhs: Content, rhs: Content) -> Bool {
         
         switch (lhs, rhs) {
-        case let (.number(l), .number(r)): return l <= r
-        case let (.string(l), .string(r)): return l <= r
-        case let (.bool(l), .bool(r)): return l == r
-        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
-        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
-        case (.null, .null):     return true
-        default:                 return false
+        case let (.number(l), .number(r)):          return l <= r
+        case let (.string(l), .string(r)):          return l <= r
+        case let (.bool(l), .bool(r)):              return l == r
+        case let (.array(l), .array(r)):            return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)):  return l as NSDictionary == r as NSDictionary
+        case (.null, .null):                        return true
+        default:                                    return false
         }
     }
 
     static func >= (lhs: Content, rhs: Content) -> Bool {
 
         switch (lhs, rhs) {
-        case let (.number(l), .number(r)): return l >= r
-        case let (.string(l), .string(r)): return l >= r
-        case let (.bool(l), .bool(r)): return l == r
-        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
-        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
-        case (.null, .null):     return true
-        default:                 return false
+        case let (.number(l), .number(r)):          return l >= r
+        case let (.string(l), .string(r)):          return l >= r
+        case let (.bool(l), .bool(r)):              return l == r
+        case let (.array(l), .array(r)):            return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)):  return l as NSDictionary == r as NSDictionary
+        case (.null, .null):                        return true
+        default:                                    return false
         }
     }
 
     static func > (lhs: Content, rhs: Content) -> Bool {
 
         switch (lhs, rhs) {
-        case let (.number(l), .number(r)): return l > r
-        case let (.string(l), .string(r)): return l > r
-        default:                 return false
+        case let (.number(l), .number(r)):  return l > r
+        case let (.string(l), .string(r)):  return l > r
+        default:                            return false
         }
     }
 
     static func < (lhs: Content, rhs: Content) -> Bool {
 
         switch (lhs, rhs) {
-        case let (.number(l), .number(r)): return l < r
-        case let (.string(l), .string(r)): return l < r
-        default:                 return false
+        case let (.number(l), .number(r)):  return l < r
+        case let (.string(l), .string(r)):  return l < r
+        default:                            return false
         }
     }
 }

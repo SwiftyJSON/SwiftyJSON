@@ -401,46 +401,49 @@ extension JSON {
     /// If `type` is `.array`, return json whose object is `array[index]`, otherwise return null json with error.
     fileprivate subscript(index index: Int) -> JSON {
         get {
-            if type != .array {
-                var r = JSON.null
-                r.error = self.error ?? SwiftyJSONError.wrongType
-                return r
-            } else if rawArray.indices.contains(index) {
-                return JSON(rawArray[index])
-            } else {
-                var r = JSON.null
-                r.error = SwiftyJSONError.indexOutOfBounds
-                return r
+            guard case .array(let rawArray) = content else {
+                return JSON(error: self.error ?? .wrongType)
             }
+            guard rawArray.indices.contains(index) else {
+                return JSON(error: .indexOutOfBounds)
+            }
+            return JSON(rawArray[index])
         }
         set {
-            if type == .array &&
-                rawArray.indices.contains(index) &&
-                newValue.error == nil {
-                rawArray[index] = newValue.object
+            guard
+                case .array(let rawArray) = content,
+                rawArray.indices.contains(index),
+                newValue.error == nil
+            else {
+                return
             }
+            var copy = rawArray
+            copy[index] = newValue.object
+            content = .array(copy)
         }
     }
 
     /// If `type` is `.dictionary`, return json whose object is `dictionary[key]` , otherwise return null json with error.
     fileprivate subscript(key key: String) -> JSON {
         get {
-            var r = JSON.null
-            if type == .dictionary {
-                if let o = rawDictionary[key] {
-                    r = JSON(o)
-                } else {
-                    r.error = SwiftyJSONError.notExist
-                }
-            } else {
-                r.error = self.error ?? SwiftyJSONError.wrongType
+            guard case .dictionary(let rawDictionary) = content else {
+                return JSON(error: self.error ?? .wrongType)
             }
-            return r
+            guard let obj = rawDictionary[key] else {
+                return JSON(error: .notExist)
+            }
+            return JSON(obj)
         }
         set {
-            if type == .dictionary && newValue.error == nil {
-                rawDictionary[key] = newValue.object
+            guard
+                newValue.error == nil,
+                case .dictionary(let rawDictionary) = content
+            else {
+                return
             }
+            var copy = rawDictionary
+            copy[key] = newValue.object
+            content = .dictionary(copy)
         }
     }
 

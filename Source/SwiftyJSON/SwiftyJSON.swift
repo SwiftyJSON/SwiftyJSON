@@ -247,6 +247,11 @@ public struct JSON {
             (content, error) = resolveContentAndError(for: newValue)
         }
     }
+    
+    private mutating func updateContent(to newContent: Content, error: SwiftyJSONError?) {
+        self.content = newContent
+        self.error = error
+    }
 
     /// The static null JSON
     @available(*, unavailable, renamed:"null")
@@ -576,11 +581,9 @@ extension JSON: Swift.ExpressibleByArrayLiteral {
 extension JSON: Swift.RawRepresentable {
 
     public init?(rawValue: Any) {
-        if JSON(rawValue).type == .unknown {
-            return nil
-        } else {
-            self.init(rawValue)
-        }
+        let json = JSON(rawValue)
+        guard json.type != .unknown else { return nil }
+        self = json
     }
 
     public var rawValue: Any {
@@ -617,7 +620,7 @@ extension JSON: Swift.RawRepresentable {
 
 	fileprivate func _rawString(_ encoding: String.Encoding = .utf8, options: [writingOptionsKeys: Any], maxObjectDepth: Int = 10) throws -> String? {
         guard maxObjectDepth > 0 else { throw SwiftyJSONError.invalidJSON }
-        switch type {
+        switch content {
         case .dictionary:
 			do {
 				if !(options[.castNilToNSNull] as? Bool ?? false) {
@@ -683,11 +686,11 @@ extension JSON: Swift.RawRepresentable {
             } catch _ {
                 return nil
             }
-        case .string: return rawString
-        case .number: return rawNumber.stringValue
-        case .bool:   return rawBool.description
-        case .null:   return "null"
-        default:      return nil
+        case .string(let rawString): return rawString
+        case .number(let rawNumber): return rawNumber.stringValue
+        case .bool(let rawBool): return rawBool.description
+        case .null: return "null"
+        case .unknown: return nil
         }
     }
 }
@@ -711,7 +714,8 @@ extension JSON {
 
     //Optional [JSON]
     public var array: [JSON]? {
-        return type == .array ? rawArray.map { JSON($0) } : nil
+        guard case .array(let rawArray) = content else { return nil }
+        return rawArray.map { JSON($0) }
     }
 
     //Non-optional [JSON]
@@ -722,13 +726,17 @@ extension JSON {
     //Optional [Any]
     public var arrayObject: [Any]? {
         get {
-            switch type {
-            case .array: return rawArray
-            default:     return nil
+            switch content {
+            case .array(let rawArray): return rawArray
+            default: return nil
             }
         }
         set {
-            self.object = newValue ?? NSNull()
+            if let newValue = newValue {
+                self.updateContent(to: .array(newValue), error: nil)
+            } else {
+                self.updateContent(to: .null, error: nil)
+            }
         }
     }
 }
@@ -739,15 +747,8 @@ extension JSON {
 
     //Optional [String : JSON]
     public var dictionary: [String: JSON]? {
-        if type == .dictionary {
-            var d = [String: JSON](minimumCapacity: rawDictionary.count)
-            rawDictionary.forEach { pair in
-                d[pair.key] = JSON(pair.value)
-            }
-            return d
-        } else {
-            return nil
-        }
+        guard case .dictionary(let rawDictionary) = content else { return nil }
+        return rawDictionary.mapValues { JSON($0) }
     }
 
     //Non-optional [String : JSON]
@@ -759,13 +760,15 @@ extension JSON {
 
     public var dictionaryObject: [String: Any]? {
         get {
-            switch type {
-            case .dictionary: return rawDictionary
-            default:          return nil
-            }
+            guard case .dictionary(let rawDictionary) = content else { return nil }
+            return rawDictionary
         }
         set {
-            object = newValue ?? NSNull()
+            if let newValue = newValue {
+                updateContent(to: .dictionary(newValue), error: nil)
+            } else {
+                updateContent(to: .null, error: nil)
+            }
         }
     }
 }
@@ -777,28 +780,32 @@ extension JSON { // : Swift.Bool
     //Optional bool
     public var bool: Bool? {
         get {
-            switch type {
-            case .bool: return rawBool
+            switch content {
+            case .bool(let rawBool): return rawBool
             default:    return nil
             }
         }
         set {
-            object = newValue ?? NSNull()
+            if let newValue = newValue {
+                updateContent(to: .bool(newValue), error: nil)
+            } else {
+                updateContent(to: .null, error: nil)
+            }
         }
     }
 
     //Non-optional bool
     public var boolValue: Bool {
         get {
-            switch type {
-            case .bool:   return rawBool
-            case .number: return rawNumber.boolValue
-            case .string: return ["true", "y", "t", "yes", "1"].contains { rawString.caseInsensitiveCompare($0) == .orderedSame }
-            default:      return false
+            switch content {
+            case .bool(let rawBool): return rawBool
+            case .number(let rawNumber): return rawNumber.boolValue
+            case .string(let rawString): return ["true", "y", "t", "yes", "1"].contains { rawString.caseInsensitiveCompare($0) == .orderedSame }
+            default: return false
             }
         }
         set {
-            object = newValue
+            updateContent(to: .bool(newValue), error: nil)
         }
     }
 }

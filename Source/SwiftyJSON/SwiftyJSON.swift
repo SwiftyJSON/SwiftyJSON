@@ -143,8 +143,13 @@ public struct JSON {
 		}
 	}
     
-    // TODO: - add documentation
+    /**
+     Creates a JSON using error parameter.
     
+     - parameter error: The error to be linked to JSON.
+    
+     - returns: The created JSON with error.
+     */
     fileprivate init(error: SwiftyJSONError) {
         self.content = .null
         self.error = error

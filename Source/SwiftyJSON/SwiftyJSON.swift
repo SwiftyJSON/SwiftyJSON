@@ -219,7 +219,7 @@ public struct JSON {
         }
     }
 
-    /// JSON type, fileprivate setter
+    /// JSON type
     public var type: Type {
         switch content {
         case .array:        return .array
@@ -231,6 +231,8 @@ public struct JSON {
         case .unknown:      return .unknown
         }
     }
+    
+    /// Content of JSON
     fileprivate var content: Content
 
     /// Error in JSON, fileprivate setter
@@ -240,8 +242,8 @@ public struct JSON {
     public var object: Any {
         get {
             switch content {
-            case .array(let rawArray):              return rawArray
             case .dictionary(let rawDictionary):    return rawDictionary
+            case .array(let rawArray):              return rawArray
             case .string(let rawString):            return rawString
             case .number(let rawNumber):            return rawNumber
             case .bool(let rawBool):                return rawBool
@@ -262,31 +264,31 @@ public struct JSON {
     /// The static null JSON
     @available(*, unavailable, renamed:"null")
     public static var nullJSON: JSON { return null }
-    public static var null: JSON { return JSON(NSNull()) }
+    public static let null = JSON(NSNull())
 }
 
-/// Private methods to resolve content AND error of raw jsonObject
+/// Private method for resolving raw json object's content and error
 private func resolveContentAndError(for jsonObject: Any) -> (Content, SwiftyJSONError?) {
     let content = resolveContent(for: jsonObject)
     let error: SwiftyJSONError? = (content == .unknown) ? .unsupportedType : nil
     return (content, error)
 }
 
-/// Private methods to resolve content of raw jsonObject
+/// Private method for resolving raw json object's content
 private func resolveContent(for jsonObject: Any) -> Content {
     switch unwrap(jsonObject) {
-    case let number as NSNumber:
-        return number.isBool ? .bool(number.boolValue) : .number(number)
-    case let string as String:
-        return .string(string)
-    case _ as NSNull:
-        return .null
-    case nil:
-        return .null
-    case let array as [Any]:
-        return .array(array)
     case let dictionary as [String: Any]:
         return .dictionary(dictionary)
+    case let array as [Any]:
+        return .array(array)
+    case nil:
+        return .null
+    case is NSNull:
+        return .null
+    case let string as String:
+        return .string(string)
+    case let number as NSNumber:
+        return number.isBool ? .bool(number.boolValue) : .number(number)
     default:
         return .unknown
     }

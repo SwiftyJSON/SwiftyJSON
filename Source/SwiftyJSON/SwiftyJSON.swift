@@ -253,7 +253,7 @@ public struct JSON {
         }
     }
     
-    private mutating func updateContent(to newContent: Content, error: SwiftyJSONError?) {
+    private mutating func update(content newContent: Content, error: SwiftyJSONError?) {
         self.content = newContent
         self.error = error
     }
@@ -738,9 +738,9 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                self.updateContent(to: .array(newValue), error: nil)
+                self.update(content: .array(newValue), error: nil)
             } else {
-                self.updateContent(to: .null, error: nil)
+                self.update(content: .null, error: nil)
             }
         }
     }
@@ -770,9 +770,9 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                updateContent(to: .dictionary(newValue), error: nil)
+                update(content: .dictionary(newValue), error: nil)
             } else {
-                updateContent(to: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }
@@ -792,9 +792,9 @@ extension JSON { // : Swift.Bool
         }
         set {
             if let newValue = newValue {
-                updateContent(to: .bool(newValue), error: nil)
+                update(content: .bool(newValue), error: nil)
             } else {
-                updateContent(to: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }
@@ -810,7 +810,7 @@ extension JSON { // : Swift.Bool
             }
         }
         set {
-            updateContent(to: .bool(newValue), error: nil)
+            update(content: .bool(newValue), error: nil)
         }
     }
 }
@@ -829,9 +829,9 @@ extension JSON {
         }
         set {
             if let rawString = newValue {
-                updateContent(to: .string(rawString), error: nil)
+                update(content: .string(rawString), error: nil)
             } else {
-                updateContent(to: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }
@@ -847,7 +847,7 @@ extension JSON {
             }
         }
         set {
-            updateContent(to: .string(newValue), error: nil)
+            update(content: .string(newValue), error: nil)
         }
     }
 }
@@ -867,9 +867,9 @@ extension JSON {
         }
         set {
             if let rawNumber = newValue {
-                updateContent(to: .number(rawNumber), error: nil)
+                update(content: .number(rawNumber), error: nil)
             } else {
-                updateContent(to: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }
@@ -887,7 +887,7 @@ extension JSON {
             }
         }
         set {
-            updateContent(to: .number(newValue), error: nil)
+            update(content: .number(newValue), error: nil)
         }
     }
 }
@@ -898,7 +898,7 @@ extension JSON {
 
     public var null: NSNull? {
         set {
-            updateContent(to: .null, error: nil)
+            update(content: .null, error: nil)
         }
         get {
             switch content {
@@ -939,9 +939,9 @@ extension JSON {
         }
         set {
             if let newValue = newValue {
-                updateContent(to: .string(newValue.absoluteString), error: nil)
+                update(content: .string(newValue.absoluteString), error: nil)
             } else {
-                updateContent(to: .null, error: nil)
+                update(content: .null, error: nil)
             }
         }
     }

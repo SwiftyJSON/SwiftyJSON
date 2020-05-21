@@ -158,8 +158,7 @@ public struct JSON {
 	 - returns: The created JSON
 	 */
     fileprivate init(jsonObject: Any) {
-        self.content = resolveContent(for: jsonObject)
-        self.error = (self.content == .unknown) ? .unsupportedType : nil
+        (self.content, self.error) = resolveContentAndError(for: jsonObject)
     }
 
 	/**
@@ -235,43 +234,17 @@ public struct JSON {
     /// Object in JSON
     public var object: Any {
         get {
-            switch type {
-            case .array:      return rawArray
-            case .dictionary: return rawDictionary
-            case .string:     return rawString
-            case .number:     return rawNumber
-            case .bool:       return rawBool
-            default:          return rawNull
+            switch content {
+            case .array(let rawArray): return rawArray
+            case .dictionary(let rawDictionary): return rawDictionary
+            case .string(let rawString): return rawString
+            case .number(let rawNumber): return rawNumber
+            case .bool(let rawBool): return rawBool
+            case .null, .unknown: return NSNull()
             }
         }
         set {
-            error = nil
-            switch unwrap(newValue) {
-            case let number as NSNumber:
-                if number.isBool {
-                    type = .bool
-                    rawBool = number.boolValue
-                } else {
-                    type = .number
-                    rawNumber = number
-                }
-            case let string as String:
-                type = .string
-                rawString = string
-            case _ as NSNull:
-                type = .null
-            case nil:
-                type = .null
-            case let array as [Any]:
-                type = .array
-                rawArray = array
-            case let dictionary as [String: Any]:
-                type = .dictionary
-                rawDictionary = dictionary
-            default:
-                type = .unknown
-                error = SwiftyJSONError.unsupportedType
-            }
+            (content, error) = resolveContentAndError(for: newValue)
         }
     }
 
@@ -282,6 +255,12 @@ public struct JSON {
 }
 
 /// Private method to unwarp an object recursively
+private func resolveContentAndError(for jsonObject: Any) -> (Content, SwiftyJSONError?) {
+    let content = resolveContent(for: jsonObject)
+    let error: SwiftyJSONError? = (content == .unknown) ? .unsupportedType : nil
+    return (content, error)
+}
+
 private func resolveContent(for jsonObject: Any) -> Content {
     switch unwrap(jsonObject) {
     case let number as NSNumber:

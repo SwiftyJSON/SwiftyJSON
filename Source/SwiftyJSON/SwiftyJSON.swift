@@ -67,14 +67,27 @@ JSON's type definitions.
 
 See http://www.json.org
 */
+
+/// Options of JSON content
+fileprivate enum Content {
+    case number(NSNumber)
+    case bool(Bool)
+    case string(String)
+    case null
+    case array([Any])
+    case dictionary([String: Any])
+    case unknown
+}
+
+/// Type of JSON content
 public enum Type: Int {
-	case number
-	case string
-	case bool
-	case array
-	case dictionary
-	case null
-	case unknown
+    case number
+    case string
+    case bool
+    case array
+    case dictionary
+    case null
+    case unknown
 }
 
 // MARK: - JSON Base

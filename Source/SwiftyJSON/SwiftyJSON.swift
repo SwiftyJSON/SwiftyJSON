@@ -142,6 +142,13 @@ public struct JSON {
 			self.init(NSNull())
 		}
 	}
+    
+    // TODO: - add documentation
+    
+    fileprivate init(error: SwiftyJSONError) {
+        self.content = .null
+        self.error = error
+    }
 
 	/**
 	 Creates a JSON using the object.
@@ -151,7 +158,26 @@ public struct JSON {
 	 - returns: The created JSON
 	 */
     fileprivate init(jsonObject: Any) {
-        object = jsonObject
+        
+        // TODO: - move logic to function [ content(for object: Any) -> Content? ]
+        
+        switch unwrap(jsonObject) {
+        case let number as NSNumber:
+            content = number.isBool ? .bool(number.boolValue) : .number(number)
+        case let string as String:
+            content = .string(string)
+        case _ as NSNull:
+            content = .null
+        case nil:
+            content = .null
+        case let array as [Any]:
+            content = .array(array)
+        case let dictionary as [String: Any]:
+            content = .dictionary(dictionary)
+        default:
+            content = .unknown
+            error = SwiftyJSONError.unsupportedType
+        }
     }
 
 	/**
@@ -207,16 +233,19 @@ public struct JSON {
         }
     }
 
-    /// Private object
-    fileprivate var rawArray: [Any] = []
-    fileprivate var rawDictionary: [String: Any] = [:]
-    fileprivate var rawString: String = ""
-    fileprivate var rawNumber: NSNumber = 0
-    fileprivate var rawNull: NSNull = NSNull()
-    fileprivate var rawBool: Bool = false
-
     /// JSON type, fileprivate setter
-    public fileprivate(set) var type: Type = .null
+    public var type: Type {
+        switch content {
+        case .array: return .array
+        case .bool: return .bool
+        case .dictionary: return .dictionary
+        case .null: return .null
+        case .number: return .number
+        case .string: return .string
+        case .unknown: return .unknown
+        }
+    }
+    fileprivate var content: Content
 
     /// Error in JSON, fileprivate setter
     public fileprivate(set) var error: SwiftyJSONError?

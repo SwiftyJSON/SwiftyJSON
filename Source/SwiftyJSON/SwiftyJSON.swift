@@ -253,6 +253,7 @@ public struct JSON {
         }
     }
     
+    /// Mutating method that updates JSON's underlying content and error
     private mutating func update(content newContent: Content, error: SwiftyJSONError?) {
         self.content = newContent
         self.error = error
@@ -264,13 +265,14 @@ public struct JSON {
     public static var null: JSON { return JSON(NSNull()) }
 }
 
-/// Private method to unwarp an object recursively
+/// Private methods to resolve content AND error of raw jsonObject
 private func resolveContentAndError(for jsonObject: Any) -> (Content, SwiftyJSONError?) {
     let content = resolveContent(for: jsonObject)
     let error: SwiftyJSONError? = (content == .unknown) ? .unsupportedType : nil
     return (content, error)
 }
 
+/// Private methods to resolve content of raw jsonObject
 private func resolveContent(for jsonObject: Any) -> Content {
     switch unwrap(jsonObject) {
     case let number as NSNumber:
@@ -290,6 +292,7 @@ private func resolveContent(for jsonObject: Any) -> Content {
     }
 }
 
+/// Private method to unwarp an object recursively
 private func unwrap(_ object: Any) -> Any {
     switch object {
     case let json as JSON:

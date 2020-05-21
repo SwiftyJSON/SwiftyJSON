@@ -1169,6 +1169,67 @@ extension JSON {
         }
     }
 }
+// MARK: - Content: Comparable
+
+extension Content: Comparable {
+    
+    static func == (lhs: Content, rhs: Content) -> Bool {
+
+        switch (lhs, rhs) {
+        case let (.number(l), .number(r)): return l == r
+        case let (.string(l), .string(r)): return l == r
+        case let (.bool(l), .bool(r)): return l == r
+        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
+        case (.null, .null):     return true
+        default:                 return false
+        }
+    }
+
+    static func <= (lhs: Content, rhs: Content) -> Bool {
+        
+        switch (lhs, rhs) {
+        case let (.number(l), .number(r)): return l <= r
+        case let (.string(l), .string(r)): return l <= r
+        case let (.bool(l), .bool(r)): return l == r
+        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
+        case (.null, .null):     return true
+        default:                 return false
+        }
+    }
+
+    static func >= (lhs: Content, rhs: Content) -> Bool {
+
+        switch (lhs, rhs) {
+        case let (.number(l), .number(r)): return l >= r
+        case let (.string(l), .string(r)): return l >= r
+        case let (.bool(l), .bool(r)): return l == r
+        case let (.array(l), .array(r)): return l as NSArray == r as NSArray
+        case let (.dictionary(l), .dictionary(r)): return l as NSDictionary == r as NSDictionary
+        case (.null, .null):     return true
+        default:                 return false
+        }
+    }
+
+    static func > (lhs: Content, rhs: Content) -> Bool {
+
+        switch (lhs, rhs) {
+        case let (.number(l), .number(r)): return l > r
+        case let (.string(l), .string(r)): return l > r
+        default:                 return false
+        }
+    }
+
+    static func < (lhs: Content, rhs: Content) -> Bool {
+
+        switch (lhs, rhs) {
+        case let (.number(l), .number(r)): return l < r
+        case let (.string(l), .string(r)): return l < r
+        default:                 return false
+        }
+    }
+}
 
 // MARK: - Comparable
 

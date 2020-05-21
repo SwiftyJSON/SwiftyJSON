@@ -1229,60 +1229,23 @@ extension Content: Comparable {
 extension JSON: Swift.Comparable {}
 
 public func == (lhs: JSON, rhs: JSON) -> Bool {
-
-    switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber == rhs.rawNumber
-    case (.string, .string): return lhs.rawString == rhs.rawString
-    case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
-    case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
-    case (.dictionary, .dictionary): return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
-    case (.null, .null):     return true
-    default:                 return false
-    }
+    return lhs.content == rhs.content
 }
 
 public func <= (lhs: JSON, rhs: JSON) -> Bool {
-
-    switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber <= rhs.rawNumber
-    case (.string, .string): return lhs.rawString <= rhs.rawString
-    case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
-    case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
-    case (.dictionary, .dictionary): return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
-    case (.null, .null):     return true
-    default:                 return false
-    }
+    return lhs.content <= rhs.content
 }
 
 public func >= (lhs: JSON, rhs: JSON) -> Bool {
-
-    switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber >= rhs.rawNumber
-    case (.string, .string): return lhs.rawString >= rhs.rawString
-    case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
-    case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
-    case (.dictionary, .dictionary): return lhs.rawDictionary as NSDictionary == rhs.rawDictionary as NSDictionary
-    case (.null, .null):     return true
-    default:                 return false
-    }
+    return lhs.content >= rhs.content
 }
 
 public func > (lhs: JSON, rhs: JSON) -> Bool {
-
-    switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber > rhs.rawNumber
-    case (.string, .string): return lhs.rawString > rhs.rawString
-    default:                 return false
-    }
+    return lhs.content > rhs.content
 }
 
 public func < (lhs: JSON, rhs: JSON) -> Bool {
-
-    switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber < rhs.rawNumber
-    case (.string, .string): return lhs.rawString < rhs.rawString
-    default:                 return false
-    }
+    return lhs.content < rhs.content
 }
 
 private let trueNumber = NSNumber(value: true)

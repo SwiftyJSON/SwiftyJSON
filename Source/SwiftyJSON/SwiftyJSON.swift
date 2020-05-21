@@ -817,28 +817,32 @@ extension JSON {
     //Optional string
     public var string: String? {
         get {
-            switch type {
-            case .string: return object as? String
-            default:      return nil
+            switch content {
+            case .string(let rawString): return rawString
+            default: return nil
             }
         }
         set {
-            object = newValue ?? NSNull()
+            if let rawString = newValue {
+                updateContent(to: .string(rawString), error: nil)
+            } else {
+                updateContent(to: .null, error: nil)
+            }
         }
     }
 
     //Non-optional string
     public var stringValue: String {
         get {
-            switch type {
-            case .string: return object as? String ?? ""
-            case .number: return rawNumber.stringValue
-            case .bool:   return (object as? Bool).map { String($0) } ?? ""
-            default:      return ""
+            switch content {
+            case .string(let rawString):    return rawString
+            case .number(let rawNumber):    return rawNumber.stringValue
+            case .bool(let rawBool):        return String(rawBool)
+            default:                        return ""
             }
         }
         set {
-            object = newValue
+            updateContent(to: .string(newValue), error: nil)
         }
     }
 }
@@ -850,31 +854,35 @@ extension JSON {
     //Optional number
     public var number: NSNumber? {
         get {
-            switch type {
-            case .number: return rawNumber
-            case .bool:   return NSNumber(value: rawBool ? 1 : 0)
-            default:      return nil
+            switch content {
+            case .number(let rawNumber):    return rawNumber
+            case .bool(let rawBool):        return NSNumber(value: rawBool ? 1 : 0)
+            default:                        return nil
             }
         }
         set {
-            object = newValue ?? NSNull()
+            if let rawNumber = newValue {
+                updateContent(to: .number(rawNumber), error: nil)
+            } else {
+                updateContent(to: .null, error: nil)
+            }
         }
     }
 
     //Non-optional number
     public var numberValue: NSNumber {
         get {
-            switch type {
-            case .string:
-                let decimal = NSDecimalNumber(string: object as? String)
+            switch content {
+            case .string(let rawString):
+                let decimal = NSDecimalNumber(string: rawString)
                 return decimal == .notANumber ? .zero : decimal
-            case .number: return object as? NSNumber ?? NSNumber(value: 0)
-            case .bool: return NSNumber(value: rawBool ? 1 : 0)
-            default: return NSNumber(value: 0.0)
+            case .number(let rawNumber):    return rawNumber
+            case .bool(let rawBool):        return NSNumber(value: rawBool ? 1 : 0)
+            default:                        return NSNumber(value: 0.0)
             }
         }
         set {
-            object = newValue
+            updateContent(to: .number(newValue), error: nil)
         }
     }
 }
@@ -885,11 +893,11 @@ extension JSON {
 
     public var null: NSNull? {
         set {
-            object = NSNull()
+            updateContent(to: .null, error: nil)
         }
         get {
-            switch type {
-            case .null: return rawNull
+            switch content {
+            case .null: return NSNull()
             default:    return nil
             }
         }
@@ -909,8 +917,8 @@ extension JSON {
     //Optional URL
     public var url: URL? {
         get {
-            switch type {
-            case .string:
+            switch content {
+            case .string(let rawString):
                 // Check for existing percent escapes first to prevent double-escaping of % character
                 if rawString.range(of: "%[0-9A-Fa-f]{2}", options: .regularExpression, range: nil, locale: nil) != nil {
                     return Foundation.URL(string: rawString)
@@ -925,7 +933,11 @@ extension JSON {
             }
         }
         set {
-            object = newValue?.absoluteString ?? NSNull()
+            if let newValue = newValue {
+                updateContent(to: .string(newValue.absoluteString), error: nil)
+            } else {
+                updateContent(to: .null, error: nil)
+            }
         }
     }
 }
@@ -939,11 +951,7 @@ extension JSON {
             return number?.doubleValue
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object = NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -952,7 +960,7 @@ extension JSON {
             return numberValue.doubleValue
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -961,11 +969,7 @@ extension JSON {
             return number?.floatValue
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object = NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -974,7 +978,7 @@ extension JSON {
             return numberValue.floatValue
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -983,11 +987,7 @@ extension JSON {
             return number?.intValue
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object = NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -996,7 +996,7 @@ extension JSON {
             return numberValue.intValue
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1005,11 +1005,7 @@ extension JSON {
             return number?.uintValue
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object = NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1018,7 +1014,7 @@ extension JSON {
             return numberValue.uintValue
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1027,11 +1023,7 @@ extension JSON {
             return number?.int8Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: Int(newValue))
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: Int($0)) }
         }
     }
 
@@ -1040,7 +1032,7 @@ extension JSON {
             return numberValue.int8Value
         }
         set {
-            object = NSNumber(value: Int(newValue))
+            numberValue = NSNumber(value: Int(newValue))
         }
     }
 
@@ -1049,11 +1041,7 @@ extension JSON {
             return number?.uint8Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1062,7 +1050,7 @@ extension JSON {
             return numberValue.uint8Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1071,11 +1059,7 @@ extension JSON {
             return number?.int16Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1084,7 +1068,7 @@ extension JSON {
             return numberValue.int16Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1093,11 +1077,7 @@ extension JSON {
             return number?.uint16Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1106,7 +1086,7 @@ extension JSON {
             return numberValue.uint16Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1115,11 +1095,7 @@ extension JSON {
             return number?.int32Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1128,7 +1104,7 @@ extension JSON {
             return numberValue.int32Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1137,11 +1113,7 @@ extension JSON {
             return number?.uint32Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1150,7 +1122,7 @@ extension JSON {
             return numberValue.uint32Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1159,11 +1131,7 @@ extension JSON {
             return number?.int64Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1172,7 +1140,7 @@ extension JSON {
             return numberValue.int64Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 
@@ -1181,11 +1149,7 @@ extension JSON {
             return number?.uint64Value
         }
         set {
-            if let newValue = newValue {
-                object = NSNumber(value: newValue)
-            } else {
-                object =  NSNull()
-            }
+            number = newValue.map { NSNumber(value: $0) }
         }
     }
 
@@ -1194,7 +1158,7 @@ extension JSON {
             return numberValue.uint64Value
         }
         set {
-            object = NSNumber(value: newValue)
+            numberValue = NSNumber(value: newValue)
         }
     }
 }

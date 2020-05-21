@@ -158,26 +158,8 @@ public struct JSON {
 	 - returns: The created JSON
 	 */
     fileprivate init(jsonObject: Any) {
-        
-        // TODO: - move logic to function [ content(for object: Any) -> Content? ]
-        
-        switch unwrap(jsonObject) {
-        case let number as NSNumber:
-            content = number.isBool ? .bool(number.boolValue) : .number(number)
-        case let string as String:
-            content = .string(string)
-        case _ as NSNull:
-            content = .null
-        case nil:
-            content = .null
-        case let array as [Any]:
-            content = .array(array)
-        case let dictionary as [String: Any]:
-            content = .dictionary(dictionary)
-        default:
-            content = .unknown
-            error = SwiftyJSONError.unsupportedType
-        }
+        self.content = resolveContent(for: jsonObject)
+        self.error = (self.content == .unknown) ? .unsupportedType : nil
     }
 
 	/**
@@ -300,6 +282,25 @@ public struct JSON {
 }
 
 /// Private method to unwarp an object recursively
+private func resolveContent(for jsonObject: Any) -> Content {
+    switch unwrap(jsonObject) {
+    case let number as NSNumber:
+        return number.isBool ? .bool(number.boolValue) : .number(number)
+    case let string as String:
+        return .string(string)
+    case _ as NSNull:
+        return .null
+    case nil:
+        return .null
+    case let array as [Any]:
+        return .array(array)
+    case let dictionary as [String: Any]:
+        return .dictionary(dictionary)
+    default:
+        return .unknown
+    }
+}
+
 private func unwrap(_ object: Any) -> Any {
     switch object {
     case let json as JSON:

@@ -139,7 +139,7 @@ public struct JSON {
 		if let data = jsonString.data(using: .utf8) {
 			self.init(data)
 		} else {
-			self.init(NSNull())
+            self.init(jsonObject: NSNull())
 		}
 	}
     

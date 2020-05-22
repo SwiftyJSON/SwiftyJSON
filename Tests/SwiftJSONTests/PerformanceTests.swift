@@ -134,4 +134,26 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+    
+    func testLongPathDictionaryLookupPerformance() {
+        
+        let dictionary: JSON = [
+                "one": [
+                    "two": [
+                        "three": [
+                            "four": [
+                                "five": "result"
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        
+        self.measure {
+            (1...1_000).forEach { _ in
+                let resultValue = dictionary["one"]["two"]["three"]["four"]["five"]
+                XCTAssertTrue(resultValue == "result")
+            }
+        }
+    }
 }

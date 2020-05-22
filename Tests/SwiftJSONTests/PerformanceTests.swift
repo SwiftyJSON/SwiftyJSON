@@ -60,7 +60,7 @@ class PerformanceTests: XCTestCase {
             return
         }
         self.measure {
-            for _ in 1...100 {
+            for _ in 1...100_000 {
                 let object: Any? = json.object
                 XCTAssertTrue(object != nil)
             }
@@ -73,7 +73,7 @@ class PerformanceTests: XCTestCase {
             return
         }
         self.measure {
-            for _ in 1...100 {
+            for _ in 1...1_000 {
                 autoreleasepool {
                     if let array = json.array {
                         XCTAssertTrue(array.count > 0)
@@ -89,7 +89,7 @@ class PerformanceTests: XCTestCase {
             return
         }
         self.measure {
-            for _ in 1...100 {
+            for _ in 1...1_000 {
                 autoreleasepool {
                     if let dictionary = json.dictionary {
                         XCTAssertTrue(dictionary.count > 0)
@@ -116,7 +116,7 @@ class PerformanceTests: XCTestCase {
 
     func testLargeDictionaryMethodPerformance() {
         var data: [String: JSON] = [:]
-        (0...100000).forEach { n in
+        (0...100_000).forEach { n in
             data["\(n)"] = JSON([
                 "name": "item\(n)",
                 "id": n
@@ -127,7 +127,7 @@ class PerformanceTests: XCTestCase {
         self.measure {
             autoreleasepool {
                 if let dictionary = json.dictionary {
-                    XCTAssertTrue(dictionary.count == 100001)
+                    XCTAssertTrue(dictionary.count == 100_001)
                 } else {
                     XCTFail("dictionary should not be nil")
                 }
@@ -150,7 +150,7 @@ class PerformanceTests: XCTestCase {
             ]
         
         self.measure {
-            (1...1_000).forEach { _ in
+            (1...10_000).forEach { _ in
                 let resultValue = dictionary["one"]["two"]["three"]["four"]["five"]
                 XCTAssertTrue(resultValue == "result")
             }

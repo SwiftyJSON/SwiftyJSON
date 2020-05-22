@@ -1280,9 +1280,12 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 
 extension NSNumber {
     fileprivate var isBool: Bool {
-        let objCType = String(cString: self.objCType)
-        if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
-            return true
+        if self.compare(trueNumber) == .orderedSame {
+            let objCType = String(cString: self.objCType)
+            return objCType == trueObjCType
+        } else if self.compare(falseNumber) == .orderedSame {
+            let objCType = String(cString: self.objCType)
+            return objCType == trueObjCType
         } else {
             return false
         }

@@ -1285,7 +1285,7 @@ extension NSNumber {
             return objCType == trueObjCType
         } else if self.compare(falseNumber) == .orderedSame {
             let objCType = String(cString: self.objCType)
-            return objCType == trueObjCType
+            return objCType == falseObjCType
         } else {
             return false
         }

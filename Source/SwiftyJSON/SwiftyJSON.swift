@@ -1212,7 +1212,7 @@ public func > (lhs: JSON, rhs: JSON) -> Bool {
 public func < (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber .< rhs.rawNumber
+    case (.number, .number): return lhs.rawNumber < rhs.rawNumber
     case (.string, .string): return lhs.rawString < rhs.rawString
     default:                 return false
     }
@@ -1250,7 +1250,7 @@ func != (lhs: NSNumber, rhs: NSNumber) -> Bool {
     return !(lhs == rhs)
 }
 
-func .< (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false

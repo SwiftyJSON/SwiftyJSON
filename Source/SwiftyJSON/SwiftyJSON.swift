@@ -109,6 +109,7 @@ public struct JSON {
                 try self.init(data: object)
             } catch {
                 self.init(jsonObject: NSNull())
+                self.error = SwiftyJSONError.invalidJSON
             }
         default:
             self.init(jsonObject: object)
@@ -127,6 +128,7 @@ public struct JSON {
 			self.init(data)
 		} else {
 			self.init(NSNull())
+			self.error = SwiftyJSONError.invalidJSON
 		}
 	}
 

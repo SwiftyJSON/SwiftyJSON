@@ -799,6 +799,19 @@ extension JSON {
             object = newValue
         }
     }
+
+    // Non-empty string
+    public var stringNonEmpty: String? {
+        get {
+            switch string {
+            case .some(let value) where !value.isEmpty: return string
+            default:                                    return nil
+            }
+        }
+        set {
+            string = newValue
+        }
+    }
 }
 
 // MARK: - Number

@@ -328,9 +328,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2E4FEFF119575BE100351305 /* Build configuration list for PBXNativeTarget "SwiftyJSON iOS" */;
 			buildPhases = (
+				2E4FEFD819575BE100351305 /* Headers */,
 				2E4FEFD619575BE100351305 /* Sources */,
 				2E4FEFD719575BE100351305 /* Frameworks */,
-				2E4FEFD819575BE100351305 /* Headers */,
 				2E4FEFD919575BE100351305 /* Resources */,
 			);
 			buildRules = (
@@ -364,9 +364,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7236B4F31BAC14150020529B /* Build configuration list for PBXNativeTarget "SwiftyJSON tvOS" */;
 			buildPhases = (
+				7236B4F01BAC14150020529B /* Headers */,
 				7236B4ED1BAC14150020529B /* Sources */,
 				7236B4EF1BAC14150020529B /* Frameworks */,
-				7236B4F01BAC14150020529B /* Headers */,
 				7236B4F21BAC14150020529B /* Resources */,
 			);
 			buildRules = (
@@ -382,9 +382,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9C7DFC6E1A9102BD005AA3F7 /* Build configuration list for PBXNativeTarget "SwiftyJSON macOS" */;
 			buildPhases = (
+				9C7DFC581A9102BD005AA3F7 /* Headers */,
 				9C7DFC561A9102BD005AA3F7 /* Sources */,
 				9C7DFC571A9102BD005AA3F7 /* Frameworks */,
-				9C7DFC581A9102BD005AA3F7 /* Headers */,
 				9C7DFC591A9102BD005AA3F7 /* Resources */,
 			);
 			buildRules = (
@@ -436,9 +436,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4D7CCE51B9465A700EE7221 /* Build configuration list for PBXNativeTarget "SwiftyJSON watchOS" */;
 			buildPhases = (
+				E4D7CCE21B9465A700EE7221 /* Headers */,
 				E4D7CCDF1B9465A700EE7221 /* Sources */,
 				E4D7CCE11B9465A700EE7221 /* Frameworks */,
-				E4D7CCE21B9465A700EE7221 /* Headers */,
 				E4D7CCE41B9465A700EE7221 /* Resources */,
 			);
 			buildRules = (

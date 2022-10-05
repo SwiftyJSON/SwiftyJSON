@@ -396,7 +396,7 @@ let json: JSON = "I'm a json"
 ```
 
 ```swift
-/ /IntegerLiteralConvertible
+// IntegerLiteralConvertible
 let json: JSON =  12345
 ```
 

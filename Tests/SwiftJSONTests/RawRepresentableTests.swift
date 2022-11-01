@@ -84,6 +84,12 @@ class RawRepresentableTests: XCTestCase {
         if JSON(rawValue: NSObject()) != nil {
             XCTFail("Should not run into here")
         }
+        
+        do {
+            let n: Int? = nil
+            let json = JSON(n as Any)
+            XCTAssertEqual(json.type, .null)
+        }
     }
 
     func testArray() {

@@ -467,10 +467,14 @@ extension JSON {
      Find a json in the complex data structures by using array of Int and/or String as path.
 
      - parameter path: The target json's path. Example:
-
+     ```swift
      let name = json[9,"list","person","name"]
-
-     The same as: let name = json[9]["list"]["person"]["name"]
+     ```
+	
+     The same as: 
+     ```swift
+     let name = json[9]["list"]["person"]["name"]
+     ```
 
      - returns: Return a json found by the path or a null json with error
      */

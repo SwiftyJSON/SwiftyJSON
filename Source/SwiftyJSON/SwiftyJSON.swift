@@ -433,7 +433,7 @@ extension JSON {
 	
 	 Example:
 	
-	 ```
+	 ```swift
 	 let json = JSON[data]
 	 let path = [9,"list","person","name"]
 	 let name = json[path]

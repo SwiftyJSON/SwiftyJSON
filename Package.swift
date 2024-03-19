@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -7,7 +7,12 @@ let package = Package(
         .library(name: "SwiftyJSON", targets: ["SwiftyJSON"])
     ],
     targets: [
-        .target(name: "SwiftyJSON", dependencies: []),
+        .target(name: "SwiftyJSON", 
+                dependencies: [],
+                resources: [
+                    .copy("PrivacyInfo.xcprivacy")
+                ]
+               ),
         .testTarget(name: "SwiftJSONTests", dependencies: ["SwiftyJSON"])
     ],
     swiftLanguageVersions: [.v5]

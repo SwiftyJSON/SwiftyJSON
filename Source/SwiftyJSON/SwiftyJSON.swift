@@ -257,7 +257,7 @@ public struct JSON {
     public static var null: JSON { return JSON(NSNull()) }
 }
 
-/// Private method to unwarp an object recursively
+/// Private method to unwrap an object recursively
 private func unwrap(_ object: Any) -> Any {
     switch object {
     case let json as JSON:

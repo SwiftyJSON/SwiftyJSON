@@ -26,6 +26,7 @@ import SwiftyJSON
 class BaseTests: XCTestCase {
 
     var testData: Data!
+    var corruptJSONString: String!
 
     override func setUp() {
 
@@ -38,6 +39,8 @@ class BaseTests: XCTestCase {
         } else {
             XCTFail("Can't find the test JSON file")
         }
+        
+        self.corruptJSONString = "{\n This is a corrupt JSON example."
     }
 
     override func tearDown() {
@@ -273,5 +276,10 @@ class BaseTests: XCTestCase {
         } catch {
             // everything is OK
         }
+    }
+    
+    func testCorruptJSON() {
+        XCTAssertEqual(JSON(parseJSON: self.corruptJSONString).error, SwiftyJSONError.invalidJSON)
+        XCTAssertEqual(JSON(Data(self.corruptJSONString.utf8)).error, SwiftyJSONError.invalidJSON)
     }
 }

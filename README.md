@@ -24,6 +24,7 @@ Platform | Build Status
    - [Raw object](#raw-object)
    - [Literal convertibles](#literal-convertibles)
    - [Merging](#merging)
+   - [Removing elements](#removing-elements)
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
 7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
@@ -501,6 +502,69 @@ let updated = original.merge(with: update)
 //         "city": "New York City"
 //     ]
 // ]
+```
+
+
+#### Removing elements
+
+If you are storing dictionaries, you can remove elements using `dictionaryObject.removeValue(forKey:)`. This mutates the JSON object in place.
+
+For example:
+
+```swift
+var object = JSON([
+    "one": ["color": "blue"],
+    "two": ["city": "tokyo",
+            "country": "japan",
+            "foods": [
+                "breakfast": "tea",
+                "lunch": "sushi"
+                ]
+            ]
+])
+```
+
+Lets remove the `country` key:
+
+```swift
+object["two"].dictionaryObject?.removeValue(forKey: "country")
+```
+
+If you `print(object)`, you'll see that the `country` key no longer exists.
+
+```json
+{
+  "one" : {
+    "color" : "blue"
+  },
+  "two" : {
+    "city" : "tokyo",
+    "foods" : {
+      "breakfast" : "tea",
+      "lunch" : "sushi"
+    }
+  }
+}
+```
+
+This also works for nested dictionaries:
+
+```swift
+object["two"]["foods"].dictionaryObject?.removeValue(forKey: "breakfast")
+```
+
+```json
+{
+  "one" : {
+    "color" : "blue"
+  },
+  "two" : {
+    "city" : "tokyo",
+    "foods" : {
+      "lunch" : "sushi"
+    }
+  }
+}
 ```
 
 ## String representation

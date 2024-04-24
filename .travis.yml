@@ -4,5 +4,6 @@ xcode_sdk: iphonesimulator12.0
 script:
 - set -o pipefail
 - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON iOS" -destination "platform=iOS Simulator,name=iPhone 6" build-for-testing test | xcpretty
+- travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "Example" -destination "platform=iOS Simulator,name=iPhone 6" build | xcpretty
 - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON macOS" build-for-testing test | xcpretty
 - travis_retry xcodebuild -workspace SwiftyJSON.xcworkspace -scheme "SwiftyJSON tvOS" -destination "platform=tvOS Simulator,name=Apple TV" build-for-testing test | xcpretty

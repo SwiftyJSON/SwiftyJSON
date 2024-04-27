@@ -30,10 +30,17 @@ class StringTests: XCTestCase {
         var json = JSON("abcdefg hijklmn;opqrst.?+_()")
         XCTAssertEqual(json.string!, "abcdefg hijklmn;opqrst.?+_()")
         XCTAssertEqual(json.stringValue, "abcdefg hijklmn;opqrst.?+_()")
+        XCTAssertEqual(json.stringNonEmpty!, "abcdefg hijklmn;opqrst.?+_()")
 
         json.string = "12345?67890.@#"
         XCTAssertEqual(json.string!, "12345?67890.@#")
         XCTAssertEqual(json.stringValue, "12345?67890.@#")
+        XCTAssertEqual(json.stringNonEmpty!, "12345?67890.@#")
+
+        json.string = ""
+        XCTAssertEqual(json.string!, "")
+        XCTAssertEqual(json.stringValue, "")
+        XCTAssertEqual(json.stringNonEmpty, nil)
     }
 
     func testUrl() {

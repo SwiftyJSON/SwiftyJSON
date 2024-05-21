@@ -1,7 +1,7 @@
 disabled_rules:
   - force_cast
   - force_try
-  - variable_name
+  - identifier_name
   - type_name
   - file_length
   - line_length

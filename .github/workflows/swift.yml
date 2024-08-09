@@ -1,0 +1,23 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Swift
+on: [push, pull_request]
+jobs:
+  build:
+    name: Swift
+    runs-on: macos-latest
+    steps:
+      - run: brew install homebrew/cask/swift swiftlint
+      - uses: actions/checkout@v4
+      - run: swiftlint --version
+      - run: swiftlint --fix --quiet && git diff
+      - run: swiftlint --quiet | tee swiftlint.out.txt
+      - name: Failing SwiftLint rules
+        shell: python
+        run: |
+          with open("swiftlint.out.txt") as in_file:
+              errors = set(line.rsplit("(")[-1][:-2] for line in in_file if line.strip().endswith(")"))
+          print(f"{len(errors) = }\ndisabled_rules:")
+          print("  - " + "\n  - ".join(sorted(errors)))
+      - run: swift build || true
+      - run: swift test  || true

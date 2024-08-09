@@ -93,7 +93,7 @@ class SubscriptTests: XCTestCase {
     }
 
     func testArrayAllDictionary() {
-        var json: JSON = [["1": 1, "2": 2], ["a": "A", "b": "B"], ["null": NSNull()]]
+        let json: JSON = [["1": 1, "2": 2], ["a": "A", "b": "B"], ["null": NSNull()]]
         XCTAssertTrue(json[0] == ["1": 1, "2": 2])
         XCTAssertEqual(json[1].dictionary!, ["a": "A", "b": "B"])
         XCTAssertEqual(json[2], JSON(["null": NSNull()]))

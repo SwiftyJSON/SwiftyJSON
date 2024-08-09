@@ -19,5 +19,5 @@ jobs:
               errors = set(line.rsplit("(")[-1][:-2] for line in in_file if line.strip().endswith(")"))
           print(f"{len(errors) = }\ndisabled_rules:")
           print("  - " + "\n  - ".join(sorted(errors)))
-      - run: swift build || true
-      - run: swift test  || true
+      - run: swift build
+      - run: swift test

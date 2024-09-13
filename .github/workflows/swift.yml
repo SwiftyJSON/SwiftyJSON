@@ -1,10 +1,10 @@
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
 
-name: Swift
+name: ci
 on: [push, pull_request]
 jobs:
   build:
-    name: Swift
+    name: build_and_test
     runs-on: macos-latest
     steps:
       - run: brew install homebrew/cask/swift swiftlint

@@ -20,4 +20,4 @@ jobs:
           print(f"{len(errors) = }\ndisabled_rules:")
           print("  - " + "\n  - ".join(sorted(errors)))
       - run: swift build
-      - run: swift test
+      - run: swift test 

@@ -229,7 +229,7 @@ class BaseTests: XCTestCase {
         let array = [["number": 1111]]
         let jsonForArray = JSON(array)
         XCTAssertTrue(jsonForArray[0].exists())
-        XCTAssertFalse(jsonForArray[1].exists() ?? false)
+        XCTAssertFalse(jsonForArray[safe: 1].exists() ?? false)
         XCTAssertFalse(jsonForArray["someValue"].exists())
     }
 

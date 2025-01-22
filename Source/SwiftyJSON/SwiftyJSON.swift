@@ -82,7 +82,7 @@ public enum Type: Int {
 public struct JSON {
 
 	/**
-	 Creates a JSON using the data.
+	 Creates a JSON using the data.//123456gurpal
 	
 	 - parameter data: The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
 	 - parameter opt: The JSON serialization reading options. `[]` by default.

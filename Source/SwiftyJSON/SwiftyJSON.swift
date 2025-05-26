@@ -787,7 +787,7 @@ extension JSON {
             switch type {
             case .string: return object as? String ?? ""
             case .number: return rawNumber.stringValue
-            case .bool:   return (object as? Bool).map { String($0) } ?? ""
+            case .bool:   return (object as? Bool).map(String.init) ?? ""
             default:      return ""
             }
         }

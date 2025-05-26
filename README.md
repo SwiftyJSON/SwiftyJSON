@@ -24,6 +24,7 @@ Platform | Build Status
    - [Raw object](#raw-object)
    - [Literal convertibles](#literal-convertibles)
    - [Merging](#merging)
+   - [Removing elements](#removing-elements)
 5. [Work with Alamofire](#work-with-alamofire)
 6. [Work with Moya](#work-with-moya)
 7. [SwiftyJSON Model Generator](#swiftyjson-model-generator)
@@ -61,7 +62,7 @@ An unreadable mess--for something that should really be simple!
 With SwiftyJSON all you have to do is:
 
 ```swift
-let json = JSON(data: dataFromNetworking)
+let json = try? JSON(data: dataFromNetworking)
 if let userName = json[0]["user"]["name"].string {
   //Now you got your value
 }
@@ -70,7 +71,7 @@ if let userName = json[0]["user"]["name"].string {
 And don't worry about the Optional Wrapping thing. It's done for you automatically.
 
 ```swift
-let json = JSON(data: dataFromNetworking)
+let json = try? JSON(data: dataFromNetworking)
 let result = json[999999]["wrong_key"]["wrong_name"]
 if let userName = result.string {
     //Calm down, take it easy, the ".string" property still produces the correct Optional String type with safety
@@ -143,7 +144,7 @@ import SwiftyJSON
 ```
 
 ```swift
-let json = JSON(data: dataFromNetworking)
+let json = try? JSON(data: dataFromNetworking)
 ```
 Or
 
@@ -503,6 +504,69 @@ let updated = original.merge(with: update)
 // ]
 ```
 
+
+#### Removing elements
+
+If you are storing dictionaries, you can remove elements using `dictionaryObject.removeValue(forKey:)`. This mutates the JSON object in place.
+
+For example:
+
+```swift
+var object = JSON([
+    "one": ["color": "blue"],
+    "two": ["city": "tokyo",
+            "country": "japan",
+            "foods": [
+                "breakfast": "tea",
+                "lunch": "sushi"
+                ]
+            ]
+])
+```
+
+Lets remove the `country` key:
+
+```swift
+object["two"].dictionaryObject?.removeValue(forKey: "country")
+```
+
+If you `print(object)`, you'll see that the `country` key no longer exists.
+
+```json
+{
+  "one" : {
+    "color" : "blue"
+  },
+  "two" : {
+    "city" : "tokyo",
+    "foods" : {
+      "breakfast" : "tea",
+      "lunch" : "sushi"
+    }
+  }
+}
+```
+
+This also works for nested dictionaries:
+
+```swift
+object["two"]["foods"].dictionaryObject?.removeValue(forKey: "breakfast")
+```
+
+```json
+{
+  "one" : {
+    "color" : "blue"
+  },
+  "two" : {
+    "city" : "tokyo",
+    "foods" : {
+      "lunch" : "sushi"
+    }
+  }
+}
+```
+
 ## String representation
 There are two options available:
 - use the default Swift one
@@ -556,5 +620,4 @@ provider.request(.showProducts) { result in
 
 ## SwiftyJSON Model Generator
 Tools to generate SwiftyJSON Models
-* [JSON Cafe](http://www.jsoncafe.com/)
 * [JSON Export](https://github.com/Ahmed-Ali/JSONExport)

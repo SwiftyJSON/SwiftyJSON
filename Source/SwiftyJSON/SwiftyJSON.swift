@@ -676,7 +676,7 @@ extension JSON {
 
     //Optional [JSON]
     public var array: [JSON]? {
-        return type == .array ? rawArray.map { JSON($0) } : nil
+        return type == .array ? rawArray.map(JSON.init(_:)) : nil
     }
 
     //Non-optional [JSON]

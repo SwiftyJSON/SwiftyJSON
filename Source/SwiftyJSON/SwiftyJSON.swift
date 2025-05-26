@@ -705,11 +705,7 @@ extension JSON {
     //Optional [String : JSON]
     public var dictionary: [String: JSON]? {
         if type == .dictionary {
-            var d = [String: JSON](minimumCapacity: rawDictionary.count)
-            rawDictionary.forEach { pair in
-                d[pair.key] = JSON(pair.value)
-            }
-            return d
+            return rawDictionary.mapValues(JSON.init(_:))
         } else {
             return nil
         }

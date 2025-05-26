@@ -524,7 +524,7 @@ extension JSON: Swift.ExpressibleByFloatLiteral {
 
 extension JSON: Swift.ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, Any)...) {
-        let dictionary = elements.reduce(into: [String: Any](), { $0[$1.0] = $1.1})
+        let dictionary = Dictionary(elements, uniquingKeysWith: { $1 })
         self.init(dictionary)
     }
 }

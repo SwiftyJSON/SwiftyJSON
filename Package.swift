@@ -13,7 +13,13 @@ let package = Package(
                     .copy("PrivacyInfo.xcprivacy")
                 ]
                ),
-        .testTarget(name: "SwiftJSONTests", dependencies: ["SwiftyJSON"])
+        .testTarget(
+            name: "SwiftJSONTests",
+            dependencies: ["SwiftyJSON"],
+            resources: [
+                .copy("Tests.json")
+            ]
+        )
     ],
     swiftLanguageVersions: [.v5]
 )

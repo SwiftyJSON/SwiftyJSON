@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+@testable import SwiftyJSON
 
 class DictionaryTests: XCTestCase {
 
@@ -51,5 +51,47 @@ class DictionaryTests: XCTestCase {
         XCTAssertEqual(json.dictionaryObject! as! [String: String], ["test": "case"])
         json.dictionaryObject = ["name": "NAME"]
         XCTAssertEqual(json.dictionaryObject! as! [String: String], ["name": "NAME"])
+    }
+    
+    func testCustomRecursiveSetter() throws {
+        var dict: [String: Any] = [
+            "user": [
+                "entities": [
+                    "url": [
+                        "urls": [
+                            [ "url": "http://example.com", "indices": [0, 23] ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    
+        // top setter test
+        try dict.set("newValue", at: ["a"])
+        XCTAssertEqual(dict["a"] as? String, "newValue")
+        
+        // nested values test
+        let newIndices = [5, 10]
+        let path: [JSONSubscriptType] = ["user", "entities", "url", "urls", 0, "indices"]
+
+        try dict.set(newIndices, at: path)
+        let result = (((((dict["user"] as? [String: Any])?["entities"] as? [String: Any])?["url"] as? [String: Any])?["urls"] as? [[String: Any]])?[0]["indices"]) as? [Int]
+        XCTAssertEqual(result, newIndices)
+        
+        // missing key test
+        dict.removeAll()
+        XCTAssertThrowsError(
+            try dict.set("value", at: ["doesNotExist", "doesNotExist2"])
+        ) { error in
+            XCTAssertEqual(error as? SwiftyJSONError, .notExist)
+        }
+        
+        // wrong type test
+        dict = ["user": "notADictionary"]
+        XCTAssertThrowsError(
+            try dict.set("value", at: ["user", "entities"])
+        ) { error in
+            XCTAssertEqual(error as? SwiftyJSONError, .wrongType)
+        }
     }
 }

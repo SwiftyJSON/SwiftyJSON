@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-import SwiftyJSON
+@testable import SwiftyJSON
 
 class ArrayTests: XCTestCase {
 
@@ -41,5 +41,41 @@ class ArrayTests: XCTestCase {
         json.arrayObject = ["111", "222"]
         XCTAssertEqual((json.array![0] as JSON).string!, "111")
         XCTAssertEqual((json.array![1] as JSON).string!, "222")
+    }
+    
+    func testCustomArraySetter() throws {
+        // top level setter test
+        var array: [Any] = ["oldValue"]
+        try array.set("newValue", at: [0])
+        XCTAssertEqual(array[0] as? String, "newValue")
+        
+        // nested value test
+        array = [
+            ["entities": [
+                "url": [
+                    "urls": [
+                        ["indices": [0, 1]]
+                    ]
+                ]
+            ]]
+        ]
+        let newIndices = [7, 14]
+        let path: [JSONSubscriptType] =  [0, "entities", "url", "urls", 0, "indices"]
+        try array.set(newIndices, at: path)
+        let extracted = (((array[0] as? [String: Any])?[
+            "entities"
+        ] as? [String: Any])?["url"] as? [String: Any])?["urls"] as? [[String: Any]]
+        let result = extracted?[0]["indices"] as? [Int]
+        XCTAssertEqual(result, newIndices)
+        
+        array = []
+        XCTAssertThrowsError(try array.set("value", at: [0])) { error in
+            XCTAssertEqual(error as? SwiftyJSONError, .indexOutOfBounds)
+        }
+
+        array = ["notAContainer"]
+        XCTAssertThrowsError(try array.set("value", at: [0, "entities"])) { error in
+            XCTAssertEqual(error as? SwiftyJSONError, .wrongType)
+        }
     }
 }

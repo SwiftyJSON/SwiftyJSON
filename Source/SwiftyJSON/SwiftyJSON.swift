@@ -31,6 +31,12 @@ public enum SwiftyJSONError: Int, Swift.Error {
     case wrongType = 901
     case notExist = 500
     case invalidJSON = 490
+    
+    fileprivate func getJSON() -> JSON {
+        var json = JSON.null
+        json.error = self
+        return json
+    }
 }
 
 extension SwiftyJSONError: CustomNSError {
@@ -361,100 +367,72 @@ extension String: JSONSubscriptType {
 }
 
 extension JSON {
+    /**
+     Find a json in the complex data structures by using array of Int and/or String as path.
+    
+     Example:
+    
+     ```swift
+     let json = JSON[data]
+     let path = [9,"list","person","name"]
+     let name = json[path]
+     ```
+    
+     Produce the same result as:
+     ```swift
+     let name = json[9]["list"]["person"]["name"]
+     ```
 
-    /// If `type` is `.array`, return json whose object is `array[index]`, otherwise return null json with error.
-    fileprivate subscript(index index: Int) -> JSON {
-        get {
-            if type != .array {
-                var r = JSON.null
-                r.error = self.error ?? SwiftyJSONError.wrongType
-                return r
-            } else if rawArray.indices.contains(index) {
-                return JSON(rawArray[index])
-            } else {
-                var r = JSON.null
-                r.error = SwiftyJSONError.indexOutOfBounds
-                return r
-            }
-        }
-        set {
-            if type == .array &&
-                rawArray.indices.contains(index) &&
-                newValue.error == nil {
-                rawArray[index] = newValue.object
-            }
-        }
-    }
-
-    /// If `type` is `.dictionary`, return json whose object is `dictionary[key]` , otherwise return null json with error.
-    fileprivate subscript(key key: String) -> JSON {
-        get {
-            var r = JSON.null
-            if type == .dictionary {
-                if let o = rawDictionary[key] {
-                    r = JSON(o)
-                } else {
-                    r.error = SwiftyJSONError.notExist
-                }
-            } else {
-                r.error = self.error ?? SwiftyJSONError.wrongType
-            }
-            return r
-        }
-        set {
-            if type == .dictionary && newValue.error == nil {
-                rawDictionary[key] = newValue.object
-            }
-        }
-    }
-
-    /// If `sub` is `Int`, return `subscript(index:)`; If `sub` is `String`,  return `subscript(key:)`.
-    fileprivate subscript(sub sub: JSONSubscriptType) -> JSON {
-        get {
-            switch sub.jsonKey {
-            case .index(let index): return self[index: index]
-            case .key(let key):     return self[key: key]
-            }
-        }
-        set {
-            switch sub.jsonKey {
-            case .index(let index): self[index: index] = newValue
-            case .key(let key):     self[key: key] = newValue
-            }
-        }
-    }
-
-	/**
-	 Find a json in the complex data structures by using array of Int and/or String as path.
-	
-	 Example:
-	
-	 ```swift
-	 let json = JSON[data]
-	 let path = [9,"list","person","name"]
-	 let name = json[path]
-	 ```
-	
-	 The same as: let name = json[9]["list"]["person"]["name"]
-	
-	 - parameter path: The target json's path.
-	
-	 - returns: Return a json found by the path or a null json with error
-	 */
+     But prefer using the first version if you access more than one level at a time.
+    
+     - parameter path: The target json's path.
+    
+     - returns: Return a json found by the path or a null json with error
+     */
     public subscript(path: [JSONSubscriptType]) -> JSON {
         get {
-            return path.reduce(self) { $0[sub: $1] }
+            var currentObject: Any = self.object
+            
+            for pathElement in path {
+                switch pathElement.jsonKey {
+                case .index(let index):
+                    guard let castedCurrentObject = currentObject as? Array<Any> else {
+                        return self.error != nil ? self : SwiftyJSONError.wrongType.getJSON()
+                    }
+                    
+                    guard castedCurrentObject.indices.contains(index) else {
+                        return self.error != nil ? self : SwiftyJSONError.indexOutOfBounds.getJSON()
+                    }
+                    
+                    currentObject = castedCurrentObject[index]
+                case .key(let key):
+                    guard let castedCurrentObject = currentObject as? Dictionary<String, Any> else {
+                        return self.error != nil ? self : SwiftyJSONError.wrongType.getJSON()
+                    }
+                    
+                    guard let newValue = castedCurrentObject[key] else {
+                        return self.error != nil ? self : SwiftyJSONError.notExist.getJSON()
+                    }
+                    
+                    currentObject = newValue
+                }
+            }
+            
+            return JSON(currentObject)
         }
         set {
-            switch path.count {
-            case 0: return
-            case 1: self[sub:path[0]].object = newValue.object
-            default:
-                var aPath = path
-                aPath.remove(at: 0)
-                var nextJSON = self[sub: path[0]]
-                nextJSON[aPath] = newValue
-                self[sub: path[0]] = nextJSON
+            guard let head = path.first else { return }
+            
+            switch head.jsonKey {
+                case .index(_):
+                if type == .array && newValue.error == nil {
+                    try? self.rawArray.set(newValue.object, at: path)
+                }
+                
+                case .key(_):
+                if type == .dictionary && newValue.error == nil {
+                    try? self.rawDictionary.set(newValue.object, at: path)
+                }
             }
         }
     }
@@ -466,12 +444,14 @@ extension JSON {
      ```swift
      let name = json[9,"list","person","name"]
      ```
-	
-     The same as: 
+    
+     Produce the same result as:
      ```swift
      let name = json[9]["list"]["person"]["name"]
      ```
 
+     But prefer using the first version if you access more than one level at a time.
+     
      - returns: Return a json found by the path or a null json with error
      */
     public subscript(path: JSONSubscriptType...) -> JSON {
@@ -480,6 +460,81 @@ extension JSON {
         }
         set {
             self[path] = newValue
+        }
+    }
+}
+
+// MARK: - Dictionary and Array recursive setters
+
+extension Dictionary where Key == String, Value == Any {
+    /// Recursively set `newValue` at the location described by `path`.
+    ///
+    /// - Parameters:
+    ///   - path:   An array like `["user", "entities", "url", "urls", 0, "indices"]`
+    ///   - newValue: The value you want to put there.
+    internal mutating func set(_ newValue: Any, at path: [JSONSubscriptType]) throws {
+        guard !path.isEmpty else { return }
+        var path = path
+        let head = path.removeFirst()
+        
+        switch head.jsonKey {
+        case .key(let k):
+            if path.isEmpty {
+                self[k] = newValue
+            } else {
+                guard let next: Any = self[k] else { throw SwiftyJSONError.notExist }
+                
+                switch next {
+                case var dict as [String: Any]:
+                    try dict.set(newValue, at: path)
+                    self[k] = dict
+                case var array as [Any]:
+                    try array.set(newValue, at: path)
+                    self[k] = array
+                default:
+                    throw SwiftyJSONError.wrongType
+                }
+                
+            }
+        default:
+            throw SwiftyJSONError.wrongType
+        }
+    }
+}
+
+extension Array where Element == Any {
+    /// Recursively set `newValue` at the location described by `path`.
+    ///
+    /// - Parameters:
+    ///   - path:   An array like `[0, "entities", "url", "urls", 0, "indices"]`
+    ///   - newValue: The value you want to put there.
+    internal mutating func set(_ newValue: Any, at path: [JSONSubscriptType]) throws {
+        guard !path.isEmpty else { return }
+        var path = path
+        let head = path.removeFirst()
+        
+        switch head.jsonKey {
+        case .index(let i):
+            guard self.indices.contains(i) else { throw SwiftyJSONError.indexOutOfBounds }
+            
+            if path.isEmpty {
+                self[i] = newValue
+            } else {
+                let next = self[i]
+                                
+                switch next {
+                case var dict as [String: Any]:
+                    try dict.set(newValue, at: path)
+                    self[i] = dict
+                case var array as [Any]:
+                    try array.set(newValue, at: path)
+                    self[i] = array
+                default:
+                    throw SwiftyJSONError.wrongType
+                }
+            }
+        default:
+            throw SwiftyJSONError.wrongType
         }
     }
 }

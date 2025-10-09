@@ -264,4 +264,50 @@ class SubscriptTests: XCTestCase {
         XCTAssertEqual(json["user", "info", "email"], "tom@qq.com")
         XCTAssertEqual(json["user", "feeds"], [77323, 2313, 4545, 323])
     }
+
+    func testIntRawRepresentable() {
+        enum IntKey: Int, RawRepresentable, JSONSubscriptType {
+            case zero = 0
+            case one = 1
+            case two = 2
+        }
+
+        var json = JSON([1, 2])
+        XCTAssertEqual(json[IntKey.zero], 1)
+        XCTAssertEqual(json[IntKey.one], 2)
+        XCTAssertEqual(json[IntKey.two], JSON.null)
+        XCTAssertEqual(json[IntKey.two].error, SwiftyJSONError.indexOutOfBounds)
+
+        json[IntKey.one] = [3]
+        json[IntKey.two] = [4]
+        XCTAssertEqual(json[IntKey.one], [3])
+        XCTAssertEqual(json[1], [3])
+        XCTAssertEqual(json[IntKey.two], JSON.null)
+        XCTAssertEqual(json[2], JSON.null)
+
+        XCTAssertEqual(json["1"], JSON.null)
+    }
+
+    func testStringRawRepresentable() {
+        enum StringKey: String, RawRepresentable, JSONSubscriptType {
+            case zero = "0"
+            case one = "1"
+            case two = "2"
+        }
+
+        var json = JSON(["0": 1, "1": 2])
+        XCTAssertEqual(json[StringKey.zero], 1)
+        XCTAssertEqual(json[StringKey.one], 2)
+        XCTAssertEqual(json[StringKey.two], JSON.null)
+        XCTAssertEqual(json[StringKey.two].error, SwiftyJSONError.notExist)
+
+        json[StringKey.one] = [3]
+        json[StringKey.two] = [4]
+        XCTAssertEqual(json[StringKey.one], [3])
+        XCTAssertEqual(json["1"], [3])
+        XCTAssertEqual(json[StringKey.two], [4])
+        XCTAssertEqual(json["2"], [4])
+
+        XCTAssertEqual(json[1], JSON.null)
+    }
 }

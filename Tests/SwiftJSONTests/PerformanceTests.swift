@@ -134,4 +134,66 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+    
+    func testArrayStackAccessPerformance() {
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
+        
+        self.measure {
+            for _ in 1...10_000 {
+                autoreleasepool {
+                    let string = json[0]["user"]["entities"]["url"]["urls"][0]["indices"]
+                    XCTAssertTrue(string.exists())
+                }
+            }
+        }
+    }
+    
+    func testBigArrayAccessPerformance() {
+        guard let json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
+        
+        self.measure {
+            for _ in 1...10_000 {
+                autoreleasepool {
+                    let string = json[0, "user", "entities", "url", "urls", 0, "indices"]
+                    XCTAssertTrue(string.exists())
+                }
+            }
+        }
+    }
+    
+    func testArrayStackWritePerformance() {
+        guard var json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
+        
+        self.measure {
+            for _ in 1...10_000 {
+                autoreleasepool {
+                    json[0]["user"]["entities"]["url"]["urls"][0]["indices"][0] = "hi"
+                }
+            }
+        }
+    }
+    
+    func testBigArrayWritePerformance() {
+        guard var json = try? JSON(data: self.testData) else {
+            XCTFail("Unable to parse testData")
+            return
+        }
+        
+        self.measure {
+            for _ in 1...10_000 {
+                autoreleasepool {
+                    json[0, "user", "entities", "url", "urls", 0, "indices"] = "hi"
+                }
+            }
+        }
+    }
 }

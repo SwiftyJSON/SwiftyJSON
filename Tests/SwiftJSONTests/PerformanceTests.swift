@@ -30,7 +30,12 @@ class PerformanceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        if let file = Bundle.module.url(forResource: "Tests", withExtension: "json") {
+        #if SWIFT_PACKAGE
+        let testBundle = Bundle.module
+        #else
+        let testBundle = Bundle(for: PerformanceTests.self)
+        #endif
+        if let file = testBundle.url(forResource: "Tests", withExtension: "json") {
             self.testData = try? Data(contentsOf: file)
         } else {
             XCTFail("Can't find the test JSON file")

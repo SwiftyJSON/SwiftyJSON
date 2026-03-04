@@ -28,7 +28,12 @@ class SequenceTypeTests: XCTestCase {
     var testData: Data?
 
     func testJSONFile() {
-        if let file = Bundle.module.url(forResource: "Tests", withExtension: "json") {
+        #if SWIFT_PACKAGE
+        let testBundle = Bundle.module
+        #else
+        let testBundle = Bundle(for: SequenceTypeTests.self)
+        #endif
+        if let file = testBundle.url(forResource: "Tests", withExtension: "json") {
             self.testData = try? Data(contentsOf: file)
             guard let json = try? JSON(data: self.testData!) else {
                 XCTFail("Unable to parse the data")

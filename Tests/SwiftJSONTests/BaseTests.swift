@@ -31,9 +31,12 @@ class BaseTests: XCTestCase {
 
         super.setUp()
 
-//        let file = "./Tests/Tes/Tests.json"
-//        self.testData = try? Data(contentsOf: URL(fileURLWithPath: file))
-        if let file = Bundle.module.url(forResource: "Tests", withExtension: "json") {
+        #if SWIFT_PACKAGE
+        let testBundle = Bundle.module
+        #else
+        let testBundle = Bundle(for: BaseTests.self)
+        #endif
+        if let file = testBundle.url(forResource: "Tests", withExtension: "json") {
             self.testData = try? Data(contentsOf: file)
         } else {
             XCTFail("Can't find the test JSON file")

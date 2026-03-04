@@ -278,7 +278,7 @@
 				2E4FEFEB19575BE100351305 /* Supporting Files */,
 			);
 			name = Tests;
-			path = Tests/Tes;
+			path = Tests/SwiftJSONTests;
 			sourceTree = "<group>";
 		};
 		2E4FEFEB19575BE100351305 /* Supporting Files */ = {

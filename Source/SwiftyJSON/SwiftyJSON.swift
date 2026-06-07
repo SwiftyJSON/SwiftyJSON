@@ -595,11 +595,12 @@ extension JSON: Swift.RawRepresentable {
 					return nil
 				}
 				let body = try dict.keys.map { key throws -> String in
+					let escapedKey = key.jsonEscaped
 					guard let value = dict[key] else {
-						return "\"\(key)\": null"
+						return "\"\(escapedKey)\": null"
 					}
 					guard let unwrappedValue = value else {
-						return "\"\(key)\": null"
+						return "\"\(escapedKey)\": null"
 					}
 
 					let nestedValue = JSON(unwrappedValue)
@@ -607,9 +608,9 @@ extension JSON: Swift.RawRepresentable {
 						throw SwiftyJSONError.elementTooDeep
 					}
 					if nestedValue.type == .string {
-						return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+						return "\"\(escapedKey)\": \"\(nestedString.jsonEscaped)\""
 					} else {
-						return "\"\(key)\": \(nestedString)"
+						return "\"\(escapedKey)\": \(nestedString)"
 					}
 				}
 
@@ -638,7 +639,7 @@ extension JSON: Swift.RawRepresentable {
                         throw SwiftyJSONError.invalidJSON
                     }
                     if nestedValue.type == .string {
-                        return "\"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+                        return "\"\(nestedString.jsonEscaped)\""
                     } else {
                         return nestedString
                     }
@@ -654,6 +655,13 @@ extension JSON: Swift.RawRepresentable {
         case .null:   return "null"
         default:      return nil
         }
+    }
+}
+
+fileprivate extension String {
+    var jsonEscaped: String {
+        return replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
     }
 }
 

@@ -113,7 +113,7 @@ If you use Carthage to build your dependencies, make sure you have added `Swifty
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `SwiftyJSON` by adding the proper description to your `Package.swift` file:
 
 ```swift
-// swift-tools-version:4.0
+// swift-tools-version:6.0
 import PackageDescription
 
 let package = Package(
@@ -123,7 +123,7 @@ let package = Package(
     ]
 )
 ```
-Then run `swift build` whenever you get prepared.
+Then run `swift build` when you're ready.
 
 #### Manually (iOS 7+, OS X 10.9+)
 

@@ -26,7 +26,7 @@ import SwiftyJSON
 class RawRepresentableTests: XCTestCase {
 
     func testNumber() {
-        var json: JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
+        let json: JSON = JSON(rawValue: 948394394.347384 as NSNumber)!
         XCTAssertEqual(json.int!, 948394394)
         XCTAssertEqual(json.intValue, 948394394)
         XCTAssertEqual(json.double!, 948394394.347384)
@@ -46,11 +46,11 @@ class RawRepresentableTests: XCTestCase {
     }
 
     func testBool() {
-        var jsonTrue: JSON = JSON(rawValue: true as NSNumber)!
+        let jsonTrue: JSON = JSON(rawValue: true as NSNumber)!
         XCTAssertEqual(jsonTrue.bool!, true)
         XCTAssertEqual(jsonTrue.boolValue, true)
 
-        var jsonFalse: JSON = JSON(rawValue: false)!
+        let jsonFalse: JSON = JSON(rawValue: false)!
         XCTAssertEqual(jsonFalse.bool!, false)
         XCTAssertEqual(jsonFalse.boolValue, false)
 

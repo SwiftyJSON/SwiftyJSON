@@ -20,6 +20,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Foundation
 import XCTest
 import SwiftyJSON
 
@@ -101,5 +102,23 @@ class RawTests: XCTestCase {
         let string = json.rawString()
         XCTAssertNotNil(data)
         XCTAssertNotNil(string)
+    }
+
+    func testRawStringEscapesKeysAndControlCharacters() {
+        let key = "key\"with\ncontrol"
+        let value = "line1\nline2\t\u{0001}\"\\"
+        let json: JSON = [key: value]
+
+        guard let raw = json.rawString([.castNilToNSNull: true]) else {
+            XCTFail("Expected a JSON string")
+            return
+        }
+
+        do {
+            let object = try JSONSerialization.jsonObject(with: Data(raw.utf8)) as? [String: String]
+            XCTAssertEqual(object?[key], value)
+        } catch {
+            XCTFail("Expected valid JSON, got error: \(error)")
+        }
     }
 }

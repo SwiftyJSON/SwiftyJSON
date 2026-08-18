@@ -107,18 +107,31 @@ class RawTests: XCTestCase {
     func testRawStringEscapesKeysAndControlCharacters() {
         let key = "key\"with\ncontrol"
         let value = "line1\nline2\t\u{0001}\"\\"
-        let json: JSON = [key: value]
 
-        guard let raw = json.rawString([.castNilToNSNull: true]) else {
-            XCTFail("Expected a JSON string")
+        let dictJSON: JSON = [key: value]
+        guard let dictRaw = dictJSON.rawString([.castNilToNSNull: true]) else {
+            XCTFail("Expected a JSON string for dictionary")
             return
         }
 
         do {
-            let object = try JSONSerialization.jsonObject(with: Data(raw.utf8)) as? [String: String]
+            let object = try JSONSerialization.jsonObject(with: Data(dictRaw.utf8)) as? [String: String]
             XCTAssertEqual(object?[key], value)
         } catch {
-            XCTFail("Expected valid JSON, got error: \(error)")
+            XCTFail("Expected valid JSON for dictionary, got error: \(error)")
+        }
+
+        let arrayJSON: JSON = [value]
+        guard let arrayRaw = arrayJSON.rawString([.castNilToNSNull: true]) else {
+            XCTFail("Expected a JSON string for array")
+            return
+        }
+
+        do {
+            let array = try JSONSerialization.jsonObject(with: Data(arrayRaw.utf8)) as? [String]
+            XCTAssertEqual(array?.first, value)
+        } catch {
+            XCTFail("Expected valid JSON for array, got error: \(error)")
         }
     }
 }

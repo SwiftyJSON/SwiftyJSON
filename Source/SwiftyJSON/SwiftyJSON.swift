@@ -538,6 +538,32 @@ extension JSON: Swift.ExpressibleByArrayLiteral {
 
 // MARK: - Raw
 
+private func escapeJSONString(_ string: String) -> String {
+    string.unicodeScalars.reduce(into: "") { result, scalar in
+        switch scalar.value {
+        case 0x08:
+            result += "\\b"
+        case 0x09:
+            result += "\\t"
+        case 0x0A:
+            result += "\\n"
+        case 0x0C:
+            result += "\\f"
+        case 0x0D:
+            result += "\\r"
+        case 0x22:
+            result += "\\\""
+        case 0x5C:
+            result += "\\\\"
+        case 0x00 ... 0x1F:
+            let hex = String(scalar.value, radix: 16, uppercase: true)
+            result += "\\u" + String(repeating: "0", count: 4 - hex.count) + hex
+        default:
+            result.append(contentsOf: String(scalar))
+        }
+    }
+}
+
 extension JSON: Swift.RawRepresentable {
 
     public init?(rawValue: Any) {
@@ -596,10 +622,10 @@ extension JSON: Swift.RawRepresentable {
 				}
 				let body = try dict.keys.map { key throws -> String in
 					guard let value = dict[key] else {
-						return "\"\(key)\": null"
+						return "\"\(escapeJSONString(key))\": null"
 					}
 					guard let unwrappedValue = value else {
-						return "\"\(key)\": null"
+						return "\"\(escapeJSONString(key))\": null"
 					}
 
 					let nestedValue = JSON(unwrappedValue)
@@ -607,9 +633,9 @@ extension JSON: Swift.RawRepresentable {
 						throw SwiftyJSONError.elementTooDeep
 					}
 					if nestedValue.type == .string {
-						return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+						return "\"\(escapeJSONString(key))\": \"\(escapeJSONString(nestedString))\""
 					} else {
-						return "\"\(key)\": \(nestedString)"
+						return "\"\(escapeJSONString(key))\": \(nestedString)"
 					}
 				}
 
@@ -638,7 +664,7 @@ extension JSON: Swift.RawRepresentable {
                         throw SwiftyJSONError.invalidJSON
                     }
                     if nestedValue.type == .string {
-                        return "\"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+                        return "\"\(escapeJSONString(nestedString))\""
                     } else {
                         return nestedString
                     }

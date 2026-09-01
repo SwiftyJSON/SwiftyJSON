@@ -360,6 +360,18 @@ extension String: JSONSubscriptType {
     }
 }
 
+extension JSONSubscriptType where Self: RawRepresentable<Int> {
+    public var jsonKey: JSONKey {
+        return JSONKey.index(rawValue)
+    }
+}
+
+extension JSONSubscriptType where Self: RawRepresentable<String> {
+    public var jsonKey: JSONKey {
+        return JSONKey.key(rawValue)
+    }
+}
+
 extension JSON {
 
     /// If `type` is `.array`, return json whose object is `array[index]`, otherwise return null json with error.

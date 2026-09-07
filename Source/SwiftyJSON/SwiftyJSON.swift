@@ -1160,7 +1160,7 @@ extension JSON: Swift.Comparable {}
 public func == (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber == rhs.rawNumber
+    case (.number, .number): return eq(lhs.rawNumber, rhs.rawNumber)
     case (.string, .string): return lhs.rawString == rhs.rawString
     case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
     case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
@@ -1173,7 +1173,7 @@ public func == (lhs: JSON, rhs: JSON) -> Bool {
 public func <= (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber <= rhs.rawNumber
+    case (.number, .number): return le(lhs.rawNumber, rhs.rawNumber)
     case (.string, .string): return lhs.rawString <= rhs.rawString
     case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
     case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
@@ -1186,7 +1186,7 @@ public func <= (lhs: JSON, rhs: JSON) -> Bool {
 public func >= (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber >= rhs.rawNumber
+    case (.number, .number): return ge(lhs.rawNumber, rhs.rawNumber)
     case (.string, .string): return lhs.rawString >= rhs.rawString
     case (.bool, .bool):     return lhs.rawBool == rhs.rawBool
     case (.array, .array):   return lhs.rawArray as NSArray == rhs.rawArray as NSArray
@@ -1199,7 +1199,7 @@ public func >= (lhs: JSON, rhs: JSON) -> Bool {
 public func > (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber > rhs.rawNumber
+    case (.number, .number): return gt(lhs.rawNumber, rhs.rawNumber)
     case (.string, .string): return lhs.rawString > rhs.rawString
     default:                 return false
     }
@@ -1208,7 +1208,7 @@ public func > (lhs: JSON, rhs: JSON) -> Bool {
 public func < (lhs: JSON, rhs: JSON) -> Bool {
 
     switch (lhs.type, rhs.type) {
-    case (.number, .number): return lhs.rawNumber < rhs.rawNumber
+    case (.number, .number): return lt(lhs.rawNumber, rhs.rawNumber)
     case (.string, .string): return lhs.rawString < rhs.rawString
     default:                 return false
     }
@@ -1232,7 +1232,7 @@ extension NSNumber {
     }
 }
 
-func == (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func eq(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false
     case (true, false): return false
@@ -1240,11 +1240,11 @@ func == (lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func != (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func neq(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
     return !(lhs == rhs)
 }
 
-func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func lt(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false
@@ -1253,7 +1253,7 @@ func < (lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func > (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func gt(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false
@@ -1262,7 +1262,7 @@ func > (lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func <= (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func le(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false
@@ -1271,7 +1271,7 @@ func <= (lhs: NSNumber, rhs: NSNumber) -> Bool {
     }
 }
 
-func >= (lhs: NSNumber, rhs: NSNumber) -> Bool {
+func ge(_ lhs: NSNumber, _ rhs: NSNumber) -> Bool {
 
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false

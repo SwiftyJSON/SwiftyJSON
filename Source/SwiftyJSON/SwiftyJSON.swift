@@ -1232,6 +1232,8 @@ extension NSNumber {
     }
 }
 
+#if os(Linux)
+#else
 func == (lhs: NSNumber, rhs: NSNumber) -> Bool {
     switch (lhs.isBool, rhs.isBool) {
     case (false, true): return false
@@ -1279,6 +1281,7 @@ func >= (lhs: NSNumber, rhs: NSNumber) -> Bool {
     default:            return lhs.compare(rhs) != .orderedAscending
     }
 }
+#endif
 
 public enum writingOptionsKeys {
 	case jsonSerialization

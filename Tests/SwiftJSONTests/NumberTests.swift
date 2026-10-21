@@ -105,6 +105,12 @@ class NumberTests: XCTestCase {
         XCTAssertTrue(json.floatValue == 54321.12345)
         XCTAssertEqual(json.numberValue, 54321.12345)
         XCTAssertEqual(json.stringValue, "54321.12345")
+        
+        json = JSON(8.8)
+        XCTAssertTrue(json.float! == 8.8)
+        XCTAssertTrue(json.floatValue == 8.8)
+        XCTAssertEqual(json.numberValue, 8.8)
+        XCTAssertEqual(json.stringValue, "8.8")
 
         json.double = 23231.65
         XCTAssertTrue(json.float! == 23231.65)
@@ -116,6 +122,7 @@ class NumberTests: XCTestCase {
         XCTAssertEqual(json.floatValue, -98766.23)
         XCTAssertEqual(json.numberValue, NSNumber(value: -98766.23))
     }
+
 
     func testInt() {
         var json = JSON(123456789)

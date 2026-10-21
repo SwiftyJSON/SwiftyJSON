@@ -786,7 +786,17 @@ extension JSON {
         get {
             switch type {
             case .string: return object as? String ?? ""
-            case .number: return rawNumber.stringValue
+            case .number:
+                if let n = rawValue as? NSNumber {
+                    if n.floatValue <= 1000 && n.floatValue >= -1000 {
+                        let string = n.doubleValue.formatted(.number.precision(.fractionLength(0...10)).grouping(.never))
+                        return string
+                    }
+                    return rawNumber.stringValue
+                }
+                return ""
+                
+                
             case .bool:   return (object as? Bool).map(String.init) ?? ""
             default:      return ""
             }

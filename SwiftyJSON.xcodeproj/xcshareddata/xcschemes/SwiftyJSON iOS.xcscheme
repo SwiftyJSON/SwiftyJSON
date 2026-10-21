@@ -41,6 +41,15 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2E4FEFDA19575BE100351305"
+            BuildableName = "SwiftyJSON.framework"
+            BlueprintName = "SwiftyJSON iOS"
+            ReferencedContainer = "container:SwiftyJSON.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -53,17 +62,6 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2E4FEFDA19575BE100351305"
-            BuildableName = "SwiftyJSON.framework"
-            BlueprintName = "SwiftyJSON iOS"
-            ReferencedContainer = "container:SwiftyJSON.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -84,8 +82,6 @@
             ReferencedContainer = "container:SwiftyJSON.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
